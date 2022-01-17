@@ -614,6 +614,24 @@ export const registerSystemSettings = function() {
     type: Boolean
   });
 
+  game.settings.register("D35E", "sharedVisionMode", {
+    name: "SETTINGS.D35ESharedVisionModeN",
+    hint: "SETTINGS.D35ESharedVisionModeH",
+    scope: "world",
+    config: true,
+    default: "0",
+    type: String,
+    choices: {
+      0: "SETTINGS.D35ESharedVisionWithoutSelection",
+      1: "SETTINGS.D35ESharedVisionWithSelection",
+    },
+    onChange: () => {
+      game.socket.emit("system.D35E", { eventType: "redrawCanvas" });
+    },
+  });
+
+
+
   // game.settings.register("D35E", 'displayItemsInContainers', {
   //   name: `SETTINGS.D35EDisplayItemsInContainersN`,
   //   hint: 'SETTINGS.D35EDisplayItemsInContainersH',

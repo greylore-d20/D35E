@@ -447,7 +447,7 @@ Hooks.on("renderTokenConfig", async (app, html) => {
   html.find('.tab[data-tab="vision"] > *:nth-child(2)').after(newHTML2);
 });
 
-Hooks.on("renderLightConfig", (app, html) => {
+Hooks.on("renderAmbientLightConfig", (app, html) => {
   addLowLightVisionToLightConfig(app, html);
 });
 
@@ -577,8 +577,14 @@ Hooks.on("updateActor",  (actor, data, options, user) => {
 
 Hooks.on("controlToken", (token, selected) => {
   // Refresh canvas sight
-  canvas.lighting.initializeSources();
+  canvas.perception.schedule({
+    lighting: { initialize: true, refresh: true },
+    sight: { refresh: true },
+    sounds: { refresh: true },
+    foreground: { refresh: true },
+  });
 });
+
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */

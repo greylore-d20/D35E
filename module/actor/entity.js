@@ -3584,9 +3584,8 @@ export class ActorPF extends Actor {
                 value: actorData.data.attributes.bab.total
             });
         }
-        const useDexForCMB = Object.keys(CONFIG.D35E.actorSizes).indexOf(getProperty(actorData, "data.traits.size") || "") <= Object.keys(CONFIG.D35E.actorSizes).indexOf("tiny");
         if (actorData.data.abilities.str.mod !== 0) {
-            if (!useDexForCMB) sourceDetails["data.attributes.cmb.total"].push({
+            sourceDetails["data.attributes.cmb.total"].push({
                 name: "Strength",
                 value: actorData.data.abilities.str.mod
             });
@@ -3600,10 +3599,6 @@ export class ActorPF extends Actor {
             });
         }
         if (actorData.data.abilities.dex.mod !== 0) {
-            if (useDexForCMB) sourceDetails["data.attributes.cmb.total"].push({
-                name: "Dexterity",
-                value: actorData.data.abilities.dex.mod
-            });
             sourceDetails["data.attributes.cmd.total"].push({
                 name: "Dexterity",
                 value: actorData.data.abilities.dex.mod
