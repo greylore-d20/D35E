@@ -5341,6 +5341,11 @@ export class ActorPF extends Actor {
                 optionalFeatRanges = new Map(),
                 rollMode = null;
             let skillManualBonus = 0;
+            let take20 = false;
+            let take10 = false;
+            if (skillRollFormula == "20") take20 = true;
+            if (skillRollFormula == "10") take10 = true;
+
             // Get data from roll form
             if (form) {
                 skillManualBonus = form.find('[name="sk-bonus"]').val() || 0;
@@ -5405,6 +5410,8 @@ export class ActorPF extends Actor {
                 total: roll.total,
                 result: roll.result,
                 skl: skl,
+                take20: take20,
+                take10: take10,
                 tooltip: $(await roll.getTooltip()).prepend(`<div class="dice-formula">${roll.formula}</div>`)[0].outerHTML,
                 success: target && roll.total >= target,
                 properties: props,

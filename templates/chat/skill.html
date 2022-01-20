@@ -2,7 +2,12 @@
      tokenId}}data-token-id="{{tokenId}}" {{/if}}>
 <header class="card-header flexrow">
     <img src="{{img}}" title="{{name}}" width="36" height="36"/>
-    <h3>{{name}} - {{sklName}}</h3>
+    {{#if (or take10 take20)}}<div class="flexcol"><h3 style="line-height: 20px">{{name}} - {{sklName}}</h3>
+        {{#if take10}}<h4 style='line-height: 16px; font-family: "Nodesto", "Signika", "Palatino Linotype", serif; font-size: 18px; opacity: 0.6;'>{{localize "D35E.Take10"}}</h4>{{/if}}
+        {{#if take20}}<h4 style='line-height: 16px; font-family: "Nodesto", "Signika", "Palatino Linotype", serif; font-size: 18px; opacity: 0.6;'>{{localize "D35E.Take20"}}</h4>{{/if}}
+    </div>
+        {{/if}}
+    {{#unless (or take10 take20)}}<h3>{{name}} - {{sklName}}</h3>{{/unless}}
 </header>
 
 <div class="card-content">
