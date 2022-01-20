@@ -333,48 +333,60 @@
     <div class="tab attributes flexrow" data-group="primary" data-tab="attributes">
       <div class="flexrow"><h2 class="block-header" style="flex: 1">{{ localize 'D35E.AbilityScores' }}</h2>
         <a class="btn point-buy point-buy-button blue-button">{{ localize 'D35E.UsePointBuy' }}</a></div>
+     
       {{!-- Ability Scores --}}
-      <ul class="ability-scores flexrow" style="width: 100%">
+      <ul class="ability-scores attributes flexrow"  style="width: 100%">
         {{#each data.abilities as |ability id|}}
-          <li class="ability" data-ability="{{id}}">
-            <div class="ability-header flexrow">
-              <input class="ability-damage" name="data.abilities.{{id}}.damage" type="text"
-                     title="{{ localize 'D35E.Damage' }}"
-              value="{{#if ability.damage}}{{ability.damage}}{{/if}}" data-dtype="Number" 
-              placeholder="{{ localize 'D35E.DMG' }}"/>
-              <input class="ability-penalty" name="data.abilities.{{id}}.userPenalty" type="text"
-                     title="{{ localize 'D35E.Penalty' }}"
-              value="{{#if ability.userPenalty}}{{ability.userPenalty}}{{/if}}" data-dtype="Number"
-              placeholder="{{ localize 'D35E.PNL' }}"/>
-              <input class="ability-drain" name="data.abilities.{{id}}.drain" type="text" 
-                     title="{{ localize 'D35E.Drain' }}"
-              value="{{#if ability.drain}}{{ability.drain}}{{/if}}" data-dtype="Number" 
-              placeholder="{{ localize 'D35E.DRN' }}"/>
-            </div>
-            <h4 class="ability-name box-title rollable">{{ability.label}}</h4>
-            <span class="ability-score tooltip">
-              {{numberFormat ability.total decimals=0 sign=false}}
-              <span class="tooltipcontent">
-                @abilities.{{id}}.total : {{ability.total}}<br/>
-                @abilities.{{id}}.value : {{ability.value}}<br/>
-                @abilities.{{id}}.mod : {{ability.mod}}<br/>
-                @abilities.{{id}}.damage : {{ability.damage}}<br/>
-                @abilities.{{id}}.drain : {{ability.drain}}<br/>
-                @abilities.{{id}}.penalty : {{ability.penalty}}
+        <li class="ability attribute"style="height: 75px;">
+          <div class="attribute-speed"  data-ability="{{id}}" >
+            <h4 class="ability-name box-title rollable">{{ability.label}}
+            </h4>
+            <div class="attribute-value" style="line-height: 28px">
+              <div class="attribute" style="max-width: 100%">
+                <span class="ability-score tooltip">
 
-                {{#if ability.sourceDetails.length}}
-                  <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                  {{#each ability.sourceDetails as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
-                {{/if}}
-              </span>
-            </span>
-            <div class="ability-modifiers flexrow">
-              <span class="ability-mod">{{numberFormat ability.mod decimals=0 sign=true}}</span>
-              <div class="ability-center"></div>
-              <input class="ability-base" name="data.abilities.{{id}}.value" type="text"
-                     value="{{ability.value}}" data-dtype="Number" placeholder="10"/>
+                  {{#if ability.isZero}}
+                  -
+                  {{else}}
+                  <span class="{{#if ability.hasItemBonus}}green{{/if}}{{#if (or ability.drain ability.damage)}}red{{/if}}">{{numberFormat ability.total decimals=0 sign=false}}</span>
+                  (<span class="ability-mod {{#if (or ability.userPenalty ability.penalty)}}red{{/if}}">{{numberFormat ability.mod decimals=0 sign=true}}</span>)
+                  {{/if}}
+                  <span class="tooltipcontent">
+                    @abilities.{{id}}.total : {{ability.total}}<br />
+                    @abilities.{{id}}.value : {{ability.value}}<br />
+                    @abilities.{{id}}.mod : {{ability.mod}}<br />
+                    @abilities.{{id}}.damage : {{ability.damage}}<br />
+                    @abilities.{{id}}.drain : {{ability.drain}}<br />
+                    @abilities.{{id}}.penalty : {{ability.penalty}}<br />
+                    @abilities.{{id}}.userPenalty : {{ability.userPenalty}}<br />
+                    @abilities.{{id}}.origTotal : {{ability.origTotal}}<br />
+                    @abilities.{{id}}.origMod : {{ability.origMod}}
+
+                    {{#if ability.sourceDetails.length}}
+                    <br /><br />{{ localize 'D35E.FromSources' }}:<br />
+                    {{#each ability.sourceDetails as |src|}}{{src.name}}: {{src.value}}<br />{{/each}}
+                    {{/if}}
+                  </span>
+                </span>
+              </div>
             </div>
-          </li>
+
+            <footer class="attribute-footer">
+              {{#if ability.isZero}}
+              <input type="hidden" value="0" data-dtype="Number" class="readonly" placeholder="10" readonly />
+              <input class="ability-base readonly" type="text" value="{{ability.value}}" data-dtype="Number" placeholder="10"
+                readonly />
+              {{else}}
+              <input style="width: calc(100% - 24px);" class="ability-base" name="data.abilities.{{id}}.value" type="text" value="{{ability.value}}"
+                data-dtype="Number" placeholder="10" />
+                <div class="data-selector" style="float: right; width: 24px; line-height: 24px;">
+                  <a class="configure-ability" for="{{id}}"><i class="fas fa-edit"></i></a>
+                </div>
+              {{/if}}
+              
+            </footer>
+          </div>
+        </li>
         {{/each}}
       </ul>
 

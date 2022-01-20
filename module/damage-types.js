@@ -390,8 +390,11 @@ export class DamageTypes {
         let beforeDamage = damageBeforeDr + energyDamageBeforeEr;
         let afterDamage = energyDamageAfterEr + damageAfterDr;
         let incorporealMiss = false;
+        let incorporealRoll = Math.random();
+        let incorporealRolled = false;
         if (actor.data.data.traits.incorporeal && !incorporeal) {
-            if (Math.random() >= 0.5 || enh < 1){
+            incorporealRolled = true;
+            if (incorporealRoll >= 0.5 || enh < 1){
                 afterDamage = 0;
                 energyDamageAfterEr = 0;
                 damageAfterDr = 0;
@@ -415,6 +418,8 @@ export class DamageTypes {
             equal:afterDamage===beforeDamage,
             appliedDR: appliedDr,
             energyDamage: energyDamage,
+            incorporealRoll: Math.floor(incorporealRoll * 100),
+            incorporealRolled: incorporealRolled,
             incorporealMiss: incorporealMiss};
     }
 }

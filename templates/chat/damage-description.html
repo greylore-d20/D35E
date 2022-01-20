@@ -23,7 +23,7 @@
     {{#unless ammoRecovered}}
     <h3>{{#if name}}{{name}}{{/if}}
         {{#if damageData.incorporealMiss}}
-        <div class="dice-flavor" style="display: inline">{{localize "D35E.IncorporealMiss"}}</div>
+        <div class="dice-flavor" style="display: inline">{{localize "D35E.Miss"}}</div>
         {{else}}
         {{#unless isSpell}}
         {{#if name}}
@@ -143,6 +143,28 @@
                     </div>
                 </div>
             </div>
+            {{#if damageData.incorporealRolled}}
+            <div class="chat-attack">
+                <div class="dice-roll attack-roll flexcol">
+                    <div class="dice-flavor">{{localize "D35E.Incorporeal"}} {{#if damageData.incorporealMiss}}{{localize "D35E.Miss"}}{{/if}}</div>
+                    <div class="flexrow">
+                        <div class="flexcol">
+                            <div class="dice-result ">
+                                <h4 class="rolled-roll dice-total {{#unless  damageData.incorporealMiss}} success{{/unless}}{{#if  damageData.incorporealMiss}} failure{{/if}}">
+                                    {{damageData.incorporealRoll}}</h4>
+                            </div>
+                        </div>
+                        <div class="flexcol">
+                            <div class="dice-result">
+                                <h4 class="rolled-fortify-value dice-total">
+
+                                    50%</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
             {{#if fortifyRolled}}
 
             <div class="chat-attack">
