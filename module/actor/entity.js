@@ -6148,6 +6148,7 @@ export class ActorPF extends Actor {
             rollModes: CONFIG.Dice.rollModes,
             applyHalf: ev.applyHalf,
             baseConcealment: this.data.data.attributes.concealment.total,
+            isAlreadyProne: this.data.data.attributes.conditions.prone,
             baseConcealmentAtLeast20: this.data.data.attributes.concealment.total > 20,
             baseConcealmentAtLeast50: this.data.data.attributes.concealment.total > 50,
             defenseFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('defense',rollData)),

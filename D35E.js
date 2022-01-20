@@ -213,7 +213,7 @@ Hooks.once("ready", async function() {
   $('body').toggleClass('transparent-sidebar', game.settings.get("D35E", "transparentSidebarWhenUsingTheme"));
 
 
-  const NEEDS_MIGRATION_VERSION = "0.87.7";
+  const NEEDS_MIGRATION_VERSION = "0.99.2";
   let PREVIOUS_MIGRATION_VERSION = game.settings.get("D35E", "systemMigrationVersion");
   if (typeof PREVIOUS_MIGRATION_VERSION === "number") {
     PREVIOUS_MIGRATION_VERSION = PREVIOUS_MIGRATION_VERSION.toString() + ".0";

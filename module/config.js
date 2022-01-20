@@ -993,6 +993,7 @@ D35E.conditions = {
   "shaken": "D35E.CondShaken",
   "polymorphed": "D35E.CondPolymorphed",
   "wildshaped": "D35E.CondWildshaped",
+  "prone": "D35E.CondProne",
 };
 
 D35E.conditionTextures = {
@@ -1015,6 +1016,7 @@ D35E.conditionTextures = {
   sickened: "systems/D35E/icons/conditions/sickened.png",
   shaken: "systems/D35E/icons/conditions/shaken.png",
   stunned: "systems/D35E/icons/conditions/stunned.png",
+  prone: "systems/D35E/icons/conditions/stunned.png",
 };
 
 

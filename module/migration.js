@@ -471,6 +471,9 @@ const _migrateActorBaseStats = function(ent, updateData) {
   if (getProperty(ent.data, "data.attributes.conditions.polymorphed") == null) {
     updateData["data.attributes.conditions.polymorphed"] = false;
   }
+  if (getProperty(ent.data, "data.attributes.conditions.prone") == null) {
+    updateData["data.attributes.conditions.prone"] = false;
+  }
 
 
 };
