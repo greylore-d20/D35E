@@ -34,16 +34,24 @@ export const migrateWorld = async function() {
     }
   }
 
-  // Migrate Actor Override Tokens
-  for ( let s of game.scenes.contents ) {
+  console.log("Migrating Scene documents.");
+  for (const s of game.scenes.contents) {
     try {
-      const updateData = await migrateSceneData(s.data);
-      //console.log(`Migrating Scene entity ${s.name}`);
-      await s.update(updateData);
-    } catch(err) {
-      console.error(err);
+      const updateData = migrateSceneData(s.data);
+      if (!foundry.utils.isObjectEmpty(updateData)) {
+        console.log(`Migrating Scene document ${s.name}`);
+        await s.update(updateData, { enforceTypes: false });
+        // If we do not do this, then synthetic token actors remain in cache
+        // with the un-updated actorData.
+        s.tokens.contents.forEach((t) => {
+          t._actor = null;
+        });
+      }
+    } catch (err) {
+      console.error(`Error migrating scene document ${s.name}`, err);
     }
   }
+
 
   // Migrate World Compendium Packs
   const packs = game.packs.filter(p => {
@@ -123,21 +131,23 @@ export const migrateActorData = async function(actor, itemsToAdd) {
   await _migrateWeaponProficiencies(actor,updateData,itemsToAdd)
   await _migrateArmorProficiencies(actor,updateData,itemsToAdd)
 
-  if ( !actor.items ) return updateData;
-
-  // Migrate Owned Items
-  let items = [];
-  const actorItems = Array.from(actor.items);
-  for (let a = 0; a < actorItems.length; a++) {
-    let i = actorItems[a];
-    items[a] = i;
-    let itemUpdate = migrateItemData(i);
+  if (!actor.items) return updateData;
+  const items = actor.items.reduce((arr, i) => {
+    // Migrate the Owned Item
+    const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
+    const itemUpdate = migrateItemData(itemData);
 
     // Update the Owned Item
-    items[a] = mergeObject(i, itemUpdate, { enforceTypes: false, inplace: false });
-  }
-  updateData.items = items;
+    if (!isObjectEmpty(itemUpdate)) {
+      itemUpdate._id = itemData._id;
+      arr.push(expandObject(itemUpdate));
+    }
+
+    return arr;
+  }, []);
+  if (items.length > 0) updateData.items = items;
   return updateData;
+
 };
 
 /* -------------------------------------------- */
@@ -171,38 +181,43 @@ export const migrateItemData = function(item) {
 /* -------------------------------------------- */
 
 /**
- * Migrate a single Scene entity to incorporate changes to the data model of it's actor data overrides
+ * Migrate a single Scene document to incorporate changes to the data model of it's actor data overrides
  * Return an Object of updateData to be applied
- * @param {Object} scene  The Scene data to Update
- * @return {Object}       The updateData to apply
+ *
+ * @param {object} scene - The Scene to Update
+ * @returns {object} The updateData to apply
  */
-export const migrateSceneData = async function(scene) {
-  const result = { tokens: duplicate(scene.tokens) };
-  for (let t of result.tokens) {
-    if (!t.actorId || t.actorLink || !t.actorData.data) {
+ export const migrateSceneData = function (scene) {
+  const tokens = scene.tokens.map((token) => {
+    const t = token.toJSON();
+    if (!t.actorId || t.actorLink) {
       t.actorData = {};
-      continue;
-    }
-    const token = new Token(t);
-
-    migrateTokenVision(token, t)
-
-    if (!token.actor) {
-      t.actorId = null;
-      t.actordata = {};
-    }
-    const originalActor = game.actors.get(token.actor?.id);
-    if (!originalActor) {
+    } else if (!game.actors.has(t.actorId)) {
       t.actorId = null;
       t.actorData = {};
+    } else if (!t.actorLink) {
+      const actorData = {};
+      actorData.type = token.actor?.type;
+      actorData.data = duplicate(t.actorData)
+      const update = migrateActorData(actorData, token);
+      ["items", "effects"].forEach((embeddedName) => {
+        if (!update[embeddedName]?.length) return;
+        const updates = new Map(update[embeddedName].map((u) => [u._id, u]));
+        t.actorData[embeddedName].forEach((original) => {
+          const update = updates.get(original._id);
+          if (update) mergeObject(original, update);
+        });
+        delete update[embeddedName];
+      });
+
+      mergeObject(t.actorData, update);
     }
-    else {
-      const updateData = await migrateActorData(token.data.actorData);
-      t.actorData = mergeObject(token.data.actorData, updateData);
-    }
-  }
-  return result;
+    return t;
+  });
+  return { tokens };
 };
+
+
 
 const _migrateActorTokenVision = function(ent, updateData) {
   const vision = getProperty(ent.data, "data.attributes.vision");
@@ -495,7 +510,7 @@ const _migrateActorSpellbookDCFormula = function(ent, updateData) {
 };
 
 const _migrateIcon = function(ent, updateData) {
-  const value = getProperty(ent.data, "img");
+  const value = getProperty(ent.data, "img") || "";
   if (value.endsWith("/con.png")) updateData["img"] = value.replace("/con.png","/con_.png");
 };
 
@@ -553,7 +568,7 @@ const _migrateWeaponImprovised = function(ent, updateData) {
 
 const _migrateSpellName = function(ent, updateData) {
   if (ent.type !== "spell") return;
-  updateData["name"] = ent.data.name.trim()
+  updateData["name"] = (ent.data.name || ent.name).trim()
 }
 
 const _migrateSpellDescription = function(ent, updateData) {

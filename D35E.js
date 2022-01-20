@@ -213,6 +213,8 @@ Hooks.once("ready", async function() {
   $('body').toggleClass('transparent-sidebar', game.settings.get("D35E", "transparentSidebarWhenUsingTheme"));
 
 
+  await cache.buildCache();
+  
   const NEEDS_MIGRATION_VERSION = "0.99.2";
   let PREVIOUS_MIGRATION_VERSION = game.settings.get("D35E", "systemMigrationVersion");
   if (typeof PREVIOUS_MIGRATION_VERSION === "number") {
@@ -238,7 +240,6 @@ Hooks.once("ready", async function() {
 
 
 
-  await cache.buildCache();
   console.log("D35E | Cache is ", CACHE)
   //game.actors.contents.forEach(obj => { obj._updateChanges({sourceOnly: true}, {skipToken: true}); });
 
