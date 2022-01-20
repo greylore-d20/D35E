@@ -23,7 +23,7 @@ export default class AbilityConfig extends DocumentSheet {
 
     /** @override */
     get title() {
-        return `${game.i18n.localize("D35E.SensesConfig")}: ${this.object.name}`;
+        return `${game.i18n.localize("D35E.AttributeDamageConfig")}: ${this.object.name}`;
     }
 
     /* -------------------------------------------- */
