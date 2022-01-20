@@ -15,6 +15,7 @@ import {CompendiumDirectoryPF} from "../../sidebar/compendium.js";
 import {DamageTypes} from "../../damage-types.js";
 import {Roll35e} from "../../roll.js"
 import ActorSensesConfig from "../../apps/senses-config.js";
+import AbilityConfig from "../../apps/ability-config.js";
 import {EntrySelector} from "../../apps/entry-selector.js";
 
 /**
@@ -142,7 +143,10 @@ export class ActorSheetPF extends ActorSheet {
       if (data.actor.data.abilities[a].value !== data.actor.data.abilities[a].total) {
         data.actor.data.abilities[a].modified = true;
       }
-      abl.sourceDetails = data.sourceDetails != null ? data.sourceDetails.data.abilities[a].total : [];
+      abl.sourceDetails = data.sourceDetails != null ? data.sourceDetails.data.abilities[a].total : {};
+      for ( let [_s, _sobj] of Object.entries(abl.sourceDetails)) {
+          if (_sobj.isItemBonus) abl.hasItemBonus = true;
+      }
     }
 
 
@@ -689,6 +693,7 @@ export class ActorSheetPF extends ActorSheet {
 
 
     html.find(".note-editor").click(this._onNoteEditor.bind(this));
+    html.find(".configure-ability").click(this._onAbilityConfig.bind(this));
     html.find(".configure-spellbook").click(this._onSpellbookEditor.bind(this));
     html.find(".configure-deck").click(this._onDeckEditor.bind(this));
     html.find(".draw-cards").click(this._onDeckDrawCards.bind(this));
@@ -2579,6 +2584,17 @@ export class ActorSheetPF extends ActorSheet {
     new NoteEditor(this.actor, options).render(true);
   }
 
+  _onAbilityConfig(event) {
+    event.preventDefault();
+    const a = event.currentTarget;
+    const options = {
+      name: a.getAttribute("for"),
+      title: a.innerText,
+      fields: a.dataset.fields,
+      dtypes: a.dataset.dtypes,
+    };
+    new AbilityConfig(this.actor, options).render(true);
+  }
 
   _onSpellbookEditor(event) {
     event.preventDefault();

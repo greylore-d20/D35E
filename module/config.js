@@ -1106,6 +1106,7 @@ D35E.buffTargets = {
     "swimSpeed": "D35E.SpeedSwim",
     "burrowSpeed": "D35E.SpeedBurrow",
     "flySpeed": "D35E.SpeedFly",
+    "runSpeedMultiplierModifier": "D35E.RunSpeedMultiplierModifier"
   },
   "psionic": {
     "_label": "D35E.Psionics",

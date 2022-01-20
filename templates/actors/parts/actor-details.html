@@ -27,7 +27,7 @@
                     {{#if ability.isZero}}
                         <h4 class="ability-value-text">-</h4>
                     {{else}}
-                        <h4 class="ability-value-text">{{numberFormat ability.total decimals=0 sign=false}}</h4>
+                        <h4 class="{{#if ability.hasItemBonus}}green{{/if}}{{#if (or ability.drain ability.damage)}}red{{/if}} ability-value-text">{{numberFormat ability.total decimals=0 sign=false}}</h4>
                     {{/if}}
                 <span class="tooltipcontent">
               @abilities.{{id}}.total : {{ability.total}}<br/>
@@ -43,7 +43,7 @@
                   {{/if}}
                 </span>
               </span>
-                        <h4 class="ability-mod-text">{{numberFormat ability.mod decimals=0 sign=true}}</h4>
+                        <h4 class="ability-mod-text {{#if (or ability.userPenalty ability.penalty)}}red{{/if}}"">{{numberFormat ability.mod decimals=0 sign=true}}</h4>
                     </div>
 
                 </div>

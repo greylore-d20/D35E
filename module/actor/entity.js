@@ -121,6 +121,25 @@ export class ActorPF extends Actor {
         return this.items.find(o => o.type === "class" && getProperty(o.data, "data.classType") === "racial");
     }
 
+
+    static _isItemBonus(type, subtype, name) {
+        let result = "";
+        if (type === "buff") {
+            return true;
+        }
+        if (type === "aura") {
+            return true;
+        }
+        if (type === "equipment") 
+            return true;
+        if (type === "weapon")
+            return true;
+        if (type === "feat") {
+            return true;
+        }
+        return false;
+    }
+
     static _translateSourceInfo(type, subtype, name) {
         let result = "";
         if (type === "size") result = "Size";
@@ -271,7 +290,7 @@ export class ActorPF extends Actor {
                 "attack", "mattack", "rattack", 'babattack',
                 "damage", "wdamage", "sdamage",
                 "allSavingThrows", "fort", "ref", "will", "turnUndead","turnUndeadDiceTotal", "spellResistance", "powerPoints", "sneakAttack",
-                "cmb", "cmd", "init", "mhp", "wounds", "vigor", "arcaneCl", "divineCl", "psionicCl", "cardCl", "cr", "fortification", "regen", "fastHeal", "concealment", ...spellTargets,"scaPrimary","scaSecondary","scaTetriary","scaSpelllike"
+                "cmb", "cmd", "init", "mhp", "wounds", "vigor", "arcaneCl", "divineCl", "psionicCl", "cardCl", "cr", "runSpeedMultiplierModifier", "fortification", "regen", "fastHeal", "concealment", ...spellTargets,"scaPrimary","scaSecondary","scaTetriary","scaSpelllike"
             ], modifiers: [
                 "replace", "untyped", "base", "enh", "dodge", "inherent", "deflection",
                 "morale", "luck", "sacred", "insight", "resist", "profane",
@@ -620,6 +639,8 @@ export class ActorPF extends Actor {
                 return "data.attributes.cmb.total";
             case "sneakAttack":
                 return "data.attributes.sneakAttackDiceTotal";
+            case "runSpeedMultiplierModifier":
+                return "data.attributes.runSpeedMultiplierModifier";
             case "powerPoints":
                 return "data.attributes.powerPointsTotal";
             case "turnUndead":
@@ -2295,7 +2316,7 @@ export class ActorPF extends Actor {
             if (a === "wis" && flags.oneWis === true) continue;
             if (a === "cha" && flags.oneCha === true) continue;
             linkData(data, updateData, `data.abilities.${a}.checkMod`, 0);
-            linkData(data, updateData, `data.abilities.${a}.total`, abl.value - Math.abs(abl.drain));
+            linkData(data, updateData, `data.abilities.${a}.total`, abl.value - Math.abs(abl.drain) - Math.abs(abl.damage));
             linkData(data, updateData, `data.abilities.${a}.mod`, Math.floor((updateData[`data.abilities.${a}.total`] - 10) / 2));
         }
 
@@ -2455,7 +2476,8 @@ export class ActorPF extends Actor {
         linkData(data, updateData, "data.attributes.acp.gear", 0);
         linkData(data, updateData, "data.attributes.maxDexBonus", null);
         linkData(data, updateData, "data.attributes.maxDex.gear", null);
-
+        linkData(data, updateData, "data.attributes.runSpeedMultiplierModifier", 0);
+        
         linkData(data, updateData, "data.attributes.fortification.total", (data1.attributes.fortification?.value || 0));
         linkData(data, updateData, "data.attributes.concealment.total", (data1.attributes.concealment?.value || 0));
         items.filter(_obj => {
@@ -2607,6 +2629,7 @@ export class ActorPF extends Actor {
                 linkData(data, updateData, k, 0);
             }
         }
+        
 
 
         // Total sneak attak dice
@@ -2996,9 +3019,9 @@ export class ActorPF extends Actor {
             }
             if (changes[`data.abilities.${a}.total`]) delete changes[`data.abilities.${a}.total`]; // Remove used mods to prevent doubling
             if (changes[`data.abilities.${a}.replace`]) delete changes[`data.abilities.${a}.replace`]; // Remove used mods to prevent doubling
-            linkData(data, updateData, `data.abilities.${a}.mod`, Math.floor((updateData[`data.abilities.${a}.total`] - updateData[`data.abilities.${a}.damage`] - ablPenalty - 10) / 2));
+            linkData(data, updateData, `data.abilities.${a}.mod`, Math.floor((updateData[`data.abilities.${a}.total`] - ablPenalty - 10) / 2));
             linkData(data, updateData, `data.abilities.${a}.mod`, Math.max(-5, updateData[`data.abilities.${a}.mod`]));
-            linkData(data, updateData, `data.abilities.${a}.origMod`, Math.floor((updateData[`data.abilities.${a}.origTotal`] - updateData[`data.abilities.${a}.damage`] - ablPenalty - 10) / 2));
+            linkData(data, updateData, `data.abilities.${a}.origMod`, Math.floor((updateData[`data.abilities.${a}.origTotal`] - ablPenalty - 10) / 2));
             linkData(data, updateData, `data.abilities.${a}.origMod`, Math.max(-5, updateData[`data.abilities.${a}.origMod`]));
             linkData(data, updateData, `data.abilities.${a}.drain`, updateData[`data.abilities.${a}.drain`] + (changes[`data.abilities.${a}.drain`] || 0));
             modDiffs[a] = updateData[`data.abilities.${a}.mod`] - prevMods[a];
@@ -3567,7 +3590,7 @@ export class ActorPF extends Actor {
             if (abl.damage != null && abl.damage !== 0) {
                 sourceDetails[`data.abilities.${a}.total`].push({
                     name: "Ability Damage",
-                    value: `-${Math.floor(Math.abs(abl.damage) / 2)} (Mod only)`
+                    value: `-${Math.floor(Math.abs(abl.damage) / 2)}`
                 });
             }
             if (abl.drain != null && abl.drain !== 0) {
@@ -3691,7 +3714,8 @@ export class ActorPF extends Actor {
                         let srcInfo = this.constructor._translateSourceInfo(src.type, src.subtype, src.name);
                         sourceDetails[changeTarget].push({
                             name: srcInfo,
-                            value: src.value
+                            value: src.value,
+                            isItemBonus: this.constructor._isItemBonus(src.type, src.subtype, src.name) 
                         });
                     }
                 }
@@ -3752,6 +3776,7 @@ export class ActorPF extends Actor {
         const incr = game.settings.get("D35E", "units") === "metric" ? 1.5 : 5
         let load = updateData["data.attributes.encumbrance.carriedWeight"];
         let maxLoad = updateData["data.attributes.encumbrance.levels.heavy"];
+        let runSpeedMultiplierModifier = updateData["data.attributes.runSpeedMultiplierModifier"]
         let maxSpeed = value;
         let speed = value;
         let maxRun = value * 4;
@@ -3786,14 +3811,14 @@ export class ActorPF extends Actor {
             maxRun = 0;
         } else if ((armorItems.filter(o => getProperty(o.data.data, "equipmentSubtype") === "heavyArmor" && o.data.data.equipped && !o.data.data.melded && !o.broken).length && !flags.heavyArmorFullSpeed) || ((3.0 * load / maxLoad) > 2.0 && !flags.noEncumbrance)) {
             speed = reduceMaxSpeedFromEncumbrance(maxSpeed)
-            maxRun = 3 * speed
+            maxRun = Math.max(1,3+runSpeedMultiplierModifier)* speed
         } else if ((armorItems.filter(o => getProperty(o.data.data, "equipmentSubtype") === "mediumArmor" && o.data.data.equipped && !o.data.data.melded && !o.broken).length && !flags.mediumArmorFullSpeed) || ((3.0 * load / maxLoad) > 1.0 && !flags.noEncumbrance)) {
             speed = reduceMaxSpeedFromEncumbrance(maxSpeed)
-            maxRun = 4 * speed
+            maxRun = Math.max(1,4+runSpeedMultiplierModifier) * speed
         } else {
             // "light" speed
             speed = maxSpeed
-            maxRun = 4 * maxSpeed
+            maxRun = Math.max(1,4+runSpeedMultiplierModifier) * maxSpeed
         }
         if (value) {
             linkData(srcData1, updateData, `data.attributes.speed.${speedKey}.total`, speed);
