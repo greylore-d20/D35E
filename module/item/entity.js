@@ -4112,7 +4112,7 @@ export class ItemPF extends Item {
         if (item.data.data.save) {
             let ablMod = 0
             if (this.data.data.enhancements.spellcastingAbility !== "") ablMod = getProperty(this.actor.data, `data.abilities.${this.data.data.enhancements.spellcastingAbility}.mod`);
-            item.data.data.save.dc += ablMod;
+            item.data.data.save.dc = parseInt(item.data.data.save.dc) + ablMod;
         }
 
         let roll = await item.use({ev: event, skipDialog: event.shiftKey},this.actor,true);
