@@ -524,8 +524,8 @@ Hooks.on("updateCombat", async (combat, combatant, info, data) => {
 });
 
 
-Hooks.on("createMeasuredTemplate", (scene, _template, data, user) => {
-  game.D35E.createdMeasureTemplates.add(_template._id)
+Hooks.on("createMeasuredTemplate", (template, _template, data, user) => {
+  game.D35E.createdMeasureTemplates.add(template.data._id)
 });
 
 // Create race on actor

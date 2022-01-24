@@ -34,7 +34,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
     switch ( templateShape ) {
       case "cone": // 5e cone RAW should be 53.13 degrees
         if (game.settings.get("D35E", "measureStyle") === true) templateData.angle = 90;
-        templateData.angle = 53.13;
+        else templateData.angle = 53.13;
         break;
       case "rect": // 5e rectangular AoEs are always cubes
         templateData.distance = Math.hypot(target.size*multiplier, target.size*multiplier);
@@ -65,7 +65,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
    */
   async drawPreview(event) {
     const initialLayer = canvas.activeLayer;
-    this.draw();
+    await this.draw();
     this.active = true;
     this.layer.activate();
     this.layer.preview.addChild(this);
@@ -109,7 +109,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
         canvas.app.view.onwheel = null;
         // Clear highlight
         this.active = false;
-        const hl = canvas.grid.getHighlightLayer(`Template.${this.id}`);
+        const hl = this.getHighlightLayer();
         hl.clear();
         _clear();
 
@@ -180,6 +180,11 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
       this.hitArea = new PIXI.Polygon([]);
     });
   }
+
+  getHighlightLayer() {
+    return canvas.grid.getHighlightLayer(`Template.${this.id}`) ?? canvas.grid.addHighlightLayer(`Template.${this.id}`);
+  }
+
 
   refresh() {
     if (!this.template) return;
