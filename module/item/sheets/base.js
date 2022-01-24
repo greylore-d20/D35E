@@ -37,7 +37,7 @@ export class ItemSheetPF extends ItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             width: 560,
-            height: 600,
+            height: 650,
             classes: ["D35E", "sheet", "item"],
             resizable: false
         });
