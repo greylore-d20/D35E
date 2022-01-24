@@ -50,7 +50,7 @@ export class CompendiumBrowser extends Application {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       template: "systems/D35E/templates/apps/compendium-browser.html",
-      width: 720,
+      width: 1080,
       height: window.innerHeight - 60,
       top: 30,
       left: 40,
@@ -84,16 +84,22 @@ export class CompendiumBrowser extends Application {
 
   async _fetchMetadata() {
     this.items = [];
-
+    this.compendiumSources = {path: "pack",
+      label: game.i18n.localize("D35E.Compendium"),
+      items: []
+    }
     for (let p of game.packs.values()) {
       if (p.private && !game.user.isGM) continue;
       if ((p.entity || p.documentName) !== this.entityType) continue;
-
       const items = await p.getDocuments();
+      let addedItems = false;
       for (let i of items) {
         if (!this._filterItems(i)) continue;
+        addedItems = true;
         this.items.push(this._mapItem(p, i));
       }
+      if (addedItems) 
+        this.compendiumSources.items.push({ key: `${p.metadata.package}.${p.metadata.name}`, name: p.metadata.label })
     }
     this.items.sort((a, b) => {
       if (a.item.name < b.item.name) return -1;
@@ -110,7 +116,7 @@ export class CompendiumBrowser extends Application {
     else if (this.type === "bestiary") this._fetchBestiaryFilters();
     else if (this.type === "feats") this._fetchFeatFilters();
     else if (this.type === "enhancements") this._fetchEnhancementFilters();
-
+    this.filters.unshift(this.compendiumSources)
     this.activeFilters = this.filters.reduce((cur, f) => {
       cur[f.path] = [];
       return cur;
@@ -130,12 +136,15 @@ export class CompendiumBrowser extends Application {
   _mapItem(pack, item) {
     const result = {
       collection: pack.collection,
+      packname: pack.metadata.label,
+      issystem: pack.metadata.package === "D35E",
       item: {
         _id: item._id,
         name: item.name,
         type: item.type,
         img: item.img,
         data: item.data.data,
+        pack: pack.collection,
         isSpell: item.type === "spell"
       },
     };
