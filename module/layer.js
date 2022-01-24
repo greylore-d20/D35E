@@ -19,7 +19,7 @@ export default class D35ELayer extends CanvasLayer {
     selectObjectsFromTokenLayer({x, y, width, height, releaseOptions={}, controlOptions={}}={}) {
         const oldSet = canvas.tokens.controlled;
         // Identify controllable objects
-        const controllable = canvas.getLayer("TokenLayer").placeables.filter(obj => obj.visible && (obj.control instanceof Function));
+        const controllable = canvas.tokens.placeables.filter(obj => obj.visible && (obj.control instanceof Function));
         const newSet = controllable.filter(obj => {
           let c = obj.center;
           return Number.between(c.x, x, x+width) && Number.between(c.y, y, y+height);

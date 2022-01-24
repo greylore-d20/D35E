@@ -529,6 +529,11 @@ export class ItemSheetPF extends ItemSheet {
                     data.allAbilities.push(e);
             }
 
+            data.spellbook = []
+            if (this.item.data.data.spellbook) {
+                data.spellbook = this.item.data.data.spellbook;
+            } 
+
 
             for (let level = 1; level < this.item.data.data.maxLevel + 1; level++) {
                 let progressionData = {}
@@ -1151,6 +1156,11 @@ export class ItemSheetPF extends ItemSheet {
 
         html.find('div[data-tab="linked-items"]').on("drop", this._onDrop.bind(this,"link"));
         html.find('div[data-tab="linked-items"] .item-delete').click(this._onLinkedItemDelete.bind(this));
+
+        html.find('.spellbook').on("drop", this._onDropSpellListSpell.bind(this));
+        html.find('div[data-tab="spellbook"] .item-delete').click(this._onSpellListSpellDelete.bind(this));
+        html.find('div[data-tab="spellbook"] .item-add').click(this._addSpellListSpellToSpellbook.bind(this));
+        
 
         html.find("button[name='update-item-name']").click(event => this._onEnhUpdateName(event));
 
@@ -1857,6 +1867,72 @@ export class ItemSheetPF extends ItemSheet {
             updateData[`data.rollTableDraw.name`] = rt.data.name;
             this.item.update(updateData)
         }
+    }
+
+    async _onDropSpellListSpell(event) {
+        event.preventDefault();
+        let spellLevel = $(event.delegateTarget).attr('data-spell-level')
+        let data;
+        try {
+            data = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
+            if (data.type !== "Item") return;
+        } catch (err) {
+            return false;
+        }
+
+        let dataType = "";
+
+        if (data.type === "Item") {
+            let itemData = {};
+            if (data.pack) {
+                let updateData = {}
+                dataType = "compendium";
+                const pack = game.packs.find(p => p.collection === data.pack);
+                const packItem = await pack.getDocument(data.id);
+                if (packItem != null) 
+                {
+                    let spell = {id: data.id, pack: data.pack, name: packItem.name, img: packItem.img}
+                    this.item.addSpellToClassSpellbook(spellLevel, spell)
+                }
+            }
+        }
+    }
+
+     /**
+     * Handle deleting an existing Enhancement item
+     * @param {Event} event   The originating click event
+     * @private
+     */
+    async _onSpellListSpellDelete(event) {
+        event.preventDefault();
+
+        const button = event.currentTarget;
+        if (button.disabled) return;
+
+        const li = event.currentTarget.closest(".item");
+        if (keyboard.isDown("Shift")) {
+            this.item.deleteSpellFromClassSpellbook(li.dataset.level, li.dataset.itemId);
+        } else {
+            button.disabled = true;
+
+            const msg = `<p>${game.i18n.localize("D35E.DeleteItemConfirmation")}</p>`;
+            Dialog.confirm({
+                title: game.i18n.localize("D35E.DeleteItem"),
+                content: msg,
+                yes: () => {
+                    this.item.deleteSpellFromClassSpellbook(li.dataset.level, li.dataset.itemId);
+                    button.disabled = false;
+                },
+                no: () => button.disabled = false
+            });
+        }
+    }
+
+    async _addSpellListSpellToSpellbook(event) {
+        event.preventDefault();
+        const li = event.currentTarget.closest(".item");
+        await this.item.parent.addSpellFromSpellListToSpellbook(li.dataset.level, li.dataset.itemId, li.dataset.itemPack);
+
     }
 
     async _onDropSpell(event) {

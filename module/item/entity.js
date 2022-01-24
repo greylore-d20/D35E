@@ -581,6 +581,17 @@ export class ItemPF extends Item {
             }
         }
 
+        if (data["data.hasSpellbook"] != null && data["data.hasSpellbook"] !== getProperty(this.data, "data.hasSpellbook")) {
+            const curValue = getProperty(this.data.data, "spellbook");
+            if (curValue == null || curValue.length === 0) {
+                let spellbook = []
+                for (let a = 0; a < 10; a++) {
+                    spellbook.push({level: a, spells: []})
+                }
+                data["data.spellbook"] = spellbook;
+            }
+        }
+
         if (this.pack && this.pack.startsWith("D35E")) {
             data["data.originVersion"] = this.data.data.originVersion + 1;
         }
@@ -4621,6 +4632,27 @@ export class ItemPF extends Item {
         let range = [rng.value, rng.long ? `/ ${rng.long}` : null, CONFIG.D35E.distanceUnitsShort[rng.units]].filterJoin(" ");
         if (range.length > 0) return [range].join(" ");
         return "";
+    }
+
+    async addSpellToClassSpellbook(level, spell) {
+        const updateData = {};
+        let _spellbook = duplicate(this.data.data?.spellbook|| []);
+        let _spells = _spellbook[level]?.spells || []
+        for (let _spell of _spells) {
+            if (_spell.id === spell.id) return;
+        }
+        _spells.push(spell);
+        updateData[`data.spellbook`] = _spellbook;
+        await this.update(updateData);
+    }
+
+    async deleteSpellFromClassSpellbook(level, spellId) {
+        const updateData = {};
+        let _spellbook = duplicate(this.data.data?.spellbook|| []);
+        let _spells = (_spellbook[level]?.spells || []).filter(_spell => _spell.id !== spell.id)
+        _spellbook[level].spells = _spells;
+        updateData[`data.spellbook`] = _spellbook;
+        await this.update(updateData);
     }
 
 }

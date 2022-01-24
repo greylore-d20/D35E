@@ -1,4 +1,5 @@
 import { ItemPF } from '../item/entity.js'
+import { Roll35e } from '../roll.js'
 import {
 	TreasureTable,
 	GemsTable,
@@ -63,7 +64,7 @@ function getItem(link) {
 }
 
 function rollDice(formula, enable3DDice = false) {
-	let roll = new Roll(formula).roll()
+	let roll = new Roll35e(formula).roll()
 	if (enable3DDice) {
 		game.enable3DDice.showForRoll(roll)
 	}

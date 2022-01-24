@@ -173,6 +173,7 @@ export const migrateItemData = function(item) {
   _migrateContainer(item, updateData);
   _migrateEnhancement(item, updateData);
   _migrateSpellName(item, updateData);
+  _migrateClassSpellbook(item, updateData);
 
   // Return the migrated update data
   return updateData;
@@ -569,6 +570,17 @@ const _migrateWeaponImprovised = function(ent, updateData) {
 const _migrateSpellName = function(ent, updateData) {
   if (ent.type !== "spell") return;
   updateData["name"] = (ent.data.name || ent.name).trim()
+}
+
+const _migrateClassSpellbook = function(ent, updateData) {
+  if (ent.type !== "class") return;
+  const curValue = getProperty(ent.data.data, "spellbook");
+  if (curValue != null || curValue.length > 0) return;
+  let spellbook = []
+  for (let a = 0; a < 10; a++) {
+    spellbook.push({level: a, spells: []})
+  }
+  updateData["data.spellbook"] = spellbook;
 }
 
 const _migrateSpellDescription = function(ent, updateData) {

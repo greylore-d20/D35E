@@ -89,6 +89,9 @@
                     {{#if isPsionSpellcaster}}
                     <a class="item" data-tab="sub-psionics">{{ localize "D35E.ProgressionPsionics" }}</a>
                     {{/if}}
+                    {{#if data.data.hasSpellbook}}
+                    <a class="item" data-tab="spellbook">{{localize "D35E.Spelllist"}}</a>
+                    {{/if}}
                 </nav>
                 <div class="flexrow description-container" style="overflow: hidden; height: 100%">
                     <section class="description-body" style="display: block; height: 100%">
@@ -303,6 +306,12 @@
 
                         </div>
                         {{/if}}
+
+                        {{#if data.data.hasSpellbook}}
+                        <div class="tab configuration-group flexcol" style="padding: 0" data-group="description" data-tab="spellbook">
+                            {{> "systems/D35E/templates/items/parts/item-spellbook-list.html"}}
+                        </div>
+                        {{/if}}
                     </section>
                 </div>
             </div>
@@ -323,6 +332,9 @@
                 <a class="item active" data-tab="details">{{ localize "D35E.Details" }}</a>
                 <a class="item" data-tab="children">{{ localize "D35E.Children" }}</a>
                 <a class="item" data-tab="changes">{{localize "D35E.Changes"}}</a>
+                {{#if data.data.hasSpellbook}}
+                <a class="item" data-tab="spellbook">{{localize "D35E.Spelllist"}}</a>
+                {{/if}}
             </nav>
 
             <div class="flexrow configuration-container" style="overflow: hidden; height: 100%">
@@ -602,6 +614,13 @@
                                 <span class="checkmark"></span>
                             </label>
                         </div>
+                        <div class="form-group">
+                            <label>{{localize "D35E.UseSpellList"}}</label>
+                            <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
+                                <input type="checkbox" class="stylized auto-save" name="data.hasSpellbook" {{#if data.data.hasSpellbook}}checked{{/if}}/>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.KnowsAllSpells"}}</label>
@@ -675,6 +694,11 @@
 
                         {{> "systems/D35E/templates/items/parts/item-notes.html"}}
                     </div>
+                    {{#if data.data.hasSpellbook}}
+                    <div class="tab configuration-group flexcol" style="padding: 0" data-group="configuration" data-tab="spellbook">
+                        {{> "systems/D35E/templates/items/parts/item-spellbook.html"}}
+                    </div>
+                    {{/if}}
                 </section>
             </div>
         </div>

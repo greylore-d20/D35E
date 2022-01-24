@@ -3242,6 +3242,7 @@ export class ActorPF extends Actor {
                 deckHandSizeFormula: cls.data.deckHandSizeFormula,
                 knownCardsSizeFormula: cls.data.knownCardsSizeFormula,
                 deckPrestigeClass: cls.data.deckPrestigeClass,
+                hasSpellbook: cls.data.hasSpellbook,
 
                 savingThrows: {
                     fort: 0,
@@ -3275,6 +3276,14 @@ export class ActorPF extends Actor {
                 data.classes[nameTag] = data.classes[tag];
             if (originalNameTag !== tag)
                 data.classes[originalNameTag] = data.classes[tag];
+
+            data.classes[tag].spelllist = new Map() 
+            for (let a = 0; a < 10; a++) {
+                (cls.data?.spellbook[a]?.spells || []).forEach(spell => {
+                    data.classes[tag].spelllist.set(`${spell.pack}.${spell.id}`,spell)
+                })
+            }
+            
 
         });
         data.classLevels = totalNonRacialLevels;
@@ -4491,6 +4500,26 @@ export class ActorPF extends Actor {
         return usedItem.roll({rollMode: rollModeOverride});
     }
 
+    async addSpellFromSpellListToSpellbook(level, itemId, itemPack) {
+        if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
+        let spellsToAdd = []
+        let itemData = null;
+        const pack = game.packs.find(p => p.collection === itemPack);
+        const packItem = await pack.getDocument(itemId);
+        if (packItem != null) itemData = packItem.data;
+        if (itemData) {
+            if (itemData._id) delete itemData._id;
+            if (itemData.document)
+                itemData.document.data.update({'data.level':parseInt(level), 'data.-=spellbook': null});
+            else {
+                itemData.data.level = parseInt(level);
+                if (itemData.data.spellbook) delete itemData.data.spellbook
+            }
+            spellsToAdd.push(itemData)
+        }
+        await this.createEmbeddedEntity("Item", spellsToAdd, {nameUnique: true})
+    }
+
     async addSpellsToSpellbook(item) {
         if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
@@ -4503,7 +4532,7 @@ export class ActorPF extends Actor {
             if (packItem != null) itemData = packItem.data;
             if (itemData) {
                 if (itemData._id) delete itemData._id;
-                itemData.document.data.update({'level':spell.level});
+                itemData.document.data.update({'data.level':spell.level});
                 spellsToAdd.push(itemData)
             }
         }
@@ -6798,20 +6827,36 @@ export class ActorPF extends Actor {
                 } else {
                     let spellbook = this.data.data.attributes.spells.spellbooks[obj.data.spellbook]
                     let foundLevel = false;
-                    if (obj.data.spellbook === null) {
+                    if (!obj.data.spellbook) {
                         // We try to set spellbook to correct one
                         for (let _spellbookKey of Object.keys(this.data.data.attributes.spells.spellbooks)) {
                             let _spellbook = this.data.data.attributes.spells.spellbooks[_spellbookKey]
 
+                            let _spellbookClass = this.data.data.classes[_spellbook.class] || {};
                             let spellbookClass = this.data.data.classes[_spellbook.class]?.name || "Missing";
-                            if (obj.data.learnedAt !== undefined) {
+                            let foundByClass = false;
+                            if (_spellbookClass.hasSpellbook) {
+                                let spellId = obj.document ? `${obj.document.pack}.${obj.document._id}` : obj.name
+                                if (_spellbookClass.spelllist.has(spellId)) {
+                                    spellbook = _spellbook
+                                    foundByClass = true;
+                                    foundLevel = true;
+                                    if (obj.document)
+                                        obj.document.data.update({'data.spellbook':_spellbookKey, 'data.learnedAt': _spellbookClass.spelllist.get(spellId).level})
+                                    else {
+                                        obj.data.spellbook = _spellbookKey;
+                                        obj.data.level = _spellbookClass.spelllist.get(spellId).level;
+                                    }
+                                }
+                            }
+                            if (!foundByClass && obj.data.learnedAt !== undefined) {
                                 for (const learnedAtObj of obj.data.learnedAt.class) {
                                     if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
                                         spellbook = _spellbook
                                         if (obj.document)
-                                            obj.document.data.update({'data.spellbook':spellbookKey})
+                                            obj.document.data.update({'data.spellbook':_spellbookKey})
                                         else
-                                            obj.data.spellbook = spellbookKey;
+                                            obj.data.spellbook = _spellbookKey;
                                     }
                                 }
                             }
@@ -6828,7 +6873,7 @@ export class ActorPF extends Actor {
                     }
                     let spellbookClass = this.data.data.classes[spellbook.class]?.name || "Missing";
                     console.log('D35E | Spellpoints', game.settings.get("D35E", "spellpointCostCustomFormula"), game.settings.get("D35E", "spellpointCostCustomFormula") && game.settings.get("D35E", "spellpointCostCustomFormula") !== "")
-                    if (obj.data.learnedAt !== undefined) {
+                    if (obj.data.learnedAt !== undefined && !foundLevel) {
                         obj.data.learnedAt.class.forEach(learnedAtObj => {
                             if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
                                 if (obj.document) {
