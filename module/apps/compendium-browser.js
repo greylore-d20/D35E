@@ -99,7 +99,7 @@ export class CompendiumBrowser extends Application {
         this.items.push(this._mapItem(p, i));
       }
       if (addedItems) 
-        this.compendiumSources.items.push({ key: `${p.metadata.package}.${p.metadata.name}`, name: p.metadata.label })
+        this.compendiumSources.items.push({ key: `${p.metadata.package}.${p.metadata.name}`, name: `${p.metadata.label} (${p.metadata.package})` })
     }
     this.items.sort((a, b) => {
       if (a.item.name < b.item.name) return -1;
@@ -136,7 +136,7 @@ export class CompendiumBrowser extends Application {
   _mapItem(pack, item) {
     const result = {
       collection: pack.collection,
-      packname: pack.metadata.label,
+      packname: `${pack.metadata.label} (${pack.metadata.package})`,
       issystem: pack.metadata.package === "D35E",
       item: {
         _id: item._id,
