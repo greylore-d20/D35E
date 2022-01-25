@@ -24,7 +24,7 @@ import { PatchCore } from "./module/patch-core.js";
 import { DicePF } from "./module/dice.js";
 import { CombatPF } from "./module/combat.js";
 import { createCustomChatMessage } from "./module/chat.js";
-import { SightLayerPF } from "./module/low-light-vision.js";
+import { AmbientLightPF, SightLayerPF } from "./module/low-light-vision.js";
 import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
 
 import {
@@ -107,6 +107,7 @@ Hooks.once("init", async function() {
   CONFIG.ChatMessage.documentClass = ChatMessagePF;
   CONFIG.Combat.documentClass = CombatPF;
   CONFIG.Token.objectClass = TokenPF;
+  CONFIG.AmbientLight.objectClass = AmbientLightPF;
 
 
 
@@ -364,6 +365,7 @@ Hooks.on("renderSceneNavigation", function() {
   }
 });
 
+
 Hooks.on("deleteActor", function() {
   TopPortraitBar.clear()
   for (let key of game.actors.keys()) {
@@ -483,6 +485,16 @@ Hooks.on("createToken", async (token, options, userId) => {
 
   debouncedCollate(canvas.scene.id, true, true, "updateToken")
 
+});
+
+
+Hooks.on("canvasReady", async (canvas, options, userId) => {
+  TopPortraitBar.clear()
+  for (let key of game.actors.keys()) {
+    TopPortraitBar.render(game.actors.get(key))
+  }
+  if (options?.stopAuraUpdate) return;
+  debouncedCollate(canvas.scene.id, true, true, "canvasReady")
 });
 
 Hooks.on("updateToken", async (token, options, userId) => {

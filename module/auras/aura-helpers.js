@@ -13,7 +13,7 @@ function getAuraShape(source, radius) {
 
 function getActor(source) {
     if (source.document.data.actorLink) {
-        return game.actors.get(source.document.data.actorId)
+        return game.actors.get(source.document.data.actorId) || {auras: [] }
     } else {
         return source.actor || {auras: [] }
     }

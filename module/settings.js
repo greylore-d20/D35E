@@ -494,6 +494,15 @@ export const registerSystemSettings = function() {
     type: Boolean,
   });
 
+  game.settings.register("D35E", "playersShowContextNotes", {
+    name: "SETTINGS.D35EAllowPlayersApplyActionsN",
+    hint: "SETTINGS.D35EAllowPlayersApplyActionsH",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+  });
+
 
 
   game.settings.register("D35E", "repeatAnimations", {

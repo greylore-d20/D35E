@@ -36,7 +36,7 @@
     if (game.user.isGM || game.settings.get("D35E", "lowLightVisionMode")) {
       for (const t of lowLightTokens.filter((o) => o._controlled)) {
         const multiplier = t.actorVision?.lowLightMultiplier || 2;
-        const multiplierBright = t.actorVision?.lowLightMultiplierBright || 2;
+        const multiplierBright = t.actorVision?.lowLightMultiplier || 2;
         result.dim = Math.max(result.dim, multiplier);
         result.bright = Math.max(result.bright, multiplierBright);
       }
@@ -47,7 +47,7 @@
       if ((!hasControlledTokens && hasLowLightTokens) || hasControlledLowLightTokens) {
         for (const t of lowLightTokens) {
           const multiplier = t.actorVision?.lowLightMultiplier || 2;
-          const multiplierBright = t.actorVision?.lowLightMultiplierBright || 2;
+          const multiplierBright = t.actorVision?.lowLightMultiplier || 2;
           result.dim = Math.max(result.dim, multiplier);
           result.bright = Math.max(result.bright, multiplierBright);
         }
