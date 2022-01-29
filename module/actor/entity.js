@@ -5617,7 +5617,7 @@ export class ActorPF extends Actor {
             });
 
             this._addCombatChangesToRollData(allCombatChanges, rollData);
-            rollData.featGrappleBonus = rollData.featGrappleBonus || 0;
+            rollData.featGrappleBonus = rollData.featGrapple || 0;
             rollData.grappleModTotal = grappleModTotal;
             rollData.grappleManualBonus = grappleManualBonus
 

@@ -1354,6 +1354,13 @@ export class ItemPF extends Item {
         return this.roll({rollMode: rollModeOverride});
     }
 
+    getActorItemRollData() {
+        const itemData = this.getRollData();
+        const rollData = this.actor ? duplicate(this.actor.getRollData(null, true)) : {};
+        rollData.item = duplicate(itemData);
+        return rollData;
+    }
+
     async useAttack({ev = null, skipDialog = false, attackType = "primary", isFullAttack = false, rollModeOverride = null} = {}, tempActor= null, skipChargeCheck = false) {
         if (ev && ev.originalEvent) ev = ev.originalEvent;
         let actor = this.actor;

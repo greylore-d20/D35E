@@ -650,6 +650,36 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
 
 })
 
+Hooks.on("aipSetup", (packageConfig) => {
+  const api = game.modules.get("autocomplete-inline-properties").API;
+  const DATA_MODE = api.CONST.DATA_MODE;
+
+  // Define the config for our package
+  const config = {
+      packageName: "D35E",
+      sheetClasses: [
+          {
+              name: "ItemSheetPF", // this _must_ be the class name of the `Application` you want it to apply to
+              fieldConfigs: [
+                  {
+                      selector: `.tab[data-tab="details"] input[type="text"]`, // this targets all text input fields on the "details" tab. Any css selector should work here.
+                      showButton: true,
+                      allowHotkey: true,
+                      dataMode: DATA_MODE.CUSTOM,
+                      inlinePrefix: '@',
+                      customDataGetter: (sheet) => {return sheet.item.getActorItemRollData()}
+                  },
+                  // Add more field configs if necessary
+              ]
+          },
+          // Add more sheet classes if necessary
+      ]
+  };
+
+  // Add our config
+  packageConfig.push(config);
+});
+
 /**
  * Create a Macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
