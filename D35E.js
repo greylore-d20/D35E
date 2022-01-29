@@ -216,7 +216,7 @@ Hooks.once("ready", async function() {
 
   await cache.buildCache();
   
-  const NEEDS_MIGRATION_VERSION = "0.99.2";
+  const NEEDS_MIGRATION_VERSION = "0.99.3";
   let PREVIOUS_MIGRATION_VERSION = game.settings.get("D35E", "systemMigrationVersion");
   if (typeof PREVIOUS_MIGRATION_VERSION === "number") {
     PREVIOUS_MIGRATION_VERSION = PREVIOUS_MIGRATION_VERSION.toString() + ".0";

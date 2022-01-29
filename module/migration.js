@@ -575,7 +575,7 @@ const _migrateSpellName = function(ent, updateData) {
 const _migrateClassSpellbook = function(ent, updateData) {
   if (ent.type !== "class") return;
   const curValue = getProperty(ent.data.data, "spellbook");
-  if (curValue != null || curValue.length > 0) return;
+  if (curValue != null || (curValue?.length || 0) > 0) return;
   let spellbook = []
   for (let a = 0; a < 10; a++) {
     spellbook.push({level: a, spells: []})
