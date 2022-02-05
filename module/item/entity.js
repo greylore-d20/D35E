@@ -2178,7 +2178,7 @@ export class ItemPF extends Item {
             ammunition: this.data.data.thrown ? actor.items.filter(o => o._id === this.data.data.originalWeaponId) : actor.items.filter(o => o.type === "loot" && o.data.data.subType === "ammo" && o.data.data.quantity > 0),
             extraAttacksCount: extraAttacksCount,
             hasTemplate: this.hasTemplate,
-            isAlreadyProne: this.actor.data.data.attributes.conditions.prone,
+            isAlreadyProne: this?.actor?.data?.data?.attributes?.conditions?.prone || false,
             canPowerAttack: actor.items.filter(o => o.type === "feat" && o.originalName === "Power Attack").length > 0,
             maxPowerAttackValue: getProperty(actor.data, "data.attributes.bab.total"),
             canManyshot: actor.items.filter(o => o.type === "feat" && o.originalName === "Manyshot").length > 0,
