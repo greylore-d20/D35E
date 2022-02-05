@@ -1973,12 +1973,18 @@ export class ItemPF extends Item {
             else if (this.hasEffect) {
                 let attack = new ChatAttack(this,"",actor, rollData);
                 attack.rollData = rollData;
+                if (this.isSpellLike()) {
+                    this._adjustSpellCL(itemData, rollData)
+                }
                 await attack.addEffect({primaryAttack: primaryAttack, actor:actor, useAmount: rollData.useAmount || 1, cl: rollData.cl || null, spellPenetration: rollData.spellPenetration || null});
                 await this._addCombatSpecialActionsToAttack(allCombatChanges, attack, actor, rollData, optionalFeatRanges, 0);
                 // Add to list
                 attacks.push(attack);
             } else if (getProperty(this.data, "data.actionType") === "special") {
                 let attack = new ChatAttack(this,"",actor, rollData);
+                if (this.isSpellLike()) {
+                    this._adjustSpellCL(itemData, rollData)
+                }
                 attack.rollData = rollData;
                 await attack.addSpecial(actor,rollData.useAmount || 1,rollData.cl, rollData.spellPenetration);
                 await this._addCombatSpecialActionsToAttack(allCombatChanges, attack, actor, rollData, optionalFeatRanges, 0);

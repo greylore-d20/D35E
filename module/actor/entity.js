@@ -7134,6 +7134,7 @@ export class ActorPF extends Actor {
                 || _action.indexOf("@") !== -1;
         }
 
+        console.log('ACTION',action)
         switch (action.action) {
             case "TurnUndead":
                 await this.rollTurnUndead(cleanParam(action.parameters[0]))
