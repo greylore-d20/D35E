@@ -940,6 +940,8 @@ export class ActorSheetPF extends ActorSheet {
   _rollRandomHitDie(event) {
     let itemUpdates = []
     this.actor.data.items.filter(obj => { return obj.type === "class" }).forEach(item => {
+      if (item.data.data.classType === 'template') return;
+      if (item.data.data.classType === 'minion') return;
       let hd = item.data.data.hd;
       let hp = 0;
       let levels = item.data.data.levels;

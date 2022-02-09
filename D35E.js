@@ -472,6 +472,8 @@ Hooks.on("createToken", async (token, options, userId) => {
     }
     let itemUpdates = []
     token.actor.data.items.filter(obj => { return obj.type === "class" }).forEach(item => {
+      if (item.data.data.classType === 'template') return;
+      if (item.data.data.classType === 'minion') return;
       let hd = item.data.data.hd
       let hp = 0;
       let levels = item.data.data.levels;
