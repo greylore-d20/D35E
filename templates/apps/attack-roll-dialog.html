@@ -321,7 +321,9 @@
                 {{#each ammunition as |item iid|}}
                 <option value="{{item._id}}" data-attack="{{item.data.data.bonusAmmoAttack}}"
                         data-note="{{item.data.data.bonusAmmoAttackNote}}" data-ammo-count="{{item.data.data.quantity}}"
+                        data-dmg-uid="{{item.data.data.bonusAmmoDamageUid}}"
                         data-dmg-type="{{item.data.data.bonusAmmoDamageType}}"
+                        data-id="{{item.data.data.bonusAmmoDamageType}}"
                         data-name="{{item.name}}"
                         data-dmg-formula="{{item.data.data.bonusAmmoDamage}}">{{item.name}} ({{item.data.data.quantity}})
                 </option>
@@ -334,6 +336,8 @@
 
         <input type="hidden" name="ammo-dmg-formula"/>
         <input type="hidden" name="ammo-dmg-type"/>
+        <input type="hidden" name="ammo-id"/>
+        <input type="hidden" name="ammo-dmg-uid"/>
         <input type="hidden" name="ammo-dmg-attack"/>
         <input type="hidden" name="ammo-attack"/>
         <input type="hidden" name="ammo-note"/>
@@ -354,6 +358,8 @@
                 var option = $('option:selected', select).attr('data-ammo-count');
                 var damage = $('option:selected', select).attr('data-dmg-formula');
                 var type = $('option:selected', select).attr('data-dmg-type');
+                var uid = $('option:selected', select).attr('data-dmg-uid');
+                var id = $('option:selected', select).attr('data-id');
                 var attack = $('option:selected', select).attr('data-attack');
                 var attackNote = $('option:selected', select).attr('data-note');
                 var attackName = $('option:selected', select).attr('data-name');
@@ -392,7 +398,9 @@
                 console.log('Attacks', baseExtraAttacks, isRapidShot, isFlurryOfBlows)
                 $('option:selected', select).closest("section").find("input[name='ammo-dmg-formula']").val(damage)
                 $('option:selected', select).closest("section").find("input[name='ammo-dmg-type']").val(type)
+                $('option:selected', select).closest("section").find("input[name='ammo-dmg-uid']").val(uid)
                 $('option:selected', select).closest("section").find("input[name='ammo-attack']").val(attack)
+                $('option:selected', select).closest("section").find("input[name='ammo-id']").val(id)
                 $('option:selected', select).closest("section").find("input[name='ammo-note']").val(attackNote)
                 $('option:selected', select).closest("section").find("input[name='ammo-name']").val(attackName)
                 $('option:selected', select).closest("section").find("button[data-button='multi']").prop("disabled", baseExtraAttacks > arrowsCount);

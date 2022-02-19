@@ -1459,11 +1459,21 @@ export class ItemPF extends Item {
                     useAmmoId = form.find('[name="ammunition-id"]').val()
                     useAmmoDamage = form.find('[name="ammo-dmg-formula"]').val()
                     useAmmoDamageType = form.find('[name="ammo-dmg-type"]').val()
+                    let useAmmoDamageUid = form.find('[name="ammo-dmg-uid"]').val()
                     useAmmoAttack = form.find('[name="ammo-attack"]').val()
                     useAmmoNote = form.find('[name="ammo-note"]').val()
                     useAmmoName = form.find('[name="ammo-name"]').val()
+                    var ammo = actor.items.get(useAmmoId)
+                    if (ammo) {
+                        useAmmoDamageType = ammo.data.data.bonusAmmoDamageType || ""
+                        useAmmoDamageUid = ammo.data.data.bonusAmmoDamageUid || "";
+                        useAmmoAttack = ammo.data.data.bonusAmmoAttack || 0;
+                        useAmmoNote = ammo.data.data.bonusAmmoNote || "";
+                        useAmmoName = ammo.name;
+                        useAmmoDamage = ammo.data.data.bonusAmmoDamage || 0;
+                    }
                     if (useAmmoDamage !== '') {
-                        damageExtraParts.push([useAmmoDamage,useAmmoDamageType]);
+                        damageExtraParts.push([useAmmoDamage,useAmmoDamageType,useAmmoDamageUid]);
                     }
                     if (useAmmoAttack !== '') {
                         attackExtraParts.push(useAmmoAttack);
