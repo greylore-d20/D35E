@@ -103,9 +103,15 @@ export class ItemSheetPF extends ItemSheet {
         data.showIdentifyDescription = data.isGM && data.isPhysical;
         data.showUnidentifiedData = this.item.showUnidentifiedData;
         data.materials = Array.from(CACHE.Materials.values());
-        data.damageTypes = Array.from(CACHE.DamageTypes.values());
         data.baseDamageTypes = DamageTypes.getBaseDRDamageTypes()
         data.energyDamageTypes = DamageTypes.getERDamageTypes();
+        var damageTypesUnsorded = Array.from(CACHE.DamageTypes.values());
+        data.damageTypes = damageTypesUnsorded.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        data.damageTypes.forEach(d => {
+            if (d.data.data.damageType === 'energy') d.damageTypeString = game.i18n.localize("D35E.Energy")
+            else if (d.data.data.isPiercing || d.data.data.isBludgeoning || d.data.data.isSlashing) d.damageTypeString = game.i18n.localize("D35E.Physical")
+            else d.damageTypeString = game.i18n.localize("D35E.Other")
+        })
 
         // Unidentified data
         if (this.item.showUnidentifiedData) {

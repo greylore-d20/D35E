@@ -107,7 +107,7 @@
           {{#select data.data.bonusAmmoDamageUid}}
             <option value="">{{localize "D35E.Custom"}}</option>
             {{#each damageTypes as |damage type|}}
-              <option value="{{damage.data.data.uniqueId}}">{{damage.data.name}}</option>
+              <option value="{{damage.data.data.uniqueId}}">{{damage.data.name}} ({{damage.damageTypeString}})</option>
             {{/each}}
           {{/select}}
         </select>
