@@ -495,8 +495,8 @@ export const registerSystemSettings = function() {
   });
 
   game.settings.register("D35E", "playersShowContextNotes", {
-    name: "SETTINGS.D35EAllowPlayersApplyActionsN",
-    hint: "SETTINGS.D35EAllowPlayersApplyActionsH",
+    name: "SETTINGS.D35EShowPlayerContextNotesN",
+    hint: "SETTINGS.D35EShowPlayerContextNotesH",
     scope: "world",
     config: true,
     default: false,
