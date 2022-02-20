@@ -29,7 +29,7 @@ export class DamageTypes {
             {uid: 'adamantine', name: game.i18n.localize("D35E.DRAdamantine"), value: 0, or: false, lethal: false, immunity: false},
             {uid: 'coldiron', name: game.i18n.localize("D35E.DRColdIron"), value: 0, or: false, lethal: false, immunity: false},
             {uid: 'incorporeal', name: game.i18n.localize("D35E.Incorporeal"), value: 0, or: false, lethal: false, immunity: false}]
-        return damageTypes;
+        return damageTypes.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     }
 
     static getDRDamageTypes() {
@@ -186,7 +186,7 @@ export class DamageTypes {
                     energyTypes.push(energyType)
             }
         }
-        return energyTypes;
+        return energyTypes.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     }
 
     static getERForActor(actor, base = false) {
