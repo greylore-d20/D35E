@@ -2,9 +2,10 @@ import {ItemPF} from "../item/entity.js";
 import {Roll35e} from "../roll.js"
 
 export class ChatAttack {
-    constructor(item, label = "", actor = null, rollData = null) {
+    constructor(item, label = "", actor = null, rollData = null, ammoMaterial = null) {
         this.setItem(item, actor, rollData);
         this.label = label;
+        this.ammoMaterial = ammoMaterial;
 
         this.attack = {
             flavor: "",
@@ -339,7 +340,7 @@ export class ChatAttack {
             value: Math.max(totalDamage, 1),
             data: JSON.stringify(rolls),
             alignment: JSON.stringify(this.item.data.data.alignment),
-            material: JSON.stringify(this.item.data.data.material),
+            material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
             enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : this.item.data.data.enh,
             action: "applyDamage",
             natural20: this.natural20,
@@ -356,7 +357,7 @@ export class ChatAttack {
             value: Math.max(totalDamage, 1),
             data: JSON.stringify(rolls),
             alignment: JSON.stringify(this.item.data.data.alignment),
-            material: JSON.stringify(this.item.data.data.material),
+            material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
             enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : this.item.data.data.enh,
             action: "applyDamage",
             natural20: this.natural20,

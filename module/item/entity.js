@@ -1417,7 +1417,8 @@ export class ItemPF extends Item {
                 enabledConditionals = [],
                 props = [],
                 rollModifiers = [],
-                extraText = "";
+                extraText = "",
+                ammoMaterial = null;
 
             let selectedTargets = [];
             let selectedTargetIds = '';
@@ -1471,6 +1472,7 @@ export class ItemPF extends Item {
                         useAmmoNote = ammo.data.data.bonusAmmoNote || "";
                         useAmmoName = ammo.name;
                         useAmmoDamage = ammo.data.data.bonusAmmoDamage || 0;
+                        ammoMaterial = JSON.stringify(ammo.data.data.material)
                     }
                     if (useAmmoDamage !== '') {
                         damageExtraParts.push([useAmmoDamage,useAmmoDamageType,useAmmoDamageUid]);
@@ -1900,7 +1902,7 @@ export class ItemPF extends Item {
                 }
                 for (let atk of allAttacks) {
                     // Create attack object
-                    let attack = new ChatAttack(this, atk.label, actor, rollData);
+                    let attack = new ChatAttack(this, atk.label, actor, rollData, ammoMaterial);
                     let localAttackExtraParts = duplicate(attackExtraParts);
                     for (let aepConditional of attackEnhancementMap.get(`attack.${attackId}`) || []) {
                         localAttackExtraParts.push(aepConditional)
@@ -1964,7 +1966,7 @@ export class ItemPF extends Item {
                     attackCount = new Roll35e(itemData.attackCountFormula,rollData).roll().total || 1;
                 }
                 for (let i = 0; i < attackCount; i++) {
-                    let attack = new ChatAttack(this,"",actor, rollData);
+                    let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial);
                     attack.rollData = rollData;
                     await attack.addDamage({
                         extraParts: damageExtraParts,
@@ -1981,7 +1983,7 @@ export class ItemPF extends Item {
             }
             // Add effect notes only
             else if (this.hasEffect) {
-                let attack = new ChatAttack(this,"",actor, rollData);
+                let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial);
                 attack.rollData = rollData;
                 if (this.isSpellLike()) {
                     this._adjustSpellCL(itemData, rollData)
@@ -1991,7 +1993,7 @@ export class ItemPF extends Item {
                 // Add to list
                 attacks.push(attack);
             } else if (getProperty(this.data, "data.actionType") === "special") {
-                let attack = new ChatAttack(this,"",actor, rollData);
+                let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial);
                 if (this.isSpellLike()) {
                     this._adjustSpellCL(itemData, rollData)
                 }
