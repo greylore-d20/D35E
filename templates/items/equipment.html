@@ -48,6 +48,22 @@
   </header>
   </div>
 
+
+  {{#if data.data.material.data.uniqueId}}
+  <section class="original-weapon-box flexrow material-box" style="flex: 0;">
+
+    <div class="sheet-header-small">
+      <img class="" src="{{data.data.material.img}}" title="{{data.data.material.name}}"/>
+    </div>
+    <div class="flexrow">
+      <h3 class="origin-weapon-name">
+        <strong>{{localize "D35E.Material"}}</strong> {{data.data.material.name}}
+      </h3>
+      <a class="btn blue-button view-details-material" style="height: 40px; flex: 0 100px; width: 100px; text-align: center; line-height: 40px; font-family: 'Nodesto'; font-size: 18px;">View details</a>
+    </div>
+  </section>
+  {{/if}}
+
   {{!-- Item Sheet Navigation --}}
   <section class="sheet-content flexcol">
   <nav class="sheet-navigation tabs" data-group="primary">
@@ -93,7 +109,22 @@
           {{/select}}
         </select>
       </div>
+
+
+      {{!-- Material Type --}}
+      <div class="form-group">
+        <label>{{localize "D35E.Material"}}</label>
+        <select name="data.selectedMaterial">
+          {{#select data.data.material.data.uniqueId}}
+          <option value="none">{{localize "D35E.NoMaterial"}}</option>
+          {{#each materials as |material type|}}
+          <option value="{{material.data.data.uniqueId}}">{{material.data.name}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
+      </div>
       {{/unless}}
+    
 
       {{!-- Equipment Slot --}}
       {{#unless showUnidentifiedData}}{{#if hasMultipleSlots}}
