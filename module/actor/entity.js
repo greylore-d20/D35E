@@ -6374,6 +6374,7 @@ export class ActorPF extends Actor {
                         concealMiss = true;
                     }
                 }
+                let achit = roll >= finalAc.ac || natural20;
                 hit = ((roll >= finalAc.ac || roll === -1337 || natural20) && !concealMiss) || finalAc.noCheck // This is for spells and natural 20
                 crit = (critroll >= finalAc.ac || (critroll && finalAc.noCheck) || natural20Crit)
                     && !finalAc.noCritical
@@ -6446,6 +6447,7 @@ export class ActorPF extends Actor {
                     roll: roll,
                     ac: finalAc,
                     hit: hit,
+                    achit: achit,
                     crit: crit,
                     concealMiss: concealMiss,
                     concealRoll: concealRoll,
