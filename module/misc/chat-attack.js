@@ -2,10 +2,11 @@ import {ItemPF} from "../item/entity.js";
 import {Roll35e} from "../roll.js"
 
 export class ChatAttack {
-    constructor(item, label = "", actor = null, rollData = null, ammoMaterial = null) {
+    constructor(item, label = "", actor = null, rollData = null, ammoMaterial = null, ammoEnh = 0) {
         this.setItem(item, actor, rollData);
         this.label = label;
         this.ammoMaterial = ammoMaterial;
+        this.ammoEnh = ammoEnh;
 
         this.attack = {
             flavor: "",
@@ -97,7 +98,8 @@ export class ChatAttack {
             data: this.rollData,
             bonus: bonus || 0,
             extraParts: extraParts,
-            primaryAttack: primaryAttack
+            primaryAttack: primaryAttack,
+            replacedEnh: Math.max(this.ammoEnh, this.item.data.data.enh)
         });
         this.rolls.push(roll)
         let d20 = roll.terms[0];
@@ -196,7 +198,8 @@ export class ChatAttack {
             extraParts: extraParts,
             primaryAttack: primaryAttack,
             critical: critical,
-            modifiers: modifiers
+            modifiers: modifiers,
+            replacedEnh: Math.max(this.ammoEnh, this.item.data.data.enh)
         });
         rolls.forEach(r => {
             this.rolls.push(r.roll || r)
@@ -341,7 +344,7 @@ export class ChatAttack {
             data: JSON.stringify(rolls),
             alignment: JSON.stringify(this.item.data.data.alignment),
             material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
-            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : this.item.data.data.enh,
+            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item.data.data.enh),
             action: "applyDamage",
             natural20: this.natural20,
             fumble: this.fumble,
@@ -358,7 +361,7 @@ export class ChatAttack {
             data: JSON.stringify(rolls),
             alignment: JSON.stringify(this.item.data.data.alignment),
             material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
-            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : this.item.data.data.enh,
+            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item.data.data.enh),
             action: "applyDamage",
             natural20: this.natural20,
             fumble: this.fumble,

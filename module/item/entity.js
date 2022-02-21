@@ -1399,6 +1399,7 @@ export class ItemPF extends Item {
                 useAmmoDamageType = "",
                 useAmmoNote = "",
                 useAmmoName = "",
+                useAmmoEnhancement = "",
                 rapidShot = false,
                 flurryOfBlows = false,
                 manyshot = false,
@@ -1418,7 +1419,8 @@ export class ItemPF extends Item {
                 props = [],
                 rollModifiers = [],
                 extraText = "",
-                ammoMaterial = null;
+                ammoMaterial = null,
+                ammoEnh = 0;
 
             let selectedTargets = [];
             let selectedTargetIds = '';
@@ -1462,6 +1464,7 @@ export class ItemPF extends Item {
                     useAmmoDamageType = form.find('[name="ammo-dmg-type"]').val()
                     let useAmmoDamageUid = form.find('[name="ammo-dmg-uid"]').val()
                     useAmmoAttack = form.find('[name="ammo-attack"]').val()
+                    useAmmoEnhancement = form.find('[name="ammo-enh"]').val()
                     useAmmoNote = form.find('[name="ammo-note"]').val()
                     useAmmoName = form.find('[name="ammo-name"]').val()
                     var ammo = actor.items.get(useAmmoId)
@@ -1479,6 +1482,9 @@ export class ItemPF extends Item {
                     }
                     if (useAmmoAttack !== '') {
                         attackExtraParts.push(useAmmoAttack);
+                    }
+                    if (useAmmoEnhancement !== undefined && useAmmoEnhancement !== '') {
+                        ammoEnh = new Roll35e(useAmmoEnhancement,{}).roll().total;
                     }
                     rollModifiers.push(`${useAmmoName}`)
                     // //console.log('D35E | Selected ammo', useAmmoDamage, useAmmoAttack)
@@ -1902,7 +1908,7 @@ export class ItemPF extends Item {
                 }
                 for (let atk of allAttacks) {
                     // Create attack object
-                    let attack = new ChatAttack(this, atk.label, actor, rollData, ammoMaterial);
+                    let attack = new ChatAttack(this, atk.label, actor, rollData, ammoMaterial, ammoEnh);
                     let localAttackExtraParts = duplicate(attackExtraParts);
                     for (let aepConditional of attackEnhancementMap.get(`attack.${attackId}`) || []) {
                         localAttackExtraParts.push(aepConditional)
@@ -1966,7 +1972,7 @@ export class ItemPF extends Item {
                     attackCount = new Roll35e(itemData.attackCountFormula,rollData).roll().total || 1;
                 }
                 for (let i = 0; i < attackCount; i++) {
-                    let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial);
+                    let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial, ammoEnh);
                     attack.rollData = rollData;
                     await attack.addDamage({
                         extraParts: damageExtraParts,
@@ -1983,7 +1989,7 @@ export class ItemPF extends Item {
             }
             // Add effect notes only
             else if (this.hasEffect) {
-                let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial);
+                let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial, ammoEnh);
                 attack.rollData = rollData;
                 if (this.isSpellLike()) {
                     this._adjustSpellCL(itemData, rollData)
@@ -1993,7 +1999,7 @@ export class ItemPF extends Item {
                 // Add to list
                 attacks.push(attack);
             } else if (getProperty(this.data, "data.actionType") === "special") {
-                let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial);
+                let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial, ammoEnh);
                 if (this.isSpellLike()) {
                     this._adjustSpellCL(itemData, rollData)
                 }
@@ -2515,6 +2521,7 @@ export class ItemPF extends Item {
         if (rollData.attributes.bab.total !== 0 && rollData.attributes.bab.total != null) {
             parts.push("@attributes.bab.total");
         }
+        rollData.item.enh = options?.replacedEnh || 0;
         // Add item's enhancement bonus
         if (rollData.item.enh !== 0 && rollData.item.enh != null) {
             parts.push("@item.enh");
@@ -2617,7 +2624,7 @@ export class ItemPF extends Item {
      * Place a damage roll using an item (weapon, feat, spell, or equipment)
      * Rely upon the DicePF.damageRoll logic for the core implementation
      */
-    rollDamage({data = null, critical = false, extraParts = [], primaryAttack = true, modifiers = {}} = {}) {
+    rollDamage({data = null, critical = false, extraParts = [], primaryAttack = true, modifiers = {},replacedEnh = 0} = {}) {
         const itemData = this.data.data;
         let rollData = null;
         let baseModifiers = [];
@@ -2625,7 +2632,7 @@ export class ItemPF extends Item {
             rollData = this.actor.getRollData();
             rollData.item = duplicate(itemData);
         } else rollData = data;
-
+        rollData.item.enh = replacedEnh;
         if (!this.hasDamage) {
             throw new Error("You may not make a Damage Roll with this Item.");
         }

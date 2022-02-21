@@ -324,6 +324,7 @@
                         data-dmg-uid="{{item.data.data.bonusAmmoDamageUid}}"
                         data-dmg-type="{{item.data.data.bonusAmmoDamageType}}"
                         data-id="{{item.data.data.bonusAmmoDamageType}}"
+                        data-enh="{{item.data.data.bonusAmmoEnhancement}}"
                         data-name="{{item.name}}"
                         data-dmg-formula="{{item.data.data.bonusAmmoDamage}}">{{item.name}} ({{item.data.data.quantity}})
                 </option>
@@ -342,6 +343,7 @@
         <input type="hidden" name="ammo-attack"/>
         <input type="hidden" name="ammo-note"/>
         <input type="hidden" name="ammo-name"/>
+        <input type="hidden" name="ammo-enh"/>
         <script>
             function enableDisableManyshotFeat() {
                 if ($("input[data-feat='manyshot']").length)
@@ -363,6 +365,7 @@
                 var attack = $('option:selected', select).attr('data-attack');
                 var attackNote = $('option:selected', select).attr('data-note');
                 var attackName = $('option:selected', select).attr('data-name');
+                var enh = $('option:selected', select).attr('data-enh');
                 var arrowsCount = parseInt(option) || 0
                 var isManyshot = false;
                 var isGreaterManyshot = false;
@@ -403,6 +406,7 @@
                 $('option:selected', select).closest("section").find("input[name='ammo-id']").val(id)
                 $('option:selected', select).closest("section").find("input[name='ammo-note']").val(attackNote)
                 $('option:selected', select).closest("section").find("input[name='ammo-name']").val(attackName)
+                $('option:selected', select).closest("section").find("input[name='ammo-enh']").val(enh)
                 $('option:selected', select).closest("section").find("button[data-button='multi']").prop("disabled", baseExtraAttacks > arrowsCount);
                 $('option:selected', select).closest("section").find("button[data-button='normal']").prop("disabled", true);
                 console.log('D35E | Attack | Arrows Count ' + arrowsCount)

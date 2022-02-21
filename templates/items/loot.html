@@ -113,6 +113,10 @@
 
       {{#if isAmmo}}
       <div class="form-group ammo-formula">
+        <label>{{localize "D35E.Enhancement"}}</label>
+        <input type="text" name="data.bonusAmmoEnhancement" value="{{data.data.bonusAmmoEnhancement}}" placeholder="{{localize "D35E.BonusAmmoAttackPlaceholder"}}"/>
+      </div>
+      <div class="form-group ammo-formula">
         <label>{{localize "D35E.BonusAmmoDamage"}}</label>
         <input type="text" name="data.bonusAmmoDamage" value="{{data.data.bonusAmmoDamage}}" placeholder="{{localize "D35E.BonusAmmoDamageFormula"}}"/>
       </div>
