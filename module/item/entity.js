@@ -614,9 +614,9 @@ export class ItemPF extends Item {
         }
 
         if (data["data.save.dcAutoType"] !== undefined && data["data.save.dcAutoType"] !== null && data["data.save.dcAutoType"] !== "" ) {
-            if (this.actor) {
+            let autoDCBonus = 0;
+            if (this.actor && this.actor.racialHD) {
                 let autoType = data["data.save.dcAutoType"];
-                let autoDCBonus = 0;
                 switch (autoType) {
                     case "racialHD":                    
                         autoDCBonus += this.actor.racialHD.data.data.levels;

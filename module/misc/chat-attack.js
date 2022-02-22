@@ -99,7 +99,7 @@ export class ChatAttack {
             bonus: bonus || 0,
             extraParts: extraParts,
             primaryAttack: primaryAttack,
-            replacedEnh: Math.max(this.ammoEnh, this.item.data.data.enh)
+            replacedEnh: Math.max(this.ammoEnh, this.item?.data?.data?.enh || 0)
         });
         this.rolls.push(roll)
         let d20 = roll.terms[0];
@@ -199,7 +199,7 @@ export class ChatAttack {
             primaryAttack: primaryAttack,
             critical: critical,
             modifiers: modifiers,
-            replacedEnh: Math.max(this.ammoEnh, this.item.data.data.enh)
+            replacedEnh: Math.max(this.ammoEnh, this.item?.data?.data?.enh || 0)
         });
         rolls.forEach(r => {
             this.rolls.push(r.roll || r)
@@ -344,7 +344,7 @@ export class ChatAttack {
             data: JSON.stringify(rolls),
             alignment: JSON.stringify(this.item.data.data.alignment),
             material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
-            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item.data.data.enh),
+            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item?.data?.data?.enh || 0),
             action: "applyDamage",
             natural20: this.natural20,
             fumble: this.fumble,
@@ -361,7 +361,7 @@ export class ChatAttack {
             data: JSON.stringify(rolls),
             alignment: JSON.stringify(this.item.data.data.alignment),
             material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
-            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item.data.data.enh),
+            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item?.data?.data?.enh || 0),
             action: "applyDamage",
             natural20: this.natural20,
             fumble: this.fumble,
