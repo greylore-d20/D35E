@@ -55,8 +55,19 @@
         {{/select}}
       </select>
     </div>
-    <a title="{{ localize 'D35E.Notes' }}" style="flex: 0"  class="note-editor small" for="data.skills.{{s}}.subSkills.{{b}}.notes"><i class="fas fa-edit"></i></a>
-
+    <a title="{{ localize 'D35E.Notes' }}" style="flex: 0"  class="note-editor small tooltip" for="data.skills.{{s}}.subSkills.{{b}}.notes">
+  
+      {{#if subSkill.notes}}
+        <span class="tooltipcontent">
+          {{subSkill.notes}}
+        </span>
+      {{/if}}
+      {{#if subSkill.notes}}
+      <i class="fas fa-comment-alt"></i>
+      {{else}}
+      <i class="far fa-comment-alt"></i>
+      {{/if}}
+    </a>
     <div class="skill-controls" style="flex: 0 24px">
       <a class="skill-control skill-delete" title="{{ localize 'D35E.DeleteSkill' }}"><i class="fas fa-trash"></i></a>
     </div>
@@ -110,7 +121,18 @@
         {{/select}}
       </select>
     </div>
-    <a title="{{ localize 'D35E.Notes' }}" style="flex: 0"  class="note-editor small" for="data.skills.{{s}}.notes"><i class="fas fa-edit"></i></a>
+    <a title="{{ localize 'D35E.Notes' }}" style="flex: 0"  class="note-editor small tooltip" for="data.skills.{{s}}.notes">
+      {{#if skill.notes}}
+      <span class="tooltipcontent">
+        {{skill.notes}}
+      </span>
+      {{/if}}
+      {{#if skill.notes}}
+      <i class="fas fa-comment-alt"></i>
+      {{else}}
+      <i class="far fa-comment-alt"></i>
+      {{/if}}
+    </a>
     <div class="skill-controls" style="flex: 0 24px" >
       {{#if ../owner}}{{#if skill.custom}}
       <a class="skill-control skill-delete" title="{{ localize 'D35E.DeleteSkill' }}"><i class="fas fa-trash"></i></a>

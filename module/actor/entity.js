@@ -5484,7 +5484,7 @@ export class ActorPF extends Actor {
                 notes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(ItemPF._fillTemplate(o, rollData), {rollData: rollData})));
             }
         }
-        if (skl.rt && skl.rank === 0) {
+        if (skl.rt && (skl.rank === null || skl.rank === 0)) {
             notes.push(game.i18n.localize("D35E.Untrained"));
         }
 

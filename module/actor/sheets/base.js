@@ -425,9 +425,12 @@ export class ActorSheetPF extends ActorSheet {
       spell.epic = spell.epicLevel > 9;
       if (bannedSpellSpecialization.has(spell.data.school))
         spell.isBanned = true;
+      else
+        spell.isBanned = false;
       if (availableSpellSpecialization.has(spell.data.school) || domainSpellNames.has(createTag(spell.name))) {
         spell.isSpecialized = true;
       } else {
+        spell.isSpecialized = false;
         spellbook[lvl].hasNonDomainSpells = true;
       }
       if (spell.data.isSpellSpontaneousReplacement) {
