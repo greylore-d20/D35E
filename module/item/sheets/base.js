@@ -1867,7 +1867,7 @@ export class ItemSheetPF extends ItemSheet {
         }
         if (data.type === "RollTable") {
             let updateData = {}
-            let rt = await game.packs.get(data.pack).pack.getDocument(data.id)
+            let rt = await game.packs.get(data.pack).getDocument(data.id)
             updateData[`data.rollTableDraw.id`] = data.id;
             updateData[`data.rollTableDraw.pack`] = data.pack;
             updateData[`data.rollTableDraw.name`] = rt.data.name;
