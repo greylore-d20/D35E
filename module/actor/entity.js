@@ -1020,20 +1020,34 @@ export class ActorPF extends Actor {
                     tokens.push(this.token);
                     for (const o of tokens) {
                         if (darkvision !== o.data.brightSight || lowLight !== getProperty(o.data, "flags.D35E.lowLightVision") || lowLightMultiplier !== getProperty(o.data, "flags.D35E.lowLightVisionMultiplier"))
+                        if (o.document) {
                             await o.document.update({
                                 brightSight: darkvision,
                                 flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
                             }, { stopUpdates: true, tokenOnly: true });
+                        } else {
+                            await o.update({
+                                brightSight: darkvision,
+                                flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
+                            }, { stopUpdates: true, tokenOnly: true });
+                        }
                     }
                 }
                 if (!this.isToken) {
                     let tokens = this.getActiveTokens().filter(o => o.data.actorLink);
                     for (const o of tokens) {
                         if (darkvision !== o.data.brightSight || lowLight !== getProperty(o.data, "flags.D35E.lowLightVision") || lowLightMultiplier !== getProperty(o.data, "flags.D35E.lowLightVisionMultiplier"))
+                        if (o.document) {    
                             await o.document.update({
+                                    brightSight: darkvision,
+                                    flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
+                                }, { stopUpdates: true, tokenOnly: true });
+                        } else {
+                            await o.update({
                                 brightSight: darkvision,
                                 flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
                             }, { stopUpdates: true, tokenOnly: true });
+                        }
                     }
                     let token = this.data.token;
                     if (darkvision !== token.brightSight || lowLight !== getProperty(token, "flags.D35E.lowLightVision") || lowLightMultiplier !== getProperty(token, "flags.D35E.lowLightVisionMultiplier")) {
