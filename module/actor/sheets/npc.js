@@ -52,7 +52,11 @@ export class ActorSheetPFNPC extends ActorSheetPF {
     const total = parseFloat(data.data.details.totalCr || 0);
     data.labels.cr = CR.fromNumber(cr);
     data.labels.totalCr = CR.fromNumber(total)
-    data.labels.totalExp = total*75*4;
+    if (data.labels.totalCr == "1/3") {
+      data.labels.totalExp = 100;
+    } else {
+      data.labels.totalExp = Math.round(total*75*4);
+    }
     return data;
   }
 
