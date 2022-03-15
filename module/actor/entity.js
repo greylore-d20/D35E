@@ -6057,7 +6057,7 @@ export class ActorPF extends Actor {
      * @param skipDialog option to ship dialog and use default roll
      * @returns {Promise<unknown>}
      */
-    async rollDefenseDialog({ev = null, skipDialog = false} = {}) {
+    async rollDefenseDialog({ev = null, skipDialog = false, touch = false, flatfooted = false} = {}) {
         const _roll = async function (acType, form) {
 
             let rollModifiers = []
@@ -6197,6 +6197,7 @@ export class ActorPF extends Actor {
             defenseBonus: defenseBonus,
             rollModes: CONFIG.Dice.rollModes,
             applyHalf: ev.applyHalf,
+            touch: touch,
             baseConcealment: this.data.data.attributes.concealment.total,
             isAlreadyProne: this.data.data.attributes.conditions.prone,
             baseConcealmentAtLeast20: this.data.data.attributes.concealment.total > 20,
@@ -6205,10 +6206,16 @@ export class ActorPF extends Actor {
             defenseFeatsOptional: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange(`defenseOptional`,rollData)),
             conditionals: this.data.data.conditionals,
         };
+        dialogData.hasFeats = dialogData.defenseFeats.length || dialogData.defenseFeatsOptional.length;
         const html = await renderTemplate(template, dialogData);
         let roll;
         const buttons = {};
         let wasRolled = false;
+        let defaultButton = "vsNormal";
+        if (touch) {
+            buttons.vsTouch = {}
+            defaultButton = "vsTouch"
+        }
         buttons.vsNormal = {
             label: game.i18n.localize("D35E.ACVsNormal"),
             callback: html => {
@@ -6244,13 +6251,15 @@ export class ActorPF extends Actor {
                 content: html,
                 buttons: buttons,
                 classes: ['custom-dialog','wide'],
-                default: buttons.multi != null ? "multi" : "normal",
+                default: defaultButton,
                 close: html => {
                     return resolve(roll);
                 }
-            }).render(true);
+            },{classes: ['roll-defense','dialog',  dialogData.hasFeats ? 'twocolumn' : 'single'], width: dialogData.hasFeats ? 700 : 350}).render(true);
         });
-
+        // flex: 400px;
+        // margin: 0;
+        // margin-bottom: 4px;
         //console.log('D35E | Final dialog AC', finalAc)
         return finalAc || {ac: -1, applyHalf: false, noCritical: false};
     }
@@ -6317,7 +6326,7 @@ export class ActorPF extends Actor {
      * @param {Number} value   The amount of damage to deal.
      * @return {Promise}
      */
-    static async applyDamage(ev,roll,critroll,natural20,natural20Crit,fubmle,fumble20Crit,damage,normalDamage,material,alignment,enh, nonLethalDamage, simpleDamage = false, actor = null, attackerId = null, attackerTokenId = null, ammoId = null, incorporeal = false) {
+    static async applyDamage(ev,roll,critroll,natural20,natural20Crit,fubmle,fumble20Crit,damage,normalDamage,material,alignment,enh, nonLethalDamage, simpleDamage = false, actor = null, attackerId = null, attackerTokenId = null, ammoId = null, incorporeal = false, touch = false) {
 
         let value = 0;
 
@@ -6367,7 +6376,7 @@ export class ActorPF extends Actor {
                     finalAc.applyHalf = ev.applyHalf === true;
                 } else {
                     if (roll > -1337) { // Spell roll value
-                        finalAc = await a.rollDefenseDialog({ev: ev});
+                        finalAc = await a.rollDefenseDialog({ev: ev, touch: touch, flatfooted: false});
                         if (finalAc.ac === -1) continue;
                     } else {
                         finalAc.applyHalf = ev.applyHalf === true;

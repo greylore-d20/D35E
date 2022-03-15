@@ -3014,9 +3014,10 @@ export class ItemPF extends Item {
             const attackerToken = button.dataset.attackertoken;
             const attacker = button.dataset.attacker;
             const ammoId = button.dataset.ammoid;
+            const touch = button.dataset.touch === "true";
             const incorporeal = button.dataset.incorporeal === "true";
             event.applyHalf = action === "applyDamageHalf";
-            ActorPF.applyDamage(event,roll,critroll,natural20,natural20Crit,fumble,fumbleCrit,damage,normalDamage,material,alignment,enh,nonLethal,!damage,null,attacker,attackerToken,ammoId,incorporeal);
+            ActorPF.applyDamage(event,roll,critroll,natural20,natural20Crit,fumble,fumbleCrit,damage,normalDamage,material,alignment,enh,nonLethal,!damage,null,attacker,attackerToken,ammoId,incorporeal,touch);
         } else if (action === "applyHealing") {
             const value = button.dataset.value;
             ActorPF.applyDamage(event,roll,null,null,null,null,null,value,null,null,null,null,false,true);
