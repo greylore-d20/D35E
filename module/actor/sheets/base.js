@@ -2499,9 +2499,36 @@ export class ActorSheetPF extends ActorSheet {
       dataType = "world";
       itemData = game.items.get(data.id).data.toObject(false);
     }
-
-    this.enrichDropData(itemData);
-    return this.importItem(itemData, dataType);
+    if (itemData.data.uniqueId) {
+      return new Dialog(
+        {
+          title: `${game.i18n.localize("D35E.DropItemWithUIDTitle")}`,
+          content: `<div class="flexrow form-group">
+          <span style="flex: 1">${game.i18n.localize("D35E.DropItemWithUID")}</span>
+        </div>`,
+          buttons: {
+            confirm: {
+              label: game.i18n.localize("D35E.ImportStripUid"),
+              callback: (html) => {
+                delete itemData.data.uniqueId;
+                this.enrichDropData(itemData);
+                return this.importItem(itemData, dataType);
+              },
+            },
+            cancel: {
+              label: game.i18n.localize("Cancel"),
+            },
+          },
+          default: "confirm",
+        },
+        {
+          classes: ["dialog", "D35E", "duplicate-initiative"],
+        }
+      ).render(true);
+    } else {
+      this.enrichDropData(itemData);
+      return this.importItem(itemData, dataType);
+    }
   
   }
 

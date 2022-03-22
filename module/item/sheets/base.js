@@ -284,8 +284,24 @@ export class ItemSheetPF extends ItemSheet {
         if (this.item.data.type === "attack") {
             data.isWeaponAttack = this.item.data.data.attackType === "weapon";
             data.isNaturalAttack = this.item.data.data.attackType === "natural";
+            data.autoScaleWithBab = (game.settings.get("D35E", "autoScaleAttacksBab") && this.item.actor.data.type !== "npc" && getProperty(this.item.data, "data.attackType") === "weapon" && getProperty(this.item.data, "data.autoScaleOption") !== "never") || getProperty(this.item.data, "data.autoScaleOption") === "always";
+            if (data.autoScaleWithBab) {
+                let attacks = [];
+                let baseExtraAttack = 0;
+                let bab = this.item.actor.data.data.attributes.bab.total;
+                bab-=5
+                while (bab > 0) {
+                    baseExtraAttack-=5;
+                    attacks.push(baseExtraAttack)
+                    bab-=5
+                }
+                if (attacks.length) {
+                    data.extraAttacksAuto = attacks.join('/');
+                } else {
 
-
+                    data.extraAttacksAuto = game.i18n.localize("D35E.NoExtraAttacks");
+                }
+            }
             data.weaponCategories = {types: {}, subTypes: {}};
             for (let [k, v] of Object.entries(CONFIG.D35E.weaponTypes)) {
                 if (typeof v === "object") data.weaponCategories.types[k] = v._label;
