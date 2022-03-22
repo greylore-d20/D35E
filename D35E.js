@@ -182,7 +182,7 @@ Hooks.once("setup", function() {
     "favouredClassBonuses", "armorProficiencies", "weaponProficiencies", "actorSizes", "actorTokenSizes", "abilityActivationTypes", "abilityActivationTypesPlurals",
     "limitedUsePeriods", "equipmentTypes", "equipmentSlots", "consumableTypes", "attackTypes", "attackTypesShort", "buffTypes", "buffTargets", "contextNoteTargets",
     "healingTypes", "divineFocus", "classSavingThrows", "classBAB", "classTypes", "measureTemplateTypes", "creatureTypes", "race", "damageTypes", "conditionalTargets",
-    "savingThrowTypes","requirements","savingThrowCalculationTypes",
+    "savingThrowTypes","requirements","savingThrowCalculationTypes", "attackTypesIcon",
     "abilityTypes", "auraTarget"
   ];
 

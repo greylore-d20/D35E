@@ -15,6 +15,7 @@ import {  ActorRestDialog } from "../apps/actor-rest.js";
 export class ActorPF extends Actor {
     /* -------------------------------------------- */
     API_URI = 'https://companion.legaciesofthedragon.com/';
+    static SPELL_AUTO_HIT = -1337;
     //API_URI = 'http://localhost:5000';
 
     constructor(...args) {
@@ -3294,6 +3295,7 @@ export class ActorPF extends Actor {
             data.classes[tag].spelllist = new Map() 
             for (let a = 0; a < 10; a++) {
                 (cls.data?.spellbook[a]?.spells || []).forEach(spell => {
+                    spell.level = a;
                     data.classes[tag].spelllist.set(`${spell.pack}.${spell.id}`,spell)
                 })
             }
@@ -4557,32 +4559,66 @@ export class ActorPF extends Actor {
         if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
         let spellsToAdd = []
-        for (let p of game.packs.values()) {
-            if (p.private && !game.user.isGM) continue;
-            if ((p.entity || p.documentName) !== "Item") continue;
-
-            const items = await p.getDocuments();
-            for (let obj of items) {
-                if (obj.type !== 'spell') continue;
-                let foundLevel = false;
-                let spellbook = this.data.data.attributes.spells.spellbooks[_spellbookKey];
-                let spellbookClass = this.data.data.classes[spellbook.class]?.name || "Missing";
-                if (obj.data.data.learnedAt !== undefined) {
-                    obj.data.data.learnedAt.class.forEach(learnedAtObj => {
-                        if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
-                            obj.data.document.data.update({'data.level':learnedAtObj[1]});
-                            foundLevel = true;
-                        }
-                    })
+        let spellbook = this.data.data.attributes.spells.spellbooks[_spellbookKey];
+        let spellbookClass = this.data.data.classes[spellbook.class];
+        if (spellbookClass?.hasSpellbook) {
+            console.log(spellbookClass.spelllist)
+            for (let spellData of spellbookClass.spelllist.values()) {
+                if (spellData.level !== parseInt(level)) continue;
+                const pack = game.packs.find(p => p.collection === spellData.pack);
+                const packItem = await pack.getDocument(spellData.id);
+                let itemData = null;
+                if (packItem != null) itemData = packItem.data;
+                if (itemData) {
+                    if (itemData._id) delete itemData._id;
+                    if (itemData.document)
+                        itemData.document.data.update({'data.level':spellData.level, 'data.-=spellbook': null});
+                    else {
+                        itemData.data.level = spellData.level;
+                        if (itemData.data.spellbook) delete itemData.data.spellbook
+                    }
+                    spellsToAdd.push(itemData)
                 }
-                if (parseInt(level) !== obj.data.data.level) continue;
-                if (!foundLevel) continue;
-
-                if (obj.data._id) delete obj.data._id;
-                obj.data.document.data.update({'data.spellbook':_spellbookKey});
-                spellsToAdd.push(obj.data)
+            }
+            // let spellId = obj.document ? `${obj.document.pack}.${obj.document._id}` : obj.name
+            // if (_spellbookClass.spelllist.has(spellId)) {
+            //     spellbook = _spellbook
+            //     foundByClass = true;
+            //     foundLevel = true;
+            //     if (obj.document)
+            //         obj.document.data.update({'data.spellbook':_spellbookKey, 'data.learnedAt': _spellbookClass.spelllist.get(spellId).level})
+            //     else {
+            //         obj.data.spellbook = _spellbookKey;
+            //         obj.data.level = _spellbookClass.spelllist.get(spellId).level;
+            //     }
+            // }
+        } else {
+            for (let p of game.packs.values()) {
+                if (p.private && !game.user.isGM) continue;
+                if ((p.entity || p.documentName) !== "Item") continue;
+    
+                const items = await p.getDocuments();
+                for (let obj of items) {
+                    if (obj.type !== 'spell') continue;
+                    let foundLevel = false;
+                    if (obj.data.data.learnedAt !== undefined) {
+                        obj.data.data.learnedAt.class.forEach(learnedAtObj => {
+                            if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
+                                obj.data.document.data.update({'data.level':learnedAtObj[1]});
+                                foundLevel = true;
+                            }
+                        })
+                    }
+                    if (parseInt(level) !== obj.data.data.level) continue;
+                    if (!foundLevel) continue;
+    
+                    if (obj.data._id) delete obj.data._id;
+                    obj.data.document.data.update({'data.spellbook':_spellbookKey});
+                    spellsToAdd.push(obj.data)
+                }
             }
         }
+        
         await this.createEmbeddedEntity("Item", spellsToAdd, {stopUpdates: true, nameUnique: true, ignoreSpellbookAndLevel: true})
     }
 
@@ -6369,24 +6405,24 @@ export class ActorPF extends Actor {
                 let finalAc = {}
                 if (fubmle)
                     return;
-                if (ev.originalEvent instanceof MouseEvent && (ev.originalEvent.shiftKey)) {
+                if (ev && ev.originalEvent instanceof MouseEvent && (ev.originalEvent.shiftKey)) {
                     finalAc.noCheck = true
                     finalAc.ac = 0;
                     finalAc.noCritical = false;
                     finalAc.applyHalf = ev.applyHalf === true;
                 } else {
-                    if (roll > -1337) { // Spell roll value
+                    if (roll > ActorPF.SPELL_AUTO_HIT) { // Spell roll value
                         finalAc = await a.rollDefenseDialog({ev: ev, touch: touch, flatfooted: false});
                         if (finalAc.ac === -1) continue;
                     } else {
-                        finalAc.applyHalf = ev.applyHalf === true;
+                        finalAc.applyHalf = ev?.applyHalf === true;
                     }
                 }
                 let concealMiss = false;
                 let concealRoll = 0;
                 let concealTarget = 0;
                 let concealRolled = false;
-                if ((finalAc.conceal || finalAc.fullConceal || a.data.data.attributes?.concealment?.total || finalAc.concealOverride) && roll !== -1337) {
+                if ((finalAc.conceal || finalAc.fullConceal || a.data.data.attributes?.concealment?.total || finalAc.concealOverride) && roll !== ActorPF.SPELL_AUTO_HIT) {
                     concealRolled = true;
                     concealRoll = new Roll35e("1d100").roll().total;
                     if (finalAc.fullConceal) concealTarget = 50
@@ -6398,7 +6434,7 @@ export class ActorPF extends Actor {
                     }
                 }
                 let achit = roll >= finalAc.ac || natural20;
-                hit = ((roll >= finalAc.ac || roll === -1337 || natural20) && !concealMiss) || finalAc.noCheck // This is for spells and natural 20
+                hit = ((roll >= finalAc.ac || roll === ActorPF.SPELL_AUTO_HIT || natural20) && !concealMiss) || finalAc.noCheck // This is for spells and natural 20
                 crit = (critroll >= finalAc.ac || (critroll && finalAc.noCheck) || natural20Crit)
                     && !finalAc.noCritical
                     && !fumble20Crit
@@ -6476,7 +6512,7 @@ export class ActorPF extends Actor {
                     concealRoll: concealRoll,
                     concealTarget: concealTarget,
                     concealRolled: concealRolled,
-                    isSpell: roll === -1337,
+                    isSpell: roll === ActorPF.SPELL_AUTO_HIT,
                     applyHalf: finalAc.applyHalf,
                     ammoRecovered: ammoRecovered,
                     fortifyRolled: fortifyRolled,
@@ -7396,13 +7432,34 @@ export class ActorPF extends Actor {
                     }, {inplace: false});
                     // Create message
                     await createCustomChatMessage("systems/D35E/templates/chat/simple-attack-roll.html", templateData, {}, damage);
+                } else if (action.parameters.length === 2) {
+                    let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll()
+                    let name = action.name;
+                    let chatTemplateData = {
+                        name: this.name,
+                        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+                        rollMode: "public",
+                    };
+                    const templateData = mergeObject(chatTemplateData, {
+                        flavor: name,
+                        total: damage.total,
+                        tooltip: $(await damage.getTooltip()).prepend(`<div class="dice-formula">${damage.formula}</div>`)[0].outerHTML
+                    }, {inplace: false});
+                    // Create message
+                    await createCustomChatMessage("systems/D35E/templates/chat/simple-attack-roll.html", templateData, {}, damage);
                 } else
                     ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
                 break;
+            case "ApplyDamage":
             case "SelfDamage":
                 if (action.parameters.length === 1) {
                     let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll().total
                     ActorPF.applyDamage(null,null,null,null,null,null,null,damage,null,null,null,null,false,true, this);
+                } else if (action.parameters.length === 2) {
+                    let damageRoll = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll()
+                    let damage = [{damageTypeUid: DamageTypes.mapDamageType(action.parameters[1]), roll: damageRoll}]
+                    
+                    ActorPF.applyDamage(null,ActorPF.SPELL_AUTO_HIT,null,null,null,null,null,damage,null,null,null,null,false,false, this, this.id);
                 } else
                     ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
                 break;
@@ -7599,6 +7656,7 @@ export class ActorPF extends Actor {
                     break;
                 case "Damage":
                 case "SelfDamage":
+                case "ApplyDamage":
                 case "Grapple":
                 case "Regenerate":
                 case "Clear":

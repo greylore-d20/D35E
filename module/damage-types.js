@@ -422,4 +422,13 @@ export class DamageTypes {
             incorporealRolled: incorporealRolled,
             incorporealMiss: incorporealMiss};
     }
+
+    static mapDamageType(type) {
+        for (let damageType of CACHE.DamageTypes.values()) {
+            let identifiers = damageType.data.data.identifiers;
+            if (identifiers.some(i => i[0].toLowerCase() === type.toLowerCase()))
+                return damageType.data.data.uniqueId;
+        }
+        return type;
+    }
 }

@@ -3174,8 +3174,9 @@ export class ItemPF extends Item {
                         if (this.actor.token) {
                             let updateData = {}
                             updateData["data.active"] = false;
-                            updateData["data.timeline.elapsed"] = 0;
+                            //updateData["data.timeline.elapsed"] = 0;
                             updateData["_id"] = this._id;
+                            updateData["delete"] = true;
                             return updateData;
                         } else
                             return {'_id': this._id, 'delete': true, 'data.active': false};
@@ -4607,13 +4608,28 @@ export class ItemPF extends Item {
             let attackBonus = ((this.data.data.enh || 0) ? this.data.data.enh : (this.data.data.masterwork ? "1" : "0")) + "+" + (this.data.data.attackBonus || "0");
             let abilityBonus = "0";
             let sizeBonus = CONFIG.D35E.sizeMods[this.actor.data.data.traits.actualSize] || 0;
+            let autoScaleWithBab = (game.settings.get("D35E", "autoScaleAttacksBab") && this.actor.data.type !== "npc" && getProperty(this.data, "data.attackType") === "weapon" && getProperty(this.data, "data.autoScaleOption") !== "never") || getProperty(this.data, "data.autoScaleOption") === "always";
             if (this.actor) {
                 bab = this.actor.data.data.attributes.bab.total;
                 if (this.data.data.ability.attack)
                     abilityBonus = this.actor.data.data.abilities[this.data.data.ability.attack].mod
             }
+            let attacks = [];
             let totalBonus = new Roll35e(`${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`, rollData).roll().total;
-            return `${totalBonus >= 0 ? '+'+totalBonus : totalBonus}`
+            if (autoScaleWithBab) {
+                while (bab > 0) {
+                    attacks.push(`${totalBonus >= 0 ? '+'+totalBonus : totalBonus}`)
+                    totalBonus -= 5;
+                    bab -= 5
+                }
+            } else {
+                attacks.push(`${totalBonus >= 0 ? '+'+totalBonus : totalBonus}`)
+                for (let part of this.data.data.attackParts) {
+                    let partBonus = totalBonus + part[0];
+                    attacks.push(`${partBonus >= 0 ? '+'+partBonus : partBonus}`)
+                }
+            }
+            return attacks.join('/')
 
         }
         return "";
@@ -4682,7 +4698,7 @@ export class ItemPF extends Item {
     async deleteSpellFromClassSpellbook(level, spellId) {
         const updateData = {};
         let _spellbook = duplicate(this.data.data?.spellbook|| []);
-        let _spells = (_spellbook[level]?.spells || []).filter(_spell => _spell.id !== spell.id)
+        let _spells = (_spellbook[level]?.spells || []).filter(_spell => _spell.id !== spellId)
         _spellbook[level].spells = _spells;
         updateData[`data.spellbook`] = _spellbook;
         await this.update(updateData);

@@ -576,6 +576,15 @@ D35E.attackTypesShort = {
   "misc": "D35E.Misc",
 };
 
+
+D35E.attackTypesIcon = {
+  "weapon": "D35E.AttackTypeWeaponIcon",
+  "natural": "D35E.AttackTypeNaturalIcon",
+  "ability": "D35E.AttackTypeAbilityIcon",
+  "racialAbility": "D35E.AttackTypeRacialIcon",
+  "misc": "D35E.Misc",
+};
+
 D35E.featTypes = {
   "feat": "D35E.FeatTypeFeat",
   "classFeat": "D35E.FeatTypeClassFeat",

@@ -168,7 +168,7 @@
     {{/select}}
   </select>
 </div>
-
+{{#unless autoScaleWithBab}}
 <h4 class="attack-header">
   {{localize "D35E.ExtraAttacks"}}
   <a class="attack-control add-attack"><i class="fas fa-plus"></i></a>
@@ -182,6 +182,16 @@
   </li>
   {{/each}}
 </ol>
+{{else}}
+<ol class="attack-parts form-group">
+  <li class="attack-part flexrow">
+    <h4 class="attack-header" style="flex: 1">
+      {{localize "D35E.ExtraAttacks"}} <i class="fas fa-question-circle tooltip"><span class="tooltipcontent">{{{localize "D35E.NumberOfAttacksAutocalculated"}}}</span></i>
+    </h4>
+  <span style="flex: 1; text-align: end;">{{extraAttacksAuto}}<em>(Autocalculated)</em></span>
+  </li>
+</ol>
+{{/unless}}
 {{/if}}
 
 {{!-- Damage Ability --}}
