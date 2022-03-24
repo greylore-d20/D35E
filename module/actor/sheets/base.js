@@ -180,6 +180,15 @@ export class ActorSheetPF extends ActorSheet {
         skl.sourceDetails.push({ name: game.i18n.localize("D35E.Ability"), value: getProperty(data.actor,`data.abilities.${skl.ability}.mod`) })
       if (!data.actor.data.details.levelUpProgression && !skl.cls && skl.rank) // We do not display this as this is already calculated
         skl.sourceDetails.push({ name: game.i18n.localize("D35E.NonClassSkill"), value: game.i18n.localize("D35E.HalfRanks") })
+      if (s === "jmp") {
+        if (data.actor.data.attributes.speed.land.total < data.actor.data.attributes.speed.land.base) {
+            let value = 6*Math.floor((data.actor.data.attributes.speed.land.total - data.actor.data.attributes.speed.land.base)/10);
+            skl.sourceDetails.push({ name: `${game.i18n.localize("D35E.Speed")} ${game.i18n.localize("D35E.Penalty")}`, value: value })
+        } else {
+            let value = 4*Math.floor((data.actor.data.attributes.speed.land.total - data.actor.data.attributes.speed.land.base)/10);
+            skl.sourceDetails.push({ name: `${game.i18n.localize("D35E.Speed")} ${game.i18n.localize("D35E.Bonus")}`, value: value })
+        }
+      }
       if (skl.subSkills != null) {
         for (let [s2, skl2] of Object.entries(skl.subSkills)) {
           if (data.sourceDetails == null) continue;

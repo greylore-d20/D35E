@@ -1330,12 +1330,7 @@ export class ActorPF extends Actor {
             //Bluff
             this.applySkillSynergies(data, changes);
         }
-        if (data.data.jumpSkillAdjust) {
-            changes.push({
-                raw: [`4*floor((@attributes.speed.land.total - 30)/10)`, "skill", "skill.jmp", "untyped", 0],
-                source: {name: "Speed bonus", type: "speedBonus"}
-            });
-        }
+        
 
         // Apply level drain to hit points
         if (!Number.isNaN(data.data.attributes.energyDrain) && data.data.attributes.energyDrain > 0) {
@@ -2210,6 +2205,21 @@ export class ActorPF extends Actor {
                     return cur;
                 }
             }, 0));
+        }
+
+        if (srcData1.data.jumpSkillAdjust) {
+            let j = "data.skills.jmp.mod"
+            sourceInfo[j] = sourceInfo[j] || { positive: [], negative: [] };
+            let value = 0;
+            let mod = 0;
+            if (srcData1.data.attributes.speed.land.total < srcData1.data.attributes.speed.land.base) {
+                value = 6*Math.floor((srcData1.data.attributes.speed.land.total - srcData1.data.attributes.speed.land.base)/10);
+                sourceInfo[j].negative.push({ name: "Speed penalty", value: value });
+            } else {
+                value = 4*Math.floor((srcData1.data.attributes.speed.land.total - srcData1.data.attributes.speed.land.base)/10);
+                sourceInfo[j].positive.push({ name: "Speed bonus", value: value });
+            }
+            linkData(srcData1, updateData, j, value + updateData[j]);
         }
     }
 
