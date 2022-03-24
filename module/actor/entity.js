@@ -7746,7 +7746,7 @@ export class ActorPF extends Actor {
 
     async _createConsumableSpellDialog(itemData) {
         let template = "systems/D35E/templates/apps/spell-based-item-dialog.html";
-        const html = await renderTemplate(template, {label: game.i18n.localize("D35E.CreateItemForSpellD").format(itemData.name)});
+        const html = await renderTemplate(template, {label: game.i18n.localize("D35E.CreateItemForSpellD").format(itemData.name), isSpell: true});
         new Dialog({
             title: game.i18n.localize("D35E.CreateItemForSpell").format(itemData.name),
             content:  html,
@@ -7857,7 +7857,8 @@ export class ActorPF extends Actor {
 
     async createConsumableSpell(itemData, type, html) {
         let cl = parseInt(html.find('[name="caster-level"]').val());
-        let data = await ItemPF.toConsumable(itemData, type, cl);
+        let scrollType = html.find('[name="scroll-type"]').val();
+        let data = await ItemPF.toConsumable(itemData, type, cl, scrollType);
 
         if (data._id) delete data._id;
         await this.createEmbeddedEntity("Item", data);

@@ -75,6 +75,18 @@
           {{/select}}
         </select>
       </div>
+      {{#if isScroll}}
+      <div class="form-group">
+        <label>{{localize "D35E.ScrollType"}}</label>
+        <select name="data.scrollType">
+          {{#select data.data.scrollType}}
+          <option value="">{{localize "D35E.None"}}</option>
+          <option value="arcane">{{localize "D35E.Arcane"}}</option>
+          <option value="divine">{{localize "D35E.Divine"}}</option>
+          {{/select}}
+        </select>
+      </div>
+      {{/if}}
 
       {{#if isGM}}
       <label class="checkbox">

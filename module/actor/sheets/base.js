@@ -1998,6 +1998,18 @@ export class ActorSheetPF extends ActorSheet {
       }
       else if (item.type === "full-attack") arr[4].push(item);
       else if ( Object.keys(inventory).includes(item.type) || (item.data.subType != null && Object.keys(inventory).includes(item.data.subType)) ) {
+        if (item.type === "consumable") {
+          if (item.data.consumableType === "scroll") {
+            item.isArcaneScroll = false;
+            item.isDivineScroll = false;
+            if (item.data.scrollType === "arcane") {
+              item.isArcaneScroll = true;
+            } else if (item.data.scrollType === "divine") {
+              item.isDivineScroll = true;
+            }
+          }
+        }
+        
         //console.log(`D35E | Item container | ${item.name}, ${item.data.containerId} |`, item)
         if (item.data.containerId && item.data.containerId !== "none") {
           if (!containerItems.has(item.data.containerId)) {

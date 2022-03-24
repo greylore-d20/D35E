@@ -89,6 +89,7 @@ export class ItemSheetPF extends ItemSheet {
         console.log('D35E | Base Item Data', this.item.data.data.quantity !== undefined)
         data.isSpell = this.item.type === "spell";
         data.isConsumable = this.item.type === "consumable";
+        data.isScroll = this.item.data.data.consumableType === "scroll";
         data.isClass = this.item.type === "class";
         data.isRace = this.item.type === "race";
         data.isAttack = this.item.type === "attack";

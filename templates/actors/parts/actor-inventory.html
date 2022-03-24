@@ -136,7 +136,7 @@
                     </div>
                     <h4 class="rollable{{#if item.emptyOrBroken}} strikethrough-text{{/if}}">
                         {{~#if item.isStack}}({{item.data.quantity}}) {{/if}}
-                        {{item.name~}}
+                        {{item.name~}}{{#if item.isArcaneScroll}}<em style="opacity: 0.7; color: black; margin-left: 4px;" class="non-rollable">({{ localize 'D35E.Arcane' }})</em>{{/if}}{{#if item.isDivineScroll}}<em style="opacity: 0.7; color: black; margin-left: 4px;" class="non-rollable">({{ localize 'D35E.Divine' }})</em>{{/if}}
                         {{#if item.possibleUpdate}}
                             <i class="fas fa-arrow-up tooltip non-rollable" style="color: darkred">
                             <div class="tooltipcontent">{{{ localize 'D35E.PossibleUpdate' }}}

@@ -3907,7 +3907,7 @@ export class ItemPF extends Item {
 
         return data;
     }
-    static async toConsumable(origData, type, cl) {
+    static async toConsumable(origData, type, cl, scrollType) {
         let data = duplicate(game.system.template.Item.consumable);
         for (let t of data.templates) {
             mergeObject(data, duplicate(game.system.template.Item.templates[t]));
@@ -4004,6 +4004,8 @@ export class ItemPF extends Item {
         data.data.sr = origData.data.sr
         data.data.pr = origData.data.pr
         // Copy variables
+        if (scrollType)
+            data.data.scrollType = scrollType;
         data.data.attackNotes = origData.data.attackNotes;
         data.data.actionType = origData.data.actionType;
         data.data.effectNotes = origData.data.effectNotes;
