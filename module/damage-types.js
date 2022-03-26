@@ -394,7 +394,7 @@ export class DamageTypes {
         let incorporealRolled = false;
         if (actor.data.data.traits.incorporeal && !incorporeal) {
             incorporealRolled = true;
-            if (incorporealRoll >= 0.5 || enh < 1){
+            if (incorporealRoll < 0.5 || enh < 1){
                 afterDamage = 0;
                 energyDamageAfterEr = 0;
                 damageAfterDr = 0;

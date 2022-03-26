@@ -176,6 +176,15 @@ export class ChatAttack {
             case "unarmed":
                 dmgIcon = "unarmed";
                 break;
+            case "positive energy":
+                dmgIcon = "positive-energy";
+                break;
+            case "force":
+                dmgIcon = "force";
+                break;
+            case "negative energy":
+                dmgIcon = "negative-energy";
+                break;
         }
         return `<img src="systems/D35E/icons/damage-type/${dmgIcon}.svg" title="${dmgName}" class="dmg-type-icon" />${dmgVal}`
     }
