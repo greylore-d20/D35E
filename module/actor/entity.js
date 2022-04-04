@@ -3073,6 +3073,7 @@ export class ActorPF extends Actor {
         }
         linkData(data, updateData, "data.attributes.acp.total", Math.max(updateData["data.attributes.acp.gear"], updateData["data.attributes.acp.encumbrance"]));
         linkData(data, updateData, "data.attributes.maxDex.total", Math.min(updateData["data.attributes.maxDex.gear"], updateData["data.attributes.maxDex.encumbrance"]));
+        linkData(data, updateData, "data.attributes.maxDexBonus", Math.min(updateData["data.attributes.maxDex.gear"], updateData["data.attributes.maxDex.encumbrance"]));
 
 
         // Force speed to creature speed

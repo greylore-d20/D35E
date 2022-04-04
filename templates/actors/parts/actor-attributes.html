@@ -317,9 +317,9 @@
       <li class="attribute maxdex" data-attribute="maxdex">
         <h4 class="attribute-name box-title">{{ localize 'D35E.MaxDexShort' }}</h4>
         <div class="attribute-value tooltip">
-          <span>{{data.attributes.maxDexBonus}}</span>
+          <span>{{data.attributes.maxDex.total}}</span>
           <span class="tooltipcontent">
-            @attributes.maxDexBonus : {{data.attributes.maxDexBonus}}
+            @attributes.maxDexBonus : {{data.attributes.maxDex.total}}
 
             {{#if maxDexBonus.sourceDetails.length}}
             <br /><br />{{ localize 'D35E.FromSources' }}:<br />
