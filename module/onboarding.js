@@ -39,6 +39,10 @@ export default function renderOnboardingScreen() {
             })
         }
 
+        getData(options={}) {
+            const actorSidebarIcon = game.version >= 10 ? CONFIG.Actor.sidebarIcon : "fas fa-users";
+            return { actorSidebarIcon };
+        }
     }
 
     (new OnboardingScreen()).render(true);

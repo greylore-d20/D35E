@@ -132,7 +132,7 @@ export const isMinimumCoreVersion = function(version) {
   if (version.indexOf(".") === -1) {
     version = version + ".0.0"
   }
-  const coreVersion = unpackVersion(game?.data?.version || game.version);
+  const coreVersion = unpackVersion(game.version);
   const compareVersion = unpackVersion(version);
 
   for (const versionType of ["release", "major", "minor"]) {

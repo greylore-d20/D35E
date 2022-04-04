@@ -128,15 +128,11 @@ Hooks.once("init", async function() {
 
   CONFIG.statusEffects = getConditions();
 
-	const layers = game.data.version >= 9
-    ? {
+	const layers = {
         d35e: {
             layerClass: D35ELayer,
             group: "primary"
         }
-    }
-    : {
-        d35e: D35ELayer
     }
 
 	CONFIG.Canvas.layers = foundry.utils.mergeObject(Canvas.layers, layers);
@@ -583,7 +579,9 @@ Hooks.on("updateActor",  (actor, data, options, user) => {
     return
   } else {
 
-    debouncedCollate(canvas.scene.id, true, true, "updateToken")
+    if (canvas.scene) {
+      debouncedCollate(canvas.scene.id, true, true, "updateToken")
+    }
     if (actor.data.data.companionAutosync) {
       actor.syncToCompendium()
     }
@@ -727,8 +725,8 @@ function rollItemMacro(itemName, {itemId=null, itemType=null, actorId=null}={}) 
   if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
 
    // Trigger the item roll
-   if (!game.keyboard.isDown("Control")) {
-    return item.use({skipDialog: keyboard.isDown("Shift")});
+   if (!game.keyboard.isModifierActive("Control")) {
+    return item.use({skipDialog: game.keyboard.isModifierActive("Shift")});
    }
    return item.roll();
  }

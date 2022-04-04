@@ -458,7 +458,6 @@ module.exports = {
       socket: "readonly",
       ui: "readonly",
       canvas: "readonly",
-      keyboard: "readonly",
       JSHINT: "readonly",
       game: "readonly",
       vtt: "readonly",

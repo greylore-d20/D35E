@@ -1933,7 +1933,7 @@ export class ItemSheetPF extends ItemSheet {
         if (button.disabled) return;
 
         const li = event.currentTarget.closest(".item");
-        if (keyboard.isDown("Shift")) {
+        if (game.keyboard.isModifierActive("Shift")) {
             this.item.deleteSpellFromClassSpellbook(li.dataset.level, li.dataset.itemId);
         } else {
             button.disabled = true;
@@ -2116,7 +2116,7 @@ export class ItemSheetPF extends ItemSheet {
         if (button.disabled) return;
 
         const li = event.currentTarget.closest(".item");
-        if (keyboard.isDown("Shift")) {
+        if (game.keyboard.isModifierActive("Shift")) {
             const updateData = {};
             let _linkedItems = duplicate(getProperty(this.item.data, `data.linkedItems`) || []);
             _linkedItems = _linkedItems.filter(function (obj) {
@@ -2183,7 +2183,7 @@ export class ItemSheetPF extends ItemSheet {
         if (button.disabled) return;
 
         const li = event.currentTarget.closest(".item");
-        if (keyboard.isDown("Shift")) {
+        if (game.keyboard.isModifierActive("Shift")) {
             const updateData = {};
             let _enhancements = duplicate(getProperty(this.item.data, `data.enhancements.items`) || []);
             _enhancements = _enhancements.filter(function (obj) {

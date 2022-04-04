@@ -713,11 +713,6 @@ export class ActorPF extends Actor {
         return null;
     }
 
-    get _id() {
-        console.warn("Using old mapper for _id.")
-        return this.id;
-    }
-
     _dataIsPC(data) {
         if (data.permission != null) {
             const nonGM = game.users.contents.filter(u => !u.isGM);
@@ -1535,7 +1530,7 @@ export class ActorPF extends Actor {
 
     async _updateChanges({data = null} = {}, options = {}) {
         let updateData = {};
-        let srcData1 = mergeObject(this.data.toObject(false), expandObject(data || {}), { inplace: false });
+        let srcData1 = mergeObject(this.data.toObject(false), expandObject(data || {}));
         srcData1.items = this.items;
 
         // srcData1.items = this.items.reduce((cur, i) => {
@@ -1791,7 +1786,7 @@ export class ActorPF extends Actor {
         // Parse changes
         let temp = [];
         //console.log('D35E | Master Changes');
-        const origData = mergeObject(this.data.toObject(false), data != null ? expandObject(data) : {}, { inplace: false });
+        const origData = mergeObject(this.data.toObject(false), data != null ? expandObject(data) : {});
         updateData = flattenObject({ data: mergeObject(origData.data, expandObject(updateData).data, { inplace: false }) });
         this._addDynamicData(updateData, {}, flags, Object.keys(this.data.data.abilities), srcData1, true);
 
@@ -2147,7 +2142,7 @@ export class ActorPF extends Actor {
 
 
         //console.log('D35E | Source Details');
-        this._setSourceDetails(mergeObject(this.data.toObject(false), srcData1, { inplace: false }), sourceInfo, flags);
+        this._setSourceDetails(mergeObject(this.data.toObject(false), srcData1), sourceInfo, flags);
 
         const diffData = (srcData1);
         // Apply changes
@@ -2881,7 +2876,7 @@ export class ActorPF extends Actor {
                         let canAdd = !addedAbilities.has(uniqueId)
                         if (canAdd) {
                             if (!existingAbilities.has(uniqueId)) {
-                                let eItem = duplicate(e.data)
+                                let eItem = e.toObject().data
                                 ItemPF.setMaxUses(eItem, this.getRollData());
                                 delete eItem._id;
                                 eItem.data.uniqueId = uniqueId;
@@ -2925,7 +2920,7 @@ export class ActorPF extends Actor {
                         let canAdd = !addedAbilities.has(uniqueId)
                         if (canAdd) {
                             if (!existingAbilities.has(uniqueId)) {
-                                let eItem = duplicate(e.data)
+                                let eItem = e.data.toObject();
                                 ItemPF.setMaxUses(eItem, this.getRollData());
                                 eItem.data.uniqueId = uniqueId;
                                 eItem.data.source = `${raceObject.data.name}`
@@ -2983,7 +2978,7 @@ export class ActorPF extends Actor {
         if (canAdd) {
             if (level <= classInfo[1]) {
                 if (!existingAbilities.has(uniqueId)) {
-                    let eItem = duplicate(e.data)
+                    let eItem = e.data.toObject()
                     ItemPF.setMaxUses(eItem, this.getRollData());
                     eItem.data.uniqueId = uniqueId;
                     delete eItem._id;
@@ -4635,11 +4630,7 @@ export class ActorPF extends Actor {
 
     async createAttackFromWeapon(item) {
         if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
-        if (item.type)  {
-            item = duplicate(item);
-            item.data = duplicate(item);
-        }
-        if (item.data.type !== "weapon") throw new Error("Wrong Item type");
+        if (item.type !== "weapon") throw new Error("Wrong Item type");
         //console.log('D35E | Creating attack for', item)
 
         let isKeen = false;
@@ -5180,7 +5171,7 @@ export class ActorPF extends Actor {
         const noteObjects = this.getContextNotes(`misc.${type}`);
         for (let noteObj of noteObjects) {
             rollData.item = {};
-            if (noteObj.item != null) rollData.item = duplicate(new ItemPF(noteObj.item.data, { owner: this.isOwner }));
+            if (noteObj.item != null) rollData.item = new ItemPF(noteObj.item.data, { owner: this.isOwner }).toObject();
 
             for (let note of noteObj.notes) {
                 if (!isMinimumCoreVersion("0.5.2")) {
@@ -5355,7 +5346,7 @@ export class ActorPF extends Actor {
         const noteObjects = this.getContextNotes(`savingThrow.${savingThrowId}`);
         for (let noteObj of noteObjects) {
             rollData.item = {};
-            if (noteObj.item != null) rollData.item = duplicate(new ItemPF(noteObj.item.data, { owner: this.isOwner }));
+            if (noteObj.item != null) rollData.item = new ItemPF(noteObj.item.data, { owner: this.isOwner }).toObject();
 
             for (let note of noteObj.notes) {
                 if (!isMinimumCoreVersion("0.5.2")) {
@@ -5747,7 +5738,7 @@ export class ActorPF extends Actor {
         const noteObjects = this.getContextNotes(`misc.cmb`);
         for (let noteObj of noteObjects) {
             rollData.item = {};
-            if (noteObj.item != null) rollData.item = duplicate(new ItemPF(noteObj.item.data, { owner: this.isOwner }));
+            if (noteObj.item != null) rollData.item = new ItemPF(noteObj.item.data, { owner: this.isOwner }).toObject();
 
             for (let note of noteObj.notes) {
                 if (!isMinimumCoreVersion("0.5.2")) {
@@ -5832,7 +5823,7 @@ export class ActorPF extends Actor {
         const noteObjects = this.getContextNotes(`abilityChecks.${abilityId}`);
         for (let noteObj of noteObjects) {
             rollData.item = {};
-            if (noteObj.item != null) rollData.item = duplicate(new ItemPF(noteObj.item.data, { owner: this.isOwner }));
+            if (noteObj.item != null) rollData.item = new ItemPF(noteObj.item.data, { owner: this.isOwner }).toObject();
 
             for (let note of noteObj.notes) {
                 if (!isMinimumCoreVersion("0.5.2")) {
@@ -5967,7 +5958,7 @@ export class ActorPF extends Actor {
         const acNoteObjects = this.getContextNotes("misc.ac");
         for (let noteObj of acNoteObjects) {
             rollData.item = {};
-            if (noteObj.item != null) rollData.item = duplicate(new ItemPF(noteObj.item.data, { owner: this.isOwner }));
+            if (noteObj.item != null) rollData.item = new ItemPF(noteObj.item.data, { owner: this.isOwner }).toObject();
 
             for (let note of noteObj.notes) {
                 if (!isMinimumCoreVersion("0.5.2")) {
@@ -5989,7 +5980,7 @@ export class ActorPF extends Actor {
         const cmdNoteObjects = this.getContextNotes("misc.cmd");
         for (let noteObj of cmdNoteObjects) {
             rollData.item = {};
-            if (noteObj.item != null) rollData.item = duplicate(new ItemPF(noteObj.item.data, { owner: this.isOwner }));
+            if (noteObj.item != null) rollData.item = new ItemPF(noteObj.item.data, { owner: this.isOwner }).toObject();
 
             for (let note of noteObj.notes) {
                 if (!isMinimumCoreVersion("0.5.2")) {
@@ -6011,7 +6002,7 @@ export class ActorPF extends Actor {
         const srNoteObjects = this.getContextNotes("misc.sr");
         for (let noteObj of srNoteObjects) {
             rollData.item = {};
-            if (noteObj.item != null) rollData.item = duplicate(new ItemPF(noteObj.item.data, { owner: this.isOwner }));
+            if (noteObj.item != null) rollData.item = new ItemPF(noteObj.item.data, { owner: this.isOwner }).toObject();
 
             for (let note of noteObj.notes) {
                 if (!isMinimumCoreVersion("0.5.2")) {
@@ -7116,7 +7107,7 @@ export class ActorPF extends Actor {
         return pack.getDocument(entryId).then(ent => {
             //console.log(`${vtt} | Importing Item ${ent.name} from ${collection}`);
 
-            let data = duplicate(ent.data);
+            let data = ent.toObject().data;
             if (this.sheet != null && this.sheet.rendered) {
                 data = mergeObject(data, this.sheet.getDropData(data));
             }
@@ -7149,7 +7140,7 @@ export class ActorPF extends Actor {
             }
             //console.log(`${vtt} | Importing Item ${ent.name} from ${collection}`);
 
-            let data = duplicate(ent.data);
+            let data = ent.toObject().data;
             delete data._id;
             return data;
         });

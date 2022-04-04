@@ -97,30 +97,31 @@ export class ActorSheetPF extends ActorSheet {
     // The Actor and its Items
     data.actor = this.actor.data.toObject(false);
     let featRollData = this.actor.getRollData()
-    data.items = this.actor.items.map(i => {
-      i.data.labels = i.labels;
-      i.data.id = i.id;
-      i.data.hasAttack = i.hasAttack;
-      i.data.possibleUpdate = i.data.data.possibleUpdate;
-      i.data.hasMultiAttack = i.hasMultiAttack;
-      i.data.containerId = getProperty(i.data, "data.containerId");
-      i.data.hasDamage = i.hasDamage;
-      i.data.hasEffect = i.hasEffect;
-      i.data.charges = i.charges;
-      i.data.maxCharges = i.maxCharges;
-      i.data.isRecharging = i.isRecharging
-      i.data.hasTimedRecharge = i.hasTimedRecharge;
-      i.data.container = getProperty(i.data, "data.container");
-      i.data.hasAction = i.hasAction || i.isCharged;
-      i.data.attackDescription = i.type === "attack" ? i.attackDescription(featRollData) : "";
-      i.data.damageDescription = i.type === "attack" ? i.damageDescription(featRollData) : "";
-      i.data.range = i.type === "attack" ? i.range : "";
-      i.data.timelineLeftText = i.getTimelineTimeLeftDescriptive();
-      i.data.showUnidentifiedData = i.showUnidentifiedData;
-      i.data.unmetRequirements = (i.type === "feat" || i.type === "class") ? i.hasUnmetRequirements(featRollData) : false;
-      if (i.showUnidentifiedData) i.data.name = getProperty(i.data, "data.unidentified.name") || game.i18n.localize("D35E.Unidentified");
-      else i.data.name = getProperty(i.data, "data.identifiedName") || i.data.name;
-      return i.data;
+    data.items = data.actor.items.map(i => {
+      const item = this.actor.items.get(i._id);
+      i.labels = item.labels;
+      i.id = item.id;
+      i.hasAttack = item.hasAttack;
+      i.possibleUpdate = item.data.data.possibleUpdate;
+      i.hasMultiAttack = item.hasMultiAttack;
+      i.containerId = getProperty(item.data, "data.containerId");
+      i.hasDamage = item.hasDamage;
+      i.hasEffect = item.hasEffect;
+      i.charges = item.charges;
+      i.maxCharges = item.maxCharges;
+      i.isRecharging = item.isRecharging
+      i.hasTimedRecharge = item.hasTimedRecharge;
+      i.container = getProperty(i.data, "data.container");
+      i.hasAction = item.hasAction || item.isCharged;
+      i.attackDescription = item.type === "attack" ? item.attackDescription(featRollData) : "";
+      i.damageDescription = item.type === "attack" ? item.damageDescription(featRollData) : "";
+      i.range = item.type === "attack" ? item.range : "";
+      i.timelineLeftText = item.getTimelineTimeLeftDescriptive();
+      i.showUnidentifiedData = item.showUnidentifiedData;
+      i.unmetRequirements = (item.type === "feat" || item.type === "class") ? item.hasUnmetRequirements(featRollData) : false;
+      if (i.showUnidentifiedData) i.name = getProperty(item.data, "data.unidentified.name") || game.i18n.localize("D35E.Unidentified");
+      else i.name = getProperty(item.data, "data.identifiedName") || item.data.name;
+      return i;
     });
     data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
     data.data = data.actor.data;
@@ -1606,7 +1607,7 @@ export class ActorSheetPF extends ActorSheet {
     if (button.disabled) return;
 
     const li = event.currentTarget.closest(".item");
-    if (keyboard.isDown("Shift")) {
+    if (game.keyboard.isModifierActive("Shift")) {
 
       this.actor.deleteOwnedItem(li.dataset.itemId);
     }
