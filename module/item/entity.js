@@ -55,11 +55,6 @@ export class ItemPF extends Item {
             || this.hasTemplate || (getProperty(this.data, "data.actionType") === "special");
     }
 
-    get _id() {
-        console.warn("Using old mapper for _id.")
-        return this.id;
-    }
-
     get isSingleUse() {
         return getProperty(this.data, "data.uses.per") === "single";
     }
@@ -500,7 +495,7 @@ export class ItemPF extends Item {
         }
         console.log('Is true/false', data, this.data.data.active)
         let expandedData = expandObject(data);
-        const srcData = mergeObject(this.data.toObject(), expandedData, {inplace: false});
+        const srcData = mergeObject(this.data.toObject(), expandedData);
 
         let needsUpdate = false; // if we do not have changes we often do not need to update actor
         if (this.type === 'class' ||
@@ -2924,7 +2919,7 @@ export class ItemPF extends Item {
         let _base = this.data.toObject(false).data;
         let result = {}
         if (customData)
-            result = mergeObject(_base, customData.data, {inplace: false})
+            result = mergeObject(_base, customData.data)
         else
             result = _base
 
