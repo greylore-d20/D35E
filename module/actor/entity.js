@@ -4574,6 +4574,15 @@ export class ActorPF extends Actor {
         await this.createEmbeddedEntity("Item", spellsToAdd, {nameUnique: true})
     }
 
+    async modifyTokenAttribute(attribute, value) {
+        if (attribute === "attributes.hp") {
+            return this.update({"data.attributes.hp.value": String(value)})
+        }
+        else {
+            return super.modifyTokenAttribute(attribute, value)
+        }        
+    }
+
     async addSpellsToSpellbook(item) {
         if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
