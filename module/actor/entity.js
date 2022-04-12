@@ -1,6 +1,6 @@
 import { DicePF } from "../dice.js";
 import { ItemPF } from "../item/entity.js";
-import { createTag, linkData, isMinimumCoreVersion, shuffle, uuidv4, getOriginalNameIfExists } from "../lib.js";
+import { createTag, linkData, isMinimumCoreVersion, shuffle, uuidv4, getOriginalNameIfExists, isEqual } from "../lib.js";
 import { createCustomChatMessage } from "../chat.js";
 import { CACHE } from "../cache.js";
 import {DamageTypes} from "../damage-types.js";
@@ -3336,134 +3336,8 @@ export class ActorPF extends Actor {
             if (obj.type === "equipment" || obj.type === "weapon") return (obj.data.data.equipped && !obj.data.data.melded && !obj.broken);
             return true;
         }).forEach(_obj => {
-            let obj = _obj.data;
-            erDrRollData.item = _obj.getRollData()
-            if (obj.data.resistances) {
-                (obj.data?.resistances || []).forEach(resistance => {
-                    if (!resistance[1]) return;
-                    let _resistance = data.combinedResistances.find(res => res.uid === resistance[1])
-                    if (!_resistance) {
-                        _resistance = DamageTypes.defaultER;
-                        _resistance.uid = resistance[1]
-                        data.combinedResistances.push(_resistance)
-                    }
-                    // Fix up existing objects so they work
-                    erDrRollData.level = _obj.data.levels || 0
-                    erDrRollData.levels= _obj.data.levels || 0
-
-                    _resistance.value = Math.max(_resistance.value, new Roll35e(resistance[0] || "0", erDrRollData).roll().total)
-                    _resistance.immunity = _resistance.immunity || resistance[2];
-                    _resistance.vulnerable = _resistance.vulnerable || resistance[3];
-                    _resistance.half = _resistance.half || resistance[4];
-                    _resistance.modified = true;
-                    if  (!_resistance.items)
-                        _resistance.items = []
-                    _resistance.items.push(obj.name)
-                })
-            }
-            if (obj.data.damageReduction) {
-                (obj.data?.damageReduction || []).forEach(dr => {
-                    if (!dr[1] || !dr[0]) return;
-                    if (dr[1] !== 'any') {
-                        if (!data.combinedDR.types) {
-                            data.combinedDR.types = []
-                        }
-                        let _dr = data.combinedDR.types.find(res => res.uid === dr[1])
-                        if (!_dr) {
-                            _dr = DamageTypes.defaultDR;
-                            _dr.uid = dr[1];
-                            data.combinedDR.types.push(_dr)
-                        }
-                        erDrRollData.level = obj.data.levels || 0
-                        erDrRollData.levels= obj.data.levels || 0
-                        _dr.value = Math.max(_dr.value, Roll35e.safeRoll(dr[0] || "0", erDrRollData).total)
-                        _dr.immunity = _dr.immunity || dr[2];
-                        _dr.modified = true;
-                        if  (!_dr.items)
-                            _dr.items = []
-                        _dr.items.push(obj.name)
-                    } else {
-                        data.combinedDR.any = Math.max(data.combinedDR.any || 0,new Roll35e(dr[0] || "0", _obj.getRollData()).roll().total)
-                    }
-                })
-            }
-            if (obj.type === "weapon" || obj.type === "equipment") {
-                if (obj.data?.equipmentType === "shield")
-                    data.shieldType = obj.data?.equipmentSubtype
-                if (obj.data.enhancements !== undefined) {
-                    obj.data.enhancements.items.forEach(enhancementItem => {
-                        erDrRollData.item = enhancementItem.data;
-                        (enhancementItem.data?.resistances || []).forEach(resistance => {
-                            if (!resistance[1]) return;
-                            let _resistance = data.combinedResistances.find(res => res.uid === resistance[1])
-                            if (!_resistance) {
-                                _resistance = DamageTypes.defaultER;
-                                _resistance.uid = resistance[1]
-                                data.combinedResistances.push(_resistance)
-                            }
-                            erDrRollData.level = enhancementItem.data.levels || 0
-                            erDrRollData.levels= enhancementItem.data.levels || 0
-                            erDrRollData.enh = enhancementItem.data.enh || 0
-                            _resistance.value = Math.max(_resistance.value, new Roll35e(resistance[0] || "0", erDrRollData).roll().total)
-                            _resistance.immunity = _resistance.immunity || resistance[2];
-                            _resistance.vulnerable = _resistance.vulnerable || resistance[3];
-                            _resistance.modified = true;
-                            if  (!_resistance.items)
-                                _resistance.items = []
-                            _resistance.items.push(obj.name)
-                        })
-                        if (enhancementItem.data.damageReduction) {
-                            (enhancementItem.data?.damageReduction || []).forEach(dr => {
-                                if (!dr[1] || !dr[0]) return;
-                                if (dr[1] !== 'any') {
-                                    if (!data.combinedDR.types) {
-                                        data.combinedDR.types = []
-                                    }
-                                    let _dr = data.combinedDR.types.find(res => res.uid === dr[1])
-                                    if (!_dr) {
-                                        _dr = DamageTypes.defaultDR;
-                                        _dr.uid = dr[1];
-                                        data.combinedDR.types.push(_dr)
-                                    }
-                                    erDrRollData.level = enhancementItem.data.levels || 0
-                                    erDrRollData.levels= enhancementItem.data.levels || 0
-                                    erDrRollData.enh = enhancementItem.data.enh || 0
-                                    _dr.value = Math.max(_dr.value, new Roll35e(dr[0] || "0", erDrRollData).roll().total)
-                                    _dr.immunity = _dr.immunity || dr[2];
-                                    _dr.modified = true;
-                                    if  (!_dr.items)
-                                        _dr.items = []
-                                    _dr.items.push(obj.name)
-                                } else {
-                                    data.combinedDR.any = Math.max(data.combinedDR.any || 0,new Roll35e(dr[0] || "0", enhancementItem.data).roll().total)
-                                }
-                            })
-                        }
-                    });
-                }
-            }
-            if (obj.data.counterName !== undefined && obj.data.counterName !== null && obj.data.counterName !== "") {
-                obj.data.counterName.split(";").forEach(counterName => {
-                    counterName = counterName.trim()
-                    if (counterName.indexOf(".") !== -1) {
-                        let group = counterName.split(".")[0]
-                        let name = counterName.split(".")[1]
-                        if (data.counters[group] === undefined) {
-                            data.counters[group] = {}
-                        }
-                        if (data.counters[group][name] === undefined) {
-                            data.counters[group][name] = { value: 0, counted: 0 }
-                        }
-                        data.counters[group][name].value++;
-                    } else {
-                        if (data.counters[counterName] === undefined) {
-                            data.counters[counterName] = { value: 0, counted: 0 }
-                        }
-                        data.counters[counterName].value++;
-                    }
-                })
-
-            }
+            this._prepareResistancesForItem(_obj, erDrRollData, data);
+            this._prepareCountersForItem(_obj, data);
         })
         actorData.items.filter(obj => {
             return obj.type === "feat" && obj.data.data.featType === "feat" && (obj.data.data.source === undefined || obj.data.data.source === "");
@@ -3588,6 +3462,164 @@ export class ActorPF extends Actor {
         }
         data.canLevelUp = data.details.xp.value >= data.details.xp.max
 
+    }
+
+    _prepareCountersForItem(_obj, data) {
+        let obj = _obj.data;
+        if (obj.data.counterName !== undefined && obj.data.counterName !== null && obj.data.counterName !== "") {
+            obj.data.counterName.split(";").forEach(counterName => {
+                counterName = counterName.trim();
+                if (counterName.indexOf(".") !== -1) {
+                    let group = counterName.split(".")[0];
+                    let name = counterName.split(".")[1];
+                    if (data.counters[group] === undefined) {
+                        data.counters[group] = {};
+                    }
+                    if (data.counters[group][name] === undefined) {
+                        data.counters[group][name] = { value: 0, counted: 0 };
+                    }
+                    data.counters[group][name].value++;
+                } else {
+                    if (data.counters[counterName] === undefined) {
+                        data.counters[counterName] = { value: 0, counted: 0 };
+                    }
+                    data.counters[counterName].value++;
+                }
+            });
+
+        }
+    }
+
+    _prepareResistancesForItem(_obj, erDrRollData, data) {
+        let obj = _obj.data;
+        erDrRollData.item = _obj.getRollData();
+        if (obj.data.resistances) {
+            (obj.data?.resistances || []).forEach(resistance => {
+                if (!resistance[1])
+                    return;
+                let _resistance = data.combinedResistances.find(res => res.uid === resistance[1]);
+                if (!_resistance) {
+                    _resistance = DamageTypes.defaultER;
+                    _resistance.uid = resistance[1];
+                    data.combinedResistances.push(_resistance);
+                }
+                let _oldResistance = duplicate(_resistance);
+                // Fix up existing objects so they work
+                erDrRollData.level = obj.data.levels || 0;
+                erDrRollData.levels = obj.data.levels || 0;
+
+                _resistance.value = Math.max(_resistance.value, new Roll35e(resistance[0] || "0", erDrRollData).roll().total);
+                _resistance.immunity = _resistance.immunity || resistance[2];
+                _resistance.vulnerable = _resistance.vulnerable || resistance[3];
+                _resistance.half = _resistance.half || resistance[4];
+                if (!isEqual(_oldResistance,_resistance)) {
+                    _resistance.providedBy = _obj.id;
+                    _resistance.isPool = obj.data?.damagePool?.enabled;
+                    _resistance.modified = true;
+                    if (!_resistance.items)
+                        _resistance.items = [];
+                    _resistance.items.push(obj.name);
+                }
+            });
+        }
+        if (obj.data.damageReduction) {
+            (obj.data?.damageReduction || []).forEach(dr => {
+                if (!dr[1] || !dr[0])
+                    return;
+                if (dr[1] !== 'any') {
+                    if (!data.combinedDR.types) {
+                        data.combinedDR.types = [];
+                    }
+                    let _dr = data.combinedDR.types.find(res => res.uid === dr[1]);
+                    if (!_dr) {
+                        _dr = DamageTypes.defaultDR;
+                        _dr.uid = dr[1];
+                        data.combinedDR.types.push(_dr);
+                    }
+                    let _oldDr = duplicate(dr);
+                    erDrRollData.level = obj.data.levels || 0;
+                    erDrRollData.levels = obj.data.levels || 0;
+                    _dr.value = Math.max(_dr.value, Roll35e.safeRoll(dr[0] || "0", erDrRollData).total);
+                    _dr.immunity = _dr.immunity || dr[2];
+                    if (!isEqual(_oldDr,_dr)) {
+                        _dr.providedBy = _obj.id;
+                        _dr.isPool = obj.data?.damagePool?.enabled;
+                        _dr.modified = true;
+                        if (!_dr.items)
+                            _dr.items = [];
+                        _dr.items.push(obj.name);
+                    }
+                } else {
+                    data.combinedDR.any = Math.max(data.combinedDR.any || 0, new Roll35e(dr[0] || "0", _obj.getRollData()).roll().total);
+                }
+            });
+        }
+        if (obj.type === "weapon" || obj.type === "equipment") {
+            if (obj.data?.equipmentType === "shield")
+                data.shieldType = obj.data?.equipmentSubtype;
+            if (obj.data.enhancements !== undefined) {
+                obj.data.enhancements.items.forEach(enhancementItem => {
+                    erDrRollData.item = enhancementItem.data;
+                    (enhancementItem.data?.resistances || []).forEach(resistance => {
+                        if (!resistance[1])
+                            return;
+                        let _resistance = data.combinedResistances.find(res => res.uid === resistance[1]);
+                        if (!_resistance) {
+                            _resistance = DamageTypes.defaultER;
+                            _resistance.uid = resistance[1];
+                            data.combinedResistances.push(_resistance);
+                        }
+                        let _oldResistance = duplicate(_resistance);
+                        erDrRollData.level = enhancementItem.data.levels || 0;
+                        erDrRollData.levels = enhancementItem.data.levels || 0;
+                        erDrRollData.enh = enhancementItem.data.enh || 0;
+                        _resistance.value = Math.max(_resistance.value, new Roll35e(resistance[0] || "0", erDrRollData).roll().total);
+                        _resistance.immunity = _resistance.immunity || resistance[2];
+                        _resistance.vulnerable = _resistance.vulnerable || resistance[3];
+                        _resistance.half = _resistance.half || resistance[4];
+                        if (!isEqual(_oldResistance,_resistance)) {
+                            _resistance.providedBy = _obj.id;
+                            _resistance.modified = true;
+                            if (!_resistance.items)
+                                _resistance.items = [];
+                            _resistance.items.push(obj.name);
+                        }
+                    });
+                    if (enhancementItem.data.damageReduction) {
+                        (enhancementItem.data?.damageReduction || []).forEach(dr => {
+                            if (!dr[1] || !dr[0])
+                                return;
+                            if (dr[1] !== 'any') {
+                                if (!data.combinedDR.types) {
+                                    data.combinedDR.types = [];
+                                }
+                                let _dr = data.combinedDR.types.find(res => res.uid === dr[1]);
+                                if (!_dr) {
+                                    _dr = DamageTypes.defaultDR;
+                                    _dr.uid = dr[1];
+                                    data.combinedDR.types.push(_dr);
+                                }
+                                let _oldDr = duplicate(dr);
+                                erDrRollData.level = enhancementItem.data.levels || 0;
+                                erDrRollData.levels = enhancementItem.data.levels || 0;
+                                erDrRollData.enh = enhancementItem.data.enh || 0;
+                                _dr.value = Math.max(_dr.value, new Roll35e(dr[0] || "0", erDrRollData).roll().total);
+                                _dr.immunity = _dr.immunity || dr[2];
+                                if (!isEqual(_oldDr,_dr)) {
+                                    _dr.providedBy = _obj.id;
+                                    _dr.modified = true;
+                                    if (!_dr.items)
+                                        _dr.items = [];
+                                    _dr.items.push(obj.name);
+                                }
+                            } else {
+                                data.combinedDR.any = Math.max(data.combinedDR.any || 0, new Roll35e(dr[0] || "0", enhancementItem.data).roll().total);
+                            }
+                        });
+                    }
+                });
+            }
+        }
     }
 
     _setSourceDetails(actorData, extraData, flags) {
@@ -6356,6 +6388,45 @@ export class ActorPF extends Actor {
         return Promise.all(promises);
     }
 
+    async updateDamageReductionPoolItems(itemsToUpdate) {
+            //await this.refresh();
+            let itemUpdateData = []
+            let itemsEnding = []
+            let itemsOnRound = []
+            let itemsToDelete = []
+            let itemResourcesData = {}
+            let deletedOrChanged = false;
+
+            for (let possibleUpdate of itemsToUpdate) {
+                let item = this.items.get(possibleUpdate.id);
+                let current = item.data.data.damagePool.current - possibleUpdate.value;
+                if (item.data.data.damagePool.deleteOnDamagePoolEmpty) {
+                    itemUpdateData.push({item: item, data: {'data.damagePool.current':0,'data.active':false}})
+                    itemsToDelete.push(possibleUpdate.id)
+                    deletedOrChanged = true;
+                } else {
+                    if (current <= 0) {
+                        itemUpdateData.push({item: item, data: {'data.damagePool.current':0,'data.active':false}})
+                        deletedOrChanged = true;
+                    } else {
+                        itemUpdateData.push({item: item, data: {'data.damagePool.current':current}})
+                        deletedOrChanged = true;
+                    }
+                }
+            }
+
+            if (itemUpdateData.length > 0) {
+                let updatePromises = []
+                for (let updateData of itemUpdateData) {
+                    updatePromises.push(updateData.item.update(updateData.data, { stopUpdates: true }));
+                }
+                await Promise.all(updatePromises)
+            }
+            if (itemsToDelete.length > 0) {
+                await this.deleteEmbeddedDocuments("Item", itemsToDelete, {})
+            }
+    
+    }
 
         /**
      * Apply rolled dice damage to the token or tokens which are currently controlled.
@@ -6487,6 +6558,9 @@ export class ActorPF extends Actor {
                                 await _attacker.quickChangeItemQuantity(ammoId, 1)
                         }
                     }
+                }
+                if (damageData.damagePoolPossibleReductionsUpdate) {
+                    await a.updateDamageReductionPoolItems(damageData.damagePoolPossibleReductionsUpdate);
                 }
                 // Set chat data
                 let chatData = {

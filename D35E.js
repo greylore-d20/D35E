@@ -96,6 +96,21 @@ Hooks.once("init", async function() {
     createdMeasureTemplates: new Set()
   };
 
+  if (!isMinimumCoreVersion("10.0")) {
+    Object.defineProperty(ActorPF.prototype, "_id", {
+        get: function _id() {
+          console.warn("Using old mapper for _id.")
+          return this.id;
+        }
+    });
+    Object.defineProperty(ItemPF.prototype, "_id", {
+        get: function _id() {
+          console.warn("Using old mapper for _id.")
+          return this.id;
+        }
+    });
+  }
+
   // Record Configuration Values
   CONFIG.D35E = D35E;
   CONFIG.debug.hooks = true;

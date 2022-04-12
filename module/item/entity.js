@@ -608,34 +608,7 @@ export class ItemPF extends Item {
             data["data.hp"] = 0;
         }
 
-        if (data["data.save.dcAutoType"] !== undefined && data["data.save.dcAutoType"] !== null && data["data.save.dcAutoType"] !== "" ) {
-            let autoDCBonus = 0;
-            if (this.actor && this.actor.racialHD) {
-                let autoType = data["data.save.dcAutoType"];
-                switch (autoType) {
-                    case "racialHD":                    
-                        autoDCBonus += this.actor.racialHD.data.data.levels;
-                        break;
-                    case "halfRacialHD":                    
-                        autoDCBonus += this.actor.racialHD.data.data.levels;
-                        autoDCBonus = Math.floor(autoDCBonus/2.0);
-                        break;
-                    case "HD":                    
-                        autoDCBonus += this.actor.data.data.attributes.hd.total;
-                        break;
-                    case "halfHD":                    
-                        autoDCBonus += this.actor.data.data.attributes.hd.total;
-                        autoDCBonus = Math.floor(autoDCBonus/2.0);
-                        break;
-                    default:
-                        break;
-                }
-                let ability = data["data.save.dcAutoAbility"];
-                data["data.save.dc"] = 10 + (this.actor.data.data.abilities[ability]?.mod || 0) + autoDCBonus;
-            } else {
-                data["data.save.dc"] = 0;
-            }
-        }
+        this._updateCalculateAutoDC(data);
 
         if (data["data.convertedCapacity"] !== undefined && data["data.convertedCapacity"] !== null) {
             const conversion = game.settings.get("D35E", "units") === "metric" ? 2 : 1;
@@ -648,49 +621,14 @@ export class ItemPF extends Item {
             data["data.-=material"] = null;
         }
 
-
-
-
         {
             let rollData = {};
             if (this.actor != null) rollData = this.actor.getRollData();
-            let rollFormula = getProperty(this.data, "data.timeline.formula");
-            if (data["data.timeline.formula"] != null && data["data.timeline.formula"] !== getProperty(this.data, "data.timeline.formula"))
-                rollFormula = data["data.timeline.formula"]
-            if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
-
-                rollData.item = {};
-                rollData.item.level = getProperty(this.data, "data.level");
-                if (data["data.level"] != null && data["data.level"] !== getProperty(this.data, "data.level"))
-                    rollData.item.level = data["data.level"]
-                try {
-                    data["data.timeline.total"] = new Roll35e(rollFormula, rollData).roll().total;
-                } catch (e) {
-                    data["data.timeline.total"] = 0;
-                }
-            }
-
-            rollData.enhancement = data["data.enh"] !== undefined ? data["data.enh"] : getProperty(this.data, "data.enh");
-            rollFormula = getProperty(this.data, "data.enhIncreaseFormula");
-            if (data["data.enhIncreaseFormula"] != null && data["data.enhIncreaseFormula"] !== getProperty(this.data, "data.enhIncreaseFormula"))
-                rollFormula = data["data.enhIncreaseFormula"]
-            if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
-                data["data.enhIncrease"] = new Roll35e(rollFormula, rollData).roll().total;
-            }
-            rollData.enhancement = data["data.enh"] !== undefined ? data["data.enh"] : getProperty(this.data, "data.enh");
-            rollData.enhIncrease = data["data.enhIncrease"] !== undefined ? data["data.enhIncrease"] : getProperty(this.data, "data.enhIncrease");
-            rollFormula = getProperty(this.data, "data.priceFormula");
-            if (data["data.priceFormula"] != null && data["data.priceFormula"] !== getProperty(this.data, "data.priceFormula"))
-                rollFormula = data["data.priceFormula"]
-            if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
-                data["data.price"] = new Roll35e(rollFormula, rollData).roll().total;
-            }
-
-
-            if (data["data.maxDamageDiceFormula"] != null && data["data.maxDamageDiceFormula"] !== getProperty(this.data, "data.maxDamageDiceFormula")) {
-                let roll = new Roll35e(data["data.maxDamageDiceFormula"], rollData).roll();
-                data["data.maxDamageDice"] = roll.total;
-            }
+            this._updateCalculateTimelineData(data, rollData);
+            this._updateCalculateDamagePoolData(data, rollData);
+            this._updateCalculateEnhancementData(rollData, data);
+            this._updateCalculatePriceData(data, rollData);
+            this._updateCalculateMaxDamageDice(data, rollData);
         }
 
         // Set equipment subtype and slot
@@ -820,6 +758,102 @@ export class ItemPF extends Item {
         console.log('D35E | ITEM UPDATE | Updated')
         return Promise.resolve(updateData);
         // return super.update(data, options);
+    }
+
+    _updateCalculateAutoDC(data) {
+        if (data["data.save.dcAutoType"] !== undefined && data["data.save.dcAutoType"] !== null && data["data.save.dcAutoType"] !== "") {
+            let autoDCBonus = 0;
+            if (this.actor && this.actor.racialHD) {
+                let autoType = data["data.save.dcAutoType"];
+                switch (autoType) {
+                    case "racialHD":
+                        autoDCBonus += this.actor.racialHD.data.data.levels;
+                        break;
+                    case "halfRacialHD":
+                        autoDCBonus += this.actor.racialHD.data.data.levels;
+                        autoDCBonus = Math.floor(autoDCBonus / 2.0);
+                        break;
+                    case "HD":
+                        autoDCBonus += this.actor.data.data.attributes.hd.total;
+                        break;
+                    case "halfHD":
+                        autoDCBonus += this.actor.data.data.attributes.hd.total;
+                        autoDCBonus = Math.floor(autoDCBonus / 2.0);
+                        break;
+                    default:
+                        break;
+                }
+                let ability = data["data.save.dcAutoAbility"];
+                data["data.save.dc"] = 10 + (this.actor.data.data.abilities[ability]?.mod || 0) + autoDCBonus;
+            } else {
+                data["data.save.dc"] = 0;
+            }
+        }
+    }
+
+    _updateCalculatePriceData(data, rollData) {
+        let rollFormula = getProperty(this.data, "data.priceFormula");
+        if (data["data.priceFormula"] != null && data["data.priceFormula"] !== getProperty(this.data, "data.priceFormula"))
+            rollFormula = data["data.priceFormula"];
+        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
+            data["data.price"] = new Roll35e(rollFormula, rollData).roll().total;
+        }
+    }
+
+    _updateCalculateMaxDamageDice(data, rollData) {
+        if (data["data.maxDamageDiceFormula"] != null && data["data.maxDamageDiceFormula"] !== getProperty(this.data, "data.maxDamageDiceFormula")) {
+            let roll = new Roll35e(data["data.maxDamageDiceFormula"], rollData).roll();
+            data["data.maxDamageDice"] = roll.total;
+        }
+    }
+
+    _updateCalculateEnhancementData(rollData, data) {
+        rollData.enhancement = data["data.enh"] !== undefined ? data["data.enh"] : getProperty(this.data, "data.enh");
+        let rollFormula = getProperty(this.data, "data.enhIncreaseFormula");
+        if (data["data.enhIncreaseFormula"] != null && data["data.enhIncreaseFormula"] !== getProperty(this.data, "data.enhIncreaseFormula"))
+            rollFormula = data["data.enhIncreaseFormula"];
+        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
+            data["data.enhIncrease"] = new Roll35e(rollFormula, rollData).roll().total;
+        }
+        rollData.enhancement = data["data.enh"] !== undefined ? data["data.enh"] : getProperty(this.data, "data.enh");
+        rollData.enhIncrease = data["data.enhIncrease"] !== undefined ? data["data.enhIncrease"] : getProperty(this.data, "data.enhIncrease");
+        
+    }
+
+    _updateCalculateDamagePoolData(data, rollData) {
+        let rollFormula = getProperty(this.data, "data.damagePool.formula");
+        if (data["data.damagePool.formula"] != null && data["data.damagePool.formula"] !== getProperty(this.data, "data.damagePool.formula"))
+            rollFormula = data["data.damagePool.formula"];
+        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
+
+            rollData.item = {};
+            rollData.item.level = getProperty(this.data, "data.level");
+            if (data["data.level"] != null && data["data.level"] !== getProperty(this.data, "data.level"))
+                rollData.item.level = data["data.level"];
+            try {
+                data["data.damagePool.total"] = new Roll35e(rollFormula, rollData).roll().total;
+            } catch (e) {
+                data["data.damagePool.total"] = 0;
+            }
+        }
+    }
+
+    _updateCalculateTimelineData(data, rollData) {
+        let rollFormula = getProperty(this.data, "data.timeline.formula");
+        if (data["data.timeline.formula"] != null && data["data.timeline.formula"] !== getProperty(this.data, "data.timeline.formula"))
+            rollFormula = data["data.timeline.formula"];
+        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
+
+            rollData.item = {};
+            rollData.item.level = getProperty(this.data, "data.level");
+            if (data["data.level"] != null && data["data.level"] !== getProperty(this.data, "data.level"))
+                rollData.item.level = data["data.level"];
+            try {
+                data["data.timeline.total"] = new Roll35e(rollFormula, rollData).roll().total;
+            } catch (e) {
+                data["data.timeline.total"] = 0;
+            }
+        }
     }
 
     _updateAlignmentEnhancement(data, enhancements, type, srcData) {

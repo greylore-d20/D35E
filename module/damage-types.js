@@ -51,6 +51,8 @@ export class DamageTypes {
             type.immunity = t.immunity;
             type.modified = t.modified;
             type.items = t.items;
+            type.providedBy = t.providedBy;
+            type.isPool = t.isPool;
         })
         return damageTypes;
     }
@@ -202,6 +204,8 @@ export class DamageTypes {
             type.half = t.half;
             type.modified = t.modified;
             type.items = t.items;
+            type.providedBy = t.providedBy;
+            type.isPool = t.isPool;
         })
         return damageTypes;
     }
@@ -330,6 +334,10 @@ export class DamageTypes {
         }});
         let realDamage = (applyHalf ? Math.floor(damageBeforeDr/2.0) : damageBeforeDr);
         let damageAfterDr = Math.max(realDamage - highestDr,0);
+        let damagePoolPossibleReductionsUpdate = []
+        let damageDifference = realDamage - damageAfterDr;
+        if (damageDifference && appliedDr.providedBy && appliedDr.isPool)
+            damagePoolPossibleReductionsUpdate.push({id:appliedDr.providedBy,value:damageDifference})
         if (baseIsNonLethal) {
             nonLethalDamage += damageAfterDr;
             damageAfterDr = 0;
@@ -337,6 +345,7 @@ export class DamageTypes {
         let energyDamageAfterEr = 0
         let energyDamageBeforeEr = 0
         let energyDamage = []
+        
 
         damage.forEach(d => {
             if (d.damageTypeUid) {
@@ -352,7 +361,7 @@ export class DamageTypes {
                         damageAfterEr =- damageAfterEr;
                     else if (actor.data.data.attributes?.creatureType !== "undead" && d.damageTypeUid === "energy-positive")
                         damageAfterEr =- damageAfterEr;
-
+                    
                     let value = erValue?.value
                     if (erValue?.immunity) {
                         damageAfterEr = 0;
@@ -374,9 +383,12 @@ export class DamageTypes {
                     } else if (damageAfterEr === realDamage) {
                         value = game.i18n.localize("D35E.NoER")
                     }
+                    let damageDifference = realDamage-damageAfterEr;
                     energyDamage.push({nonLethal: hasRegeneration && !erValue?.lethal,name:_damage.data.name,uid:_damage.data.data.uniqueId,before:d.roll.total,after:damageAfterEr,value:value || 0,lower:damageAfterEr<d.roll.total,higher:damageAfterEr>d.roll.total,equal:d.roll.total===damageAfterEr});
                     energyDamageAfterEr += damageAfterEr;
                     energyDamageBeforeEr += d.roll.total;
+                    if (damageDifference && erValue.providedBy && erValue.isPool)
+                        damagePoolPossibleReductionsUpdate.push({id:erValue.providedBy,value:damageDifference})
 
                     if (d.damageTypeUid === "energy-positive" || d.damageTypeUid === "energy-negative" || d.damageTypeUid === "energy-force") {
                         incorporeal = true; //These energy damages always are treated as incorporeal
@@ -420,6 +432,7 @@ export class DamageTypes {
             energyDamage: energyDamage,
             incorporealRoll: Math.floor(incorporealRoll * 100),
             incorporealRolled: incorporealRolled,
+            damagePoolPossibleReductionsUpdate: damagePoolPossibleReductionsUpdate,
             incorporealMiss: incorporealMiss};
     }
 
