@@ -168,6 +168,11 @@
     {{/select}}
   </select>
 </div>
+{{#if notOnActor}}
+<em style="opacity: 0.8;">
+  This attack may behave differently when added to actor. Some of the features, like detecting auto scaling with BaB are disabled.
+</em>
+{{/if}}
 {{#unless autoScaleWithBab}}
 <h4 class="attack-header">
   {{localize "D35E.ExtraAttacks"}}
