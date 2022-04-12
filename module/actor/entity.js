@@ -4641,7 +4641,7 @@ export class ActorPF extends Actor {
                     let foundLevel = false;
                     if (obj.data.data.learnedAt !== undefined) {
                         obj.data.data.learnedAt.class.forEach(learnedAtObj => {
-                            if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
+                            if (learnedAtObj[0].toLowerCase() === spellbookClass.name.toLowerCase()) {
                                 obj.data.document.data.update({'data.level':learnedAtObj[1]});
                                 foundLevel = true;
                             }
