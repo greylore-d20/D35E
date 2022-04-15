@@ -9,7 +9,7 @@ from git import Repo
 
 version = sys.argv[1];
 
-repo = Repo(self.rorepo.working_tree_dir)
+repo = Repo(os.getcwd())
 assert not repo.bare
 
 with open('system.json') as json_file:
@@ -21,3 +21,6 @@ with open("system.json", "w") as fp:
 
 repo.git.add("system.json")
 repo.git.commit('-m', 'Release %s' % version, author='rughalt@gmail.com')
+
+origin = repo.remote(name='origin')
+origin.push()
