@@ -339,7 +339,7 @@ export class ActorSheetPF extends ActorSheet {
   }
    
   data.maxDexBonus.sourceDetails.push({name: game.i18n.localize("D35E.Gear"), value: this.actor.data.data.attributes?.maxDex?.gear || game.i18n.localize("D35E.NotLimited")})
-
+  data.maxDexUnlimited = this.actor.data.data.attributes?.maxDex?.total === 999
 
     // Fetch the game settings relevant to sheet rendering.
     data.healthConfig =  game.settings.get("D35E", "healthConfig");
