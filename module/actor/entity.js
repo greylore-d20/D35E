@@ -2876,7 +2876,7 @@ export class ActorPF extends Actor {
                         let canAdd = !addedAbilities.has(uniqueId)
                         if (canAdd) {
                             if (!existingAbilities.has(uniqueId)) {
-                                let eItem = e.toObject().data
+                                let eItem = e.data.toObject()
                                 ItemPF.setMaxUses(eItem, this.getRollData());
                                 delete eItem._id;
                                 eItem.data.uniqueId = uniqueId;
