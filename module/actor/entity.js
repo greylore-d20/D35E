@@ -7190,7 +7190,7 @@ export class ActorPF extends Actor {
         return pack.getDocument(entryId).then(ent => {
             //console.log(`${vtt} | Importing Item ${ent.name} from ${collection}`);
 
-            let data = ent.toObject().data;
+            let data = ent.data.toObject();
             if (this.sheet != null && this.sheet.rendered) {
                 data = mergeObject(data, this.sheet.getDropData(data));
             }
@@ -7223,7 +7223,7 @@ export class ActorPF extends Actor {
             }
             //console.log(`${vtt} | Importing Item ${ent.name} from ${collection}`);
 
-            let data = ent.toObject().data;
+            let data = ent.data.toObject();
             delete data._id;
             return data;
         });
