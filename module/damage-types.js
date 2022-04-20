@@ -387,7 +387,7 @@ export class DamageTypes {
                     energyDamage.push({nonLethal: hasRegeneration && !erValue?.lethal,name:_damage.data.name,uid:_damage.data.data.uniqueId,before:d.roll.total,after:damageAfterEr,value:value || 0,lower:damageAfterEr<d.roll.total,higher:damageAfterEr>d.roll.total,equal:d.roll.total===damageAfterEr});
                     energyDamageAfterEr += damageAfterEr;
                     energyDamageBeforeEr += d.roll.total;
-                    if (damageDifference && erValue.providedBy && erValue.isPool)
+                    if (damageDifference && erValue?.providedBy && erValue?.isPool)
                         damagePoolPossibleReductionsUpdate.push({id:erValue.providedBy,value:damageDifference})
 
                     if (d.damageTypeUid === "energy-positive" || d.damageTypeUid === "energy-negative" || d.damageTypeUid === "energy-force") {
