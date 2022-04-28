@@ -565,6 +565,8 @@ D35E.attackTypes = {
   "natural": "D35E.AttackTypeNatural",
   "ability": "D35E.AttackTypeAbility",
   "racialAbility": "D35E.AttackTypeRacial",
+  "extraordinary": "D35E.AttackTypeExtraordinary",
+  "supernatural": "D35E.AttackTypeSupernatural",
   "misc": "D35E.Misc",
 };
 
@@ -573,6 +575,8 @@ D35E.attackTypesShort = {
   "natural": "D35E.AttackTypeNaturalShort",
   "ability": "D35E.AttackTypeAbilityShort",
   "racialAbility": "D35E.AttackTypeRacialShort",
+  "extraordinary": "D35E.AttackTypeExtraordinaryShort",
+  "supernatural": "D35E.AttackTypeSupernaturalShort",
   "misc": "D35E.Misc",
 };
 
@@ -582,6 +586,8 @@ D35E.attackTypesIcon = {
   "natural": "D35E.AttackTypeNaturalIcon",
   "ability": "D35E.AttackTypeAbilityIcon",
   "racialAbility": "D35E.AttackTypeRacialIcon",
+  "extraordinary": "D35E.AttackTypeExtraordinarIcon",
+  "extraordinary": "D35E.AttackTypeSupernaturalIcon",
   "misc": "D35E.Misc",
 };
 

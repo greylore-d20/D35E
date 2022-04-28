@@ -691,7 +691,7 @@ export class ItemPF extends Item {
                     if (this.data.data.shapechange.type === "wildshape" || this.data.data.shapechange.type === "polymorph") {
                         let itemsToCreate = []
                         for (const i of this.data.data.shapechange.source.items) {
-                            if (i.type === "attack" && i.data.attackType === "natural") {
+                            if (i.type === "attack" && (i.data.attackType === "natural" || i.data.attackType === "extraordinary")) {
                                 //console.log('add polymorph attack')
                                 if (!this.actor) continue;
                                 let data = duplicate(i);
@@ -719,7 +719,7 @@ export class ItemPF extends Item {
                         if (this.actor) {
                             for (const i of this.actor.items) {
     
-                                if (i.data.type === "attack" && i.data.data.attackType === "natural" && !i.data.data.melded) {
+                                if (i.data.type === "attack" && ((i.data.attackType === "natural" || i.data.attackType === "extraordinary")) && !i.data.data.melded) {
                                     //console.log('remove polymorph attack',i,this.actor,this.actor.token)
                                     itemsToDelete.push(i._id)
                                 }
