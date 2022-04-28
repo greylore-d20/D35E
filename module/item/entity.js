@@ -832,8 +832,10 @@ export class ItemPF extends Item {
                 rollData.item.level = data["data.level"];
             try {
                 data["data.damagePool.total"] = new Roll35e(rollFormula, rollData).roll().total;
+                data["data.damagePool.current"] = data["data.damagePool.total"];
             } catch (e) {
                 data["data.damagePool.total"] = 0;
+                data["data.damagePool.current"] = data["data.damagePool.total"];
             }
         }
     }
