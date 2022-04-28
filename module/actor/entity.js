@@ -93,13 +93,13 @@ export class ActorPF extends Actor {
     }
 
     get spellFailure() {
-        if (this.items == null) return this.data.data.attributes.arcaneSpellFailure || 0;
+        if (this.items == null) return getProperty(this.data,"data.attributes.arcaneSpellFailure") || 0;
         return this.items.filter(o => {
             return o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded && !o.broken;
         }).reduce((cur, o) => {
             if (typeof o.data.data.spellFailure === "number") return cur + o.data.data.spellFailure;
             return cur;
-        }, this.data.data.attributes.arcaneSpellFailure || 0);
+        }, getProperty(this.data,"data.attributes.arcaneSpellFailure") || 0);
     }
 
     get auras() {
@@ -304,7 +304,7 @@ export class ActorPF extends Actor {
     get _skillTargets() {
         let skills = [];
         let subSkills = [];
-        for (let [sklKey, skl] of Object.entries(this.data.data.skills)) {
+        for (let [sklKey, skl] of Object.entries(getProperty(this.data,"data.skills"))) {
             if (skl == null) continue;
             if (skl.subSkills != null) {
                 for (let subSklKey of Object.keys(skl.subSkills)) {
@@ -928,7 +928,7 @@ export class ActorPF extends Actor {
 
 
         // Apply changes in Actor size to Token width/height
-        if (!options.skipToken && tokenSizeKey !== 'none' && this.isCharacterType && !this.data.data.noTokenOverride)
+        if (!options.skipToken && tokenSizeKey !== 'none' && this.isCharacterType && !getProperty(this.data,"data.noTokenOverride"))
         {
 
             let size = CONFIG.D35E.tokenSizes[tokenSizeKey];
@@ -993,7 +993,7 @@ export class ActorPF extends Actor {
                 }
 
             }
-            if (!this.data.data.noLightOverride && !game.settings.get("D35E", "globalDisableTokenLight")) {
+            if (!getProperty(this.data,"data.noLightOverride") && !game.settings.get("D35E", "globalDisableTokenLight")) {
                 if (this.isToken) {
                     let tokens = []
                     tokens.push(this.token);
@@ -1008,7 +1008,7 @@ export class ActorPF extends Actor {
                     }
                 }
             }
-            if (!this.data.data.noVisionOverride && !game.settings.get("D35E", "globalDisableTokenVision"))
+            if (!getProperty(this.data,"data.noVisionOverride") && !game.settings.get("D35E", "globalDisableTokenVision"))
             {
                 //console.log('D35E | Changing Vision', darkvision, lowLight)
                 if (this.isToken) {
@@ -1565,7 +1565,7 @@ export class ActorPF extends Actor {
 
         // Track previous values
         const prevValues = {
-            mhp: this.data.data.attributes.hp.max,
+            mhp: getProperty(this.data,"data.attributes.hp.max"),
             wounds: getProperty(this.data, "data.attributes.wounds.max") || 0,
             vigor: getProperty(this.data, "data.attributes.vigor.max") || 0,
         };
@@ -1586,7 +1586,7 @@ export class ActorPF extends Actor {
             if (typeof buffTarget === "object") {
                 // Add specific skills as targets
                 if (key === "skill") {
-                    for (let [s, skl] of Object.entries(this.data.data.skills)) {
+                    for (let [s, skl] of Object.entries(getProperty(this.data,"data.skills"))) {
                         if (skl == null) continue;
                         if (!skl.subSkills) {
                             changeData[`skill.${s}`] = {};
@@ -1788,7 +1788,7 @@ export class ActorPF extends Actor {
         //console.log('D35E | Master Changes');
         const origData = mergeObject(this.data.toObject(false), data != null ? expandObject(data) : {});
         updateData = flattenObject({ data: mergeObject(origData.data, expandObject(updateData).data, { inplace: false }) });
-        this._addDynamicData(updateData, {}, flags, Object.keys(this.data.data.abilities), srcData1, true);
+        this._addDynamicData(updateData, {}, flags, Object.keys(getProperty(this.data,"data.abilities")), srcData1, true);
 
         if (!this.data.data?.master?.id) {
             let _changesLength = allChanges.length;
@@ -1836,7 +1836,7 @@ export class ActorPF extends Actor {
             temp.push(changeData[changeTarget]);
             if (allChanges.length <= a + 1 || allChanges[a + 1].raw[2] !== changeTarget) {
                 const newData = this._applyChanges(changeTarget, temp, srcData1, sourceInfo,change.source.name || change.source?.item?.name, change.source.type);
-                this._addDynamicData(updateData, newData, flags, Object.keys(this.data.data.abilities), srcData1, false, changeTarget);
+                this._addDynamicData(updateData, newData, flags, Object.keys(getProperty(this.data,"data.abilities")), srcData1, false, changeTarget);
                 temp = [];
             }
         });
@@ -2016,7 +2016,7 @@ export class ActorPF extends Actor {
 
         // Add dex mod to AC
         if (updateData["data.abilities.dex.mod"] < 0 || !flags.loseDexToAC) {
-            const maxDexBonus = updateData["data.attributes.maxDexBonus"] || (this.data.data.attributes.maxDexBonus || null);
+            const maxDexBonus = updateData["data.attributes.maxDexBonus"] || (getProperty(this.data,"data.attributes.maxDexBonus") || null);
             const dexBonus = maxDexBonus != null ? Math.min(maxDexBonus, updateData["data.abilities.dex.mod"]) : updateData["data.abilities.dex.mod"];
             linkData(srcData1, updateData, "data.attributes.ac.normal.total", updateData["data.attributes.ac.normal.total"] + dexBonus);
             linkData(srcData1, updateData, "data.attributes.ac.touch.total", updateData["data.attributes.ac.touch.total"] + dexBonus);
@@ -2053,7 +2053,7 @@ export class ActorPF extends Actor {
             }
         }
         if (srcData1 !== null) {
-            if (srcData1.img !== this.data.data.tokenImg && this.data.data.tokenImg === "icons/svg/mystery-man.svg") {
+            if (srcData1.img !== getProperty(this.data,"data.tokenImg") && getProperty(this.data,"data.tokenImg") === "icons/svg/mystery-man.svg") {
                 srcData1.tokenImg = srcData1.img;
                 linkData(srcData1, updateData, "data.tokenImg", srcData1.img);
             }
@@ -2066,7 +2066,7 @@ export class ActorPF extends Actor {
             tokenImg = data.token.img;
             linkData(srcData1, updateData, "data.tokenImg", tokenImg);
         }
-        if (!options.skipToken && !this.data.data.noTokenOverride) {
+        if (!options.skipToken && !getProperty(this.data,"data.noTokenOverride")) {
             if (shapechangeImg !== "icons/svg/mystery-man.svg") {
                 if (this.isToken) {
                     let tokens = []
@@ -2528,7 +2528,7 @@ export class ActorPF extends Actor {
         }
 
         // Reset movement speed
-        for (let speedKey of Object.keys(this.data.data.attributes.speed)) {
+        for (let speedKey of Object.keys(getProperty(this.data,"data.attributes.speed"))) {
             let base = getProperty(data, `data.attributes.speed.${speedKey}.base`);
             linkData(data, updateData, `data.attributes.speed.${speedKey}.total`, base || 0);
         }
@@ -2805,7 +2805,7 @@ export class ActorPF extends Actor {
                 itemsWithUid.set(i.data.data.uniqueId, i.id)
             }
 
-            //console.log('D35E | Adding Features', level, data, this.data.data.classLevels, updateData)
+            //console.log('D35E | Adding Features', level, data, getProperty(this.data,"data.classLevels"), updateData)
 
             if (true) {
                 linkData(data, updateData, "data.details.level.value", level);
@@ -3072,7 +3072,7 @@ export class ActorPF extends Actor {
 
 
         // Force speed to creature speed
-        for (let speedKey of Object.keys(this.data.data.attributes.speed)) {
+        for (let speedKey of Object.keys(getProperty(this.data,"data.attributes.speed"))) {
             if (changes[`data.attributes.speed.${speedKey}.replace`])
                 linkData(data, updateData, `data.attributes.speed.${speedKey}.total`, changes[`data.attributes.speed.${speedKey}.replace`]);
         }
@@ -3374,7 +3374,7 @@ export class ActorPF extends Actor {
             }
         }
 
-        data.senses = duplicate(this.data.data.attributes.senses) || {}
+        data.senses = duplicate(getProperty(this.data,"data.attributes.senses")) || {}
         if (!data.senses.modified)
             data.senses.modified = {}
         for (let i of this.items.values()) {
@@ -4064,7 +4064,7 @@ export class ActorPF extends Actor {
         } else if (expandedData.data !== null)
             data = flattenObject(expandedData);
         data.img = img;
-        for (let abl of Object.keys(this.data.data.abilities)) {
+        for (let abl of Object.keys(getProperty(this.data,"data.abilities"))) {
             if (data[`data.abilities.${abl}.tempvalue`] === undefined || data[`data.abilities.${abl}.tempvalue`] === null)
                 continue
             if (Array.isArray(data[`data.abilities.${abl}.tempvalue`])) {
@@ -4083,7 +4083,7 @@ export class ActorPF extends Actor {
         }
 
         // Make certain variables absolute
-        const _absoluteKeys = Object.keys(this.data.data.abilities).reduce((arr, abl) => {
+        const _absoluteKeys = Object.keys(getProperty(this.data,"data.abilities")).reduce((arr, abl) => {
             arr.push(`data.abilities.${abl}.userPenalty`, `data.abilities.${abl}.damage`, `data.abilities.${abl}.drain`);
             return arr;
         }, []).concat("data.attributes.energyDrain").filter(k => {
@@ -4098,10 +4098,10 @@ export class ActorPF extends Actor {
             else {
                 if (typeof data[`data.attributes.hp.value`] === "string") {
                     if (data[`data.attributes.hp.value`].startsWith('+')) {
-                        data[`data.attributes.hp.value`] = this.data.data.attributes.hp.value + parseInt(data[`data.attributes.hp.value`]);
+                        data[`data.attributes.hp.value`] = getProperty(this.data,"data.attributes.hp.value") + parseInt(data[`data.attributes.hp.value`]);
                     } else if (data[`data.attributes.hp.value`].startsWith('-')) {
-                        if (this.data.data.attributes.hp.value > 0) // When we are below 0, we cannot do that
-                            data[`data.attributes.hp.value`] = this.data.data.attributes.hp.value + parseInt(data[`data.attributes.hp.value`]);
+                        if (getProperty(this.data,"data.attributes.hp.value") > 0) // When we are below 0, we cannot do that
+                            data[`data.attributes.hp.value`] = getProperty(this.data,"data.attributes.hp.value") + parseInt(data[`data.attributes.hp.value`]);
                         else 
                             data[`data.attributes.hp.value`] = parseInt(data[`data.attributes.hp.value`]);
                     } else {
@@ -4305,8 +4305,8 @@ export class ActorPF extends Actor {
 
         // The following is not for NPCs
         if (this.data.type !== "character") return;
-        if (data["data.details.levelUpProgression"] || this.data.data.details.levelUpProgression) {
-            dataLevel = (data["data.details.level.available"] || this.data.data.details.level.available) + raceLA + racialHD
+        if (data["data.details.levelUpProgression"] || getProperty(this.data,"data.details.levelUpProgression")) {
+            dataLevel = (data["data.details.level.available"] || getProperty(this.data,"data.details.level.available")) + raceLA + racialHD
             //console.log('D35E | ActorPF | _updateExp | Update exp data from class level count', dataLevel)
         }
         //console.log('D35E | ActorPF | _updateExp | Race LA, racial HD, level', raceLA, racialHD,dataLevel)
@@ -4315,14 +4315,14 @@ export class ActorPF extends Actor {
             resetExp = false;
         if (typeof newExp === "string") {
             if (newExp.match(/^\+([0-9]+)$/)) {
-                newExp = this.data.data.details.xp.value + parseInt(RegExp.$1);
+                newExp = getProperty(this.data,"data.details.xp.value") + parseInt(RegExp.$1);
             } else if (newExp.match(/^-([0-9]+)$/)) {
-                newExp = this.data.data.details.xp.value - parseInt(RegExp.$1);
+                newExp = getProperty(this.data,"data.details.xp.value") - parseInt(RegExp.$1);
             } else if (newExp === "") {
                 resetExp = true;
             } else {
                 newExp = parseInt(newExp);
-                if (Number.isNaN(newExp)) newExp = this.data.data.details.xp.value;
+                if (Number.isNaN(newExp)) newExp = getProperty(this.data,"data.details.xp.value");
             }
 
             if (typeof newExp === "number" && newExp !== getProperty(this.data, "data.details.xp.value")) {
@@ -4434,7 +4434,7 @@ export class ActorPF extends Actor {
             const itemCustomTag = createTag(item.data.data.customTag);
             let curUses = item.data.data.uses;
 
-            if (this.data.data.resources == null) this.data.data.resources = {};
+            if (getProperty(this.data,"data.resources") == null) getProperty(this.data,"data.resources") = {};
             if (this.data.data.resources[itemTag] == null) this.data.data.resources[itemTag] = {
                 value: 0,
                 max: 1,
@@ -4481,7 +4481,7 @@ export class ActorPF extends Actor {
             const itemTag = createTag(item.data.name);
             let curUses = item.data.data.uses;
 
-            if (this.data.data.resources == null) this.data.data.resources = {};
+            if (getProperty(this.data,"data.resources") == null) getProperty(this.data,"data.resources") = {};
             if (this.data.data.resources[itemTag] == null) this.data.data.resources[itemTag] = {
                 value: 0,
                 max: 1,
@@ -4758,7 +4758,7 @@ export class ActorPF extends Actor {
 
         // Add additional attacks
         let extraAttacks = [];
-        for (let a = 5; a < this.data.data.attributes.bab.total; a += 5) {
+        for (let a = 5; a < getProperty(this.data,"data.attributes.bab.total"); a += 5) {
             extraAttacks = extraAttacks.concat([[`-${a}`, `${game.i18n.localize("D35E.Attack")} ${Math.floor((a + 5) / 5)}`]]);
         }
         if (isSpeed) {
@@ -4916,7 +4916,7 @@ export class ActorPF extends Actor {
         return DicePF.d20Roll({
             event: options.event,
             parts: ["@mod - @drain"],
-            data: { mod: this.data.data.attributes.bab.total, drain: this.data.data.attributes.energyDrain || 0 },
+            data: { mod: getProperty(this.data,"data.attributes.bab.total"), drain: getProperty(this.data,"data.attributes.energyDrain") || 0 },
             title: game.i18n.localize("D35E.BAB"),
             speaker: ChatMessage.getSpeaker({ actor: this }),
             takeTwenty: false
@@ -4929,7 +4929,7 @@ export class ActorPF extends Actor {
         return DicePF.d20Roll({
             event: options.event,
             parts: ["@mod - @drain + @ablMod + @sizeMod + @changeGeneral + @changeAttack"],
-            data: { changeGeneral: this.data.data.attributes.attack.general, changeAttack: this.data.data.attributes.attack.melee, mod: this.data.data.attributes.bab.total, ablMod: this.data.data.abilities.str.mod, drain: this.data.data.attributes.energyDrain || 0, sizeMod: CONFIG.D35E.sizeMods[this.data.data.traits.actualSize] || 0 },
+            data: { changeGeneral: getProperty(this.data,"data.attributes.attack.general"), changeAttack: getProperty(this.data,"data.attributes.attack.melee"), mod: getProperty(this.data,"data.attributes.bab.total"), ablMod: getProperty(this.data,"data.abilities.str.mod"), drain: getProperty(this.data,"data.attributes.energyDrain") || 0, sizeMod: CONFIG.D35E.sizeMods[this.data.data.traits.actualSize] || 0 },
             title: game.i18n.localize("D35E.Melee"),
             speaker: ChatMessage.getSpeaker({ actor: this }),
             takeTwenty: false
@@ -4942,7 +4942,7 @@ export class ActorPF extends Actor {
         return DicePF.d20Roll({
             event: options.event,
             parts: ["@mod - @drain + @ablMod + @sizeMod + @changeGeneral + @changeAttack"],
-            data: { changeGeneral: this.data.data.attributes.attack.general, changeAttack: this.data.data.attributes.attack.ranged, mod: this.data.data.attributes.bab.total, ablMod: this.data.data.abilities.dex.mod, drain: this.data.data.attributes.energyDrain || 0, sizeMod: CONFIG.D35E.sizeMods[this.data.data.traits.actualSize] || 0 },
+            data: { changeGeneral: getProperty(this.data,"data.attributes.attack.general"), changeAttack: getProperty(this.data,"data.attributes.attack.ranged"), mod: getProperty(this.data,"data.attributes.bab.total"), ablMod: getProperty(this.data,"data.abilities.dex.mod"), drain: getProperty(this.data,"data.attributes.energyDrain") || 0, sizeMod: CONFIG.D35E.sizeMods[this.data.data.traits.actualSize] || 0 },
             title: game.i18n.localize("D35E.Ranged"),
             speaker: ChatMessage.getSpeaker({ actor: this }),
             takeTwenty: false
@@ -5682,7 +5682,7 @@ export class ActorPF extends Actor {
         if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
         const _roll = async function (target, form,props) {
-            let grappleModTotal = this.data.data.attributes.cmb.total - (this.data.data.attributes.energyDrain || 0),
+            let grappleModTotal = getProperty(this.data,"data.attributes.cmb.total") - (getProperty(this.data,"data.attributes.energyDrain") || 0),
                 optionalFeatIds = [],
                 optionalFeatRanges = new Map(),
                 rollMode = null;
@@ -5899,7 +5899,7 @@ export class ActorPF extends Actor {
         return DicePF.d20Roll({
             event: options.event,
             parts: ["@mod + @checkMod - @drain"],
-            data: { mod: abl.mod, checkMod: abl.checkMod, drain: this.data.data.attributes.energyDrain || 0 },
+            data: { mod: abl.mod, checkMod: abl.checkMod, drain: getProperty(this.data,"data.attributes.energyDrain") || 0 },
             title: game.i18n.localize("D35E.AbilityTest").format(label),
             speaker: ChatMessage.getSpeaker({ actor: this }),
             chatTemplate: "systems/D35E/templates/chat/roll-ext.html",
@@ -5920,7 +5920,7 @@ export class ActorPF extends Actor {
         //     return ui.notifications.warn(game.i18n.localize("D35E.CannotTurnUndead").format(this.name));
         // }
         let rolls = []
-        let knowledgeMod = this.data.data.skills.kre.rank > 5 ? 2 : 0
+        let knowledgeMod = getProperty(this.data,"data.skills.kre.rank") > 5 ? 2 : 0
         let chaMod = this.data.data.abilities.cha.mod
         let maxHdResult = new Roll35e("1d20 + @chaMod + @kMod", { kMod: knowledgeMod, chaMod: chaMod }).roll()
         rolls.push(maxHdResult);
@@ -5993,7 +5993,7 @@ export class ActorPF extends Actor {
 
         createCustomChatMessage("systems/D35E/templates/chat/turn-undead.html", data, chatData, {rolls: rolls});
         let updateData = {}
-        updateData[`data.attributes.turnUndeadUses`] = this.data.data.attributes.turnUndeadUses - 1;
+        updateData[`data.attributes.turnUndeadUses`] = getProperty(this.data,"data.attributes.turnUndeadUses") - 1;
         this.update(updateData)
     }
 
@@ -6007,7 +6007,7 @@ export class ActorPF extends Actor {
 
         // Add contextual AC notes
         let acNotes = [];
-        if (this.data.data.attributes.acNotes.length > 0) acNotes = this.data.data.attributes.acNotes.split(/[\n\r]+/);
+        if (getProperty(this.data,"data.attributes.acNotes")?.length > 0) acNotes = this.data.data.attributes.acNotes.split(/[\n\r]+/);
         const acNoteObjects = this.getContextNotes("misc.ac");
         for (let noteObj of acNoteObjects) {
             rollData.item = {};
@@ -6029,7 +6029,7 @@ export class ActorPF extends Actor {
 
         // Add contextual CMD notes
         let cmdNotes = [];
-        if (this.data.data.attributes.cmdNotes.length > 0) cmdNotes = this.data.data.attributes.cmdNotes.split(/[\n\r]+/);
+        if (getProperty(this.data,"data.attributes.cmdNotes")?.length > 0) cmdNotes = this.data.data.attributes.cmdNotes.split(/[\n\r]+/);
         const cmdNoteObjects = this.getContextNotes("misc.cmd");
         for (let noteObj of cmdNoteObjects) {
             rollData.item = {};
@@ -6051,7 +6051,7 @@ export class ActorPF extends Actor {
 
         // Add contextual SR notes
         let srNotes = [];
-        if (this.data.data.attributes.srNotes.length > 0) srNotes = this.data.data.attributes.srNotes.split(/[\n\r]+/);
+        if (getProperty(this.data,"data.attributes.srNotes")?.length > 0) srNotes = this.data.data.attributes.srNotes.split(/[\n\r]+/);
         const srNoteObjects = this.getContextNotes("misc.sr");
         for (let noteObj of srNoteObjects) {
             rollData.item = {};
@@ -6075,31 +6075,31 @@ export class ActorPF extends Actor {
         const reSplit = CONFIG.D35E.re.traitSeparator;
         // Damage Reduction
         let drNotes = [];
-        if (this.data.data.traits.dr.length) {
+        if (getProperty(this.data,"data.traits.dr")?.length) {
             drNotes = this.data.data.traits.dr.split(reSplit);
         }
         // Energy Resistance
         let energyResistance = [];
-        if (this.data.data.traits.eres.length) {
+        if (getProperty(this.data,"data.traits.eres")?.length) {
             energyResistance.push(...this.data.data.traits.eres.split(reSplit));
         }
         // Damage Immunity
-        if (this.data.data.traits.di.value.length || this.data.data.traits.di.custom.length) {
+        if (getProperty(this.data,"data.traits.di.value")?.length || getProperty(this.data,"data.traits.di.custom")?.length) {
             const values = [
                 ...this.data.data.traits.di.value.map(obj => {
                     return CONFIG.D35E.damageTypes[obj];
                 }),
-                ...this.data.data.traits.di.custom.length > 0 ? this.data.data.traits.di.custom.split(reSplit) : [],
+                ...getProperty(this.data,"data.traits.di.custom")?.length > 0 ? this.data.data.traits.di.custom.split(reSplit) : [],
             ];
             energyResistance.push(...values.map(o => game.i18n.localize("D35E.ImmuneTo").format(o)));
         }
         // Damage Vulnerability
-        if (this.data.data.traits.dv.value.length || this.data.data.traits.dv.custom.length) {
+        if (getProperty(this.data,"data.traits.dv.value")?.length || getProperty(this.data,"data.traits.dv.custom")?.length) {
             const values = [
                 ...this.data.data.traits.dv.value.map(obj => {
                     return CONFIG.D35E.damageTypes[obj];
                 }),
-                ...this.data.data.traits.dv.custom.length > 0 ? this.data.data.traits.dv.custom.split(reSplit) : [],
+                ...getProperty(this.data,"data.traits.dv.custom")?.length > 0 ? this.data.data.traits.dv.custom.split(reSplit) : [],
             ];
             energyResistance.push(...values.map(o => game.i18n.localize("D35E.VulnerableTo").format(o)));
         }
@@ -6129,7 +6129,7 @@ export class ActorPF extends Actor {
             },
         };
         // Add regeneration and fast healing
-        if ((getProperty(d, "traits.fastHealingTotal") || "").length || (getProperty(d, "traits.regenTotal") || "").length) {
+        if ((getProperty(d, "traits.fastHealingTotal") || "")?.length || (getProperty(d, "traits.regenTotal") || "")?.length) {
             data.regen = {
                 regen: d.traits.regenTotal,
                 fastHealing: d.traits.fastHealingTotal,
@@ -6289,13 +6289,13 @@ export class ActorPF extends Actor {
             rollModes: CONFIG.Dice.rollModes,
             applyHalf: ev.applyHalf,
             touch: touch,
-            baseConcealment: this.data.data.attributes.concealment.total,
-            isAlreadyProne: this.data.data.attributes.conditions.prone,
-            baseConcealmentAtLeast20: this.data.data.attributes.concealment.total > 20,
-            baseConcealmentAtLeast50: this.data.data.attributes.concealment.total > 50,
+            baseConcealment: getProperty(this.data,"data.attributes.concealment.total"),
+            isAlreadyProne: getProperty(this.data,"data.attributes.conditions.prone"),
+            baseConcealmentAtLeast20: getProperty(this.data,"data.attributes.concealment.total") > 20,
+            baseConcealmentAtLeast50: getProperty(this.data,"data.attributes.concealment.total") > 50,
             defenseFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('defense',rollData)),
             defenseFeatsOptional: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange(`defenseOptional`,rollData)),
-            conditionals: this.data.data.conditionals,
+            conditionals: getProperty(this.data,"data.conditionals"),
         };
         dialogData.hasFeats = dialogData.defenseFeats.length || dialogData.defenseFeatsOptional.length;
         const html = await renderTemplate(template, dialogData);
@@ -6746,7 +6746,7 @@ export class ActorPF extends Actor {
     }
 
     getSkill(key) {
-        for (let [k, s] of Object.entries(this.data.data.skills)) {
+        for (let [k, s] of Object.entries(getProperty(this.data,"data.skills"))) {
             if (k === key) return s;
             if (s.subSkills != null) {
                 for (let [k2, s2] of Object.entries(s.subSkills)) {
@@ -6826,7 +6826,7 @@ export class ActorPF extends Actor {
                 });
             }
 
-            if (this.data.data.attributes.saveNotes != null && this.data.data.attributes.saveNotes !== "") {
+            if (getProperty(this.data,"data.attributes.saveNotes") != null && getProperty(this.data,"data.attributes.saveNotes") !== "") {
                 result.push({ notes: [this.data.data.attributes.saveNotes], item: null });
             }
 
@@ -6858,7 +6858,7 @@ export class ActorPF extends Actor {
                 });
             }
 
-            if (miscKey === "cmb" && this.data.data.attributes.cmbNotes != null && this.data.data.attributes.cmbNotes !== "") {
+            if (miscKey === "cmb" && getProperty(this.data,"data.attributes.cmbNotes") != null && getProperty(this.data,"data.attributes.cmbNotes") !== "") {
                 result.push({ notes: [this.data.data.attributes.cmbNotes], item: null });
             }
 
@@ -6963,7 +6963,7 @@ export class ActorPF extends Actor {
                 else if (options.domainSpells) {
                     let spellbook = undefined
                     // We try to set spellbook to correct one
-                    for (let _spellbookKey of Object.keys(this.data.data.attributes.spells.spellbooks)) {
+                    for (let _spellbookKey of Object.keys(getProperty(this.data,"data.attributes.spells.spellbooks"))) {
                         let _spellbook = this.data.data.attributes.spells.spellbooks[_spellbookKey]
                         if (_spellbook.hasSpecialSlot && _spellbook.spellcastingType === "divine"){
                             spellbook = _spellbook
@@ -6987,7 +6987,7 @@ export class ActorPF extends Actor {
                     let foundLevel = false;
                     if (!obj.data.spellbook) {
                         // We try to set spellbook to correct one
-                        for (let _spellbookKey of Object.keys(this.data.data.attributes.spells.spellbooks)) {
+                        for (let _spellbookKey of Object.keys(getProperty(this.data,"data.attributes.spells.spellbooks"))) {
                             let _spellbook = this.data.data.attributes.spells.spellbooks[_spellbookKey]
 
                             let _spellbookClass = this.data.data.classes[_spellbook.class] || {};
@@ -8381,9 +8381,9 @@ export class ActorPF extends Actor {
     }
 
     async syncToCompendium(manual = false) {
-        if (!this.data.data.companionUuid) return;
+        if (!getProperty(this.data,"data.companionUuid")) return;
         let apiKey = game.settings.get("D35E", "apiKeyWorld")
-        if (this.data.data.companionUsePersonalKey) apiKey = game.settings.get("D35E", "apiKeyPersonal")
+        if (getProperty(this.data,"data.companionUsePersonalKey")) apiKey = game.settings.get("D35E", "apiKeyPersonal")
         if (!apiKey) return;
         let that = this;
         $.ajax({
@@ -8409,7 +8409,7 @@ export class ActorPF extends Actor {
     }
 
     get canAskForRequest() {
-        if (!this.data.data.companionUuid) return false;
+        if (!getProperty(this.data,"data.companionUuid")) return false;
 
         let userWithCharacterIsActive = game.users.players.some(u => u.active && u.data.character === this.id)
         let isMyCharacter = game.users.current.data.character === this.id;
@@ -8426,7 +8426,7 @@ export class ActorPF extends Actor {
         let apiKey = game.settings.get("D35E", "apiKeyWorld")
         if (!apiKey) return;
 
-        if (this.data.data.companionUsePersonalKey) apiKey = game.settings.get("D35E", "apiKeyPersonal")
+        if (getProperty(this.data,"data.companionUsePersonalKey")) apiKey = game.settings.get("D35E", "apiKeyPersonal")
         $.ajax({
             url: `${this.API_URI}/api/character/actions/${this.data.data.companionUuid}`,
             type: 'GET',
@@ -8707,16 +8707,16 @@ export class ActorPF extends Actor {
         if (!this.data.data?.advancement?.originalHD) {
             updateData["data.advancement.originalHD"] = currentLevel;
         }
-        updateData["data.abilities.str.value"] = this.data.data.abilities.str.value;
-        updateData["data.abilities.dex.value"] = this.data.data.abilities.dex.value;
-        updateData["data.abilities.con.value"] = this.data.data.abilities.con.value;
-        updateData["data.abilities.con.value"] = this.data.data.abilities.con.value;
+        updateData["data.abilities.str.value"] = getProperty(this.data,"data.abilities.str.value");
+        updateData["data.abilities.dex.value"] = getProperty(this.data,"data.abilities.dex.value");
+        updateData["data.abilities.con.value"] = getProperty(this.data,"data.abilities.con.value");
+        updateData["data.abilities.con.value"] = getProperty(this.data,"data.abilities.con.value");
         updateData["data.attributes.naturalAC"] = this.data.data.attributes.naturalAC
-        updateData["data.details.cr"] = parseInt(this.data.data.details.cr)
-        const size = this.data.data.traits.size;
-        let newSize = this.data.data.traits.size;
+        updateData["data.details.cr"] = parseInt(getProperty(this.data,"data.details.cr"))
+        const size = getProperty(this.data,"data.traits.size");
+        let newSize = getProperty(this.data,"data.traits.size");
 
-        let advancement = this.data.data.details.advancement.hd;
+        let advancement = getProperty(this.data,"data.details.advancement.hd");
         advancement.forEach(hd => {
             if (newHd >= hd.lower) newSize = hd.size;
         })
@@ -8807,6 +8807,7 @@ export class ActorPF extends Actor {
         }
     }
 
+    
 }
 
 

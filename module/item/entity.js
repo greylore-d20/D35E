@@ -25,7 +25,7 @@ export class ItemPF extends Item {
      * @type {boolean}
      */
     get hasAttack() {
-        return ["mwak", "rwak", "msak", "rsak"].includes(this.data.data.actionType);
+        return ["mwak", "rwak", "msak", "rsak"].includes(getProperty(this.data,"data.actionType"));
     }
 
     get tag() {
@@ -38,7 +38,7 @@ export class ItemPF extends Item {
     }
 
     get hasMultiAttack() {
-        return this.hasAttack && this.data.data.attackParts != null && this.data.data.attackParts.length > 0;
+        return this.hasAttack && getProperty(this.data,"data.attackParts") != null && getProperty(this.data,"data.attackParts")?.length > 0;
     }
 
     get hasTemplate() {
@@ -67,7 +67,7 @@ export class ItemPF extends Item {
     }
 
     get combatChangeName() {
-        return this.data.data.combatChangeCustomDisplayName || this.name;
+        return getProperty(this.data,"data.combatChangeCustomDisplayName") || this.name;
     }
 
     get autoDeductCharges() {
@@ -103,7 +103,7 @@ export class ItemPF extends Item {
     }
 
     isSpellLike() {
-        return this.type === "spell" || this.data.data.actionType === "rsak" || this.data.data.actionType === "msak" || this.data.data.actionType === "spellsave" || this.data.data.actionType === "heal" || this.data.data.isFromSpell;
+        return this.type === "spell" || getProperty(this.data,"data.actionType") === "rsak" || getProperty(this.data,"data.actionType") === "msak" || getProperty(this.data,"data.actionType") === "spellsave" || getProperty(this.data,"data.actionType") === "heal" || getProperty(this.data,"data.isFromSpell");
     }
 
     get maxCharges() {
@@ -265,7 +265,7 @@ export class ItemPF extends Item {
      * @type {boolean}
      */
     get hasDamage() {
-        return !!(this.data.data.damage && this.data.data.damage.parts.length);
+        return !!(getProperty(this.data,"data.damage") && getProperty(this.data,"data.damage.parts")?.length);
     }
 
     /* -------------------------------------------- */
@@ -275,11 +275,11 @@ export class ItemPF extends Item {
      * @return {boolean}
      */
     get isHealing() {
-        return (this.data.data.actionType === "heal") && this.data.data.damage.parts.length;
+        return (getProperty(this.data,"data.actionType") === "heal") && getProperty(this.data,"data.damage.parts")?.length;
     }
 
     get hasEffect() {
-        return this.hasDamage || (this.data.data.effectNotes && this.data.data.effectNotes.length > 0) || (this.data.data.specialActions && this.data.data.specialActions.length > 0);
+        return this.hasDamage || (getProperty(this.data,"data.effectNotes") && getProperty(this.data,"data.effectNotes")?.length > 0) || (getProperty(this.data,"data.specialActions") && getProperty(this.data,"data.specialActions")?.length > 0);
     }
 
     /* -------------------------------------------- */
@@ -289,7 +289,7 @@ export class ItemPF extends Item {
      * @type {boolean}
      */
     get hasSave() {
-        return !!(this.data.data.save && this.data.data.save.ability);
+        return !!(getProperty(this.data,"data.save") && getProperty(this.data,"data.save.ability"));
     }
 
     /**
@@ -493,7 +493,7 @@ export class ItemPF extends Item {
             await super.update(data, options);
             return
         }
-        console.log('Is true/false', data, this.data.data.active)
+        console.log('Is true/false', data, getProperty(this.data,"data.active"))
         let expandedData = expandObject(data);
         const srcData = mergeObject(this.data.toObject(), expandedData);
 
@@ -510,7 +510,7 @@ export class ItemPF extends Item {
             data['data.carried'] !== undefined)
             needsUpdate = true
 
-        console.log('Should be true/false, is true true', data, this.data.data.active)
+        console.log('Should be true/false, is true true', data, getProperty(this.data,"data.active"))
 
         for (var key in expandedData?.data?.customAttributes) {
             if (data[`data.customAttributes.-=${key}`] === null) continue;
@@ -559,8 +559,8 @@ export class ItemPF extends Item {
         else if (data["name"]) data["data.identifiedName"] = data["name"];
 
 
-        let activateBuff = data["data.active"] && data["data.active"] !== this.data.data.active;
-        let deactivateBuff = this.data.data.active && (data["data.active"] === undefined || !data["data.active"]);
+        let activateBuff = data["data.active"] && data["data.active"] !== getProperty(this.data,"data.active");
+        let deactivateBuff = getProperty(this.data,"data.active") && (data["data.active"] === undefined || !data["data.active"]);
         // Update description
         if (this.type === "spell") await this._updateSpellDescription(data, srcData);
         if (this.type === "card") await this._updateCardDescription(data, srcData);
@@ -588,14 +588,14 @@ export class ItemPF extends Item {
         }
 
         if (this.pack && this.pack.startsWith("D35E")) {
-            data["data.originVersion"] = this.data.data.originVersion + 1;
+            data["data.originVersion"] = getProperty(this.data,"data.originVersion") + 1;
         }
 
-        if (data["data.weaponData.size"] && data["data.weaponData.size"] !== this.data.data.weaponData.size) {
+        if (data["data.weaponData.size"] && data["data.weaponData.size"] !== getProperty(this.data,"data.weaponData.size")) {
             let newSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(data["data.weaponData.size"] || "");
-            let oldSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(this.data.data.weaponData.size || "");
+            let oldSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(getProperty(this.data,"data.weaponData.size") || "");
             let weightChange = Math.pow(2,newSize-oldSize);
-            data["data.weight"] = this.data.data.weight * weightChange;
+            data["data.weight"] = getProperty(this.data,"data.weight") * weightChange;
         }
 
         //console.log("D35E Item Update", data)
@@ -672,11 +672,11 @@ export class ItemPF extends Item {
         let updateData = await super.update(data, options);
         if (this.actor !== null && !options.massUpdate) {
 
-            console.log('ACTIVATING BUFF', data, this.data.data.active)
+            console.log('ACTIVATING BUFF', data, getProperty(this.data,"data.active"))
             if (activateBuff) {
                 //Buff or item was activated
                 data["data.timeline.elapsed"] = 0
-                let actionValue = (this.data.data.activateActions || []).map(a => a.action).join(";")
+                let actionValue = (getProperty(this.data,"data.activateActions") || []).map(a => a.action).join(";")
                 if (!actionValue) await this.actor.refresh(options); 
                 else {
                     if (this.actor && this.actor.token !== null) {
@@ -687,10 +687,10 @@ export class ItemPF extends Item {
                         await this.actor.applyActionOnSelf(actionValue, this.actor, srcDataWithRolls, "self")
                     }
                 }
-                if (this.data.data.buffType === "shapechange") {
-                    if (this.data.data.shapechange.type === "wildshape" || this.data.data.shapechange.type === "polymorph") {
+                if (getProperty(this.data,"data.buffType") === "shapechange") {
+                    if (getProperty(this.data,"data.shapechange.type") === "wildshape" || getProperty(this.data,"data.shapechange.type") === "polymorph") {
                         let itemsToCreate = []
-                        for (const i of this.data.data.shapechange.source.items) {
+                        for (const i of getProperty(this.data,"data.shapechange.source.items")) {
                             if (i.type === "attack" && (i.data.attackType === "natural" || i.data.attackType === "extraordinary")) {
                                 //console.log('add polymorph attack')
                                 if (!this.actor) continue;
@@ -713,8 +713,8 @@ export class ItemPF extends Item {
                 }
 
             } else if (deactivateBuff) {
-                if (this.data.data.buffType === "shapechange") {
-                    if (this.data.data.shapechange.type === "wildshape" || this.data.data.shapechange.type === "polymorph") {
+                if (getProperty(this.data,"data.buffType") === "shapechange") {
+                    if (getProperty(this.data,"data.shapechange.type") === "wildshape" || getProperty(this.data,"data.shapechange.type") === "polymorph") {
                         let itemsToDelete = []
                         if (this.actor) {
                             for (const i of this.actor.items) {
@@ -733,7 +733,7 @@ export class ItemPF extends Item {
                             }
                     }
                 }
-                let actionValue = (this.data.data.deactivateActions || []).map(a => a.action).join(";")
+                let actionValue = (getProperty(this.data,"data.deactivateActions") || []).map(a => a.action).join(";")
                 if (!actionValue) await this.actor.refresh(options); 
                 else {
                     if (this.actor && this.actor.token !== null) {
@@ -1354,7 +1354,7 @@ export class ItemPF extends Item {
             }
         } else if (this.type === "full-attack") {
             if (game.settings.get("D35E", "showFullAttackChatCard")) await this.roll();
-            for (let attack of Object.values(this.data.data.attacks)) {
+            for (let attack of Object.values(getProperty(this.data,"data.attacks"))) {
                 if (!attack.id) continue;
                 let attackItem = actor.items.find(i => i._id === attack.id);
                 for (let i = 0; i < attack.count; i++) {
@@ -1371,7 +1371,7 @@ export class ItemPF extends Item {
             }
             return;
         } else if (this.type === "enhancement" || this.hasAction) {
-            return this.useAttack({ev: ev, skipDialog: skipDialog, rollModeOverride: rollModeOverride, attackType: this.data.data.weaponSubtype === "2h" ? 'two-handed' : 'primary'},actor,skipChargeCheck);
+            return this.useAttack({ev: ev, skipDialog: skipDialog, rollModeOverride: rollModeOverride, attackType: getProperty(this.data,"data.weaponSubtype") === "2h" ? 'two-handed' : 'primary'},actor,skipChargeCheck);
         }
 
         if (this.isCharged && !skipChargeCheck) {
@@ -1439,10 +1439,10 @@ export class ItemPF extends Item {
                 greaterManyshot = false,
                 greaterManyshotCount = 0,
                 twoWeaponFightingOffhand = false,
-                hasTwoWeaponFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Two-Weapon Fighting").length > 0,
+                hasTwoWeaponFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Two-Weapon Fighting")?.length > 0,
                 multiweaponFighting = actor.items.filter(o => o.type === "feat" && (getOriginalNameIfExists(o) === "Multiweapon Fighting" || o.data.data.changeFlags.multiweaponAttack)).length > 0,
-                hasTwoImprovedWeaponFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Improved Two-Weapon Fighting").length > 0,
-                hasTwoGreaterFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Greater Two-Weapon Fighting").length > 0,
+                hasTwoImprovedWeaponFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Improved Two-Weapon Fighting")?.length > 0,
+                hasTwoGreaterFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Greater Two-Weapon Fighting")?.length > 0,
                 rollMode = null,
                 optionalFeatIds = [],
                 optionalFeatRanges = new Map(),
@@ -1841,11 +1841,11 @@ export class ItemPF extends Item {
             })
             this._addCombatChangesToRollData(allCombatChanges, rollData);
 
-            if (rollData.isKeen && !this.data.data.threatRangeExtended) {
-                let baseCrit = this.data.data.ability.critRange || 20;
+            if (rollData.isKeen && !getProperty(this.data,"data.threatRangeExtended")) {
+                let baseCrit = getProperty(this.data,"data.ability.critRange") || 20;
                 baseCrit = 21 - 2 * (21 - baseCrit)
                 rollData.item.ability.critRange = baseCrit;
-                //this.data.data.ability.critRange = baseCrit;
+                //getProperty(this.data,"data.ability.critRange") = baseCrit;
             }
 
             if (rollData.featDamageBonus) {
@@ -2084,7 +2084,7 @@ export class ItemPF extends Item {
                     }
                 }
             }
-            if (useAmmoId !== "none" && actor !== null && !this.data.data.returning) {
+            if (useAmmoId !== "none" && actor !== null && !getProperty(this.data,"data.returning")) {
                 await actor.quickChangeItemQuantity(useAmmoId, -1 * attacks.length * (1 + Math.max(0,manyshotCount - 1)))
             }
             // Update item, only if it has an id (is real item, not item from enhancement)
@@ -2100,7 +2100,7 @@ export class ItemPF extends Item {
             };
 
             // Post message
-            if (this.data.type === "spell" || this.data.data.isFromSpell) {
+            if (this.data.type === "spell" || getProperty(this.data,"data.isFromSpell")) {
                 if (!game.settings.get("D35E", "hideSpellDescriptionsIfHasAction"))
                     await this.roll({rollMode: rollMode});
             }
@@ -2162,14 +2162,14 @@ export class ItemPF extends Item {
                     dc: dc,
                     nonLethal: nonLethal,
                     useAmmoId: useAmmoId,
-                    incorporeal: this.data.data.incorporeal || this.actor?.data?.data?.traits?.incorporeal,
+                    incorporeal: getProperty(this.data,"data.incorporeal") || this.actor?.data?.data?.traits?.incorporeal,
                     targets: selectedTargets,
                     hiddenTargets: hiddenTargets,
                     targetIds: selectedTargetIds,
                     hasTargets: selectedTargets.length || hiddenTargets.length,
                     isSpell: this.type === "spell",
-                    hasPr: this.data.data.pr,
-                    hasSr: this.data.data.sr,
+                    hasPr: getProperty(this.data,"data.pr"),
+                    hasSr: getProperty(this.data,"data.sr"),
                     cl: rollData.cl,
                     spellPenetration: rollData.cl + (rollData.featSpellPenetrationBonus || 0)
                 }, {inplace: false});
@@ -2178,9 +2178,9 @@ export class ItemPF extends Item {
                 rolled = true;
             }
             if (this.hasRolltableDraw) {
-                let rollTable = await game.packs.get(this.data.data.rollTableDraw.pack).getDocument(this.data.data.rollTableDraw.id)
-                if (this.data.data.rollTableDraw.formula) {
-                    var roll = new Roll35e(this.data.data.rollTableDraw.formula, rollData);
+                let rollTable = await game.packs.get(getProperty(this.data,"data.rollTableDraw.pack")).getDocument(getProperty(this.data,"data.rollTableDraw.id"))
+                if (getProperty(this.data,"data.rollTableDraw.formula")) {
+                    var roll = new Roll35e(getProperty(this.data,"data.rollTableDraw.formula"), rollData);
                     await rollTable.draw({roll:roll, rollMode:rollMode});
                 } else {
                     await rollTable.draw({rollMode:rollMode});
@@ -2194,14 +2194,14 @@ export class ItemPF extends Item {
 
         // Render modal dialog
         let template = "systems/D35E/templates/apps/attack-roll-dialog.html";
-        let weaponName = this.data.data.baseWeaponType || "";
+        let weaponName = getProperty(this.data,"data.baseWeaponType") || "";
         let featWeaponName = `(${weaponName})`;
         let bonusMaxPowerPoints = 0;
         if (this.type === "spell" && getProperty(this.data, "data.isPower")) {
-            let spellbookIndex = this.data.data.spellbook;
+            let spellbookIndex = getProperty(this.data,"data.spellbook");
             let spellbook = getProperty(this.actor.data, `data.attributes.spells.spellbooks.${spellbookIndex}`) || {};
-            let availablePowerPoints = (spellbook.powerPoints || 0) - (this.data.data.powerPointsCost || 0);
-            bonusMaxPowerPoints = Math.max(spellbook.maximumPowerPointLimit ? Math.min((spellbook?.cl?.total || 0) - (this.data.data.powerPointsCost || 0),availablePowerPoints) : availablePowerPoints, 0);
+            let availablePowerPoints = (spellbook.powerPoints || 0) - (getProperty(this.data,"data.powerPointsCost") || 0);
+            bonusMaxPowerPoints = Math.max(spellbook.maximumPowerPointLimit ? Math.min((spellbook?.cl?.total || 0) - (getProperty(this.data,"data.powerPointsCost") || 0),availablePowerPoints) : availablePowerPoints, 0);
         }
         let autoScaleAttacks = (game.settings.get("D35E", "autoScaleAttacksBab") && actor.data.type !== "npc" && getProperty(this.data, "data.attackType") === "weapon" && getProperty(this.data, "data.autoScaleOption") !== "never") || getProperty(this.data, "data.autoScaleOption") === "always"
         let extraAttacksCount = autoScaleAttacks ? Math.ceil((actor.data.data.attributes.bab.total)/5.0) : (getProperty(this.data, "data.attackParts") || []).length + 1;
@@ -2222,7 +2222,7 @@ export class ItemPF extends Item {
             allowNoAmmo: game.settings.get("D35E", "allowNoAmmo") || actor.type === "npc",
             nonLethal: getProperty(this.data, "data.nonLethal") || false,
             allowMultipleUses: this.data.data?.uses?.allowMultipleUses,
-            multipleUsesMax: this.data.data?.uses?.maxPerUse ? Math.min(Math.floor(this.charges/this.chargeCost),this.data.data.uses.maxPerUse) : Math.floor(this.charges/this.chargeCost),
+            multipleUsesMax: this.data.data?.uses?.maxPerUse ? Math.min(Math.floor(this.charges/this.chargeCost),getProperty(this.data,"data.uses.maxPerUse")) : Math.floor(this.charges/this.chargeCost),
             bonusPowerPointsMax: bonusMaxPowerPoints,
             isSpell: this.type === "spell" && !getProperty(this.data, "data.isPower"),
             isPower: this.type === "spell" && getProperty(this.data, "data.isPower"),
@@ -2230,21 +2230,21 @@ export class ItemPF extends Item {
             isNaturalAttack: getProperty(this.data, "data.attackType") === "natural",
             isWeaponAttack: getProperty(this.data, "data.attackType") === "weapon",
             isRangedWeapon: getProperty(this.data, "data.attackType") === "weapon" && getProperty(this.data, "data.actionType") === "rwak",
-            ammunition: this.data.data.thrown ? actor.items.filter(o => o._id === this.data.data.originalWeaponId) : actor.items.filter(o => o.type === "loot" && o.data.data.subType === "ammo" && o.data.data.quantity > 0),
+            ammunition: getProperty(this.data,"data.thrown") ? actor.items.filter(o => o._id === getProperty(this.data,"data.originalWeaponId")) : actor.items.filter(o => o.type === "loot" && o.data.data.subType === "ammo" && o.data.data.quantity > 0),
             extraAttacksCount: extraAttacksCount,
             hasTemplate: this.hasTemplate,
             isAlreadyProne: this?.actor?.data?.data?.attributes?.conditions?.prone || false,
-            canPowerAttack: actor.items.filter(o => o.type === "feat" && o.originalName === "Power Attack").length > 0,
+            canPowerAttack: actor.items.filter(o => o.type === "feat" && o.originalName === "Power Attack")?.length > 0,
             maxPowerAttackValue: getProperty(actor.data, "data.attributes.bab.total"),
-            canManyshot: actor.items.filter(o => o.type === "feat" && o.originalName === "Manyshot").length > 0,
+            canManyshot: actor.items.filter(o => o.type === "feat" && o.originalName === "Manyshot")?.length > 0,
             maxManyshotValue: 2 + Math.floor((getProperty(actor.data, "data.attributes.bab.total") - 6) / 5),
-            canGreaterManyshot: actor.items.filter(o => o.type === "feat" && o.originalName === "Greater Manyshot").length > 0,
-            canRapidShot: actor.items.filter(o => o.type === "feat" && o.originalName === "Rapid Shot").length > 0,
+            canGreaterManyshot: actor.items.filter(o => o.type === "feat" && o.originalName === "Greater Manyshot")?.length > 0,
+            canRapidShot: actor.items.filter(o => o.type === "feat" && o.originalName === "Rapid Shot")?.length > 0,
             canFlurryOfBlows: actor.items.filter(o => o.type === "feat" && (o.originalName === "Flurry of Blows" || o.data.data.customTag === "flurryOfBlows")).length > 0,
             maxGreaterManyshotValue: getProperty(actor.data, "data.abilities.wis.mod"),
             weaponFeats: actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type ==="buff" && o.data.data.active) || (o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded)) && o.hasCombatChange(this.type,rollData)),
             weaponFeatsOptional: actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type ==="buff" && o.data.data.active) || (o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded)) && o.hasCombatChange(`${this.type}Optional`,rollData)),
-            conditionals: this.data.data.conditionals,
+            conditionals: getProperty(this.data,"data.conditionals"),
         };
         const html = await renderTemplate(template, dialogData);
         // //console.log(dialogData)
@@ -2428,7 +2428,7 @@ export class ItemPF extends Item {
     }
 
     isCombatChangeItemType() {
-        return this.type === "feat" || this.type === "aura" || (this.type === "buff" && this.data.data.active) || (this.type === "equipment" && this.data.data.equipped === true && !this.data.data.melded);
+        return this.type === "feat" || this.type === "aura" || (this.type === "buff" && getProperty(this.data,"data.active")) || (this.type === "equipment" && getProperty(this.data,"data.equipped") === true && !getProperty(this.data,"data.melded"));
     }
 
     hasCombatChange(itemType, rollData) {
@@ -2484,7 +2484,7 @@ export class ItemPF extends Item {
                 c.push(this.id)
                 c.push(this.name)
                 c.push(this.img)
-                c.push(this.data.data.combatChangesApplySpecialActionsOnce)
+                c.push(getProperty(this.data,"data.combatChangesApplySpecialActionsOnce"))
             }
             return c;
         });
@@ -2615,7 +2615,7 @@ export class ItemPF extends Item {
         // Add spell data
         if (this.isSpellLike()) {
             this._adjustSpellCL(itemData, rollData)
-            const sl = this.data.data.level + (this.data.data.slOffset || 0);
+            const sl = getProperty(this.data,"data.level") + (getProperty(this.data,"data.slOffset") || 0);
             rollData.sl = sl;
         }
 
@@ -2626,7 +2626,7 @@ export class ItemPF extends Item {
         // Determine ability multiplier
         if (rollData.item.ability.damageMult != null) rollData.ablMult = rollData.item.ability.damageMult;
         if (primaryAttack === false && rollData.ablMult > 0) rollData.ablMult = 0.5;
-        let naturalAttackCount = (this.actor?.items || []).filter(o => o.type === "attack" && o.data.data.attackType === "natural").length;
+        let naturalAttackCount = (this.actor?.items || []).filter(o => o.type === "attack" && o.data.data.attackType === "natural")?.length;
         if (rollData.item.attackType === "natural" && primaryAttack && naturalAttackCount === 1) rollData.ablMult = 1.5;
 
         // Create effect string
@@ -2676,11 +2676,11 @@ export class ItemPF extends Item {
         // Determine critical multiplier
         rollData.critMult = 1;
         rollData.ablMult = 1;
-        if (critical) rollData.critMult = this.data.data.ability.critMult;
+        if (critical) rollData.critMult = getProperty(this.data,"data.ability.critMult");
         // Determine ability multiplier
         if (rollData.damageAbilityMultiplier !== undefined && rollData.damageAbilityMultiplier !== null) rollData.ablMult = rollData.damageAbilityMultiplier;
         if (primaryAttack === false && rollData.ablMult > 0) rollData.ablMult = 0.5;
-        let naturalAttackCount = (this.actor?.items || []).filter(o => o.type === "attack" && o.data.data.attackType === "natural").length;
+        let naturalAttackCount = (this.actor?.items || []).filter(o => o.type === "attack" && o.data.data.attackType === "natural")?.length;
         if (rollData.item.attackType === "natural" && primaryAttack && naturalAttackCount === 1) rollData.ablMult = 1.5;
 
 
@@ -3157,7 +3157,7 @@ export class ItemPF extends Item {
 
 
     resetPerEncounterUses() {
-        if (this.data.data.uses != null && this.data.data.activation != null && this.data.data.activation.type !== "") {
+        if (getProperty(this.data,"data.uses") != null && getProperty(this.data,"data.activation") != null && getProperty(this.data,"data.activation.type") !== "") {
             let itemData = this.data.data
             let updateData = {}
             if (itemData.uses && itemData.uses.per === "encounter" && itemData.uses.value !== itemData.uses.max) {
@@ -3168,13 +3168,13 @@ export class ItemPF extends Item {
     }
 
     async addElapsedTime(time) {
-        if (this.data.data.timeline !== undefined && this.data.data.timeline !== null) {
-            if (!this.data.data.timeline.enabled)
+        if (getProperty(this.data,"data.timeline") !== undefined && getProperty(this.data,"data.timeline") !== null) {
+            if (!getProperty(this.data,"data.timeline.enabled"))
                 return
-            if (!this.data.data.active)
+            if (!getProperty(this.data,"data.active"))
                 return
-            if (this.data.data.timeline.elapsed + time >= this.data.data.timeline.total) {
-                if (!this.data.data.timeline.deleteOnExpiry) {
+            if (getProperty(this.data,"data.timeline.elapsed") + time >= getProperty(this.data,"data.timeline.total")) {
+                if (!getProperty(this.data,"data.timeline.deleteOnExpiry")) {
                     let updateData = {}
                     updateData["data.active"] = false;
                     await this.update(updateData);
@@ -3184,17 +3184,17 @@ export class ItemPF extends Item {
                 }
             } else {
                 let updateData = {}
-                updateData["data.timeline.elapsed"] = this.data.data.timeline.elapsed + time;
+                updateData["data.timeline.elapsed"] = getProperty(this.data,"data.timeline.elapsed") + time;
                 await this.update(updateData);
             }
         }
     }
 
     getElapsedTimeUpdateData(time) {
-        if (this.data.data.timeline !== undefined && this.data.data.timeline !== null) {
-            if (this.data.data.timeline.enabled && this.data.data.active) {
-                if (this.data.data.timeline.elapsed + time >= this.data.data.timeline.total) {
-                    if (!this.data.data.timeline.deleteOnExpiry) {
+        if (getProperty(this.data,"data.timeline") !== undefined && getProperty(this.data,"data.timeline") !== null) {
+            if (getProperty(this.data,"data.timeline.enabled") && getProperty(this.data,"data.active")) {
+                if (getProperty(this.data,"data.timeline.elapsed") + time >= getProperty(this.data,"data.timeline.total")) {
+                    if (!getProperty(this.data,"data.timeline.deleteOnExpiry")) {
                         let updateData = {}
                         updateData["data.active"] = false;
                         updateData["data.timeline.elapsed"] = 0;
@@ -3215,24 +3215,24 @@ export class ItemPF extends Item {
                 } else {
                     let updateData = {}
                     updateData["data.active"] = true;
-                    updateData["data.timeline.elapsed"] = this.data.data.timeline.elapsed + time;
+                    updateData["data.timeline.elapsed"] = getProperty(this.data,"data.timeline.elapsed") + time;
                     updateData["_id"] = this._id;
                     return updateData;
                 }
             }
         }
-        if (this.data.data.recharge !== undefined && this.data.data.recharge !== null) {
-            if (this.data.data.recharge.enabled) {
+        if (getProperty(this.data,"data.recharge") !== undefined && getProperty(this.data,"data.recharge") !== null) {
+            if (getProperty(this.data,"data.recharge.enabled")) {
 
-                if (this.data.data.recharge.current - time < 1) {
+                if (getProperty(this.data,"data.recharge.current") - time < 1) {
                     let updateData = {}
                     updateData["data.recharge.current"] = 0;
-                    updateData["data.uses.value"] = this.data.data.uses.max;
+                    updateData["data.uses.value"] = getProperty(this.data,"data.uses.max");
                     updateData["_id"] = this._id;
                     return updateData;
                 } else {
                     let updateData = {}
-                    updateData["data.recharge.current"] = this.data.data.recharge.current - time;
+                    updateData["data.recharge.current"] = getProperty(this.data,"data.recharge.current") - time;
                     updateData["_id"] = this._id;
                     return updateData;
                 }
@@ -3243,28 +3243,28 @@ export class ItemPF extends Item {
     }
 
     getTimelineTimeLeft() {
-        if (this.data.data.timeline !== undefined && this.data.data.timeline !== null) {
-            if (!this.data.data.timeline.enabled)
+        if (getProperty(this.data,"data.timeline") !== undefined && getProperty(this.data,"data.timeline") !== null) {
+            if (!getProperty(this.data,"data.timeline.enabled"))
                 return -1;
-            if (!this.data.data.active)
+            if (!getProperty(this.data,"data.active"))
                 return -1;
-            return this.data.data.timeline.total - this.data.data.timeline.elapsed
+            return getProperty(this.data,"data.timeline.total") - this.data.data.timeline.elapsed
         }
         return 0
     }
 
     getTimelineTimeLeftDescriptive() {
-        if (this.data.data.timeline !== undefined && this.data.data.timeline !== null) {
-            if (!this.data.data.timeline.enabled)
+        if (getProperty(this.data,"data.timeline") !== undefined && getProperty(this.data,"data.timeline") !== null) {
+            if (!getProperty(this.data,"data.timeline.enabled"))
                 return "Indefinite";
-            if (!this.data.data.active)
+            if (!getProperty(this.data,"data.active"))
                 return "Not active";
-            if (this.data.data.timeline.total - this.data.data.timeline.elapsed >= 600) {
-                return Math.floor((this.data.data.timeline.total - this.data.data.timeline.elapsed) / 600) + "h"
-            } else if (this.data.data.timeline.total - this.data.data.timeline.elapsed >= 10) {
-                return Math.floor((this.data.data.timeline.total - this.data.data.timeline.elapsed) / 10) + "min"
-            } else if (this.data.data.timeline.total - this.data.data.timeline.elapsed > 1)
-                return (this.data.data.timeline.total - this.data.data.timeline.elapsed) + " rounds"
+            if (getProperty(this.data,"data.timeline.total") - getProperty(this.data,"data.timeline.elapsed") >= 600) {
+                return Math.floor((getProperty(this.data,"data.timeline.total") - getProperty(this.data,"data.timeline.elapsed")) / 600) + "h"
+            } else if (getProperty(this.data,"data.timeline.total") - getProperty(this.data,"data.timeline.elapsed") >= 10) {
+                return Math.floor((getProperty(this.data,"data.timeline.total") - getProperty(this.data,"data.timeline.elapsed")) / 10) + "min"
+            } else if (getProperty(this.data,"data.timeline.total") - getProperty(this.data,"data.timeline.elapsed") > 1)
+                return (getProperty(this.data,"data.timeline.total") - getProperty(this.data,"data.timeline.elapsed")) + " rounds"
             return "Last round";
         }
         return "Indefinite"
@@ -3463,8 +3463,8 @@ export class ItemPF extends Item {
 
     async addSpellUses(value, data = null) {
         if (!this.actor) return;
-        if (this.data.data.atWill) return;
-        //if (this.data.data.level === 0) return;
+        if (getProperty(this.data,"data.atWill")) return;
+        //if (getProperty(this.data,"data.level") === 0) return;
 
         //console.log(`D35E | Adding spell uses ${value}`)
         const spellbook = getProperty(this.actor.data, `data.attributes.spells.spellbooks.${this.data.data.spellbook}`),
@@ -3503,11 +3503,11 @@ export class ItemPF extends Item {
 
     getSpellUses() {
         if (!this.actor) return 0;
-        if (this.data.data.atWill) return Number.POSITIVE_INFINITY;
+        if (getProperty(this.data,"data.atWill")) return Number.POSITIVE_INFINITY;
 
         if (getProperty(this.data, "data.requiresPsionicFocus") && !this.actor?.data?.data?.attributes?.psionicFocus) return 0;
         const spellbook = getProperty(this.actor.data, `data.attributes.spells.spellbooks.${this.data.data.spellbook}`),
-            isSpontaneous = spellbook.spontaneous, usePowerPoints = spellbook.usePowerPoints, isEpic = this.data.data.level > 9,
+            isSpontaneous = spellbook.spontaneous, usePowerPoints = spellbook.usePowerPoints, isEpic = getProperty(this.data,"data.level") > 9,
             spellLevel = getProperty(this.data, "data.level");
         return usePowerPoints ? (getProperty(spellbook, `powerPoints`) - getProperty(this.data, "data.powerPointsCost") >= 0 || 0) : (isSpontaneous && !isEpic)
             ? (getProperty(spellbook, `spells.spell${spellLevel}.value`) || 0)
@@ -4175,8 +4175,8 @@ export class ItemPF extends Item {
     async useEnhancementItem(item) {
         let chargeCost = item.data.data?.uses?.chargesPerUse !== undefined ? item.data.data.uses.chargesPerUse : item.chargeCost;
         let chargesLeft = item.data.data?.uses?.value || 0;
-        if (this.data.data.enhancements.uses.commonPool) {
-            if (this.data.data.enhancements.uses.value < chargeCost) {
+        if (getProperty(this.data,"data.enhancements.uses.commonPool")) {
+            if (getProperty(this.data,"data.enhancements.uses.value") < chargeCost) {
                     return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoCharges").format(this.name));
                 }
         } else {
@@ -4185,22 +4185,22 @@ export class ItemPF extends Item {
                 return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoCharges").format(this.name));
             }
         }
-        if (this.data.data.enhancements.clFormula) {
-            item.data.data.baseCl = new Roll35e(this.data.data.enhancements.clFormula, this.actor.getRollData()).roll().total;
+        if (getProperty(this.data,"data.enhancements.clFormula")) {
+            item.data.data.baseCl = new Roll35e(getProperty(this.data,"data.enhancements.clFormula"), this.actor.getRollData()).roll().total;
         }
         if (item.data.data.save) {
             let ablMod = 0
-            if (this.data.data.enhancements.spellcastingAbility !== "") ablMod = getProperty(this.actor.data, `data.abilities.${this.data.data.enhancements.spellcastingAbility}.mod`);
+            if (getProperty(this.data,"data.enhancements.spellcastingAbility") !== "") ablMod = getProperty(this.actor.data, `data.abilities.${this.data.data.enhancements.spellcastingAbility}.mod`);
             item.data.data.save.dc = parseInt(item.data.data.save.dc) + ablMod;
         }
 
         let roll = await item.use({ev: event, skipDialog: event.shiftKey},this.actor,true);
         if (roll.wasRolled) {
-            if (this.data.data.enhancements.uses.commonPool) {
+            if (getProperty(this.data,"data.enhancements.uses.commonPool")) {
                 let updateData = {}
-                updateData[`data.enhancements.uses.value`] = this.data.data.enhancements.uses.value - chargeCost;
-                updateData[`data.uses.value`] = this.data.data.enhancements.uses.value - chargeCost;
-                updateData[`data.uses.max`] = this.data.data.enhancements.uses.max;
+                updateData[`data.enhancements.uses.value`] = getProperty(this.data,"data.enhancements.uses.value") - chargeCost;
+                updateData[`data.uses.value`] = getProperty(this.data,"data.enhancements.uses.value") - chargeCost;
+                updateData[`data.uses.max`] = getProperty(this.data,"data.enhancements.uses.max");
                 await this.update(updateData);
             } else {
                 await this.addEnhancementCharges(item, -1*chargeCost)
@@ -4262,7 +4262,7 @@ export class ItemPF extends Item {
                 result["attack.0"] = `${game.i18n.localize("D35E.Attack")} 1`;
             }
             if (this.hasMultiAttack) {
-                for (let [k, v] of Object.entries(this.data.data.attackParts)) {
+                for (let [k, v] of Object.entries(getProperty(this.data,"data.attackParts"))) {
                     result[`attack.${Number(k) + 1}`] = v[1];
                 }
             }
@@ -4337,7 +4337,7 @@ export class ItemPF extends Item {
 
     useSpellPoints() {
         if (!this.actor) return false;
-        if (this.data.data.atWill) return false;
+        if (getProperty(this.data,"data.atWill")) return false;
 
         const spellbook = getProperty(this.actor.data, `data.attributes.spells.spellbooks.${this.data.data.spellbook}`);
         return spellbook.usePowerPoints;
@@ -4450,10 +4450,10 @@ export class ItemPF extends Item {
     }
 
     updateMagicItemName(updateData, _enhancements, force = false, useIdentifiedName = false) {
-        if ((this.data.data.enhancements !== undefined && this.data.data.enhancements.automation !== undefined && this.data.data.enhancements.automation !== null) || force) {
-            if (this.data.data.enhancements.automation.updateName || force) {
-                let baseName = useIdentifiedName && this.data.data.identifiedName || this.data.data.unidentified.name 
-                if (this.data.data.unidentified.name === '') {
+        if ((getProperty(this.data,"data.enhancements") !== undefined && getProperty(this.data,"data.enhancements.automation") !== undefined && getProperty(this.data,"data.enhancements.automation") !== null) || force) {
+            if (getProperty(this.data,"data.enhancements.automation.updateName") || force) {
+                let baseName = useIdentifiedName && getProperty(this.data,"data.identifiedName") || getProperty(this.data,"data.unidentified.name") 
+                if (getProperty(this.data,"data.unidentified.name") === '') {
                     updateData[`data.unidentified.name`] = this.name;
                     baseName = this.name
                 }
@@ -4463,11 +4463,11 @@ export class ItemPF extends Item {
     }
 
     updateMagicItemProperties(updateData, _enhancements, force = false) {
-        if ((this.data.data.enhancements !== undefined && this.data.data.enhancements.automation !== undefined && this.data.data.enhancements.automation !== null) || force) {
-            if (this.data.data.enhancements.automation.updateName || force) {
+        if ((getProperty(this.data,"data.enhancements") !== undefined && getProperty(this.data,"data.enhancements.automation") !== undefined && getProperty(this.data,"data.enhancements.automation") !== null) || force) {
+            if (getProperty(this.data,"data.enhancements.automation.updateName") || force) {
                 let basePrice = this.data.data.unidentified.price
-                if (!this.data.data.unidentified.price) {
-                    updateData[`data.unidentified.price`] = this.data.data.price;
+                if (!getProperty(this.data,"data.unidentified.price")) {
+                    updateData[`data.unidentified.price`] = getProperty(this.data,"data.price");
                     basePrice = this.data.data.price
                 }
                 updateData[`data.price`] = this.buildPrice(basePrice, _enhancements)
@@ -4555,11 +4555,11 @@ export class ItemPF extends Item {
  
 
     getRawEffectData() {
-        const createData = { label: this.name, name: this.name, icon: this.img, origin: this.uuid, disabled: this.type === "aura" ? false : !this.data.data.active };
+        const createData = { label: this.name, name: this.name, icon: this.img, origin: this.uuid, disabled: this.type === "aura" ? false : !getProperty(this.data,"data.active") };
         if (this.type === "buff")
-            createData["flags.D35E.show"] = !this.data.data.hideFromToken && !game.settings.get("D35E", "hideTokenConditions");
+            createData["flags.D35E.show"] = !getProperty(this.data,"data.hideFromToken") && !game.settings.get("D35E", "hideTokenConditions");
         if (this.type === "aura")
-            createData["flags.D35E.show"] = !this.data.data.hideFromToken && !game.settings.get("D35E", "hideTokenConditions");
+            createData["flags.D35E.show"] = !getProperty(this.data,"data.hideFromToken") && !game.settings.get("D35E", "hideTokenConditions");
         return createData;
       }
     
@@ -4604,7 +4604,7 @@ export class ItemPF extends Item {
         }
         let unmetRequirements = []
         rollData.item = this.getRollData();
-        for (const _requirement of this.data.data.requirements || []) {
+        for (const _requirement of getProperty(this.data,"data.requirements") || []) {
             if (_requirement[2] === "generic") {
                 if (!(new Roll35e(_requirement[1], rollData).roll().total)){
                     unmetRequirements.push(_requirement[0])
@@ -4638,13 +4638,13 @@ export class ItemPF extends Item {
 
         if (this.hasAttack) {
             let bab = 0;
-            let attackBonus = ((this.data.data.enh || 0) ? this.data.data.enh : (this.data.data.masterwork ? "1" : "0")) + "+" + (this.data.data.attackBonus || "0");
+            let attackBonus = ((getProperty(this.data,"data.enh") || 0) ? getProperty(this.data,"data.enh") : (getProperty(this.data,"data.masterwork") ? "1" : "0")) + "+" + (getProperty(this.data,"data.attackBonus") || "0");
             let abilityBonus = "0";
             let sizeBonus = CONFIG.D35E.sizeMods[this.actor.data.data.traits.actualSize] || 0;
             let autoScaleWithBab = (game.settings.get("D35E", "autoScaleAttacksBab") && this.actor.data.type !== "npc" && getProperty(this.data, "data.attackType") === "weapon" && getProperty(this.data, "data.autoScaleOption") !== "never") || getProperty(this.data, "data.autoScaleOption") === "always";
             if (this.actor) {
                 bab = this.actor.data.data.attributes.bab.total;
-                if (this.data.data.ability.attack)
+                if (getProperty(this.data,"data.ability.attack"))
                     abilityBonus = this.actor.data.data.abilities[this.data.data.ability.attack].mod
             }
             let attacks = [];
@@ -4657,7 +4657,7 @@ export class ItemPF extends Item {
                 }
             } else {
                 attacks.push(`${totalBonus >= 0 ? '+'+totalBonus : totalBonus}`)
-                for (let part of this.data.data.attackParts) {
+                for (let part of getProperty(this.data,"data.attackParts")) {
                     let partBonus = totalBonus + part[0];
                     attacks.push(`${partBonus >= 0 ? '+'+partBonus : partBonus}`)
                 }
@@ -4690,25 +4690,25 @@ export class ItemPF extends Item {
                 }
             })
         }
-        if (this.data.data.ability.damage)
+        if (getProperty(this.data,"data.ability.damage"))
             abilityBonus = parseInt(this.actor.data.data.abilities[this.data.data.ability.damage].mod)*this.data.data.ability.damageMult
         if (abilityBonus) results.push(abilityBonus)
-        if (this.data.data.enh) results.push(this.data.data.enh)
+        if (getProperty(this.data,"data.enh")) results.push(getProperty(this.data,"data.enh"))
         return results.join(" + ");
     }
 
     get range() {
 
-        let rng = this.data.data.range || {};
+        let rng = getProperty(this.data,"data.range") || {};
         if (!["ft", "mi", "spec"].includes(rng.units)) {
             rng.value = null;
             rng.long = null;
         }
         if (rng.units === 'ft')
-            if (this.data.data.thrown) {
+            if (getProperty(this.data,"data.thrown")) {
                 rng.long = rng.value*5;
             } else {
-                if (this.data.data.actionType === "rwak")
+                if (getProperty(this.data,"data.actionType") === "rwak")
                     rng.long = rng.value*10;
             }
         let range = [rng.value, rng.long ? `/ ${rng.long}` : null, CONFIG.D35E.distanceUnitsShort[rng.units]].filterJoin(" ");

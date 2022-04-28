@@ -13,8 +13,8 @@ import {Roll35e} from "./roll.js"
  * @returns {Array}              The extended options Array including new context choices
  */
 export const addChatMessageContextOptions = function (html, options) {
-  const canApply = (li) => canvas.tokens.controlled.length && li.find(".damage-roll .dice-total").length;
-  const canApplyCritical = (li) => canvas.tokens.controlled.length && li.find(".crit-damage-roll .dice-total").length;
+  const canApply = (li) => canvas.tokens.controlled.length && li.find(".damage-roll .dice-total")?.length;
+  const canApplyCritical = (li) => canvas.tokens.controlled.length && li.find(".crit-damage-roll .dice-total")?.length;
   options.push(
     {
       name: game.i18n.localize("D35E.ApplyDamage"),
