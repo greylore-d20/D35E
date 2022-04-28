@@ -5461,6 +5461,7 @@ export class ActorPF extends Actor {
             let optionalFeatIds = [],
                 skillModTotal = skl.mod,
                 optionalFeatRanges = new Map(),
+                rollAbility = skl.ability,
                 rollMode = null;
             let skillManualBonus = 0;
             let take20 = false;
@@ -5473,6 +5474,15 @@ export class ActorPF extends Actor {
                 skillManualBonus = form.find('[name="sk-bonus"]').val() || 0;
 
                 rollMode = form.find('[name="rollMode"]').val();
+                rollAbility = form.find('[name="ability"]').val();
+
+                if (rollAbility !== skl.ability) {
+                    skillModTotal = this.data.data.abilities[rollAbility].mod;
+                }
+                props.push({
+                    header: game.i18n.localize("D35E.Ability"),
+                    value: [CONFIG.D35E.abilities[rollAbility]]
+                });
 
                 $(form).find('[data-type="optional"]').each(function () {
                     if ($(this).prop("checked")) {
@@ -5587,6 +5597,8 @@ export class ActorPF extends Actor {
         let template = "systems/D35E/templates/apps/skill-roll-dialog.html";
         let dialogData = {
             data: rollData,
+            config: CONFIG.D35E,
+            ability: skl.ability,
             rollMode: options.rollMode ? options.rollMode : (game.settings.get("D35E", `rollConfig`).rollConfig[this.type].skill  || game.settings.get("core", "rollMode")),
             rollModes: CONFIG.Dice.rollModes,
             skFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('skill',rollData)),
