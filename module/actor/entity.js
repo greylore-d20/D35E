@@ -4574,9 +4574,12 @@ export class ActorPF extends Actor {
         await this.createEmbeddedEntity("Item", spellsToAdd, {nameUnique: true})
     }
 
-    async modifyTokenAttribute(attribute, value) {
+    async modifyTokenAttribute(attribute, value, isDelta) {
         if (attribute === "attributes.hp") {
-            return this.update({"data.attributes.hp.value": String(value)})
+            let strValue = String(value);
+            if (isDelta && value > 0)
+                strValue = '+'+strValue;
+            return this.update({"data.attributes.hp.value": strValue})
         }
         else {
             return super.modifyTokenAttribute(attribute, value)
