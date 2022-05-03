@@ -6424,7 +6424,7 @@ export class ActorPF extends Actor {
             for (let possibleUpdate of itemsToUpdate) {
                 let item = this.items.get(possibleUpdate.id);
                 let current = item.data.data.damagePool.current - possibleUpdate.value;
-                if (item.data.data.damagePool.deleteOnDamagePoolEmpty) {
+                if (current <= 0 && item.data.data.damagePool.deleteOnDamagePoolEmpty) {
                     itemUpdateData.push({item: item, data: {'data.damagePool.current':0,'data.active':false}})
                     itemsToDelete.push(possibleUpdate.id)
                     deletedOrChanged = true;
