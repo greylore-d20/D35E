@@ -3757,6 +3757,7 @@ export class ItemPF extends Item {
         data.data.attackBonus = origData.data.attackBonus;
         data.data.critConfirmBonus = origData.data.critConfirmBonus;
         data.data.specialActions = origData.data.specialActions;
+        data.data.attackCountFormula = origData.data.attackCountFormula;
 
         // Determine aura power
         let auraPower = "faint";
