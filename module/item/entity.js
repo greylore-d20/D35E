@@ -851,7 +851,7 @@ export class ItemPF extends Item {
             if (data["data.level"] != null && data["data.level"] !== getProperty(this.data, "data.level"))
                 rollData.item.level = data["data.level"];
             try {
-                data["data.timeline.total"] = new Roll35e(rollFormula, rollData).roll().total;
+                data["data.timeline.total"] = new Roll35e(rollFormula.toString(), rollData).roll().total;
             } catch (e) {
                 data["data.timeline.total"] = 0;
             }

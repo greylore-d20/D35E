@@ -4434,7 +4434,8 @@ export class ActorPF extends Actor {
             const itemCustomTag = createTag(item.data.data.customTag);
             let curUses = item.data.data.uses;
 
-            if (getProperty(this.data,"data.resources") == null) getProperty(this.data,"data.resources") = {};
+            if (getProperty(this.data,"data.resources") == null) 
+                setProperty(this.data,"data.resources",{});
             if (this.data.data.resources[itemTag] == null) this.data.data.resources[itemTag] = {
                 value: 0,
                 max: 1,
@@ -4481,7 +4482,8 @@ export class ActorPF extends Actor {
             const itemTag = createTag(item.data.name);
             let curUses = item.data.data.uses;
 
-            if (getProperty(this.data,"data.resources") == null) getProperty(this.data,"data.resources") = {};
+            if (getProperty(this.data,"data.resources") == null) 
+                setProperty(this.data,"data.resources",{});
             if (this.data.data.resources[itemTag] == null) this.data.data.resources[itemTag] = {
                 value: 0,
                 max: 1,
@@ -7663,7 +7665,10 @@ export class ActorPF extends Actor {
             case "Remove":
                 if (action.parameters.length === 2) {
                     let item = this.getItemByTagAndType(action.parameters[1], action.parameters[0]);
-                    itemsToDelete.push(item.id);
+                    if (item !== null)
+                        itemsToDelete.push(item.id);
+                    else
+                        ui.notifications.error(game.i18n.localize("D35E.ErrorItemNotFound"));
                 } else
                     ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
                 break;
