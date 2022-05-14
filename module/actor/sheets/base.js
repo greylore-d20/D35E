@@ -2273,6 +2273,8 @@ export class ActorSheetPF extends ActorSheet {
     data.attacks = attackSections;
     data.counters = this.actor.data.data.counters;
     data.featCounters = []
+    data.dying = this.actor.data.data.attributes.conditions.dying;
+    data.dead = this.actor.data.data.attributes.conditions.dead;
     for (let [a, s] of Object.entries(data.actor.data?.counters?.feat || [])) {
         if (a === "base") continue;
         data.featCounters.push({name: a.charAt(0).toUpperCase() + a.substr(1).toLowerCase(), val: a})

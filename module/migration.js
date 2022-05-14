@@ -490,6 +490,26 @@ const _migrateActorBaseStats = function(ent, updateData) {
   if (getProperty(ent.data, "data.attributes.conditions.prone") == null) {
     updateData["data.attributes.conditions.prone"] = false;
   }
+  if (getProperty(ent.data, "data.attributes.conditions.dead") == null) {
+    updateData["data.attributes.conditions.dead"] = false;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.dying") == null) {
+    updateData["data.attributes.conditions.dying"] = false;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.disabled") == null) {
+    updateData["data.attributes.conditions.disabled"] = false;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.stable") == null) {
+    updateData["data.attributes.conditions.stable"] = false;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.staggered") == null) {
+    updateData["data.attributes.conditions.staggered"] = false;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.unconscious") == null) {
+    updateData["data.attributes.conditions.unconscious"] = false;
+  }
+
+
 
 
 };

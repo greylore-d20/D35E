@@ -284,7 +284,7 @@ export class ActorPF extends Actor {
                 "ability", "misc", "ac", "attack", "damage", "savingThrows", "skills", "skill", "prestigeCl","resistance","dr","spells","spellcastingAbility"
             ], types: [
                 "str", "dex", "con", "int", "wis", "cha",
-                "allSpeeds", "landSpeed", "climbSpeed", "swimSpeed", "burrowSpeed", "flySpeed",
+                "allSpeeds", "landSpeed", "climbSpeed", "swimSpeed", "burrowSpeed", "flySpeed","speedMult",
                 "skills", "strSkills", "dexSkills", "conSkills", "intSkills", "wisSkills", "chaSkills","perfSkills","craftSkills","knowSkills", ...skillTargets,
                 "allChecks", "strChecks", "dexChecks", "conChecks", "intChecks", "wisChecks", "chaChecks",
                 "ac", "aac", "sac", "nac","tch","ddg","pac",
@@ -636,6 +636,8 @@ export class ActorPF extends Actor {
             case "flySpeed":
                 if (changeType === "replace") return "data.attributes.speed.fly.replace";
                 return "data.attributes.speed.fly.total";
+            case "speedMult":
+                return "data.attributes.speedMultiplier";
             case "cmb":
                 return "data.attributes.cmb.total";
             case "sneakAttack":
@@ -1357,6 +1359,13 @@ export class ActorPF extends Actor {
                 source: { name: `Manual AC Bonus` }
             });
         }
+
+        if (data.data.attributes?.conditions?.disabled) {
+            changes.push({
+                raw: ["0.5", "speed", "speedMult", "penalty", 0],
+                source: { name: "Exhausted" }
+            });
+        } 
     }
 
     async updateTokenLight(dimLight, o, brightLight, color, animationIntensity, type, animationSpeed, lightAngle, alpha) {
@@ -1903,7 +1912,7 @@ export class ActorPF extends Actor {
         // Reduce final speed under certain circumstances
         let armorItems = srcData1.items.filter(o => o.type === "equipment");
         for (let speedKey of Object.keys(srcData1.data.attributes.speed)) {
-            let value = updateData[`data.attributes.speed.${speedKey}.total`];
+            let value = Math.floor(updateData[`data.attributes.speed.${speedKey}.total`] * (updateData[`data.attributes.speedMultiplier`] || 1.0));
             ActorPF.getReducedMovementSpeed(srcData1, value, updateData, armorItems, flags, speedKey)
         }
 
@@ -2497,6 +2506,7 @@ export class ActorPF extends Actor {
         linkData(data, updateData, "data.attributes.maxDexBonus", null);
         linkData(data, updateData, "data.attributes.maxDex.gear", null);
         linkData(data, updateData, "data.attributes.runSpeedMultiplierModifier", 0);
+        linkData(data, updateData, "data.attributes.speedMultiplier", 0.0);
         
         linkData(data, updateData, "data.attributes.fortification.total", (data1.attributes.fortification?.value || 0));
         linkData(data, updateData, "data.attributes.concealment.total", (data1.attributes.concealment?.value || 0));
@@ -4111,6 +4121,45 @@ export class ActorPF extends Actor {
                     data[`data.attributes.hp.value`] = parseInt(data[`data.attributes.hp.value`]) || this.data.data.attributes.hp.value
                 }
             }
+        }
+        if (data[`data.attributes.hp.value`] <= -10) {
+            data[`data.attributes.conditions.dying`] = false;
+            data[`data.attributes.conditions.dead`] = true;
+        }else if (data[`data.attributes.hp.value`] < 0) {
+            data[`data.attributes.conditions.dead`] = false;
+            data[`data.attributes.conditions.dying`] = true;
+        } else if (data[`data.attributes.hp.value`] > 0 && data[`data.attributes.conditions.dying`]) {
+            data[`data.attributes.conditions.dying`] = false;
+        } else if ((data[`data.attributes.hp.max`] || this.data.data.attributes.hp.max)  === data[`data.attributes.hp.nonlethal`]) {
+            data[`data.attributes.conditions.staggered`] = true;
+        } else if ((data[`data.attributes.hp.max`] || this.data.data.attributes.hp.max) < data[`data.attributes.hp.nonlethal`]) {
+            data[`data.attributes.conditions.staggered`] = false;
+            data[`data.attributes.conditions.unconscious`] = true;
+        }
+
+        if (data[`data.attributes.conditions.dead`] && !this.data.data.attributes.conditions.dead) {
+            const tokens = this.getActiveTokens();
+            const deadEffect = CONFIG.controlIcons.defeated;
+            for (let token of tokens) {
+                token.toggleEffect(deadEffect, { active: true, overlay: true });
+            }
+        } else if (!data[`data.attributes.conditions.dead`] && this.data.data.attributes.conditions.dead) {
+            const tokens = this.getActiveTokens();
+            const deadEffect = CONFIG.controlIcons.defeated;
+            for (let token of tokens) {
+                token.toggleEffect(deadEffect, { active: false, overlay: true });
+            }
+        } 
+
+        if (data[`data.attributes.conditions.stable`]  && !this.data.data.attributes.conditions?.stable) {
+            data[`data.attributes.conditions.dying`] = false;
+        }
+        
+        if (data[`data.attributes.conditions.dying`]  && !this.data.data.attributes.conditions?.dying) {
+            data[`data.attributes.conditions.unconscious`] = true;
+        }
+        if (data[`data.attributes.conditions.unconscious`]  && !this.data.data.attributes.conditions?.unconscious) {
+            data[`data.attributes.conditions.helpless`] = true;
         }
 
 
@@ -7233,6 +7282,10 @@ export class ActorPF extends Actor {
         if (pack.metadata.entity !== "Item") return;
         await pack.getIndex();
         const entry = pack.index.find(e => getOriginalNameIfExists(e) === name)
+        if (!entry) {
+            ui.notifications.error(game.i18n.localize("D35E.NoItemFound") + " " + collection);
+            return;
+        }
         return pack.getDocument(entry._id).then(ent => {
             if (unique) {
                 if (this.items.filter(o => getOriginalNameIfExists(o) === name && o.type === ent.type).length > 0)
@@ -7581,7 +7634,7 @@ export class ActorPF extends Actor {
                     let damageTotal = damage.total
                     let abilityField = `data.abilities.${action.parameters[0]}.damage`,
                     abilityDamage = actionRollData.self.abilities[action.parameters[0]].damage || 0;
-                    actorUpdates[abilityField] = abilityDamage + damageTotal
+                    actorUpdates[abilityField] = Math.max(0,abilityDamage + damageTotal);
                     
                     let name = `Ability Damage ${CONFIG.D35E.abilities[action.parameters[0]]}`;
                     let chatTemplateData = {
@@ -7611,7 +7664,7 @@ export class ActorPF extends Actor {
                     let damageTotal = damage.total
                     let abilityField = `data.abilities.${action.parameters[0]}.drain`,
                         abilityDamage = actionRollData.self.abilities[action.parameters[0]].drain || 0;
-                    actorUpdates[abilityField] = abilityDamage + damageTotal
+                    actorUpdates[abilityField] = Math.max(0,abilityDamage + damageTotal);
                     
                     let name = `Ability Drain ${CONFIG.D35E.abilities[action.parameters[0]]}`;
                     let chatTemplateData = {

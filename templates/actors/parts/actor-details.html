@@ -116,12 +116,25 @@
                             {{/if}}
                         </div>
                     </h4>
+                    {{#unless dead}}
                     <div class="attribute-value multiple">
-                        <input name="data.attributes.hp.value" type="text" value="{{data.attributes.hp.value}}"
+                        <input name="data.attributes.hp.value" type="text"  value="{{data.attributes.hp.value}}"
                                data-dtype="String" placeholder="10"/>
                         <span class="sep"> / </span>
                         <div class="attribute">{{data.attributes.hp.max}}</div>
                     </div>
+                    {{else}}
+                    <div class="attribute-value multiple">
+                        <div class="attribute"><img src="icons/svg/skull.svg" style="    display: inline;
+                            width: 18px;
+                            vertical-align: baseline;
+                            border: 0;
+                            filter: invert(1);
+                            opacity: 0.8;">Dead</div>
+                        <span class="sep"> / </span>
+                        <div class="attribute">{{data.attributes.hp.max}}</div>
+                    </div>
+                    {{/unless}}
                     <footer class="attribute-footer">
                         <input name="data.attributes.hp.temp" type="text" class="temphp"
                                placeholder="+{{ localize 'D35E.TempShort' }}"

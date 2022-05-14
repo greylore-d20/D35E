@@ -1874,6 +1874,7 @@ export class ItemPF extends Item {
             }
 
             let dc = this._getSpellDC(rollData)
+            rollData.dc = dc;
             if (this.data.data?.metamagicFeats?.maximized) {
                 damageModifiers.maximize = true;
                 rollModifiers.push(`${game.i18n.localize("D35E.SpellMaximized")}`)
@@ -1924,12 +1925,12 @@ export class ItemPF extends Item {
             if (this.hasAttack) {
                 let attackId = 0;
                 // Scaling number of attacks for spells (based on formula provided)
-                if (itemData.attackCountFormula && itemData.attackParts.length === 0) {
+                if (rollData.item.attackCountFormula && rollData.item.attackParts.length === 0) {
 
                     if (this.isSpellLike()) {
                         this._adjustSpellCL(itemData, rollData)
                     }
-                    let attackCount = (new Roll35e(itemData.attackCountFormula, rollData).roll().total || 1) - 1;
+                    let attackCount = (new Roll35e(rollData.item.attackCountFormula, rollData).roll().total || 1) - 1;
                     for (let i = 0; i < attackCount; i++) {
                         allAttacks.push({
                             bonus: "0",
@@ -1996,11 +1997,11 @@ export class ItemPF extends Item {
             // Add damage only
             else if (this.hasDamage) {
                 let attackCount = 1;
-                if (itemData.attackCountFormula) {
+                if (rollData.item.attackCountFormula) {
                     if (this.isSpellLike()) {
                         this._adjustSpellCL(itemData, rollData)
                     }
-                    attackCount = new Roll35e(itemData.attackCountFormula,rollData).roll().total || 1;
+                    attackCount = new Roll35e(rollData.item.attackCountFormula,rollData).roll().total || 1;
                 }
                 for (let i = 0; i < attackCount; i++) {
                     let attack = new ChatAttack(this,"",actor, rollData, ammoMaterial, ammoEnh);
@@ -2533,8 +2534,8 @@ export class ItemPF extends Item {
         }
         
         // Add attack bonus
-        if (itemData.attackBonus !== "") {
-            let attackBonus = new Roll35e(itemData.attackBonus, rollData).roll().total;
+        if (rollData.item.attackBonus !== "") {
+            let attackBonus = new Roll35e(rollData.item.attackBonus, rollData).roll().total;
             rollData.item.attackBonus = attackBonus.toString();
             parts.push("@item.attackBonus");
         }
@@ -2685,7 +2686,7 @@ export class ItemPF extends Item {
 
 
         // Define Roll parts
-        let parts = this._mapDamageTypes(itemData.damage.parts);
+        let parts = this._mapDamageTypes(rollData.item.damage.parts);
 
         parts[0].base = alterRoll(parts[0].base, 0, rollData.critMult);
 

@@ -1009,6 +1009,12 @@ D35E.conditions = {
   "polymorphed": "D35E.CondPolymorphed",
   "wildshaped": "D35E.CondWildshaped",
   "prone": "D35E.CondProne",
+  "dead": "D35E.Dead",
+  "dying": "D35E.Dying",
+  "disabled": "D35E.Disabled",
+  "stable": "D35E.Stable",
+  "unconscious": "D35E.Unconscious",
+  "staggered": "D35E.Staggered",
 };
 
 D35E.conditionTextures = {
@@ -1123,6 +1129,7 @@ D35E.buffTargets = {
     "swimSpeed": "D35E.SpeedSwim",
     "burrowSpeed": "D35E.SpeedBurrow",
     "flySpeed": "D35E.SpeedFly",
+    "speedMult": "D35E.SpeedMultiplier",
     "runSpeedMultiplierModifier": "D35E.RunSpeedMultiplierModifier"
   },
   "psionic": {
