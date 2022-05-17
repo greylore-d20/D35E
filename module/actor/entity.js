@@ -1307,7 +1307,7 @@ export class ActorPF extends Actor {
 
         if (data.data.attributes.conditions.shaken) {
             changes.push({
-                raw: ["-2", "savingThrows", "allAavingThrows", "penalty", 0],
+                raw: ["-2", "savingThrows", "allSavingThrows", "penalty", 0],
                 source: { name: "Shaken" }
             });
             changes.push({
