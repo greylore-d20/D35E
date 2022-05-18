@@ -7717,11 +7717,19 @@ export class ActorPF extends Actor {
 
             case "Remove":
                 if (action.parameters.length === 2) {
-                    let item = this.getItemByTagAndType(action.parameters[1], action.parameters[0]);
-                    if (item !== null)
-                        itemsToDelete.push(item.id);
-                    else
-                        ui.notifications.error(game.i18n.localize("D35E.ErrorItemNotFound"));
+                    if (action.parameters[1].indexOf('"') !== -1) {
+                        let name = cleanParam(action.parameters[1]);
+                        let type = cleanParam(action.parameters[0]);
+                        this.items.filter(o => (getOriginalNameIfExists(o) === name || name === "*") && o.type === type)
+                            .forEach(i => itemsToDelete.push(i.id));
+                    } else {
+                        let item = null;
+                        item = this.getItemByTagAndType(action.parameters[1], action.parameters[0]);
+                        if (item !== null)
+                            itemsToDelete.push(item.id);
+                        else
+                            ui.notifications.error(game.i18n.localize("D35E.ErrorItemNotFound"));
+                    }
                 } else
                     ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
                 break;
@@ -7858,7 +7866,7 @@ export class ActorPF extends Actor {
             await this.applySingleAction(action, itemUpdates, itemsToCreate, actorUpdates, actionRollData, actor, itemsToDelete)
         }
         if (itemRemoveActions.length) {
-            console.log("D35E | ACTION | itemCreationActions", itemRemoveActions)
+            console.log("D35E | ACTION | itemRemoveActions", itemRemoveActions)
             await this.deleteEmbeddedDocuments("Item", itemsToDelete, {})
         }
 
@@ -8559,6 +8567,15 @@ export class ActorPF extends Actor {
 
     getItemByTagAndType(tag, type) {
         let _item = this.items.find(item => item.type === type && (createTag(item.name) === tag || item.data.data.customTag === tag))
+        if (_item != null) {
+            return _item
+        } else {
+            return null;
+        }
+    }
+
+    getItemByNameAndType(name, type) {
+        let _item = this.items.find(item => item.type === type && (item.name === name));
         if (_item != null) {
             return _item
         } else {

@@ -411,7 +411,7 @@ export class ChatAttack {
                 }
             }
             let actionData = action.action
-                .replace(/\(@dc\)/g, `${this.rollData.dc}`)
+                .replace(/\(@dc\)/g, `${this.rollData?.dc?.dc || 0}`)
                 .replace(/\(@cl\)/g, `${cl}`)
                 .replace(/\(@useAmount\)/g, `${useAmount}`)
                 .replace(/\(@attack\)/g, `${this.attack.total}`)
@@ -444,7 +444,7 @@ export class ChatAttack {
         }
 
         let _actionData = actionData
-        .replace(/\(@dc\)/g, `${this.rollData.dc}`)
+        .replace(/\(@dc\)/g, `${this.rollData?.dc?.dc || 0}`)
         .replace(/\(@cl\)/g, `${cl}`)
         .replace(/\(@useAmount\)/g, `${useAmount}`)
         .replace(/\(@range\)/g, `${range}`)

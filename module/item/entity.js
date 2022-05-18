@@ -560,7 +560,7 @@ export class ItemPF extends Item {
 
 
         let activateBuff = data["data.active"] && data["data.active"] !== getProperty(this.data,"data.active");
-        let deactivateBuff = getProperty(this.data,"data.active") && (data["data.active"] === undefined || !data["data.active"]);
+        let deactivateBuff = getProperty(this.data,"data.active") && (data["data.active"] !== undefined && !data["data.active"]);
         // Update description
         if (this.type === "spell") await this._updateSpellDescription(data, srcData);
         if (this.type === "card") await this._updateCardDescription(data, srcData);
