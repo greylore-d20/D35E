@@ -395,6 +395,9 @@ export class ChatAttack {
         if (!this.item) return;
         if (this.item.data.data.specialActions === undefined || this.item.data.data.specialActions === null)
             return;
+        
+        this.isSpell = !!cl;
+        this.spellPenetration = spellPenetration;
         for (let action of this.item.data.data.specialActions) {
             if (cl === null) {
                 if (this.item.data.type === "spell") {
