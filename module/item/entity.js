@@ -668,12 +668,11 @@ export class ItemPF extends Item {
 
         if (activateBuff) {
             data["data.timeline.elapsed"] = 0;
-            data["data.damagePool.current"] = data["data.damagePool.total"] || getProperty(this.data, "data.damagePool.total"));
+            data["data.damagePool.current"] = data["data.damagePool.total"] || getProperty(this.data, "data.damagePool.total");
         }
         let updateData = await super.update(data, options);
         if (this.actor !== null && !options.massUpdate) {
 
-            console.log('ACTIVATING BUFF', data, getProperty(this.data,"data.active"))
             if (activateBuff) {
                 //Buff or item was activated
                 data["data.timeline.elapsed"] = 0
