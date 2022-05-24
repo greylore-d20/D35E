@@ -95,7 +95,7 @@ export class TokenPF extends Token {
         if (distance <= trueVisionDistance) canSeeInvisible = true;
       }
     }
-    if ( (this.actor.isInvisible() && !this.actor.testUserPermission(game.user, "OWNER")) && !gm && !canSeeInvisible) return false;
+    if ( (this.actor && this.actor.isInvisible() && !this.actor.testUserPermission(game.user, "OWNER")) && !gm && !canSeeInvisible) return false;
 
     // Otherwise test visibility against current sight polygons
     if ( canvas.sight.sources.has(this.sourceId) ) return true;
