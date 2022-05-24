@@ -1,3 +1,25 @@
+// Add Vision Permission sheet to ActorDirectory context options
+Hooks.on("getActorDirectoryEntryContext", function sharedVision(html, menuItems) {
+  menuItems.push({
+    name: "D35E.Vision",
+    icon: '<i class="fas fa-eye"></i>',
+    condition: (li) => {
+      return game.user.isGM;
+    },
+    callback: (li) => {
+      const doc = game.actors.get(li.data("documentId"));
+      if (doc) {
+        const sheet = doc.visionPermissionSheet;
+        if (sheet.rendered) {
+          if (sheet._minimized) sheet.maximize();
+          else sheet.close();
+        } else sheet.render(true);
+      }
+    },
+  });
+});
+
+
 export class VisionPermissionSheet extends FormApplication {
     constructor(object, options) {
       super(object, options);
@@ -9,7 +31,7 @@ export class VisionPermissionSheet extends FormApplication {
     static get defaultOptions() {
       return mergeObject(super.defaultOptions, {
         classes: ["sheet", "vision-permission"],
-        template: "systems/D35E/templates/apps/vision-permission.hbs",
+        template: "systems/D35E/templates/apps/vision-permission.html",
         width: 300,
         height: "auto",
         closeOnSubmit: true,
@@ -70,6 +92,7 @@ export class VisionPermissionSheet extends FormApplication {
     if (!token.actor) return false;
     if (token.actor.testUserPermission(game.user, "OWNER")) return true;
   
+    if ( (token.actor.isInvisible() && !token.actor.testUserPermission(game.user, "OWNER"))) return false;
     const visionFlag = token.actor.getFlag("D35E", "visionPermission");
     if (!visionFlag || !visionFlag.users[game.user.id]) return false;
     if (visionFlag.users[game.user.id].level === "yes") return true;

@@ -508,8 +508,9 @@ const _migrateActorBaseStats = function(ent, updateData) {
   if (getProperty(ent.data, "data.attributes.conditions.unconscious") == null) {
     updateData["data.attributes.conditions.unconscious"] = false;
   }
-
-
+  if (getProperty(ent.data, "data.attributes.conditions.invisibility") == null) {
+    updateData["data.attributes.conditions.invisibility"] = false;
+  }
 
 
 };

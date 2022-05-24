@@ -7,6 +7,7 @@ import {DamageTypes} from "../damage-types.js";
 import {D35E} from "../config.js";
 import {Roll35e} from "../roll.js";
 import {  ActorRestDialog } from "../apps/actor-rest.js";
+import {VisionPermissionSheet} from "../misc/vision-permission.js"
 
 
 /**
@@ -90,6 +91,10 @@ export class ActorPF extends Actor {
 
     get isCharacterType () {
         return this.data.type !== "trap" && this.data.type !== "object";
+    }
+
+    isInvisible() {
+        return getProperty(this.data,`data.attributes.conditions.invisibility`) || false;
     }
 
     get spellFailure() {
@@ -4161,6 +4166,20 @@ export class ActorPF extends Actor {
         if (data[`data.attributes.conditions.unconscious`]  && !this.data.data.attributes.conditions?.unconscious) {
             data[`data.attributes.conditions.helpless`] = true;
         }
+
+        if (data[`data.attributes.conditions.invisibility`] && !this.data.data.attributes.conditions.invisibility) {
+            const tokens = this.getActiveTokens();
+            const deadEffect = CONFIG.controlIcons.visibility;
+            for (let token of tokens) {
+                token.toggleEffect(deadEffect, { active: true, overlay: true });
+            }
+        } else if (!data[`data.attributes.conditions.invisibility`] && this.data.data.attributes.conditions.invisibility) {
+            const tokens = this.getActiveTokens();
+            const deadEffect = CONFIG.controlIcons.visibility;
+            for (let token of tokens) {
+                token.toggleEffect(deadEffect, { active: false, overlay: true });
+            }
+        } 
 
 
         // Update item containers data
@@ -8886,6 +8905,16 @@ export class ActorPF extends Actor {
     }
 
     
+  /**
+   * The VisionPermissionSheet instance for this actor
+   *
+   * @type {VisionPermissionSheet}
+   */
+  get visionPermissionSheet() {
+    if (!this._visionPermissionSheet) this._visionPermissionSheet = new VisionPermissionSheet(this);
+    return this._visionPermissionSheet;
+  }
+
 }
 
 

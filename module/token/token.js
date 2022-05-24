@@ -77,6 +77,33 @@ export class TokenPF extends Token {
     return !others.length || game.settings.get("D35E", "sharedVisionMode") === "1";
   }
 
+  get isVisible() {
+
+    // Only GM users can see hidden tokens
+    const gm = game.user.isGM;
+    if ( this.data.hidden && !gm ) return false;
+
+    // Some tokens are always visible
+    if ( !canvas.sight.tokenVision ) return true;
+    if ( this._controlled ) return true;
+    let canSeeInvisible = false;
+    if (canvas.tokens.controlled.length) {
+      for (let token of canvas.tokens.controlled) {
+        const trueVisionDistance = token.actor?.data?.data?.attributes?.senses?.truesight;
+        const controlledPosition = token.center;
+        const distance = canvas.grid.measureDistance(controlledPosition,this.center)
+        if (distance <= trueVisionDistance) canSeeInvisible = true;
+      }
+    }
+    if ( (this.actor.isInvisible() && !this.actor.testUserPermission(game.user, "OWNER")) && !gm && !canSeeInvisible) return false;
+
+    // Otherwise test visibility against current sight polygons
+    if ( canvas.sight.sources.has(this.sourceId) ) return true;
+    const tolerance = Math.min(this.w, this.h) / 4;
+    const inSight = canvas.sight.testVisibility(this.center, {tolerance, object: this});
+    return inSight;
+  }
+
   // Token#observer patch to make use of vision permission settings
   get observer() {
     return game.user.isGM || hasTokenVision(this);

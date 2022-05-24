@@ -668,6 +668,7 @@ export class ItemPF extends Item {
 
         if (activateBuff) {
             data["data.timeline.elapsed"] = 0;
+            data["data.damagePool.current"] = data["data.damagePool.total"] || getProperty(this.data, "data.damagePool.total"));
         }
         let updateData = await super.update(data, options);
         if (this.actor !== null && !options.massUpdate) {
@@ -832,10 +833,8 @@ export class ItemPF extends Item {
                 rollData.item.level = data["data.level"];
             try {
                 data["data.damagePool.total"] = new Roll35e(rollFormula, rollData).roll().total;
-                data["data.damagePool.current"] = data["data.damagePool.total"];
             } catch (e) {
                 data["data.damagePool.total"] = 0;
-                data["data.damagePool.current"] = data["data.damagePool.total"];
             }
         }
     }
