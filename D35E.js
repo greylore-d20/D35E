@@ -19,7 +19,7 @@ import { ItemPF } from "./module/item/entity.js";
 import { ItemSheetPF } from "./module/item/sheets/base.js";
 import { CompendiumDirectoryPF } from "./module/sidebar/compendium.js";
 import { TokenPF } from "./module/token/token.js";
-
+import { addLowLightVisionToLightConfig } from "./module/low-light-vision.js";
 import { PatchCore } from "./module/patch-core.js";
 import { DicePF } from "./module/dice.js";
 import { CombatPF } from "./module/combat.js";
@@ -49,7 +49,6 @@ import {EncounterGeneratorDialog} from "./module/apps/encounter-generator-dialog
 import {TreasureGeneratorDialog} from "./module/apps/treasure-generator-dialog.js";
 import {ActorSheetTrap} from "./module/actor/sheets/trap.js";
 import {applyConfigModifications} from "./module/config-tools.js";
-import {addLowLightVisionToLightConfig} from "./module/low-light-vision.js";
 import {Roll35e} from "./module/roll.js";
 import {genTreasureFromToken} from "./module/treasure/treasure.js"
 import { ActiveEffectD35E } from "./module/ae/entity.js";
@@ -141,17 +140,20 @@ Hooks.once("init", async function() {
   // Register System Settings
   registerSystemSettings();
 
-  CONFIG.statusEffects = getConditions();
-
-	const layers = {
-        d35e: {
-            layerClass: D35ELayer,
-            group: "primary"
-        }
-    }
-
-	CONFIG.Canvas.layers = foundry.utils.mergeObject(Canvas.layers, layers);
-  if (isMinimumCoreVersion("9.0")) {
+  if (isMinimumCoreVersion("10.0")) {
+  } else {
+    CONFIG.statusEffects = getConditions();
+    const layers = {
+          d35e: {
+              layerClass: D35ELayer,
+              group: "primary"
+          }
+      }
+    CONFIG.Canvas.layers = foundry.utils.mergeObject(Canvas.layers, layers);
+  }
+  if (isMinimumCoreVersion("10.0")) {
+    CONFIG.Canvas.layers.templates.layerClass = TemplateLayerPF;
+  } else if (isMinimumCoreVersion("9.0")) {
     CONFIG.Canvas.layers.templates.layerClass = TemplateLayerPF;
     CONFIG.Canvas.layers.sight.layerClass = SightLayerPF;
   } else {

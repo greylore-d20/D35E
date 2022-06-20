@@ -12,7 +12,7 @@ import {Roll35e} from "../roll.js"
  * Override and extend the basic :class:`Item` implementation
  */
 export class ItemPF extends Item {
-
+    static LOG_V10_COMPATIBILITY_WARNINGS = false;
     /* -------------------------------------------- */
     /*  Item Properties                             */
 
@@ -660,7 +660,7 @@ export class ItemPF extends Item {
 
         this._updateMaxUses(data, {srcData: srcData});
 
-        const diff = diffObject(flattenObject(this.data), data);
+        const diff = diffObject(flattenObject(this.data.toObject()), data);
         let updatedItem = null;
         // if (Object.keys(diff).length) {
         //     updatedItem = await super.update(diff, options);

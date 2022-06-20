@@ -197,8 +197,11 @@ export class ItemSheetPF extends ItemSheet {
             data.enhancementsFromBuff = []
             let _enhancements = getProperty(this.item.data, `data.enhancements.items`) || [];
             _enhancements.forEach(e => {
-                let item = new ItemPF(e, {owner: this.item.isOwner})
-                this.ehnancementItemMap.set(e._id, item);
+                e.ephemeralId = e._id;
+                delete e._id;
+
+                let item = new ItemPF(foundry.utils.deepClone(e), {owner: this.item.isOwner})
+                this.ehnancementItemMap.set(e.ephemeralId, item);
                 e.hasAction = item.hasAction || item.isCharged;
                 e.incorrect = !((e.data.enhancementType === 'weapon' && this.item.type === 'weapon') || (e.data.enhancementType === 'armor' && this.item.type === 'equipment') || (e.data.enhancementType === 'misc'));
                 e.hasUses = e.data.uses && (e.data.uses.max > 0);

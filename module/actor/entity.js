@@ -15,6 +15,7 @@ import {VisionPermissionSheet} from "../misc/vision-permission.js"
  */
 export class ActorPF extends Actor {
     /* -------------------------------------------- */
+    static LOG_V10_COMPATIBILITY_WARNINGS = false;
     API_URI = 'https://companion.legaciesofthedragon.com/';
     static SPELL_AUTO_HIT = -1337;
     //API_URI = 'http://localhost:5000';
@@ -949,7 +950,8 @@ export class ActorPF extends Actor {
                 }
             }
             if (!this.isToken) {
-                let tokens = this.getActiveTokens().filter(o => o.data.actorLink);
+                console.log(this.getActiveTokens());
+                let tokens = this.getActiveTokens().filter(o => o?.data?.actorLink);
                 for (const o of tokens) {
                     if (size.w !== o.data.width || size.h !== o.data.height || size.scale !== o.data.scale) {
                         await ActorPF._updateToken(o,{width: size.w, height: size.h, scale: size.scale}, {stopUpdates: true, tokenOnly: true});
@@ -1009,7 +1011,7 @@ export class ActorPF extends Actor {
                     }
                 }
                 if (!this.isToken) {
-                    let tokens = this.getActiveTokens().filter(o => o.data.actorLink);
+                    let tokens = this.getActiveTokens().filter(o => o?.data?.actorLink);
                     for (const o of tokens) {
                         this.updateTokenLight(dimLight, o, brightLight, color, animationIntensity, type, animationSpeed, lightAngle, alpha);
                     }
@@ -1037,7 +1039,7 @@ export class ActorPF extends Actor {
                     }
                 }
                 if (!this.isToken) {
-                    let tokens = this.getActiveTokens().filter(o => o.data.actorLink);
+                    let tokens = this.getActiveTokens().filter(o => o?.data?.actorLink);
                     for (const o of tokens) {
                         if (darkvision !== o.data.brightSight || lowLight !== getProperty(o.data, "flags.D35E.lowLightVision") || lowLightMultiplier !== getProperty(o.data, "flags.D35E.lowLightVisionMultiplier"))
                         if (o.document) {    
@@ -2091,7 +2093,7 @@ export class ActorPF extends Actor {
                     }
                 }
                 if (!this.isToken) {
-                    let tokens = this.getActiveTokens().filter(o => o.data.actorLink);
+                    let tokens = this.getActiveTokens().filter(o => o?.data?.actorLink);
 
                     for (const o of tokens) {
                         if (shapechangeImg !== o.data.img)
@@ -2110,7 +2112,7 @@ export class ActorPF extends Actor {
                     }
                 }
                 if (!this.isToken) {
-                    let tokens = this.getActiveTokens().filter(o => o.data.actorLink);
+                    let tokens = this.getActiveTokens().filter(o => o?.data?.actorLink);
 
                     for (const o of tokens) {
                         if (tokenImg && tokenImg !== o.data.img)
@@ -4330,7 +4332,7 @@ export class ActorPF extends Actor {
 
             i._updateMaxUses(itemUpdateData, {actorRollData: actorRollData});
             if (Object.keys(itemUpdateData).length > 0) {
-                const itemDiff = diffObject(flattenObject(i.data), itemUpdateData);
+                const itemDiff = diffObject(flattenObject(i.data.toObject()), itemUpdateData);
                 if (Object.keys(itemDiff).length > 0) i.update(itemDiff);
             }
         }

@@ -1,7 +1,11 @@
 /**
  * Apply patches to Core Foundry to implement Pathfinder's Low-Light Vision rules
  */
- export class SightLayerPF extends SightLayer {
+
+  // export class SightLayer {
+
+  // }
+export class SightLayerPF extends SightLayer {
   hasLowLight() {
     console.warn("SightLayer#hasLowLight is deprecated in favor of SightLayer#lowLightMultiplier");
 
@@ -106,12 +110,12 @@ export class AmbientLightPF extends AmbientLight {
   get dimRadius() {
     const result = super.dimRadius;
     if (this.data.config.luminosity < 0) return result;
-    return Math.max(result, this.disableLowLight ? result : result * canvas.sight.lowLightMultiplier().dim);
+    return Math.max(result, this.disableLowLight ? result : result * (canvas?.sight?.lowLightMultiplier()?.dim || 1));
   }
 
   get brightRadius() {
     const result = super.brightRadius;
     if (this.data.config.luminosity < 0) return result;
-    return Math.max(result, this.disableLowLight ? result : result * canvas.sight.lowLightMultiplier().bright);
+    return Math.max(result, this.disableLowLight ? result : result * (canvas?.sight?.lowLightMultiplier()?.bright || 1));
   }
 }

@@ -58,7 +58,7 @@ export class TokenPF extends Token {
 
   // Token patch for shared vision
   _isVisionSource() {
-    if (!canvas.sight.tokenVision || !this.hasSight) return false;
+    if (!canvas?.sight?.tokenVision || !this?.hasSight) return false;
 
     // Only display hidden tokens for the GM
     const isGM = game.user.isGM;
@@ -84,7 +84,7 @@ export class TokenPF extends Token {
     if ( this.data.hidden && !gm ) return false;
 
     // Some tokens are always visible
-    if ( !canvas.sight.tokenVision ) return true;
+    if ( !canvas?.sight?.tokenVision ) return true;
     if ( this._controlled ) return true;
     let canSeeInvisible = false;
     if (canvas.tokens.controlled.length) {
@@ -127,7 +127,7 @@ export class TokenPF extends Token {
       let dim = this.getLightRadius(this.data.light.dim);
       let bright = this.getLightRadius(this.data.light.bright);
       if (this.data.light.luminosity >= 0 && !this.disableLowLight) {
-        let multiplier = canvas.sight.lowLightMultiplier();
+        let multiplier = canvas?.sight?.lowLightMultiplier() || {dim: 1, bright: 1};
         dim *= multiplier.dim;
         bright *= multiplier.bright;
       }

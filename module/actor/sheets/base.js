@@ -1254,8 +1254,9 @@ export class ActorSheetPF extends ActorSheet {
         chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
         if (!item.showUnidentifiedData) {
           //console.log('D35E | Enchancement item data', getProperty(item.data, `data.enhancements.items`) || []);
-          (getProperty(item.data, `data.enhancements.items`) || []).forEach(_enh => {
-
+          (getProperty(item.data, `data.enhancements.items`) || []).forEach(__enh => {
+            const _enh = duplicate(__enh)
+            delete _enh._id;
             let enh = new ItemPF(_enh, {owner: this.isOwner})
             if (enh.hasAction || enh.isCharged) {
               let enhString = `<li class="item enh-item item-box flexrow" data-item-id="${item._id}" data-enh-id="${enh.tag}">
@@ -2499,10 +2500,13 @@ export class ActorSheetPF extends ActorSheet {
     const actor = this.actor;
     let itemData = {};
     // Case 1 - Import from a Compendium pack
+    if (game?.release?.generation >= 10) {
+      data = fromUuidSync(data.uuid)
+    }
     if (data.pack) {
       dataType = "compendium";
       const pack = game.packs.find(p => p.collection === data.pack);
-      const packItem = await pack.getDocument(data.id);
+      const packItem = await pack.getDocument(data.id || data._id);
       if (packItem != null) {
         itemData = packItem.data.toObject(false);
         itemData.data.originPack = data.pack;

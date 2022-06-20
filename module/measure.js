@@ -220,7 +220,11 @@ export class MeasuredTemplatePF extends MeasuredTemplate {
     if (!this.id || !this.shape) return;
 
     // Clear existing highlight
-    const hl = grid.getHighlightLayer(`Template.${this.id}`);
+    var templateName = "Template";
+    if (game.release.generation >= 10) {
+      templateName = "MeasuredTemplate";
+    }
+    const hl = grid.getHighlightLayer(`${templateName}.${this.id}`);
     hl.clear();
 
     // Get grid squares to highlight
