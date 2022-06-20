@@ -89,12 +89,16 @@
         {{/if}}
       </span>
       {{#if skill.custom}}
+      {{#if skill.worldCustom}}
+      <h4>{{skill.name}}</h4>
+      {{else}}
       <input type="text" name="data.skills.{{s}}.name" value="{{skill.name}}" placeholder="{{ localize 'D35E.Name' }}"/>
+      {{/if}}
       {{else}}
       <h4>{{skill.label}}</h4>
       {{/if}}
     </div>
-    <div class="skill-mod-total flexrow rollable skill-roll">
+    <div class="skill-mod-total flexrow rollable skill-roll {{#if skill.rt}}{{#unless skill.rank}}roll-untrained{{/unless}}{{/if}}">
       <div class="rollable image-d20"></div>
       <input type="text" class="rollable"  value="{{numberFormat skill.mod decimals=0 sign=true}}" disabled data-dtype="Number"/>
     </div>
@@ -135,7 +139,9 @@
     </a>
     <div class="skill-controls" style="flex: 0 24px" >
       {{#if ../owner}}{{#if skill.custom}}
+      {{#unless skill.worldCustom}}
       <a class="skill-control skill-delete" title="{{ localize 'D35E.DeleteSkill' }}"><i class="fas fa-trash"></i></a>
+      {{/unless}}
       {{/if}}{{/if}}
     </div>
 

@@ -8917,6 +8917,42 @@ export class ActorPF extends Actor {
     return this._visionPermissionSheet;
   }
 
+  _preCreate() {
+    let createData = {};
+    let worldDefaultsSettings = game.settings.get("D35E", "worldDefaults");
+    for (let skill of worldDefaultsSettings.worldDefaults.customSkills) {
+        this.__addNewCustomSkill(createData,skill[0],skill[1],skill[2],skill[3])
+    }
+    this.data.update(createData);
+  }
+
+  /**
+   * Only run on PreCreateData
+   */
+  __addNewCustomSkill(createData, name, ability, rt, acp) {
+    const skillData = {
+        name: name,
+        ability: ability,
+        rank: 0,
+        notes: "",
+        mod: 0,
+        rt: rt,
+        cs: false,
+        acp: acp,
+        background: false,
+        custom: true,
+        worldCustom: true
+      };
+  
+      let tag = createTag(skillData.name || "skill");
+      let count = 1;
+      while (this.data.data.skills[tag] != null) {
+        count++;
+        tag = createTag(skillData.name || "skill") + count.toString();
+      }
+      createData[`data.skills.${tag}`] = skillData
+  }
+
 }
 
 

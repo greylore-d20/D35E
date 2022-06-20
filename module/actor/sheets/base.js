@@ -472,25 +472,32 @@ export class ActorSheetPF extends ActorSheet {
 
 
   _prepareSkillsets(skillset) {
+
+    let settings = game.settings.get("D35E", "worldDefaults")
+
     let result = {
       all: { skills: {} },
       adventure: { skills: {} },
       background: { skills: {} },
       known: { skills: {} }
     };
-
+    for (let skill of Object.keys(skillset)) {
+      let s = skillset[skill];
+        if (s.worldCustom) s.label = s.name;
+    }
     // sort skills by label
     let keys = Object.keys(skillset).sort(function(a,b) {
       if (skillset[a] === null) return -1;
       if (skillset[b] === null) return -1;
-      if (skillset[a].custom && !skillset[b].custom) return 1;
-      if (!skillset[a].custom && skillset[b].custom) return -1;
+      if (skillset[a].custom && !skillset[a].worldCustom && !skillset[b].custom) return 1;
+      if (!skillset[a].custom && skillset[b].custom && !skillset[b].worldCustom) return -1;
       return ('' + skillset[a].label).localeCompare(skillset[b].label)
     });
 
     keys.forEach( a => {
       let skl = skillset[a]
       if (skl === null) return ;
+      if (settings.worldDefaults?.skills[a] === "hide") return;
       result.all.skills[a] = skl;
       if ((skl.rank > 0 || (!skl.rt && this.actor.data.data.displayNonRTSkills) || (skl.visibility === "always")) && (skl.visibility !== "never")) result.known.skills[a] = skl;
       else if (skl.subSkills !== undefined && (skl.visibility !== "never")) {

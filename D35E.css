@@ -1539,6 +1539,17 @@
   text-decoration: line-through;
   color: #4b4a44;
 }
+.d35ecustom .sheet .skill-mod-total.roll-untrained {
+  border-color: #810000 !important;
+}
+.roll-untrained div,.roll-untrained input  {  
+  color: #810000 !important;
+}
+
+.roll-untrained .rollable.image-d20{
+  filter: invert(11%) sepia(88%) saturate(4638%) hue-rotate(20deg) brightness(79%) contrast(128%) !important;
+}
+
 .D35E.sheet.actor ul.skills-list li.sub-skill .skill-name input[type="text"] {
   padding-left: 8px;
 }
