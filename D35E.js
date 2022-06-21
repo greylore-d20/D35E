@@ -73,7 +73,18 @@ if (!String.prototype.format) {
 /* -------------------------------------------- */
 
 Hooks.once("init", async function() {
-  console.log(`D35E | Initializing D35E 1 System`);
+  console.log(`D35E | Initializing D35E System`);
+
+  // Clean local storage 
+  var toRemove = []
+  for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+    if (localStorage.key( i ).startsWith("D35E")) {
+        toRemove.push(localStorage.key( i ));
+    }
+  }
+  for (let key of toRemove) {
+    localStorage.removeItem(key)
+  }
 
   // Create a D35E namespace within the game global
   game.D35E = {
