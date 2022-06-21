@@ -849,7 +849,7 @@ export class ActorSheetPF extends ActorSheet {
       let actor = this.actor;
       $(content).slideToggle(400, function(){
         let isHidden = ($(this).is(':hidden'));
-        let parsedDrawerState = JSON.parse(localStorage.getItem(`D35E-drawer-state-${actor.id}`) || 'null');
+        let parsedDrawerState = JSON.parse(sessionStorage.getItem(`D35E-drawer-state-${actor.id}`) || 'null');
         let drawerState = !jQuery.isEmptyObject(parsedDrawerState) ? new Set(parsedDrawerState) : new Set();
         if (isHidden) {
           drawerState.add(sublistId)
@@ -860,7 +860,7 @@ export class ActorSheetPF extends ActorSheet {
           $(card.querySelector(".toggle-open")).show();
           $(card.querySelector(".toggle-close")).hide();
         }
-        localStorage.setItem(`D35E-drawer-state-${actor.id}`, JSON.stringify(Array.from(drawerState)))
+        sessionStorage.setItem(`D35E-drawer-state-${actor.id}`, JSON.stringify(Array.from(drawerState)))
       });
 
 
@@ -886,7 +886,7 @@ export class ActorSheetPF extends ActorSheet {
       });
     }
     {
-      let parsedDrawerState = JSON.parse(localStorage.getItem(`D35E-drawer-state-${this.actor.id}`) || 'null');
+      let parsedDrawerState = JSON.parse(sessionStorage.getItem(`D35E-drawer-state-${this.actor.id}`) || 'null');
       let drawerState = !jQuery.isEmptyObject(parsedDrawerState) ? new Set(parsedDrawerState) : new Set();
       let x = 2;
       drawerState.forEach(id => {
@@ -898,14 +898,14 @@ export class ActorSheetPF extends ActorSheet {
     {
 
       //console.log("D35E | Item Browser | Loading pack inline browser on load")
-      let entityType = localStorage.getItem(`D35E-last-ent-type-${this.id}`)
-      let type = localStorage.getItem(`D35E-last-type-${this.id}`)
-      let subType = localStorage.getItem(`D35E-last-subtype-${this.id}`)
-      let filter = localStorage.getItem(`D35E-filter-${this.id}`)
-      let label = localStorage.getItem(`D35E-label-${this.id}`)
-      let previousData = JSON.parse(localStorage.getItem(`D35E-data-${this.id}`))
-      let opened = localStorage.getItem(`D35E-opened-${this.id}`) === "true"
-      let scrollPosition = parseInt(localStorage.getItem(`D35E-position-${this.id}`) || "0")
+      let entityType = sessionStorage.getItem(`D35E-last-ent-type-${this.id}`)
+      let type = sessionStorage.getItem(`D35E-last-type-${this.id}`)
+      let subType = sessionStorage.getItem(`D35E-last-subtype-${this.id}`)
+      let filter = sessionStorage.getItem(`D35E-filter-${this.id}`)
+      let label = sessionStorage.getItem(`D35E-label-${this.id}`)
+      let previousData = JSON.parse(sessionStorage.getItem(`D35E-data-${this.id}`))
+      let opened = sessionStorage.getItem(`D35E-opened-${this.id}`) === "true"
+      let scrollPosition = parseInt(sessionStorage.getItem(`D35E-position-${this.id}`) || "0")
       if (opened) {
         await this.loadData(entityType, type, subType, filter, previousData, label);
         $(`#${this.randomUuid}-itemList`).scrollTop(scrollPosition);
@@ -2728,11 +2728,11 @@ export class ActorSheetPF extends ActorSheet {
     $(`.item-add-${this.randomUuid}-overlay`).show();
     $(`.items-add-${this.randomUuid}-working-item`).show();
     $(`.items-add-${this.randomUuid}-list`).hide();
-    localStorage.setItem(`D35E-last-ent-type-${this.id}`,entityType)
-    localStorage.setItem(`D35E-last-type-${this.id}`,type)
-    localStorage.setItem(`D35E-last-subtype-${this.id}`,subtype)
-    localStorage.setItem(`D35E-opened-${this.id}`,true)
-    localStorage.setItem(`D35E-label-${this.id}`,label)
+    sessionStorage.setItem(`D35E-last-ent-type-${this.id}`,entityType)
+    sessionStorage.setItem(`D35E-last-type-${this.id}`,type)
+    sessionStorage.setItem(`D35E-last-subtype-${this.id}`,subtype)
+    sessionStorage.setItem(`D35E-opened-${this.id}`,true)
+    sessionStorage.setItem(`D35E-label-${this.id}`,label)
     $(`#${this.randomUuid}-itemList`).empty()
     let addedItems = []
     if (!previousData) {
@@ -2761,7 +2761,7 @@ export class ActorSheetPF extends ActorSheet {
                                 </div>
                         </li>`);
           li.find(".add-from-compendium").mouseup(ev => {
-                localStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop())
+                sessionStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop())
                 this._addItemFromBrowser(p.collection, i.id, ev)
               }
           );
@@ -2771,7 +2771,7 @@ export class ActorSheetPF extends ActorSheet {
           }
         }
 
-        localStorage.setItem(`D35E-data-${this.id}`, JSON.stringify(addedItems))
+        sessionStorage.setItem(`D35E-data-${this.id}`, JSON.stringify(addedItems))
       }
     } else {
       for (let i of previousData) {
@@ -2793,7 +2793,7 @@ export class ActorSheetPF extends ActorSheet {
                                 </div>
                         </li>`);
         li.find(".add-from-compendium").mouseup(ev => {
-          localStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop())
+          sessionStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop())
           this._addItemFromBrowser(i.pack, i.id, ev)
         });
         if (!$(`#${this.randomUuid}-itemList li[data-item-id='${i.id}']`).length) {
@@ -2803,7 +2803,7 @@ export class ActorSheetPF extends ActorSheet {
     }
     $(`.items-add-${this.randomUuid}-openCompendium`).unbind( "mouseup" );
     $(`.items-add-${this.randomUuid}-openCompendium`).mouseup(ev => {
-      localStorage.setItem(`D35E-opened-${this.id}`,false);
+      sessionStorage.setItem(`D35E-opened-${this.id}`,false);
       $(`.item-add-${this.randomUuid}-overlay`).hide();
       CompendiumDirectoryPF.browseCompendium(entityType)
     });
@@ -2821,7 +2821,7 @@ export class ActorSheetPF extends ActorSheet {
 
   _closeInlineData(ev) {
     ev.preventDefault();
-    localStorage.setItem(`D35E-opened-${this.id}`,false);
+    sessionStorage.setItem(`D35E-opened-${this.id}`,false);
     $(`.item-add-${this.randomUuid}-overlay`).hide();
   }
 

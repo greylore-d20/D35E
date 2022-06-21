@@ -427,52 +427,52 @@ export const getActorFromId = function(id) {
     if (order == "load") {
       $(this).each(function() {
         if ($(this).is(":radio")) {
-          if(localStorage.getItem(sv+$(this).attr("name"))){
-            if (localStorage.getItem(sv+$(this).attr("name")) == $(this).attr("name")) {
+          if(sessionStorage.getItem(sv+$(this).attr("name"))){
+            if (sessionStorage.getItem(sv+$(this).attr("name")) == $(this).attr("name")) {
               this.checked = true;
             }else{
               this.checked = false
             }
           }
           $(this).change(function() {
-            localStorage.setItem(sv+$(this).attr("name"), $(this).attr("name"));
+            sessionStorage.setItem(sv+$(this).attr("name"), $(this).attr("name"));
           });
         }else if($(this).is(":checkbox")){
-          if(localStorage.getItem(sv+$(this).attr("name"))){
-            this.checked = (localStorage.getItem(sv+$(this).attr("name")) == "1" ? true : false);
+          if(sessionStorage.getItem(sv+$(this).attr("name"))){
+            this.checked = (sessionStorage.getItem(sv+$(this).attr("name")) == "1" ? true : false);
           }
           $(this).change(function() {
-            localStorage.setItem(sv+$(this).attr("name"), (this.checked ? "1" : "0"));
+            sessionStorage.setItem(sv+$(this).attr("name"), (this.checked ? "1" : "0"));
           });
         }else if($(this).is("input") || $(this).is("textarea")) {
-          if(localStorage.getItem(sv+$(this).attr("name"))){
-            this.value = localStorage.getItem(sv+$(this).attr("name"));
+          if(sessionStorage.getItem(sv+$(this).attr("name"))){
+            this.value = sessionStorage.getItem(sv+$(this).attr("name"));
           }
           $(this).on( 'focus', function(){
             var intervalDuration = 500,
                 interval = setInterval( () => {
-                  localStorage.setItem(sv+$(this).attr("name"), this.value);
+                  sessionStorage.setItem(sv+$(this).attr("name"), this.value);
                   if(!$(this).is(":focus")) clearInterval(interval);
                 }, intervalDuration );
           } );
         }else if($(this).is("select")) {
           if ($(this).is("[multiple]")) {
-            if(localStorage.getItem(sv+$(this).attr("name"))){
-              $(this).val(localStorage.getItem(sv+$(this).attr("name")).split(","));
+            if(sessionStorage.getItem(sv+$(this).attr("name"))){
+              $(this).val(sessionStorage.getItem(sv+$(this).attr("name")).split(","));
             }else{
-              localStorage.setItem(sv+$(this).attr("name"), $(this).val());
+              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
             }
             $(this).change(function() {
-              localStorage.setItem(sv+$(this).attr("name"), $(this).val());
+              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
             });
           }else{
-            if(localStorage.getItem(sv+$(this).attr("name"))){
-              $(this).val(localStorage.getItem(sv+$(this).attr("name")));
+            if(sessionStorage.getItem(sv+$(this).attr("name"))){
+              $(this).val(sessionStorage.getItem(sv+$(this).attr("name")));
             }else{
-              localStorage.setItem(sv+$(this).attr("name"), $(this).val());
+              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
             }
             $(this).change(function() {
-              localStorage.setItem(sv+$(this).attr("name"), $(this).val());
+              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
             });
           }
         }
@@ -480,8 +480,8 @@ export const getActorFromId = function(id) {
       if ($.isFunction(fn)){fn();}
     }else if (order == "destroy") {
       $(this).each(function() {
-        if(localStorage.getItem(sv+this.id)){
-          localStorage.removeItem(sv+this.id)
+        if(sessionStorage.getItem(sv+this.id)){
+          sessionStorage.removeItem(sv+this.id)
         }
       });
       if ($.isFunction(fn)){fn();}
