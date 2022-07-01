@@ -38,7 +38,7 @@
             "name": "Portugu\u00eas (Brasil)"
         }
     ],
-    "version": "0.99.13",
+    "version": "0.100.0",
     "esmodules": [
         "D35E.js"
     ],
@@ -237,6 +237,13 @@
             "label": "Item Roll Tables"
         },
         {
+            "path": "./packs/summoning-roll-tables.db",
+            "entity": "RollTable",
+            "system": "D35E",
+            "name": "summoning-roll-tables",
+            "label": "Summoning Roll Tables"
+        },
+        {
             "path": "./packs/bestiary.db",
             "entity": "Actor",
             "system": "D35E",
@@ -256,6 +263,13 @@
             "system": "D35E",
             "name": "sample-chars",
             "label": "Sample Characters"
+        },
+        {
+            "path": "./packs/summon.db",
+            "entity": "Actor",
+            "system": "D35E",
+            "name": "summon",
+            "label": "Summoned Bestiary"
         },
         {
             "path": "./packs/traps.db",

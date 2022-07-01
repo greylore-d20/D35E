@@ -311,9 +311,20 @@
 
                 <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
                   {{#if iitem.isCharged}}
-                  <input type="text" value="{{iitem.data.uses.value}}" data-dtype="Number"/>
+                  {{#unless iitem.isRecharging}}
+                  {{#unless iitem.data.linkedChargeItem.id}}
+                  <input type="text" value="{{iitem.data.uses.value}}" data-dtype="Number" />
+                  {{else}}
+                  <input type="text" value="{{iitem.charges}}" disabled data-dtype="Number" />
+                  {{/unless}}
                   <span class="sep"> of </span>
-                  <input type="text" value="{{iitem.data.uses.max}}" disabled data-dtype="Number"/>
+                  {{#unless iitem.data.linkedChargeItem.id}}
+                  <input type="text" value="{{iitem.maxCharges}}" disabled data-dtype="Number" />
+                  {{else}}
+                  <input type="text" value="{{iitem.maxCharges}}" disabled data-dtype="Number" />
+
+                  {{/unless}}
+                  {{/unless}}
                       <span class="tooltipcontent">
                   @resources.{{iitem.tag}}.value : {{iitem.data.uses.value}}<br>
                   @resources.{{iitem.tag}}.max : {{iitem.data.uses.max}}

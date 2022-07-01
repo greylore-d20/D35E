@@ -440,6 +440,7 @@ D35E.itemActionTypes = {
   "rsak": "D35E.ActionRSAK",
   "spellsave": "D35E.ActionSpellSave",
   "save": "D35E.ActionSave",
+  "summon": "D35E.ActionSummon",
   "heal": "D35E.ActionHeal",
   "other": "D35E.ActionOther",
   "special": "D35E.ActionSpecial"
@@ -1016,6 +1017,7 @@ D35E.conditions = {
   "unconscious": "D35E.Unconscious",
   "staggered": "D35E.Staggered",
   "invisibility": "D35E.Invisibility",
+  "banished": "D35E.Banished",
 };
 
 D35E.conditionTextures = {

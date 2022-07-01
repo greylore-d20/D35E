@@ -29,12 +29,12 @@ export class LevelUpDataDialog extends FormApplication {
         let skillset = {}
         Object.keys(this.options.skillset.all.skills).forEach(s => {
             skillset[s] = {
-                rank: this.levelUpData.skills[s] !== undefined ? this.levelUpData.skills[s].rank : 0,
+                rank: this.levelUpData.skills[s] !== undefined ? this.levelUpData.skills[s].points : 0,
                 name: this.options.skillset.all.skills[s].name,
                 label: this.options.skillset.all.skills[s].label,
                 arbitrary: this.options.skillset.all.skills[s].arbitrary,
                 custom: this.options.skillset.all.skills[s].custom || this.options.skillset.all.skills[s].worldCustom,
-                baseRank: this.options.skillset.all.skills[s].rank - (this.levelUpData.skills[s] !== undefined ? (this.levelUpData.skills[s].cls ? this.levelUpData.skills[s].rank : this.levelUpData.skills[s].rank/2) : 0),
+                baseRank: this.options.skillset.all.skills[s].points - (this.levelUpData.skills[s] !== undefined ? (this.levelUpData.skills[s].cls ? this.levelUpData.skills[s].points : this.levelUpData.skills[s].points/2) : 0),
                 rt: this.options.skillset.all.skills[s].rt,
                 cs: this.options.skillset.all.skills[s].cs,
                 subSkills: {}
@@ -42,12 +42,12 @@ export class LevelUpDataDialog extends FormApplication {
 
             Object.keys(this.options.skillset.all.skills[s]?.subSkills || []).forEach(sb => {
                 skillset[s].subSkills[sb] = {
-                    rank: (this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined) ? this.levelUpData.skills[s].subskills[sb].rank : 0,
+                    rank: (this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined) ? this.levelUpData.skills[s].subskills[sb].points : 0,
                     name: this.options.skillset.all.skills[s].subSkills[sb].name,
                     label: this.options.skillset.all.skills[s].subSkills[sb].label,
                     arbitrary: this.options.skillset.all.skills[s].subSkills[sb].arbitrary,
                     custom: this.options.skillset.all.skills[s].subSkills[sb].custom || this.options.skillset.all.skills[s].worldCustom,
-                    baseRank: this.options.skillset.all.skills[s].subSkills[sb].rank - ((this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined) ? (this.levelUpData.skills[s].subskills[sb].cls ? this.levelUpData.skills[s].subskills[sb].rank : this.levelUpData.skills[s].subskills[sb].rank/2) : 0),
+                    baseRank: this.options.skillset.all.skills[s].subSkills[sb].points - ((this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined) ? (this.levelUpData.skills[s].subskills[sb].cls ? this.levelUpData.skills[s].subskills[sb].points : this.levelUpData.skills[s].subskills[sb].points/2) : 0),
                     rt: this.options.skillset.all.skills[s].rt,
                     cs: this.options.skillset.all.skills[s].cs,
                 }
@@ -103,7 +103,7 @@ export class LevelUpDataDialog extends FormApplication {
                                 a.skills[key[1]] = {rank: 0, cls: _class.data.data.classSkills[key[1]]}
                             }
                             a.skills[key[1]].cls = _class.data.data.classSkills[key[1]]
-                            a.skills[key[1]].rank = parseInt(formData[s])
+                            a.skills[key[1]].points = parseInt(formData[s])
                         }
                         if (key[0] === "skills" && key.length === 5) {
                             if (a.skills[key[1]] === undefined) {
@@ -113,7 +113,7 @@ export class LevelUpDataDialog extends FormApplication {
                                 a.skills[key[1]].subskills[key[3]] = {rank: 0, cls: _class.data.data.classSkills[key[1]]}
                             }
                             a.skills[key[1]].subskills[key[3]].cls = _class.data.data.classSkills[key[1]]
-                            a.skills[key[1]].subskills[key[3]].rank = parseInt(formData[s])
+                            a.skills[key[1]].subskills[key[3]].points = parseInt(formData[s])
                         }
                     })
                 }
@@ -141,22 +141,22 @@ export class LevelUpDataDialog extends FormApplication {
                 Object.keys(lud.skills).forEach(s => {
 
                     if (lud.skills[s])
-                        updateData[`data.skills.${s}.rank`] = (lud.skills[s].rank || 0) * (lud.skills[s].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.rank`] || 0);
+                        updateData[`data.skills.${s}.points`] = (lud.skills[s].points || 0) * (lud.skills[s].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.points`] || 0);
                     if (lud.skills[s].subskills) {
                         Object.keys(lud.skills[s].subskills).forEach(sb => {
                             if (lud.skills[s].subskills && lud.skills[s].subskills[sb])
-                                updateData[`data.skills.${s}.subSkills.${sb}.rank`] = lud.skills[s].subskills[sb].rank * (lud.skills[s].subskills[sb].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.subSkills.${sb}.rank`] || 0);
+                                updateData[`data.skills.${s}.subSkills.${sb}.points`] = lud.skills[s].subskills[sb].points * (lud.skills[s].subskills[sb].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0);
                         })
                     }
                 })
             })
             Object.keys(data[0].skills).forEach(s => {
                 if (this.object.data.data.skills[s])
-                    updateData[`data.skills.${s}.rank`] = Math.floor(updateData[`data.skills.${s}.rank`] || 0);
+                    updateData[`data.skills.${s}.points`] = Math.floor(updateData[`data.skills.${s}.points`] || 0);
                 if (data[0].skills[s].subskills) {
                     Object.keys(data[0].skills[s].subskills).forEach(sb => {
                         if (this.object.data.data.skills[s].subskills && this.object.data.data.skills[s].subskills[sb])
-                            updateData[`data.skills.${s}.subSkills.${sb}.rank`] = Math.floor(updateData[`data.skills.${s}.subSkills.${sb}.rank`] || 0);
+                            updateData[`data.skills.${s}.subSkills.${sb}.points`] = Math.floor(updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0);
                     })
                 }
             })

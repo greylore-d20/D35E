@@ -441,12 +441,12 @@
   }
 
 
-  .damage-parts, .attack-parts, .special-parts {
+  .damage-parts, .attack-parts, .special-parts, .summons-parts {
     list-style: none;
     margin: 0;
     padding: 0;
 
-    .damage-part, .attack-part, .special-part {
+    .damage-part, .attack-part, .special-part, .summons-part {
       flex: 0 0 100%;
       padding: 0;
       input {
@@ -458,7 +458,13 @@
       }
     }
 
-    .special-part {
+    .summons-part {
+      h4 {
+        width: 100%;
+      }
+    }
+
+    .special-part, .summons-part  {
       div.flexrow {
         width: 100%;
         line-height: 24px;
@@ -974,7 +980,7 @@
     }
   }
 
-  .spell, .full-attack, .charge-link, .rolltable-link, .spellbuff-link {
+  .spell, .full-attack, .charge-link, .rolltable-link, .spellbuff-link, .summons-link {
     img {
       flex: 0 24px;
       height: 24px;

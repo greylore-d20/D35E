@@ -1,4 +1,6 @@
 <form class="attack-form">
+    <div class="flexrow">
+        <section>
 
     {{#if hasTargets}}
         <div class="form-group">
@@ -192,56 +194,7 @@
     {{/if}}
     {{!-- Flags --}}
 
-    <div class="form-group">
-        <label class="block-header">{{localize "D35E.AdditionalFeats"}}</label>
-    </div>
 
-    <div class="form-group">
-        <div class="flexcol">
-            {{#each weaponFeats as |feat|}}
-            <span>{{feat.combatChangeName}}</span>
-            {{/each}}
-        </div>
-    </div>
-
-    {{#each weaponFeatsOptional as |feat|}}
-    <div class="form-group">
-        <label style="{{#unless feat.hasUseableChange}}opacity: 0.8{{/unless}}">{{feat.combatChangeName}} {{#if feat.isCharged}}({{feat.charges}} charges){{/if}}</label>
-
-        {{#if feat.data.data.combatChangesRange.max}}
-        <input type="range" name="optional-range-base-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesRange.max}}" value="0" class="slider" style="flex: 1"
-               onchange="this.nextElementSibling.value=this.value">
-        <input type="text" name="optional-range-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
-        {{/if}}
-        <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
-            <input type="checkbox" {{#unless feat.hasUseableChange}}disabled name="optional-{{feat.id}}"{{/unless}} class="stylized" data-feat-optional="{{feat.id}}"
-                   data-type="optional"/>
-            <span class="checkmark"></span>
-        </label>
-    </div>
-        {{#if feat.data.data.combatChangesAdditionalRanges.hasAdditionalRanges}}
-        <div class="form-group">
-            {{#if feat.data.data.combatChangesAdditionalRanges.slider1.max}}
-            <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider1.name}}</span>
-            <input type="range" name="optional-range-base-1-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider1.max}}" value="0" class="slider" style="flex: 1"
-                   onchange="this.nextElementSibling.value=this.value">
-            <input type="text" name="optional-range-1-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
-            {{/if}}
-            {{#if feat.data.data.combatChangesAdditionalRanges.slider2.max}}
-            <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider2.name}}</span>
-            <input type="range" name="optional-range-base-2-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider2.max}}" value="0" class="slider" style="flex: 1"
-                   onchange="this.nextElementSibling.value=this.value">
-            <input type="text" name="optional-range-2-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
-            {{/if}}
-            {{#if feat.data.data.combatChangesAdditionalRanges.slider3.max}}
-            <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider3.name}}</span>
-            <input type="range" name="optional-range-base-3-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider3.max}}" value="0" class="slider" style="flex: 1"
-                   onchange="this.nextElementSibling.value=this.value">
-            <input type="text" name="optional-range-3-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
-            {{/if}}
-        </div>
-        {{/if}}
-    {{/each}}
 
     <div class="form-group stacked">
         <label class="block-header">{{localize "D35E.Misc"}}</label>
@@ -452,7 +405,6 @@
     {{/if}}
 
 
-
     <div class="form-group">
         <label>{{localize "D35E.RollMode"}} <i class="fas fa-history tooltip" style="color: lightgray;"><span class="tooltipcontent">{{localize "D35E.ValuePersisted"}}</span></i></label>
         <select name="rollMode" class="auto-save">
@@ -488,4 +440,121 @@
 
 
     </script>
+    </section>
+    {{#if hasFeats}}
+    <section style="margin-left: 8px;">
+        <div class="form-group">
+            <label class="block-header">{{localize "D35E.AdditionalFeats"}}</label>
+        </div>
+    
+        <div class="form-group">
+            <div class="flexcol">
+                {{#each weaponFeats as |feat|}}
+                <span class="tooltip">{{feat.combatChangeName}}
+                    <span class="tooltipcontent preview"><h1>{{feat.name}}</h1>{{{feat.getChatDescription}}}</span>
+                </span>
+                {{/each}}
+            </div>
+        </div>
+    
+        {{#each weaponFeatsOptional as |feat|}}
+        <div class="form-group tooltip">
+            <span class="tooltipcontent preview"><h1>{{feat.name}}</h1>{{{feat.getChatDescription}}}</span>
+            <label style="{{#unless feat.hasUseableChange}}opacity: 0.8{{/unless}}">{{feat.combatChangeName}} {{#if feat.isCharged}}({{feat.charges}} charges){{/if}}</label>
+    
+            {{#if feat.data.data.combatChangesRange.max}}
+            <input type="range" name="optional-range-base-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesRange.max}}" value="0" class="slider" style="flex: 1"
+                   onchange="this.nextElementSibling.value=this.value">
+            <input type="text" name="optional-range-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
+            {{/if}}
+            <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
+                <input type="checkbox" {{#unless feat.hasUseableChange}}disabled name="optional-{{feat.id}}"{{/unless}} class="stylized" data-feat-optional="{{feat.id}}"
+                       data-type="optional"/>
+                <span class="checkmark"></span>
+            </label>
+        </div>
+            {{#if feat.data.data.combatChangesAdditionalRanges.hasAdditionalRanges}}
+            <div class="form-group">
+                {{#if feat.data.data.combatChangesAdditionalRanges.slider1.max}}
+                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider1.name}}</span>
+                <input type="range" name="optional-range-base-1-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider1.max}}" value="0" class="slider" style="flex: 1"
+                       onchange="this.nextElementSibling.value=this.value">
+                <input type="text" name="optional-range-1-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
+                {{/if}}
+                {{#if feat.data.data.combatChangesAdditionalRanges.slider2.max}}
+                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider2.name}}</span>
+                <input type="range" name="optional-range-base-2-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider2.max}}" value="0" class="slider" style="flex: 1"
+                       onchange="this.nextElementSibling.value=this.value">
+                <input type="text" name="optional-range-2-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
+                {{/if}}
+                {{#if feat.data.data.combatChangesAdditionalRanges.slider3.max}}
+                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider3.name}}</span>
+                <input type="range" name="optional-range-base-3-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider3.max}}" value="0" class="slider" style="flex: 1"
+                       onchange="this.nextElementSibling.value=this.value">
+                <input type="text" name="optional-range-3-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
+                {{/if}}
+            </div>
+            {{/if}}
+        {{/each}}
+
+
+        {{#if summonableMonsters}}
+        <div class="form-group">
+            <label class="block-header">{{localize "D35E.SummonMonster"}}</label>
+        </div>
+        <div class="form-group">
+            <label>{{localize "D35E.SelectMonster"}} <i class="fas fa-history tooltip" style="color: lightgray;"><span class="tooltipcontent">{{localize "D35E.ValuePersisted"}}</span></i></label>
+            <select name="selected-monster" class="auto-save" onchange="updateMonster(this)">
+                {{#select monster}}
+                {{#each summonableMonsters as |monster id|}}
+                <option value="{{monster.collection}}:{{monster.resultId}}:{{monster.text}}" data-pack="{{monster.collection}}" data-id="{{monster.resultId}}">{{monster.text}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            <input type="hidden" name="monster-collection"/>
+            <input type="hidden" name="monster-resultId"/>
+            <input type="hidden" name="monster-text"/>
+            <input type="hidden" name="monster-img"/>
+        </div>
+        <div class="monster-summon-box" style="border-radius: 4px">
+            <h1 style="    white-space: nowrap;
+            text-overflow: ellipsis;" class="monster-name">Aboleth<span style="float: right;" class="monster-cr">CR2</span></h1>
+            <div>
+                <img class="monster-img" src="systems/D35E/icons/bestiary/token/aboleth.png" title="Abolethr" width="48" height="48" style="border: none; float: right;">
+                <em class="monster-align">Large Aberration, Lawful Evil</em><br>
+                <strong>{{ localize 'D35E.HitDice' }}:</strong> <span class="monster-hp">22 hp (11 HD)</span><br>
+                <strong>{{ localize 'D35E.Initiative' }}:</strong> <span class="monster-init">22</span><br>
+                <strong>{{ localize 'D35E.AC' }}:</strong> <span class="monster-ac">22</span><br>
+                <strong>{{ localize 'D35E.BAB' }}/{{ localize 'D35E.Grapple' }}:</strong> <span class="monster-bab">+11/+20</span></div><br>
+            </div>
+        </div>
+        <script>
+            async function updateMonster(select) {
+                var monster_pack = $('option:selected', select).attr('data-pack');
+                var mosnter_id = $('option:selected', select).attr('data-id');
+                const __pack = game.packs.get(monster_pack);
+                const monster = await __pack.getDocument(mosnter_id);
+                const mdd = monster.data.data;
+
+                $('option:selected', select).closest("section").find("input[name='monster-collection']").val(monster_pack)
+                $('option:selected', select).closest("section").find("input[name='monster-resultId']").val(mosnter_id)
+                $('option:selected', select).closest("section").find("input[name='monster-text']").val(monster.name)
+                $('option:selected', select).closest("section").find("input[name='monster-img']").val(monster.img)
+
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-name").text(`${monster.name}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-img").attr("src",`${monster.img}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-cr").text(`CR${monster.data.data.details.totalCr}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-align").text(`${CONFIG.D35E.actorSizes[monster.data.data.traits.actualSize]} ${monster.racialHD.name} ${monster.data.data.details.alignment}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-hp").text(`${monster.data.data.attributes.hp.max} hp (${monster.data.data.attributes.hd.total} HD)`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-ac").text(`${mdd.attributes.ac.normal.total} (${mdd.attributes.ac.touch.total} touch, ${mdd.attributes.ac.flatFooted.total} flat-footed)`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-bab").text(`${mdd.attributes.bab.total}/${mdd.attributes.cmd.total}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-init").text(`${mdd.attributes.initiative.total}`)
+            }
+            updateMonster($('select[name="selected-monster"]'))
+
+        </script>
+        {{/if}}
+    </section>
+        {{/if}}
+    </div>
 </form>

@@ -340,6 +340,11 @@
   </div>
 </div>
 
+
+
+
+
+
 {{!-- Attack Notes --}}
 <div class="form-group stacked">
   <label>{{localize "D35E.AttackNotes"}}</label>
@@ -352,27 +357,50 @@
   <textarea type="text" name="data.effectNotes" style="white-space: pre">{{data.data.effectNotes}}</textarea>
 </div>
 
-<div class="flexcol special-actions">
-<h4 class="in-header">
-  {{localize "D35E.SpecialActions"}}
-  <a class="special-control add-special"><i class="fas fa-plus"></i></a>
-</h4>
-<ol class="special-parts form-group">
-  {{#each data.data.specialActions as |part a|}}
-  <li class="special-part flexcol" data-special-actions="{{a}}">
-    <div class="flexrow"><span>Name:</span><input type="text" name="data.specialActions.{{a}}.name" placeholder="{{localize "D35E.Name"}}" value="{{lookup this "name"}}"/></div>
-    <div class="flexrow"><span>Action:</span><input type="text" name="data.specialActions.{{a}}.action" placeholder="{{localize "D35E.Action"}}" value="{{lookup this "action"}}"/></div>
-    <div class="flexrow"><span>Condition:</span><input type="text" name="data.specialActions.{{a}}.condition" placeholder="{{localize "D35E.Condition"}}" value="{{lookup this "condition"}}"/></div>
-    <div class="flexrow"><span>Icon path:</span><input type="text" name="data.specialActions.{{a}}.img" placeholder="{{localize "D35E.Image"}}" value="{{lookup this "img"}}"/></div>
-    <a class="special-control delete-special"><i class="fas fa-minus"></i>Remove</a>
 
-  </li>
-  {{/each}}
-</ol>
-  <div class="spellbuff-link flexcol">
-  <div style="width: 100%; text-align: center; padding: 12px">
-    You can drop a buff from compendium here to create a special action.
+<div class="flexcol summons">
+  <h4 class="in-header">
+    {{localize "D35E.Summons"}}
+  </h4>
+  <ol class="summons-parts form-group">
+    {{#each data.data.summon as |part a|}}
+    <li class="summons-part flexcol" data-summons="{{a}}">
+      <h4><b>{{lookup this "name"}}</b> <span style="float: right">{{localize "D35E.LinkedRolltable"}} {{lookup this "id"}} <a class="colorized-link summons-control delete-summons">{{localize "D35E.UnlinkRolltable"}}</a></span></h4>
+      <div class="flexrow"><span>Formula:</span><input type="text" name="data.summon.{{a}}.formula" placeholder="{{localize "D35E.Formula"}}" value="{{lookup this "formula"}}"/></div>
+      <input type="hidden" name="data.summon.{{a}}.id" value="{{lookup this "id"}}">
+      <input type="hidden" name="data.summon.{{a}}.pack" value="{{lookup this "pack"}}">
+      <input type="hidden" name="data.summon.{{a}}.name" value="{{lookup this "name"}}">
+    </li>
+    {{/each}}
+  </ol>
+  <div class="summons-link flexcol">
+    <div style="width: 100%; text-align: center; padding: 12px">
+      You can drop a roll table from compendium here to create a special action.
+    </div>
   </div>
+</div>
+
+<div class="flexcol special-actions">
+  <h4 class="in-header">
+    {{localize "D35E.SpecialActions"}}
+    <a class="special-control add-special"><i class="fas fa-plus"></i></a>
+  </h4>
+  <ol class="special-parts form-group">
+    {{#each data.data.specialActions as |part a|}}
+    <li class="special-part flexcol" data-special-actions="{{a}}">
+      <div class="flexrow"><span>Name:</span><input type="text" name="data.specialActions.{{a}}.name" placeholder="{{localize "D35E.Name"}}" value="{{lookup this "name"}}"/></div>
+      <div class="flexrow"><span>Action:</span><input type="text" name="data.specialActions.{{a}}.action" placeholder="{{localize "D35E.Action"}}" value="{{lookup this "action"}}"/></div>
+      <div class="flexrow"><span>Condition:</span><input type="text" name="data.specialActions.{{a}}.condition" placeholder="{{localize "D35E.Condition"}}" value="{{lookup this "condition"}}"/></div>
+      <div class="flexrow"><span>Icon path:</span><input type="text" name="data.specialActions.{{a}}.img" placeholder="{{localize "D35E.Image"}}" value="{{lookup this "img"}}"/></div>
+      <a class="special-control delete-special"><i class="fas fa-minus"></i>Remove</a>
+
+    </li>
+    {{/each}}
+  </ol>
+  <div class="spellbuff-link flexcol">
+    <div style="width: 100%; text-align: center; padding: 12px">
+      You can drop a buff from compendium here to create a special action.
+    </div>
   </div>
 </div>
 

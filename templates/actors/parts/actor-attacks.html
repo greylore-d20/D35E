@@ -243,10 +243,13 @@
         {{#each section.items as |item iid|}}
         <li class="item flexrow" data-item-id="{{item._id}}">
           <div class="item-name flexrow rollable {{#if item.data.melded}}melded{{/if}} {{#if item.disabled}}attack-disabled{{/if}}">
-            <div class="item-image" style="background-image: url('{{item.img}}')"></div>
+            <div class="item-image rollable" style="background-image: url('{{item.img}}')">
+              {{#if item.data.melded}}<i class="fas fa-paw"></i>{{/if}} 
+              {{#if item.data.fromPolymorph}}<i class="fas fa-spider"></i>{{/if}} 
+              {{#if item.broken}} <i class="fas fa-heart-broken"></i> {{/if}}
+          </div>
             <h4>
-              {{item.name~}} {{#if item.data.melded}}<i class="fas fa-leaf"></i>{{/if}}
-
+              {{item.name~}}
               {{#if item.data.linkImported}}
               <i class="fas fa-link non-rollable" style="color: black; opacity: 0.7">
               </i>

@@ -9,7 +9,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
    * @param {ItemD35E} item               The Item object for which to construct the template
    * @return {AbilityTemplate|null}     The template object, or null if the item does not produce a template
    */
-  static fromItem(item, multiplier = 1, rollData = {}) {
+  static fromItem(item, multiplier = 1, rollData = {}, optionalData = {}) {
     const target = getProperty(item.data, "data.measureTemplate") || {};
     const templateShape = D35E.areaTargetTypes[target.type];
     if ( !templateShape ) return null;
@@ -24,7 +24,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
       x: 0,
       y: 0,
       fillColor: target.customColor || game.user.color,
-      texture: target.customTexture ? target.customTexture : null,
+      texture: optionalData.customTexture ? optionalData.customTexture : target.customTexture ? target.customTexture : null,
       _id: randomID(16),
     };
 
@@ -55,6 +55,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
     template.item = item
 
     const object = new this(template);
+    object.alpha = optionalData.alpha || 1;
     return object;
   }
 

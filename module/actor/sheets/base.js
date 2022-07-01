@@ -179,7 +179,7 @@ export class ActorSheetPF extends ActorSheet {
         skl.sourceDetails.push({ name: game.i18n.localize("D35E.ACP"), value: `-${data.actor.data.attributes.acp.total}` })
       if (skl.ability)
         skl.sourceDetails.push({ name: game.i18n.localize("D35E.Ability"), value: getProperty(data.actor,`data.abilities.${skl.ability}.mod`) })
-      if (!data.actor.data.details.levelUpProgression && !skl.cls && skl.rank) // We do not display this as this is already calculated
+      if (!data.actor.data.details.levelUpProgression && !skl.cls && skl.points) // We do not display this as this is already calculated
         skl.sourceDetails.push({ name: game.i18n.localize("D35E.NonClassSkill"), value: game.i18n.localize("D35E.HalfRanks") })
       if (s === "jmp") {
         if (data.actor.data.attributes.speed.land.total < data.actor.data.attributes.speed.land.base) {
@@ -200,7 +200,7 @@ export class ActorSheetPF extends ActorSheet {
             skl2.sourceDetails.push({ name: game.i18n.localize("D35E.ACP"), value: `-${data.actor.data.attributes.acp.total}` })
           if (skl2.ability)
             skl2.sourceDetails.push({ name: game.i18n.localize("D35E.Ability"), value: getProperty(data.actor,`data.abilities.${skl2.ability}.mod`) })
-          if (!skl2.cls && skl2.rank)
+          if (!skl2.cls && skl2.points)
             skl.sourceDetails.push({ name: game.i18n.localize("D35E.NonClassSkill"), value: game.i18n.localize("D35E.HalfRanks") })
         }
       }
@@ -267,18 +267,18 @@ export class ActorSheetPF extends ActorSheet {
       if (skl.subSkills != null) {
         for (let subSkl of Object.values(skl.subSkills)) {
           if (data.useBGSkills && skl.background) {
-            skillRanks.bgUsed += subSkl.rank;
+            skillRanks.bgUsed += subSkl.points;
           }
           else {
-            skillRanks.used += subSkl.rank;
+            skillRanks.used += subSkl.points;
           }
         }
       }
       else if (data.useBGSkills && skl.background) {
-        skillRanks.bgUsed += skl.rank;
+        skillRanks.bgUsed += skl.points;
       }
       else {
-        skillRanks.used += skl.rank;
+        skillRanks.used += skl.points;
       }
     }
     // Count allowed skill ranks
@@ -499,7 +499,7 @@ export class ActorSheetPF extends ActorSheet {
       if (skl === null) return ;
       if (settings.worldDefaults?.skills[a] === "hide") return;
       result.all.skills[a] = skl;
-      if ((skl.rank > 0 || (!skl.rt && this.actor.data.data.displayNonRTSkills) || (skl.visibility === "always")) && (skl.visibility !== "never")) result.known.skills[a] = skl;
+      if ((skl.points > 0 || (!skl.rt && this.actor.data.data.displayNonRTSkills) || (skl.visibility === "always")) && (skl.visibility !== "never")) result.known.skills[a] = skl;
       else if (skl.subSkills !== undefined && (skl.visibility !== "never")) {
         result.known.skills[a] = skl;
       }

@@ -83,6 +83,35 @@ export class ActorPF extends Actor {
         } else if (action === "save") {
             const saveId = button.dataset.save;
             if (actor) await actor.rollSavingThrow(saveId,null,null, { event: event });
+        } else if (action === "summon") {
+            const monsterId = button.dataset.id;
+            const monsterPack = button.dataset.pack;
+            const user = button.dataset.user;
+            let x = button.dataset.measureX;
+            let y = button.dataset.measureY;
+            let template = canvas.templates.get(button.dataset.measureId)
+            if (template) {
+                x = template.data.x;
+                y = template.data.y;
+            }
+            if (monsterPack) {
+
+            }
+            let monster = game.actors.get(monsterId)
+            let tokenData = await monster.getTokenData({actorData:{
+                permission: {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER}
+              }})
+            let internalSpawnPoint = {x: x - (canvas.scene.data.grid  * (tokenData.width/2)),
+                    y: y - (canvas.scene.data.grid  * (tokenData.height/2))}
+            tokenData.update(internalSpawnPoint);
+            tokenData.update({
+                permission: {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER}
+              })
+            tokenData.permission = {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER};
+            canvas.scene.createEmbeddedDocuments("Token", [tokenData]);
+            if (template) { 
+                canvas.scene.deleteEmbeddedDocuments('MeasuredTemplate', [button.dataset.measureId])
+            }
         }
 
         button.disabled = false;
@@ -96,6 +125,10 @@ export class ActorPF extends Actor {
 
     isInvisible() {
         return getProperty(this.data,`data.attributes.conditions.invisibility`) || false;
+    }
+
+    isBanished() {
+        return getProperty(this.data,`data.attributes.conditions.banished`) || false;
     }
 
     get spellFailure() {
@@ -3158,8 +3191,9 @@ export class ActorPF extends Actor {
             let cs = skl.cs;
             if (data1.details.levelUpData && data1.details.levelUpProgression)
                 cs = true;
-            let sklValue = (Math.floor((cs && skl.rank > 0 ? skl.rank : (skl.rank / 2)) + ablMod + specificSkillBonus - acpPenalty - energyDrainPenalty));
+            let sklValue = (Math.floor((cs && skl.points > 0 ? skl.points : (skl.points / 2)) + ablMod + specificSkillBonus - acpPenalty - energyDrainPenalty));
             linkData(data, updateData, `data.skills.${sklKey}.mod`, sklValue);
+            linkData(data, updateData, `data.skills.${sklKey}.rank`, Math.floor((cs && skl.points > 0 ? skl.points : (skl.points / 2))));
             // Parse sub-skills
             for (let [subSklKey, subSkl] of Object.entries(skl.subSkills || {})) {
                 if (subSkl == null) {
@@ -3177,8 +3211,9 @@ export class ActorPF extends Actor {
                 if (subSkl.ability !== "")
                     ablMod = subSkl.ability ? data1.abilities[subSkl.ability].mod : 0;
                 specificSkillBonus = subSkl.changeBonus || 0;
-                sklValue = subSkl.rank + (scs && subSkl.rank > 0 ? skl.rank : (skl.rank / 2)) + ablMod + specificSkillBonus - acpPenalty - energyDrainPenalty;
+                sklValue = Math.floor((scs && subSkl.points > 0 ? subSkl.points : (subSkl.points / 2))) + ablMod + specificSkillBonus - acpPenalty - energyDrainPenalty;
                 linkData(data, updateData, `data.skills.${sklKey}.subSkills.${subSklKey}.mod`, sklValue);
+                linkData(data, updateData, `data.skills.${sklKey}.subSkills.${subSklKey}.rank`, Math.floor((scs && subSkl.points > 0 ? subSkl.points : (subSkl.points / 2))));
             }
         }
     }
@@ -4051,13 +4086,13 @@ export class ActorPF extends Actor {
             for (let [s, skl] of Object.entries(expandedData.data.skills)) {
                 let curSkl = this.data.data.skills[s];
                 if (skl == null) continue;
-                if (skl.rank)
-                    if (typeof skl.rank !== "number") skl.rank = 0;
+                if (skl.points)
+                    if (typeof skl.points !== "number") skl.points = 0;
                 if (skl.subSkills != null) {
                     for (let skl2 of Object.values(skl.subSkills)) {
                         if (skl2 == null) continue;
-                        if (skl2.rank)
-                            if (typeof skl2.rank !== "number") skl2.rank = 0;
+                        if (skl2.points)
+                            if (typeof skl2.points !== "number") skl2.points = 0;
                     }
                 }
 
@@ -4178,6 +4213,20 @@ export class ActorPF extends Actor {
         } else if (!data[`data.attributes.conditions.invisibility`] && this.data.data.attributes.conditions.invisibility) {
             const tokens = this.getActiveTokens();
             const deadEffect = CONFIG.controlIcons.visibility;
+            for (let token of tokens) {
+                token.toggleEffect(deadEffect, { active: false, overlay: true });
+            }
+        } 
+
+        if (data[`data.attributes.conditions.banished`] && !this.data.data.attributes.conditions.banished) {
+            const tokens = this.getActiveTokens();
+            const deadEffect = 'systems/D35E/icons/actions/magic-gate.svg';
+            for (let token of tokens) {
+                token.toggleEffect(deadEffect, { active: true, overlay: true });
+            }
+        } else if (!data[`data.attributes.conditions.banished`] && this.data.data.attributes.conditions.banished) {
+            const tokens = this.getActiveTokens();
+            const deadEffect = 'systems/D35E/icons/actions/magic-gate.svg';
             for (let token of tokens) {
                 token.toggleEffect(deadEffect, { active: false, overlay: true });
             }
@@ -4446,19 +4495,19 @@ export class ActorPF extends Actor {
                     classHP.set(_class._id,0)
                 classHP.set(_class._id,classHP.get(_class._id) + (lud.hp || 0))
                 Object.keys(lud.skills).forEach(s => {
-                    updateData[`data.skills.${s}.rank`] = (lud.skills[s].rank || 0) * (lud.skills[s].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.rank`] || 0);
+                    updateData[`data.skills.${s}.points`] = (lud.skills[s].points || 0) * (lud.skills[s].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.points`] || 0);
                     if (lud.skills[s].subskills) {
                         Object.keys(lud.skills[s].subskills).forEach(sb => {
-                            updateData[`data.skills.${s}.subSkills.${sb}.rank`] = lud.skills[s].subskills[sb].rank * (lud.skills[s].subskills[sb].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.subSkills.${sb}.rank`] || 0);
+                            updateData[`data.skills.${s}.subSkills.${sb}.points`] = lud.skills[s].subskills[sb].points * (lud.skills[s].subskills[sb].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0);
                         })
                     }
                 })
             })
             Object.keys(levelUpData[0]?.skills || {}).forEach(s => {
-                updateData[`data.skills.${s}.rank`] = Math.floor(updateData[`data.skills.${s}.rank`] || 0);
+                updateData[`data.skills.${s}.points`] = Math.floor(updateData[`data.skills.${s}.points`] || 0);
                 if (levelUpData[0].skills[s].subskills) {
                     Object.keys(levelUpData[0].skills[s].subskills).forEach(sb => {
-                        updateData[`data.skills.${s}.subSkills.${sb}.rank`] = Math.floor(updateData[`data.skills.${s}.subSkills.${sb}.rank`] || 0);
+                        updateData[`data.skills.${s}.subSkills.${sb}.points`] = Math.floor(updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0);
                     })
                 }
             })
@@ -4474,9 +4523,9 @@ export class ActorPF extends Actor {
             }
 
             for (let [k, s] of Object.entries(getProperty(data, "data.skills"))) {
-                linkData(data, globalUpdateData, `data.skills.${k}.rank`, updateData[`data.skills.${k}.rank`] || 0);
+                linkData(data, globalUpdateData, `data.skills.${k}.points`, updateData[`data.skills.${k}.points`] || 0);
                 for (let k2 of Object.keys(getProperty(s, "subSkills") || {})) {
-                    linkData(data, globalUpdateData, `data.skills.${k}.subSkills.${k2}.rank`, updateData[`data.skills.${k}.subSkills.${k2}.rank`] || 0);
+                    linkData(data, globalUpdateData, `data.skills.${k}.subSkills.${k2}.points`, updateData[`data.skills.${k}.subSkills.${k2}.points`] || 0);
                 }
             }
 
@@ -5662,7 +5711,7 @@ export class ActorPF extends Actor {
                 notes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(ItemPF._fillTemplate(o, rollData), {rollData: rollData})));
             }
         }
-        if (skl.rt && (skl.rank === null || skl.rank === 0)) {
+        if (skl.rt && (skl.points === null || skl.points === 0)) {
             notes.push(game.i18n.localize("D35E.Untrained"));
         }
 

@@ -128,6 +128,7 @@ export const migrateActorData = async function(actor, itemsToAdd) {
   _migrateActorSpellbookDCFormula(actor, updateData);
   _migrateActorRace(actor, updateData)
   _migrateActorTokenVision(actor, updateData);
+  _migrateActorSkillRanksToPoints(actor, updateData);
   await _migrateWeaponProficiencies(actor,updateData,itemsToAdd)
   await _migrateArmorProficiencies(actor,updateData,itemsToAdd)
 
@@ -227,6 +228,18 @@ const _migrateActorTokenVision = function(ent, updateData) {
   updateData["data.attributes.-=vision"] = null;
   updateData["token.flags.D35E.lowLightVision"] = vision.lowLight;
   if (!getProperty(ent.data, "token.brightSight")) updateData["token.brightSight"] = vision.darkvision;
+};
+
+const _migrateActorSkillRanksToPoints = function(ent, updateData) {
+  
+  for (let [sklKey, skl] of Object.entries(ent.data.data?.skills)) {
+    if (skl.points !== undefined) continue;
+    updateData[`data.skills.${sklKey}.points`] = skl.rank;
+    for (let [subSklKey, subSkl] of Object.entries(skl.subSkills || {})) {
+      if (subSkl.points !== undefined) continue;
+      updateData[`data.skills.${sklKey}.subSkills.${subSklKey}.points`] = subSkl.rank; 
+    }
+}
 };
 
 const migrateTokenVision = function(token, updateData) {
@@ -510,6 +523,9 @@ const _migrateActorBaseStats = function(ent, updateData) {
   }
   if (getProperty(ent.data, "data.attributes.conditions.invisibility") == null) {
     updateData["data.attributes.conditions.invisibility"] = false;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.banished") == null) {
+    updateData["data.attributes.conditions.banished"] = false;
   }
 
 

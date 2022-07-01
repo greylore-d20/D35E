@@ -232,6 +232,17 @@
     </div>
     {{/each}}
 
+
+    {{#if summonId}}
+    <button class="special-action-button" data-action="summon" data-entity="Actor" data-measure-x="{{measureX}}" data-measure-id="{{measureId}}" data-measure-y="{{measureY}}" data-id="{{summonId}}" data-summoned="true" data-user="{{userId}}" {{#if summonPack}}data-pack="{{summonPack}}"{{/if}}>{{#if
+        summonImg}}<img style="    height: 24px;
+        width: 24px;
+        float: left;
+        border: none;
+        margin-top: 2px;" src="{{summonImg}}">{{/if}}Summon {{summonName}}
+    </button>
+    {{/if}}
+
     {{#if hasExtraText}}
     <div class="extra-text gm-sensitive">{{{extraText}}}</div>
     {{/if}}

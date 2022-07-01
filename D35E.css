@@ -1539,17 +1539,6 @@
   text-decoration: line-through;
   color: #4b4a44;
 }
-.d35ecustom .sheet .skill-mod-total.roll-untrained {
-  border-color: #810000 !important;
-}
-.roll-untrained div,.roll-untrained input  {  
-  color: #810000 !important;
-}
-
-.roll-untrained .rollable.image-d20{
-  filter: invert(11%) sepia(88%) saturate(4638%) hue-rotate(20deg) brightness(79%) contrast(128%) !important;
-}
-
 .D35E.sheet.actor ul.skills-list li.sub-skill .skill-name input[type="text"] {
   padding-left: 8px;
 }
@@ -1937,11 +1926,20 @@
 .D35E.sheet.actor .inventory-list .item .item-name .item-image .fas.fa-paw,
 .D35E.sheet.actor .inventory-list .item .item-name-ne .item-image .fas.fa-paw {
   font-size: 18px;
-  color: #86eb03;
+  color: white;
   position: absolute;
   top: 3px;
   left: 3px;
-  text-shadow: 0px 0px 3px #126b77;
+  text-shadow: 0px 0px 3px black;
+}
+.D35E.sheet.actor .inventory-list .item .item-name .item-image .fas.fa-spider,
+.D35E.sheet.actor .inventory-list .item .item-name-ne .item-image .fas.fa-spider {
+  font-size: 18px;
+  color: white;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  text-shadow: 0px 0px 3px black;
 }
 .D35E.sheet.actor .inventory-list .item .item-name .item-image.class-icon,
 .D35E.sheet.actor .inventory-list .item .item-name-ne .item-image.class-icon {
@@ -2785,7 +2783,8 @@
 }
 .D35E.sheet.item .damage-parts,
 .D35E.sheet.item .attack-parts,
-.D35E.sheet.item .special-parts {
+.D35E.sheet.item .special-parts,
+.D35E.sheet.item .summons-parts {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2793,52 +2792,94 @@
 .D35E.sheet.item .damage-parts .damage-part,
 .D35E.sheet.item .attack-parts .damage-part,
 .D35E.sheet.item .special-parts .damage-part,
+.D35E.sheet.item .summons-parts .damage-part,
 .D35E.sheet.item .damage-parts .attack-part,
 .D35E.sheet.item .attack-parts .attack-part,
 .D35E.sheet.item .special-parts .attack-part,
+.D35E.sheet.item .summons-parts .attack-part,
 .D35E.sheet.item .damage-parts .special-part,
 .D35E.sheet.item .attack-parts .special-part,
-.D35E.sheet.item .special-parts .special-part {
+.D35E.sheet.item .special-parts .special-part,
+.D35E.sheet.item .summons-parts .special-part,
+.D35E.sheet.item .damage-parts .summons-part,
+.D35E.sheet.item .attack-parts .summons-part,
+.D35E.sheet.item .special-parts .summons-part,
+.D35E.sheet.item .summons-parts .summons-part {
   flex: 0 0 100%;
   padding: 0;
 }
 .D35E.sheet.item .damage-parts .damage-part input,
 .D35E.sheet.item .attack-parts .damage-part input,
 .D35E.sheet.item .special-parts .damage-part input,
+.D35E.sheet.item .summons-parts .damage-part input,
 .D35E.sheet.item .damage-parts .attack-part input,
 .D35E.sheet.item .attack-parts .attack-part input,
 .D35E.sheet.item .special-parts .attack-part input,
+.D35E.sheet.item .summons-parts .attack-part input,
 .D35E.sheet.item .damage-parts .special-part input,
 .D35E.sheet.item .attack-parts .special-part input,
-.D35E.sheet.item .special-parts .special-part input {
+.D35E.sheet.item .special-parts .special-part input,
+.D35E.sheet.item .summons-parts .special-part input,
+.D35E.sheet.item .damage-parts .summons-part input,
+.D35E.sheet.item .attack-parts .summons-part input,
+.D35E.sheet.item .special-parts .summons-part input,
+.D35E.sheet.item .summons-parts .summons-part input {
   flex: 3;
 }
 .D35E.sheet.item .damage-parts .damage-part select,
 .D35E.sheet.item .attack-parts .damage-part select,
 .D35E.sheet.item .special-parts .damage-part select,
+.D35E.sheet.item .summons-parts .damage-part select,
 .D35E.sheet.item .damage-parts .attack-part select,
 .D35E.sheet.item .attack-parts .attack-part select,
 .D35E.sheet.item .special-parts .attack-part select,
+.D35E.sheet.item .summons-parts .attack-part select,
 .D35E.sheet.item .damage-parts .special-part select,
 .D35E.sheet.item .attack-parts .special-part select,
-.D35E.sheet.item .special-parts .special-part select {
+.D35E.sheet.item .special-parts .special-part select,
+.D35E.sheet.item .summons-parts .special-part select,
+.D35E.sheet.item .damage-parts .summons-part select,
+.D35E.sheet.item .attack-parts .summons-part select,
+.D35E.sheet.item .special-parts .summons-part select,
+.D35E.sheet.item .summons-parts .summons-part select {
   margin-left: 5px;
   flex: 1;
 }
+.D35E.sheet.item .damage-parts .summons-part h4,
+.D35E.sheet.item .attack-parts .summons-part h4,
+.D35E.sheet.item .special-parts .summons-part h4,
+.D35E.sheet.item .summons-parts .summons-part h4 {
+  width: 100%;
+}
 .D35E.sheet.item .damage-parts .special-part div.flexrow,
 .D35E.sheet.item .attack-parts .special-part div.flexrow,
-.D35E.sheet.item .special-parts .special-part div.flexrow {
+.D35E.sheet.item .special-parts .special-part div.flexrow,
+.D35E.sheet.item .summons-parts .special-part div.flexrow,
+.D35E.sheet.item .damage-parts .summons-part div.flexrow,
+.D35E.sheet.item .attack-parts .summons-part div.flexrow,
+.D35E.sheet.item .special-parts .summons-part div.flexrow,
+.D35E.sheet.item .summons-parts .summons-part div.flexrow {
   width: 100%;
   line-height: 24px;
 }
 .D35E.sheet.item .damage-parts .special-part div.flexrow span,
 .D35E.sheet.item .attack-parts .special-part div.flexrow span,
-.D35E.sheet.item .special-parts .special-part div.flexrow span {
+.D35E.sheet.item .special-parts .special-part div.flexrow span,
+.D35E.sheet.item .summons-parts .special-part div.flexrow span,
+.D35E.sheet.item .damage-parts .summons-part div.flexrow span,
+.D35E.sheet.item .attack-parts .summons-part div.flexrow span,
+.D35E.sheet.item .special-parts .summons-part div.flexrow span,
+.D35E.sheet.item .summons-parts .summons-part div.flexrow span {
   flex: 0 0 100px;
 }
 .D35E.sheet.item .damage-parts .special-part a,
 .D35E.sheet.item .attack-parts .special-part a,
-.D35E.sheet.item .special-parts .special-part a {
+.D35E.sheet.item .special-parts .special-part a,
+.D35E.sheet.item .summons-parts .special-part a,
+.D35E.sheet.item .damage-parts .summons-part a,
+.D35E.sheet.item .attack-parts .summons-part a,
+.D35E.sheet.item .special-parts .summons-part a,
+.D35E.sheet.item .summons-parts .summons-part a {
   width: 100%;
 }
 .D35E.sheet.item .changes,
@@ -3334,7 +3375,8 @@
 .D35E.sheet.item .full-attack,
 .D35E.sheet.item .charge-link,
 .D35E.sheet.item .rolltable-link,
-.D35E.sheet.item .spellbuff-link {
+.D35E.sheet.item .spellbuff-link,
+.D35E.sheet.item .summons-link {
   padding: 4px;
   border: 2px groove #eeede0;
   border-radius: 2px;
@@ -3343,7 +3385,8 @@
 .D35E.sheet.item .full-attack img,
 .D35E.sheet.item .charge-link img,
 .D35E.sheet.item .rolltable-link img,
-.D35E.sheet.item .spellbuff-link img {
+.D35E.sheet.item .spellbuff-link img,
+.D35E.sheet.item .summons-link img {
   flex: 0 24px;
   height: 24px;
 }
@@ -3351,14 +3394,16 @@
 .D35E.sheet.item .full-attack label,
 .D35E.sheet.item .charge-link label,
 .D35E.sheet.item .rolltable-link label,
-.D35E.sheet.item .spellbuff-link label {
+.D35E.sheet.item .spellbuff-link label,
+.D35E.sheet.item .summons-link label {
   margin-left: 4px;
 }
 .D35E.sheet.item .spell input,
 .D35E.sheet.item .full-attack input,
 .D35E.sheet.item .charge-link input,
 .D35E.sheet.item .rolltable-link input,
-.D35E.sheet.item .spellbuff-link input {
+.D35E.sheet.item .spellbuff-link input,
+.D35E.sheet.item .summons-link input {
   flex: 0 80px;
 }
 .D35E.sheet.item .inventory-list {
@@ -5087,13 +5132,17 @@ tr.introjs-showElement > th {
 .d35ecustom .D35E.sheet.item .full-attack,
 .d35ecustom .D35E.sheet.item .charge-link,
 .d35ecustom .D35E.sheet.item .rolltable-link,
-.d35ecustom .D35E.sheet.item .spellbuff-link {
+.d35ecustom .D35E.sheet.item .spellbuff-link,
+.d35ecustom .D35E.sheet.item .summons-link {
   border-radius: 2px;
   border: none !important;
   background: rgba(255, 255, 255, 0.2);
   -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
+}
+.d35ecustom .D35E.sheet.item .delete-summons {
+  width: auto !important;
 }
 .d35ecustom .toggle input[type=checkbox] + label {
   margin: 2px;
@@ -5113,6 +5162,34 @@ tr.introjs-showElement > th {
   white-space: nowrap;
   width: 100px;
   font-weight: normal;
+}
+.d35ecustom .tooltip .tooltipcontent.preview,
+.d35ecustom .monster-summon-box {
+  background: url(icons/ui/parchment-tile.png) repeat !important;
+  background-size: 288px;
+  background-position-y: 40px;
+  border: none;
+  padding: 8px;
+}
+.d35ecustom .tooltip .tooltipcontent.preview h1,
+.d35ecustom .monster-summon-box h1 {
+  text-align: left;
+  font-family: 'Modesto Condensed';
+  color: black;
+  border: none;
+}
+.d35ecustom .tooltip .tooltipcontent.preview p,
+.d35ecustom .monster-summon-box p,
+.d35ecustom .tooltip .tooltipcontent.preview li,
+.d35ecustom .monster-summon-box li,
+.d35ecustom .tooltip .tooltipcontent.preview ul,
+.d35ecustom .monster-summon-box ul,
+.d35ecustom .tooltip .tooltipcontent.preview span,
+.d35ecustom .monster-summon-box span,
+.d35ecustom .tooltip .tooltipcontent.preview div,
+.d35ecustom .monster-summon-box div {
+  text-align: left;
+  color: black;
 }
 .d35ecustom .toggle input[type=checkbox]:checked + label {
   margin: 2px;
@@ -6248,4 +6325,27 @@ a.inline-roll {
 }
 .no-players-list #hotbar {
   left: 20px;
+}
+.monster-summon-link {
+  border-radius: 4px !important;
+  background: #dddddd75 !important;
+  padding: 3px 4px;
+}
+.monster-summon-link span {
+  text-align: left !important;
+  font-size: 18px;
+  line-height: 20px;
+  font-family: "Modesto Condensed";
+  box-shadow: none;
+  border: none !important;
+}
+.monster-summon-link em {
+  text-align: center;
+}
+.monster-summon-link img {
+  margin: 0 !important;
+  margin-right: 4px !important;
+  height: 32px !important;
+  border: none !important;
+  float: left !important;
 }

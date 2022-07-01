@@ -1001,6 +1001,16 @@ export class ItemSheetPF extends ItemSheet {
             return arr;
         }, []);
 
+
+        let summon = Object.entries(formData).filter(e => e[0].startsWith("data.summon"));
+        formData["data.summon"] = summon.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = {name: "", id: "", pack: "", formula: ""};
+
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
         let activateActions = Object.entries(formData).filter(e => e[0].startsWith("data.activateActions"));
         formData["data.activateActions"] = activateActions.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
@@ -1116,6 +1126,9 @@ export class ItemSheetPF extends ItemSheet {
         html.find(".resistance-control").click(this._onResistanceControl.bind(this));
         html.find(".dr-control").click(this._onDRControl.bind(this));
 
+        // Modify summons
+
+        html.find(".summons-control").click(this._onSummonControl.bind(this));
 
         // Modify note changes
         html.find(".context-note-control").click(this._onNoteControl.bind(this));
@@ -1169,6 +1182,7 @@ export class ItemSheetPF extends ItemSheet {
         html.find('.special-actions').on("drop", this._onDropBuff.bind(this));
         html.find('.charge-link').on("drop", this._onDropChargeLink.bind(this));
         html.find('.remove-charge-link').click(event => this._onRemoveChargeLink(event));
+        html.find('.summons').on("drop", this._onDropSummomnRolltableLink.bind(this));
         html.find('.rolltable-link').on("drop", this._onDropRolltableLink.bind(this));
         html.find('.remove-rolltable-link').click(event => this._onRemoveRolltableLink(event));
         html.find('div[data-tab="enhancements"]').on("drop", this._onDrop.bind(this,"enh"));
@@ -1323,6 +1337,20 @@ export class ItemSheetPF extends ItemSheet {
             const attackParts = duplicate(this.item.data.data.attackParts);
             attackParts.splice(Number(li.dataset.attackPart), 1);
             return this.item.update({"data.attackParts": attackParts});
+        }
+    }
+
+    async _onSummonControl(event) {
+        event.preventDefault();
+        const a = event.currentTarget;
+
+        // Remove an attack component
+        if (a.classList.contains("delete-summons")) {
+            await this._onSubmit(event);  // Submit any unsaved changes
+            const li = a.closest(".summons-part");
+            const summons = duplicate(this.item.data.data.summon);
+            summons.splice(Number(li.dataset.summons), 1);
+            return this.item.update({"data.summon": summons});
         }
     }
 
@@ -1873,6 +1901,49 @@ export class ItemSheetPF extends ItemSheet {
 
             return ui.notifications.warn(game.i18n.localize("D35E.ResourceMustBeSetAsLinkable"));
         }
+    }
+
+    async _onDropSummomnRolltableLink(event) {
+        event.preventDefault();
+        let data;
+        try {
+            data = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
+            if (data.type !== "RollTable") return;
+        } catch (err) {
+            return false;
+        }
+
+        let dataType = "";
+        if (data.type === "RollTable") {
+            let itemData = {};
+            if (data.pack) {
+                let updateData = {}
+                dataType = "compendium";
+                const pack = game.packs.find(p => p.collection === data.pack);
+                const packItem = await pack.getDocument(data.id);
+                if (packItem != null)
+                {
+                    itemData = packItem.data;
+                    let summons = duplicate(this.item.data.data.summon);
+                    if (summons === undefined || summons.rollTables !== undefined)
+                        summons = []
+                    summons = summons.concat([{
+                        name: packItem.name,
+                        id: packItem.id,
+                        pack: data.pack,
+                        formula: ""
+                    }]);
+                    await this.item.update({
+                        "data.summon": summons
+                    });
+                }
+            } else {
+                return ui.notifications.warn(game.i18n.localize("D35E.ResourceNeedDropFromCompendium"));
+            }
+        }
+
+
+    
     }
 
     async _onDropRolltableLink(event) {

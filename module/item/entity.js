@@ -52,7 +52,7 @@ export class ItemPF extends Item {
             || this.hasDamage
             || this.hasEffect
             || this.hasRolltableDraw
-            || this.hasTemplate || (getProperty(this.data, "data.actionType") === "special");
+            || this.hasTemplate || (getProperty(this.data, "data.actionType") === "special")  || (getProperty(this.data, "data.actionType") === "summon");
     }
 
     get isSingleUse() {
@@ -68,6 +68,15 @@ export class ItemPF extends Item {
 
     get combatChangeName() {
         return getProperty(this.data,"data.combatChangeCustomDisplayName") || this.name;
+    }
+
+    get getChatDescription() {
+        return getProperty(this.data,"data.description.value");
+    }
+
+
+    get getCombatChangesShortDescription() {
+        return getProperty(this.data,"data.description.value");
     }
 
     get autoDeductCharges() {
@@ -94,6 +103,7 @@ export class ItemPF extends Item {
     static getCharges(item) {
         if (item.type === "card") return item.data.data.state === "hand"
         if (item.data.data?.linkedChargeItem?.id) {
+            if (!item.actor) return 0;
             return item.actor.getChargesFromItemById(item.data.data?.linkedChargeItem?.id)
         } else {
             if (getProperty(item.data, "data.uses.per") === "single") return getProperty(item.data, "data.quantity");
@@ -112,6 +122,7 @@ export class ItemPF extends Item {
 
     static getMaxCharges(item) {
         if (item.data.data?.linkedChargeItem?.id) {
+            if (!item.actor) return 0;
             return item.actor.getMaxChargesFromItemById(item.data.data?.linkedChargeItem?.id)
         } else {
             if (getProperty(item.data, "data.uses.per") === "single") return getProperty(item.data, "data.quantity");
@@ -695,7 +706,8 @@ export class ItemPF extends Item {
                                 //console.log('add polymorph attack')
                                 if (!this.actor) continue;
                                 let data = duplicate(i);
-                                data.name = i.name + ` (Polymorhped ${this.data.data.shapechange.source.name})`
+                                data.data.fromPolymorph = true;
+                                data.name = i.name;
                                 delete data._id;
                                 itemsToCreate.push(data)
                             }
@@ -718,8 +730,7 @@ export class ItemPF extends Item {
                         let itemsToDelete = []
                         if (this.actor) {
                             for (const i of this.actor.items) {
-    
-                                if (i.data.type === "attack" && ((i.data.attackType === "natural" || i.data.attackType === "extraordinary")) && !i.data.data.melded) {
+                                if (i.data.data.fromPolymorph) {
                                     //console.log('remove polymorph attack',i,this.actor,this.actor.token)
                                     itemsToDelete.push(i._id)
                                 }
@@ -1449,7 +1460,11 @@ export class ItemPF extends Item {
                 rollModifiers = [],
                 extraText = "",
                 ammoMaterial = null,
-                ammoEnh = 0;
+                ammoEnh = 0,
+                summonPack = "",
+                summonId = "",
+                summonName = "",
+                summonImg = "";
 
             let selectedTargets = [];
             let selectedTargetIds = '';
@@ -1461,7 +1476,6 @@ export class ItemPF extends Item {
             }
             // Get form data
             if (form) {
-
 
                 rollData.attackBonus = form.find('[name="attack-bonus"]').val();
                 if (rollData.attackBonus) {
@@ -1698,6 +1712,10 @@ export class ItemPF extends Item {
                     if ($(this).prop("checked"))
                         enabledConditionals.push($(this).attr('data-conditional-optional'));
                 })
+                summonPack = form.find('[name="monster-collection"]').val();
+                summonId = form.find('[name="monster-resultId"]').val();
+                summonName = form.find('[name="monster-text"]').val();
+                summonImg = form.find('[name="monster-img"]').val();
             }
 
             // Prepare the chat message data
@@ -2044,21 +2062,35 @@ export class ItemPF extends Item {
                 rolls.push(...a.rolls)
             })
             chatTemplateData.attacks = attacks;
+
+            if (summonName) {
+                let _actor = game.actors.find(a => a.name === summonName);
+                if (_actor) {
+                    summonId = _actor.id;
+                    summonPack = "";
+                }
+            }
+
             let hiddenTargets = [];
+            
             // Prompt measure template
+            let templateId = "";
+            let templateX = 0;
+            let templateY = 0;
             if (useMeasureTemplate) {
 
                 // //console.log(`D35E | Creating measure template.`)
                 // Create template
-                const template = AbilityTemplate.fromItem(this, rollData.spellWidened ? 2 : 1, rollData);
+                let optionalData = {};
+                const template = AbilityTemplate.fromItem(this, rollData.spellWidened ? 2 : 1, rollData,optionalData);
                 let result;
                 if (template) {
                     const sheetRendered = this.parent?.sheet?._element != null;
                     if (sheetRendered) this.parent.sheet.minimize();
                     result = await template.drawPreview(event);
                     if (!result.result) {
-                        if (sheetRendered) this.parent.sheet.maximize();
                     }
+                    if (sheetRendered) this.parent.sheet.maximize();
                 }
                 let _template = await result.place();
                 if (selectedTargets.length == 0) {
@@ -2066,6 +2098,9 @@ export class ItemPF extends Item {
                     selectedTargets = template.getTokensWithin().filter(t => !t.data.hidden);
                     hiddenTargets = template.getTokensWithin().filter(t => t.data.hidden);
                 }
+                templateId = _template.id;
+                templateX = template.data.x;
+                templateY = template.data.y;
             }
 
             // //console.log(`D35E | Updating item on attack.`)
@@ -2104,7 +2139,7 @@ export class ItemPF extends Item {
                     await this.roll({rollMode: rollMode});
             }
             let rolled = false;
-            if (this.hasAttack || this.hasDamage || this.hasEffect || getProperty(this.data, "data.actionType") === "special") {
+            if (this.hasAttack || this.hasDamage || this.hasEffect || getProperty(this.data, "data.actionType") === "special" || getProperty(this.data, "data.actionType") === "summon") {
 
                 // //console.log(`D35E | Generating chat message.`)
                 // Get extra text and properties
@@ -2170,6 +2205,14 @@ export class ItemPF extends Item {
                     hasPr: getProperty(this.data,"data.pr"),
                     hasSr: getProperty(this.data,"data.sr"),
                     cl: rollData.cl,
+                    summonPack: summonPack,
+                    summonId: summonId,
+                    summonName: summonName,
+                    summonImg: summonImg,
+                    userId: game.user.id,
+                    measureId: templateId,
+                    measureX: templateX,
+                    measureY: templateY,
                     spellPenetration: rollData.cl + (rollData.featSpellPenetrationBonus || 0)
                 }, {inplace: false});
                 // Create message
@@ -2205,6 +2248,16 @@ export class ItemPF extends Item {
         let autoScaleAttacks = (game.settings.get("D35E", "autoScaleAttacksBab") && actor.data.type !== "npc" && getProperty(this.data, "data.attackType") === "weapon" && getProperty(this.data, "data.autoScaleOption") !== "never") || getProperty(this.data, "data.autoScaleOption") === "always"
         let extraAttacksCount = autoScaleAttacks ? Math.ceil((actor.data.data.attributes.bab.total)/5.0) : (getProperty(this.data, "data.attackParts") || []).length + 1;
         let rc = game.settings.get("D35E", `rollConfig`).rollConfig;
+        let summonableMonsters = [];
+        if (this.data.data.summon instanceof Array && this.data.data.summon) {
+            for (let summon of this.data.data.summon) {
+                const pack = game.packs.get("D35E.summoning-roll-tables");
+                const table = await pack.getDocument(summon.id);
+                for (let result of table.data.results) {
+                    summonableMonsters.push(result.data)
+                }
+            }
+        }
         let dialogData = {
             data: rollData,
             id: this.id,
@@ -2244,7 +2297,10 @@ export class ItemPF extends Item {
             weaponFeats: actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type ==="buff" && o.data.data.active) || (o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded)) && o.hasCombatChange(this.type,rollData)),
             weaponFeatsOptional: actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type ==="buff" && o.data.data.active) || (o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded)) && o.hasCombatChange(`${this.type}Optional`,rollData)),
             conditionals: getProperty(this.data,"data.conditionals"),
+            summonableMonsters: summonableMonsters,
         };
+        
+        dialogData.hasFeats = dialogData.weaponFeats.length || dialogData.weaponFeatsOptional.length;
         const html = await renderTemplate(template, dialogData);
         // //console.log(dialogData)
         let roll;
@@ -2288,7 +2344,7 @@ export class ItemPF extends Item {
                 close: html => {
                     return resolve(rolled ? roll : false);
                 }
-            }).render(true);
+            }, {classes: ['roll-defense','dialog',  dialogData.hasFeats ? 'twocolumn' : 'single'], width: dialogData.hasFeats ? 700 : 350}).render(true);
         });
         return {wasRolled: wasRolled, roll: roll};
     }
