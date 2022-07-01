@@ -521,6 +521,8 @@ export class ItemPF extends Item {
             data['data.carried'] !== undefined)
             needsUpdate = true
 
+        
+
         console.log('Should be true/false, is true true', data, getProperty(this.data,"data.active"))
 
         for (var key in expandedData?.data?.customAttributes) {
@@ -760,8 +762,13 @@ export class ItemPF extends Item {
                 }
     
             } else {
-                if (needsUpdate)
-                    await this.actor.refresh(options);
+
+                if ((data["data.range"] || data["data.auraTarget"]) && this.type === "aura") {
+                    await this.actor.refresh({reloadAuras: true})
+                } else {
+                    if (needsUpdate)
+                        await this.actor.refresh(options);
+                }
             }
 
         }
