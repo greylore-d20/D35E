@@ -326,16 +326,16 @@ export class ActorPF extends Actor {
                 "allSpeeds", "landSpeed", "climbSpeed", "swimSpeed", "burrowSpeed", "flySpeed","speedMult",
                 "skills", "strSkills", "dexSkills", "conSkills", "intSkills", "wisSkills", "chaSkills","perfSkills","craftSkills","knowSkills", ...skillTargets,
                 "allChecks", "strChecks", "dexChecks", "conChecks", "intChecks", "wisChecks", "chaChecks",
-                "ac", "aac", "sac", "nac","tch","ddg","pac",
+                "ac", "aac", "sac","nac","ddg","pac","ffac","tch",
                 "attack", "mattack", "rattack", 'babattack',
                 "damage", "wdamage", "sdamage",
                 "allSavingThrows", "fort", "ref", "will", "turnUndead","turnUndeadDiceTotal", "spellResistance", "powerPoints", "sneakAttack",
                 "cmb", "cmd", "init", "mhp", "wounds", "vigor", "arcaneCl", "divineCl", "psionicCl", "cardCl", "cr", "runSpeedMultiplierModifier", "fortification", "regen", "fastHeal", "concealment", ...spellTargets,"scaPrimary","scaSecondary","scaTetriary","scaSpelllike"
             ], modifiers: [
-                "replace", "untyped", "base", "enh", "dodge", "inherent", "deflection",
+                "untyped", "base", "enh", "dodge", "inherent", "deflection",
                 "morale", "luck", "sacred", "insight", "resist", "profane",
                 "trait", "racial", "size", "competence", "circumstance",
-                "alchemical", "penalty"
+                "alchemical", "penalty", "replace"
             ]
         };
     }
@@ -484,9 +484,14 @@ export class ActorPF extends Actor {
             case "nac":
                 return ["data.attributes.ac.normal.total", "data.attributes.ac.flatFooted.total", "data.attributes.naturalACTotal"];
             case "tch":
+                if (changeType === "replace") return "data.attributes.ac.touch.replace";
                 return ["data.attributes.ac.touch.total"];
             case "pac":
+                if (changeType === "replace") return "data.attributes.ac.normal.replace";
                 return ["data.attributes.ac.normal.total"];
+            case "ffac":
+                if (changeType === "replace") return "data.attributes.ac.flatFooted.replace";
+                return ["data.attributes.ac.flatFooted.total"];
             case "attack":
                 return "data.attributes.attack.general";
             case "mattack":
@@ -505,10 +510,13 @@ export class ActorPF extends Actor {
             case "allSavingThrows":
                 return ["data.attributes.savingThrows.fort.total", "data.attributes.savingThrows.ref.total", "data.attributes.savingThrows.will.total"];
             case "fort":
+                if (changeType === "replace") return "data.attributes.savingThrows.fort.replace";
                 return "data.attributes.savingThrows.fort.total";
             case "ref":
+                if (changeType === "replace") return "data.attributes.savingThrows.ref.replace";
                 return "data.attributes.savingThrows.ref.total";
             case "will":
+                if (changeType === "replace") return "data.attributes.savingThrows.will.replace";
                 return "data.attributes.savingThrows.will.total";
             case "skills":
                 for (let [a, skl] of Object.entries(curData.skills)) {
@@ -1952,6 +1960,7 @@ export class ActorPF extends Actor {
         // Reduce final speed under certain circumstances
         let armorItems = srcData1.items.filter(o => o.type === "equipment");
         for (let speedKey of Object.keys(srcData1.data.attributes.speed)) {
+            if (updateData[`data.attributes.speed.${speedKey}.replace`]) continue; // Speed was already force replaced, ignore
             let value = Math.floor(updateData[`data.attributes.speed.${speedKey}.total`] * (updateData[`data.attributes.speedMultiplier`] || 1.0));
             ActorPF.getReducedMovementSpeed(srcData1, value, updateData, armorItems, flags, speedKey)
         }
@@ -2067,13 +2076,20 @@ export class ActorPF extends Actor {
         if (updateData["data.abilities.dex.mod"] < 0 || !flags.loseDexToAC) {
             const maxDexBonus = updateData["data.attributes.maxDexBonus"] || (getProperty(this.data,"data.attributes.maxDexBonus") || null);
             const dexBonus = maxDexBonus != null ? Math.min(maxDexBonus, updateData["data.abilities.dex.mod"]) : updateData["data.abilities.dex.mod"];
-            linkData(srcData1, updateData, "data.attributes.ac.normal.total", updateData["data.attributes.ac.normal.total"] + dexBonus);
-            linkData(srcData1, updateData, "data.attributes.ac.touch.total", updateData["data.attributes.ac.touch.total"] + dexBonus);
-            if (updateData["data.abilities.dex.mod"] < 0) {
-                linkData(srcData1, updateData, "data.attributes.ac.flatFooted.total", updateData["data.attributes.ac.flatFooted.total"] + dexBonus);
-            }
-            if (flags.uncannyDodge && !flags.loseDexToAC) {
-                linkData(srcData1, updateData, "data.attributes.ac.flatFooted.total", updateData["data.attributes.ac.flatFooted.total"] + dexBonus);
+            
+            if (!updateData["data.attributes.ac.normal.replace"]) //We did not replace AC, continue
+                linkData(srcData1, updateData, "data.attributes.ac.normal.total", updateData["data.attributes.ac.normal.total"] + dexBonus);
+
+            if (!updateData["data.attributes.ac.touch.replace"]) //We did not replace AC, continue
+                linkData(srcData1, updateData, "data.attributes.ac.touch.total", updateData["data.attributes.ac.touch.total"] + dexBonus);
+                
+            if (!updateData["data.attributes.ac.flatFooted.replace"]) {
+                if (updateData["data.abilities.dex.mod"] < 0) {
+                    linkData(srcData1, updateData, "data.attributes.ac.flatFooted.total", updateData["data.attributes.ac.flatFooted.total"] + dexBonus);
+                }
+                if (flags.uncannyDodge && !flags.loseDexToAC) {
+                    linkData(srcData1, updateData, "data.attributes.ac.flatFooted.total", updateData["data.attributes.ac.flatFooted.total"] + dexBonus);
+                }
             }
         }
         // Add current hit points
@@ -3151,6 +3167,37 @@ export class ActorPF extends Actor {
         // Apply changes
         for (let [changeTarget, value] of Object.entries(changes)) {
             linkData(data, updateData, changeTarget, (updateData[changeTarget] || 0) + value);
+        }
+
+
+        // Force speed to creature speed
+        for (let speedKey of Object.keys(getProperty(this.data,"data.attributes.speed"))) {
+            if (changes[`data.attributes.speed.${speedKey}.replace`])
+                linkData(data, updateData, `data.attributes.speed.${speedKey}.total`, changes[`data.attributes.speed.${speedKey}.replace`]);
+        }
+        if (changes[`data.attributes.bab.replace`]) {
+            linkData(data, updateData, `data.attributes.bab.total`, changes[`data.attributes.bab.replace`]);
+            linkData(data, updateData, `data.attributes.cmb.total`, changes[`data.attributes.bab.replace`]);
+        }
+
+        if (changes[`data.attributes.savingThrows.fort.replace`]) {
+            linkData(data, updateData, `data.attributes.savingThrows.fort.total`, changes[`data.attributes.savingThrows.fort.replace`]);
+        }
+        if (changes[`data.attributes.savingThrows.ref.replace`]) {
+            linkData(data, updateData, `data.attributes.savingThrows.fort.total`, changes[`data.attributes.savingThrows.ref.replace`]);
+        }
+        if (changes[`data.attributes.savingThrows.will.replace`]) {
+            linkData(data, updateData, `data.attributes.savingThrows.fort.total`, changes[`data.attributes.savingThrows.will.replace`]);
+        }
+
+        if (changes["data.attributes.ac.flatFooted.replace"]) {
+            linkData(data, updateData, "data.attributes.ac.flatFooted.total", changes["data.attributes.ac.flatFooted.replace"]);
+        }
+        if (changes["data.attributes.ac.touch.replace"]) {
+            linkData(data, updateData, "data.attributes.ac.touch.total", changes["data.attributes.ac.touch.replace"]);
+        }
+        if (changes["data.attributes.ac.normal.replace"]) {
+            linkData(data, updateData, "data.attributes.ac.normal.total", changes["data.attributes.ac.normal.replace"]);
         }
 
 

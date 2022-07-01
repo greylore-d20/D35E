@@ -1067,6 +1067,7 @@ D35E.buffTargets = {
     "nac": "D35E.BuffTarACNatural",
     "tch": "D35E.BuffTarACTouch",
     "pac": "D35E.BuffTarACOnly",
+    "ffac": "D35E.BuffTarACFF",
   },
   "attack": {
     "_label": "D35E.AttackRollPlural",
