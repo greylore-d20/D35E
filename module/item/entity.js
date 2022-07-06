@@ -725,6 +725,9 @@ export class ItemPF extends Item {
                 if (this.type === "aura") {
                     await this.actor.refresh({reloadAuras: true})
                 }
+                if (game.combats.active) {
+                    game.combats.active.addBuffToCombat(this,this.actor)
+                }
 
             } else if (deactivateBuff) {
                 if (getProperty(this.data,"data.buffType") === "shapechange") {
@@ -759,6 +762,9 @@ export class ItemPF extends Item {
                 }
                 if (this.type === "aura") {
                     await this.actor.refresh({reloadAuras: true})
+                }
+                if (game.combats.active) {
+                    game.combats.active.removeBuffFromCombat(this)
                 }
     
             } else {
@@ -1471,6 +1477,7 @@ export class ItemPF extends Item {
                 summonPack = "",
                 summonId = "",
                 summonName = "",
+                summonFormula = "",
                 summonImg = "";
 
             let selectedTargets = [];
@@ -1723,6 +1730,7 @@ export class ItemPF extends Item {
                 summonId = form.find('[name="monster-resultId"]').val();
                 summonName = form.find('[name="monster-text"]').val();
                 summonImg = form.find('[name="monster-img"]').val();
+                summonFormula = form.find('[name="monster-formula"]').val();
             }
 
             // Prepare the chat message data
@@ -2216,6 +2224,7 @@ export class ItemPF extends Item {
                     summonId: summonId,
                     summonName: summonName,
                     summonImg: summonImg,
+                    summonFormula: summonFormula,
                     userId: game.user.id,
                     measureId: templateId,
                     measureX: templateX,
@@ -2261,7 +2270,7 @@ export class ItemPF extends Item {
                 const pack = game.packs.get("D35E.summoning-roll-tables");
                 const table = await pack.getDocument(summon.id);
                 for (let result of table.data.results) {
-                    summonableMonsters.push(result.data)
+                    summonableMonsters.push({data: result.data, formula: summon.formula || "1"})
                 }
             }
         }

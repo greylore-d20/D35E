@@ -8,6 +8,7 @@ import {D35E} from "../config.js";
 import {Roll35e} from "../roll.js";
 import {  ActorRestDialog } from "../apps/actor-rest.js";
 import {VisionPermissionSheet} from "../misc/vision-permission.js"
+import {Propagator} from "../misc/propagator.js"
 
 
 /**
@@ -94,23 +95,37 @@ export class ActorPF extends Actor {
                 x = template.data.x;
                 y = template.data.y;
             }
+            let monster = null;
             if (monsterPack) {
-
+                monster = await game.actors.importFromCompendium(game.packs.get(monsterPack),monsterId) 
+            } else {
+                monster = game.actors.get(monsterId)
             }
-            let monster = game.actors.get(monsterId)
             let tokenData = await monster.getTokenData({actorData:{
                 permission: {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER}
               }})
-            let internalSpawnPoint = {x: x - (canvas.scene.data.grid  * (tokenData.width/2)),
-                    y: y - (canvas.scene.data.grid  * (tokenData.height/2))}
-            tokenData.update(internalSpawnPoint);
-            tokenData.update({
-                permission: {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER}
-              })
-            tokenData.permission = {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER};
-            canvas.scene.createEmbeddedDocuments("Token", [tokenData]);
+            let totalMonster = new Roll35e(button.dataset.formula, actor.getRollData()).roll().total;
+            for (let spawned = 0; spawned < totalMonster; spawned++) {
+                let internalSpawnPoint = {x: x - (canvas.scene.data.grid  * (tokenData.width/2)),
+                y: y - (canvas.scene.data.grid  * (tokenData.height/2))}
+
+                const openPosition = Propagator.getFreePosition(tokenData, internalSpawnPoint);  
+                if(!openPosition) {
+                  logger.info(MODULE.localize('error.noOpenLocation'));
+                } else {
+                  internalSpawnPoint = openPosition
+                }
+
+                tokenData.update(internalSpawnPoint);
+                tokenData.update({
+                    permission: {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER}
+                })
+                tokenData.permission = {[user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER};
+                await canvas.scene.createEmbeddedDocuments("Token", [tokenData]);
+            }
+           
             if (template) { 
-                canvas.scene.deleteEmbeddedDocuments('MeasuredTemplate', [button.dataset.measureId])
+                await canvas.scene.deleteEmbeddedDocuments('MeasuredTemplate', [button.dataset.measureId])
             }
         }
 
@@ -8936,6 +8951,54 @@ export class ActorPF extends Actor {
         let newHP = Math.floor((newHd - currentLevel) * (currentHidDice / 2 + 0.5)) + currentHP;
         await this.racialHD.update({'data.levels':newHd,'data.hp':newHP})
         return this.update(updateData)
+    }
+
+    async progressBuff(buffId, roundDelta = 1) {
+        //await this.refresh();
+        let itemUpdateData = []
+        let itemsEnding = []
+        let itemsOnRound = []
+        let itemsToDelete = []
+        let itemResourcesData = {}
+        let deletedOrChanged = false;
+        if (this.items !== undefined && this.items.size > 0) {
+        // Update items
+            let i = this.items.get(buffId);
+            this.getItemResourcesUpdate(i, itemResourcesData);
+            let _data = i.getElapsedTimeUpdateData(roundDelta)
+            if (_data && _data["data.active"] === false)
+                itemsEnding.push(i)
+            if ((i.data.data.perRoundActions || []).length && !_data.delete)
+                itemsOnRound.push(i)
+            if (_data && !_data.delete && !_data.ignore) {
+                itemUpdateData.push({item: i, data: _data});
+                deletedOrChanged = true;
+            } else if (_data && _data.delete === true) {
+                itemUpdateData.push({item: i, data: {'_id': _data._id, 'data.active': false}});
+                itemsToDelete.push(_data._id)
+                deletedOrChanged = true;
+            }     
+        }
+
+        if (itemUpdateData.length > 0) {
+            let updatePromises = []
+            for (let updateData of itemUpdateData) {
+                updatePromises.push(updateData.item.update(updateData.data, { stopUpdates: true }));
+            }
+            await Promise.all(updatePromises)
+        }
+        if (Object.keys(itemResourcesData).length > 0 || deletedOrChanged) await this.update(itemResourcesData);
+        if (itemsEnding.length)
+            this.renderBuffEndChatCard(itemsEnding)
+        if (itemsOnRound.length)
+            this.applyOnRoundBuffActions(itemsOnRound);
+        if (itemsToDelete.length > 0) {
+            await this.deleteEmbeddedDocuments("Item", itemsToDelete, {})
+        }
+    }
+
+    async progressRound() {
+        this.renderFastHealingRegenerationChatCard();
     }
 
     async progressTime(roundDelta = 1) {

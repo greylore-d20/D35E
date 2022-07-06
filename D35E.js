@@ -22,7 +22,7 @@ import { TokenPF } from "./module/token/token.js";
 import { addLowLightVisionToLightConfig } from "./module/low-light-vision.js";
 import { PatchCore } from "./module/patch-core.js";
 import { DicePF } from "./module/dice.js";
-import { CombatPF } from "./module/combat.js";
+import { CombatD35E } from "./module/combat/combat.js";
 import { createCustomChatMessage } from "./module/chat.js";
 import { AmbientLightPF, SightLayerPF } from "./module/low-light-vision.js";
 import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
@@ -130,7 +130,7 @@ Hooks.once("init", async function() {
   CONFIG.MeasuredTemplate.objectClass = MeasuredTemplatePF;
   CONFIG.ui.compendium = CompendiumDirectoryPF;
   CONFIG.ChatMessage.documentClass = ChatMessagePF;
-  CONFIG.Combat.documentClass = CombatPF;
+  CONFIG.Combat.documentClass = CombatD35E;
   CONFIG.Token.objectClass = TokenPF;
   CONFIG.AmbientLight.objectClass = AmbientLightPF;
 
@@ -240,7 +240,7 @@ Hooks.once("ready", async function() {
 
   await cache.buildCache();
   
-  const NEEDS_MIGRATION_VERSION = "0.101.0";
+  const NEEDS_MIGRATION_VERSION = "1.0.0";
   let PREVIOUS_MIGRATION_VERSION = game.settings.get("D35E", "systemMigrationVersion");
   if (typeof PREVIOUS_MIGRATION_VERSION === "number") {
     PREVIOUS_MIGRATION_VERSION = PREVIOUS_MIGRATION_VERSION.toString() + ".0";
@@ -555,9 +555,19 @@ Hooks.on("updateCombat", async (combat, combatant, info, data) => {
   if ((combat.current.turn <= combat.previous.turn && combat.current.round === combat.previous.round) || combat.current.round < combat.previous.round)
     return; // We moved back in time
   const actor = combat.combatant.actor;
+  const buffId = combat.combatant.data?.flags?.D35E?.buffId;
   if (actor != null) {
-    await actor.progressTime(1);
-    debouncedCollate(canvas.scene.id, true, true, "updateToken")
+      await actor.progressRound();
+  } else if (buffId) {
+      let actor;
+      if (combat.combatant.data?.flags?.D35E?.isToken) {
+          actor = canvas.scene.tokens.get(combat.combatant.data?.flags?.D35E?.tokenId).actor; 
+      } else {
+          actor = game.actors.get(combat.combatant.data?.flags?.D35E?.actorId);
+      }           
+
+      await actor.progressBuff(buffId,1);
+      debouncedCollate(canvas.scene.id, true, true, "updateToken")
   }
 });
 

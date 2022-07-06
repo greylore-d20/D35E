@@ -507,7 +507,7 @@
             <select name="selected-monster" class="auto-save" onchange="updateMonster(this)">
                 {{#select monster}}
                 {{#each summonableMonsters as |monster id|}}
-                <option value="{{monster.collection}}:{{monster.resultId}}:{{monster.text}}" data-pack="{{monster.collection}}" data-id="{{monster.resultId}}">{{monster.text}}</option>
+                <option value="{{monster.data.collection}}:{{monster.data.resultId}}:{{monster.data.text}}" data-pack="{{monster.data.collection}}" data-formula="{{monster.formula}}" data-id="{{monster.data.resultId}}">{{monster.data.text}} ({{monster.formula}})</option>
                 {{/each}}
                 {{/select}}
             </select>
@@ -515,6 +515,7 @@
             <input type="hidden" name="monster-resultId"/>
             <input type="hidden" name="monster-text"/>
             <input type="hidden" name="monster-img"/>
+            <input type="hidden" name="monster-formula"/>
         </div>
         <div class="monster-summon-box" style="border-radius: 4px">
             <h1 style="    white-space: nowrap;
@@ -532,6 +533,7 @@
             async function updateMonster(select) {
                 var monster_pack = $('option:selected', select).attr('data-pack');
                 var mosnter_id = $('option:selected', select).attr('data-id');
+                var mosnter_formula = $('option:selected', select).attr('data-formula');
                 const __pack = game.packs.get(monster_pack);
                 const monster = await __pack.getDocument(mosnter_id);
                 const mdd = monster.data.data;
@@ -540,6 +542,7 @@
                 $('option:selected', select).closest("section").find("input[name='monster-resultId']").val(mosnter_id)
                 $('option:selected', select).closest("section").find("input[name='monster-text']").val(monster.name)
                 $('option:selected', select).closest("section").find("input[name='monster-img']").val(monster.img)
+                $('option:selected', select).closest("section").find("input[name='monster-formula']").val(mosnter_formula)
 
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-name").text(`${monster.name}`)
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-img").attr("src",`${monster.img}`)

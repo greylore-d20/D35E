@@ -1,6 +1,7 @@
-import { ActorPF } from "./actor/entity.js";
-import { isMinimumCoreVersion } from "./lib.js";
-import {Roll35e} from "./roll.js"
+import { ActorPF } from "../actor/entity.js";
+import { D35E } from "../config.js";
+import { isMinimumCoreVersion } from "../lib.js";
+import {Roll35e} from "../roll.js"
 
 /* -------------------------------------------- */
 
@@ -100,7 +101,12 @@ export const addCombatTrackerContextOptions = function (result) {
   });
 };
 
-export class CombatPF extends Combat {
+export class CombatD35E extends Combat {
+    constructor(...args) {
+        super(...args);
+        this.buffs = new Map();
+      }
+
   /**
    * Override the default Initiative formula to customize special behaviors of the game system.
    * Apply advantage, proficiency, or bonuses where appropriate
@@ -226,6 +232,11 @@ export class CombatPF extends Combat {
     return this;
   }
 
+  async deleteEmbeddedDocuments(type, documents) {
+    await super.deleteEmbeddedDocuments(type, documents);
+    Hooks.callAll("updateCombat", this, this.combatant);
+  }
+
   static showInitiativeDialog = function (formula = null) {
     return new Promise((resolve) => {
       const template = "systems/D35E/templates/chat/roll-dialog.hbs";
@@ -271,6 +282,20 @@ export class CombatPF extends Combat {
    */
   async _processCurrentCombatant() {
     try {
+        const actor = this.combatant.actor;
+        const buffId = this.combatant.data?.flags?.D35E?.buffId;
+        if (actor != null) {
+            await actor.progressRound();
+        } else if (buffId) {
+            let actor;
+            if (this.combatant.data?.flags?.D35E?.isToken) {
+                actor = canvas.scene.tokens.get(this.combatant.data?.flags?.D35E?.tokenId).actor; 
+            } else {
+                actor = game.actors.get(this.combatant.data?.flags?.D35E?.actorId);
+            }           
+
+            await actor.progressBuff(buffId,1);
+        }
     } catch (error) {
       console.error(error);
     }
@@ -293,7 +318,32 @@ export class CombatPF extends Combat {
    */
   async nextTurn() {
     const combat = await super.nextTurn();
-    await this._processCurrentCombatant();
+   // await this._processCurrentCombatant();
     return combat;
+  }
+
+  async addBuffToCombat(buff, actor) {
+    for (let combatant of this.combatants) {
+        if (this.combatant.data?.flags?.D35E?.buffId === buff.id) {
+            await combatant.update({initiative:(this.combatant.initiaitve+0.01)});
+            return;
+        }
+    }
+    let buffCombatant = (await this.createEmbeddedDocuments("Combatant",[{name:buff.name,img:buff.img,initiative:(this.combatant.initiative+0.01), flags: {D35E: {buffId: buff.id, actor: actor.id, isToken: actor.isToken, tokenId: actor?.token?.id}}}]))[0]
+    
+  }
+
+  async removeBuffFromCombat(buff) {
+    try {
+        let combatantsToDelete = [];
+        for (let combatant of this.combatants) {
+            if (combatant.data?.flags?.D35E?.buffId === buff.id) {
+                combatantsToDelete.push(combatant.id);
+            }
+        }
+        this.deleteEmbeddedDocuments("Combatant",combatantsToDelete)
+    } catch (error) {
+        console.error(error);
+      }
   }
 }
