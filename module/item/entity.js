@@ -2313,10 +2313,11 @@ export class ItemPF extends Item {
             weaponFeats: actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type ==="buff" && o.data.data.active) || (o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded)) && o.hasCombatChange(this.type,rollData)),
             weaponFeatsOptional: actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type ==="buff" && o.data.data.active) || (o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded)) && o.hasCombatChange(`${this.type}Optional`,rollData)),
             conditionals: getProperty(this.data,"data.conditionals"),
-            summonableMonsters: summonableMonsters,
+            summonableMonsters: summonableMonsters
         };
         
         dialogData.hasFeats = dialogData.weaponFeats.length || dialogData.weaponFeatsOptional.length;
+        dialogData.hasFeatsOrSummons = dialogData.weaponFeats.length || dialogData.weaponFeatsOptional.length || dialogData.summonableMonsters.length ;
         const html = await renderTemplate(template, dialogData);
         // //console.log(dialogData)
         let roll;
@@ -2360,7 +2361,7 @@ export class ItemPF extends Item {
                 close: html => {
                     return resolve(rolled ? roll : false);
                 }
-            }, {classes: ['roll-defense','dialog',  dialogData.hasFeats ? 'twocolumn' : 'single'], width: dialogData.hasFeats ? 700 : 350}).render(true);
+            }, {classes: ['roll-defense','dialog',  dialogData.hasFeatsOrSummons ? 'twocolumn' : 'single'], width: dialogData.hasFeatsOrSummons ? 700 : 350}).render(true);
         });
         return {wasRolled: wasRolled, roll: roll};
     }

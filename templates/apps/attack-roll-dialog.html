@@ -441,8 +441,9 @@
 
     </script>
     </section>
-    {{#if hasFeats}}
+    {{#if hasFeatsOrSummons}}
     <section style="margin-left: 8px;">
+        {{#if hasFeats}}
         <div class="form-group">
             <label class="block-header">{{localize "D35E.AdditionalFeats"}}</label>
         </div>
@@ -497,6 +498,7 @@
             {{/if}}
         {{/each}}
 
+        {{/if}}
 
         {{#if summonableMonsters}}
         <div class="form-group">
