@@ -65,8 +65,8 @@ with open("templates/welcome-screen.html", "w") as fp:
 repo.git.add("changelogs/changelog.%s.md" % version)
 repo.git.add("templates/welcome-screen.html")
 
-
 repo.git.commit('-m', 'Release %s' % version, author='rughalt@gmail.com')
+
 
 p = subprocess.run("tar", "-cvjSf", "dnd35e-icons.tbz2", "icons")
 subprocess.run(["scp", "dnd35e-icons.tbz2", f"{user}@{server}:/home/dragonsh/special/"])
