@@ -53,7 +53,7 @@ export class LevelUpDataDialog extends FormApplication {
                 }
             })
         })
-        let classes = this.actor.items.filter(o => o.type === "class" && getProperty(o.data, "classType") !== "racial").sort((a, b) => {
+        let classes = this.actor.items.filter(o => o.type === "class" && getProperty(o.data.data, "classType") !== "racial").sort((a, b) => {
             return a.sort - b.sort;
         })
         let data = {
@@ -121,7 +121,7 @@ export class LevelUpDataDialog extends FormApplication {
             //console.log(`D35E | Updating Level Data | ${classId} | ${this.levelUpId}`)
             updateData[`data.details.levelUpData`] = data;
 
-            const classes = this.actor.items.filter(o => o.type === "class" && getProperty(o.data, "classType") !== "racial").sort((a, b) => {
+            const classes = this.actor.items.filter(o => o.type === "class" && getProperty(o.data.data, "classType") !== "racial").sort((a, b) => {
                 return a.sort - b.sort;
             });
 
