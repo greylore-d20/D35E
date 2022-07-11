@@ -4463,7 +4463,7 @@ export class ActorPF extends Actor {
             try {
                 let raceObject = this.items.filter(o => o.type === "race")[0];
                 if (raceObject != null) {
-                    raceLA = raceObject.data.data.la || 0
+                    raceLA += raceObject.data.data.la || 0
                 }
                 this.items.filter(o => o.type === "class").forEach(c => {
                     raceLA += c.data.data?.la || 0

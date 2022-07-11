@@ -22,7 +22,7 @@ import { TokenPF } from "./module/token/token.js";
 import { addLowLightVisionToLightConfig } from "./module/low-light-vision.js";
 import { PatchCore } from "./module/patch-core.js";
 import { DicePF } from "./module/dice.js";
-import { CombatD35E } from "./module/combat/combat.js";
+import {CombatD35E, duplicateCombatantInitiative} from "./module/combat/combat.js";
 import { createCustomChatMessage } from "./module/chat.js";
 import { AmbientLightPF, SightLayerPF } from "./module/low-light-vision.js";
 import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
@@ -252,7 +252,49 @@ Hooks.once("ready", async function() {
   // Previous migration version is unparseable
   let needMigration = SemanticVersion.fromString(PREVIOUS_MIGRATION_VERSION) == null ? true : SemanticVersion.fromString(NEEDS_MIGRATION_VERSION).isHigherThan(SemanticVersion.fromString(PREVIOUS_MIGRATION_VERSION));
   if (needMigration && game.user.isGM) {
-    await migrations.migrateWorld();
+    new Dialog(
+        {
+          title: `${game.i18n.localize("D35E.MigrationTitle")}`,
+          content: `<p>${game.i18n.localize("D35E.MigrationText")}</p>`,
+          buttons: {
+            confirm: {
+              label: game.i18n.localize("D35E.MigrationIMadeBackup"),
+              callback: async (html) => {
+                await migrations.migrateWorld();
+              },
+            },
+            cancel: {
+              label: game.i18n.localize("D35E.MigrationShutDown"),
+              callback: async (html) => {
+                game.shutDown();
+              },
+            },
+          },
+          default: "confirm",
+        },
+        {
+          classes: ["dialog", "D35E", "duplicate-initiative"],
+        }
+    ).render(true);
+  } else if (needMigration) {
+    new Dialog(
+        {
+          title: `${game.i18n.localize("D35E.MigrationTitle")}`,
+          content: `<p>${game.i18n.localize("D35E.MigrationTextUser")}</p>`,
+          buttons: {
+            cancel: {
+              label: game.i18n.localize("D35E.MigrationLogOut"),
+              callback: async (html) => {
+                game.logOut();
+              },
+            },
+          },
+          default: "cancel",
+        },
+        {
+          classes: ["dialog", "D35E", "duplicate-initiative"],
+        }
+    ).render(true);
   }
   let isDemo = game.settings.get("D35E", "demoWorld")
   if (isDemo) {

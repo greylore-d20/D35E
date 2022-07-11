@@ -7,9 +7,20 @@ import base64
 import sys
 from git import Repo
 import requests
+import subprocess
 
 
-version = sys.argv[1];
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-v','--version', nargs='?', help='Version')
+parser.add_argument('-u','--user', nargs='?', help='Icon storage server username')
+parser.add_argument('-s','--server', nargs='?', help='Icon storage server')
+parser.add_argument('-t','--token', nargs='?', help='GitLab PAT')
+
+args = parser.parse_args()
+version = args.version
+user = args.user
+server = args.server
 
 repo = Repo(os.getcwd())
 assert not repo.bare
@@ -22,7 +33,7 @@ with open("system.json", "w") as fp:
 repo.git.add("system.json")
 print("Updated system.json")
 
-headers = { 'PRIVATE-TOKEN': 'glpat-X9MN5-b62-HmPJswzu4-'}
+headers = { 'PRIVATE-TOKEN':args.token}
 params = {'title': version}
 response = requests.get('https://gitlab.com/api/v4/projects/dragonshorn%2FD35E/milestones', headers=headers, params=params)
 response_data = json.loads(response.text)
@@ -56,6 +67,9 @@ repo.git.add("templates/welcome-screen.html")
 
 
 repo.git.commit('-m', 'Release %s' % version, author='rughalt@gmail.com')
+
+p = subprocess.run("tar", "-cvjSf", "dnd35e-icons.tbz2", "icons")
+subprocess.run(["scp", "dnd35e-icons.tbz2", f"{user}@{server}:/home/dragonsh/special/"])
 
 # origin = repo.remote(name='origin')
 # origin.push()
