@@ -5,14 +5,8 @@ export default function renderOnboardingScreen() {
     const moduleId = system.id;
     const title = "D35E";
     const moduleVersion = system.data.version;
-    game.settings.register(title, '__onboarding', {
-        name: `Tutorial shown`,
-        hint: 'Basic system usage tutorial already shown. Uncheck to view again after reload.',
-        default: false,
-        type: Boolean,
-        config: true,
-        scope: 'client',
-    });
+
+
     const onboarding = game.settings.get(title, "__onboarding") || game.settings.get(title, "__onboardingHidden");
 
     if (onboarding)
@@ -33,8 +27,8 @@ export default function renderOnboardingScreen() {
 
         activateListeners(html) {
             super.activateListeners(html);
-            html.find('.show-again').on('click', ev => {
-                game.settings.set(title, "__onboarding", true);
+            html.find('.show-again').on('click', async ev => {
+                await game.settings.set(title, "__onboarding", true);
                 this.close()
             })
         }

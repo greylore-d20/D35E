@@ -5,6 +5,7 @@ import { isMinimumCoreVersion } from "./lib.js";
 import {CurrencyConfig} from "./config/currency.js";
 
 export const registerSystemSettings = function() {
+
   /**
    * Track the system version upon which point a migration was last applied
    */
@@ -15,7 +16,6 @@ export const registerSystemSettings = function() {
     type: String,
     default: "0.0.0"
   });
-
   // Health configuration
   game.settings.registerMenu(isMinimumCoreVersion("0.5.6") ? "D35E" : "system",
     "healthConfig", {
@@ -397,6 +397,15 @@ export const registerSystemSettings = function() {
     config: true,
     default: false,
     type: Boolean
+  });
+
+  game.settings.register("D35E", '__onboarding', {
+    name: `Tutorial shown`,
+    hint: 'Basic system usage tutorial already shown. Uncheck to view again after reload.',
+    scope: 'client',
+    default: false,
+    config: true,
+    type: Boolean,
   });
 
   game.settings.register("D35E", "showFullAttackChatCard", {

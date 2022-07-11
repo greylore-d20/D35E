@@ -77,14 +77,6 @@ Hooks.once("init", async function() {
 
   // Clean local storage 
   var toRemove = []
-  for ( var i = 0, len = localStorage.length; i < len; ++i ) {
-    if (localStorage.key( i ).startsWith("D35E")) {
-        toRemove.push(localStorage.key( i ));
-    }
-  }
-  for (let key of toRemove) {
-    localStorage.removeItem(key)
-  }
 
   // Create a D35E namespace within the game global
   game.D35E = {
@@ -605,7 +597,7 @@ Hooks.on("updateCombat", async (combat, combatant, info, data) => {
       if (combat.combatant.data?.flags?.D35E?.isToken) {
           actor = canvas.scene.tokens.get(combat.combatant.data?.flags?.D35E?.tokenId).actor; 
       } else {
-          actor = game.actors.get(combat.combatant.data?.flags?.D35E?.actorId);
+          actor = game.actors.get(combat.combatant.data?.flags?.D35E?.actor);
       }           
 
       await actor.progressBuff(buffId,1);
