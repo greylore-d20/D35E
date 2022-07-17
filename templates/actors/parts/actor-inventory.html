@@ -143,6 +143,19 @@
                             </div>
                             </i>
                         {{/if}}
+                        {{#unless item.data.identified}}
+                        <i class="fas fa-question-circle tooltip non-rollable" style="color: #0a1d2d">
+                            <div class="tooltipcontent">{{ localize 'D35E.Unidentified' }}<br>{{ localize 'D35E.IdentifiedInformation' }}
+                            </div>
+                        </i>
+                        {{else}}
+                        {{#if item.isCurseKnown}}
+                        <i class="fas fa-skull tooltip non-rollable" style="color: darkred">
+                            <div class="tooltipcontent">{{ localize 'D35E.Cursed' }}<br>{{ localize 'D35E.CursedInformation' }}
+                            </div>
+                        </i>
+                        {{/if}}
+                        {{/unless}}
                     </h4>
                 </div>
                 {{/if}}
@@ -201,12 +214,20 @@
                 {{/if}}
 
                 <div class="item-detail item-carried">
+                    {{#if item.data.curseActive}}
+                    <span({{localize "D35E.Cursed"}}</span>
+                    {{else}}
                     <a class="item-control item-carry"><span>{{item.labels.carried}}</span></a>
+                    {{/if}}
                 </div>
 
                 {{#if section.canEquip}}
                 <div class="item-detail item-equipped">
+                    {{#if item.data.curseActive}}
+                    <span>{{localize "D35E.Cursed"}}</span>
+                    {{else}}
                     <a class="item-control item-equip"><span>{{item.labels.equipped}}</span></a>
+                    {{/if}}
                 </div>
                 {{/if}}
                 <div class=" item-detail item-container">

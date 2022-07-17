@@ -146,15 +146,30 @@
       {{!-- Equipment Status --}}
       <div class="form-group stacked">
         <label>{{localize "D35E.EquipmentStatus"}}</label>
+        {{#if data.data.curseActive}}
+        <label class="checkbox">
+          <input type="checkbox" name="data.equipped" disabled {{checked data.data.equipped}}/> {{localize "D35E.Equipped"}} ({{localize "D35E.Cursed"}})
+        </label>
+        {{else}}
         <label class="checkbox">
           <input type="checkbox" name="data.equipped" {{checked data.data.equipped}}/> {{localize "D35E.Equipped"}}
         </label>
+        {{/if}}
         <label class="checkbox">
           <input type="checkbox" name="data.masterwork" {{checked data.data.masterwork}}/> {{localize "D35E.Masterwork"}}
         </label>
         {{#if isGM}}
         <label class="checkbox">
           <input type="checkbox" name="data.identified" {{checked data.data.identified}}/> {{localize "D35E.Identified"}}
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="data.cursed" {{checked data.data.cursed}}/> {{localize "D35E.Cursed"}}
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="data.curseActive" {{checked data.data.curseActive}}/> {{localize "D35E.CurseActive"}}
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="data.identifiedCurse" {{checked data.data.identifiedCurse}}/> {{localize "D35E.CurseIdentified"}}
         </label>
         {{/if}}
       </div>

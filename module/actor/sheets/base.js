@@ -116,6 +116,7 @@ export class ActorSheetPF extends ActorSheet {
       i.attackDescription = item.type === "attack" ? item.attackDescription(featRollData) : "";
       i.damageDescription = item.type === "attack" ? item.damageDescription(featRollData) : "";
       i.range = item.type === "attack" ? item.range : "";
+      i.isCurseKnown = getProperty(item.data, "data.curseActive") || getProperty(item.data, "data.identifiedCurse")
       i.timelineLeftText = item.getTimelineTimeLeftDescriptive();
       i.showUnidentifiedData = item.showUnidentifiedData;
       i.unmetRequirements = (item.type === "feat" || item.type === "class") ? item.hasUnmetRequirements(featRollData) : false;

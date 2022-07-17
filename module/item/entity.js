@@ -66,6 +66,13 @@ export class ItemPF extends Item {
         return ["day", "week", "charges"].includes(getProperty(this.data, "data.uses.per"));
     }
 
+    get displayName() {
+        let name = null;
+        if (this.showUnidentifiedData) name = getProperty(this.data, "data.unidentified.name") || game.i18n.localize("D35E.Unidentified");
+        else name = getProperty(this.data, "data.identifiedName") || this.originalName;
+        return name;
+    }
+
     get combatChangeName() {
         return getProperty(this.data,"data.combatChangeCustomDisplayName") || this.name;
     }

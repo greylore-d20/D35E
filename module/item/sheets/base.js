@@ -43,6 +43,10 @@ export class ItemSheetPF extends ItemSheet {
         });
     }
 
+    get title() {
+        return this.item.displayName;
+    }
+
     /* -------------------------------------------- */
 
     /**
@@ -53,6 +57,8 @@ export class ItemSheetPF extends ItemSheet {
         const path = "systems/D35E/templates/items/";
         return `${path}/${this.item.data.type}.html`;
     }
+
+
 
     /* -------------------------------------------- */
 
