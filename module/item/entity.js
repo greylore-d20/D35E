@@ -2274,7 +2274,8 @@ export class ItemPF extends Item {
         let summonableMonsters = [];
         if (this.data.data.summon instanceof Array && this.data.data.summon) {
             for (let summon of this.data.data.summon) {
-                const pack = game.packs.get("D35E.summoning-roll-tables");
+
+                const pack = game.packs.get(summon.pack || "D35E.summoning-roll-tables");
                 const table = await pack.getDocument(summon.id);
                 for (let result of table.data.results) {
                     summonableMonsters.push({data: result.data, formula: summon.formula || "1"})
