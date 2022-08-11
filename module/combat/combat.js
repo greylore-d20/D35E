@@ -198,9 +198,10 @@ export class CombatD35E extends Combat {
               token: c.token.id,
               alias: c.token.name,
             },
+
             flavor: game.i18n.localize("D35E.RollsForInitiative").format(c.token.name),
             roll: roll,
-            content: await renderTemplate("systems/D35E/templates/chat/roll-ext.hbs", rollData),
+            content: await renderTemplate("systems/D35E/templates/chat/roll-ext.html", rollData),
           },
           messageOptions
         );
