@@ -20,13 +20,13 @@
             <div class="flexrow">
                 <div class="flexcol">
                     <div class="dice-result ">
-                        <h4 class="rolled-roll dice-total {{#if target}}{{#if success}} success{{/if}}{{#unless success}} failure{{/unless}}{{/if}}">
+                        <h4 class="rolled-roll dice-total">
                             {{total}}</h4>
                     </div>
                 </div>
                     <div class="flexcol">
                         <div class="dice-result">
-                            <h4 class="rolled-versus dice-total">
+                            <h4 class="rolled-versus dice-total  {{#if target}}{{#if success}} success{{/if}}{{#unless success}} failure{{/unless}}{{/if}}">
                                 {{target}}</h4>
                         </div>
                     </div>
