@@ -1046,6 +1046,7 @@ export class ItemPF extends Item {
         const token = actor ? actor.token : null;
         const templateData = {
             actor: actor,
+            name: this.displayName,
             tokenId: token ? `${token.parent.id}.${token.id}` : null,
             item: this.data,
             data: this.getChatData(),
