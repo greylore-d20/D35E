@@ -4776,6 +4776,7 @@ export class ActorPF extends Actor {
         let spellsToAdd = []
         for (let spell of Object.values(item.data.data.spellSpecialization.spells)) {
             let itemData = null;
+            if (!spell.id) continue;
             const pack = game.packs.find(p => p.collection === spell.pack);
             const packItem = await pack.getDocument(spell.id);
             if (packItem != null) itemData = packItem.data;

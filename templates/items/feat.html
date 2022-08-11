@@ -51,15 +51,13 @@
     {{!-- Description Tab --}}
     {{#if isSpellSpecialization}}
     <div class="tab flexcol active" data-group="primary" data-tab="description">
+      {{#if data.data.spellSpecialization.isDomain}}
+      <h3 class="form-header" style="flex: 0">{{localize "D35E.SpellSpecializationGrantedPowers"}}</h3>
+      {{/if}}
+      {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
+      editable=editable}}
         <section class="description-body" style="display: block; height: 100%">
           <div class="flexcol">
-            {{#if data.data.spellSpecialization.isDomain}}
-            <h3 class="form-header">{{localize "D35E.SpellSpecializationGrantedPowers"}}</h3>
-            {{/if}}
-            <div style="{{#if data.data.spellSpecialization.isDomain}}height: 80px{{else}}height:400px{{/if}}">
-              {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
-              editable=editable}}
-            </div>
             {{#if data.data.spellSpecialization.isDomain}}
               <h3 class="form-header">{{localize "D35E.Spells"}}</h3>
               <div class="inventory-group flexcol" style="padding-bottom: 8px">
