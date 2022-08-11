@@ -59,7 +59,7 @@ export const migrateWorld = async function() {
 
   // Migrate World Compendium Packs
   const packs = game.packs.filter(p => {
-    return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.entity || p.metadata.type)
+    return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.documentName)
   });
   for ( let p of packs ) {
     await migrateCompendium(p);
@@ -78,7 +78,7 @@ export const migrateWorld = async function() {
  * @return {Promise}
  */
 export const migrateCompendium = async function(pack) {
-  const entity = pack.metadata.entity || pack.metadata.type;
+  const entity = pack.documentName;
   if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
   let content = []
   try {
@@ -95,11 +95,9 @@ export const migrateCompendium = async function(pack) {
     try {
       let updateData = null;
       if (entity === "Item") updateData = migrateItemData(ent);
-      else if (entity === "Actor") updateData = await migrateActorData(ent);
+      else if (entity === "Actor") await migrateActor(ent)
       else if ( entity === "Scene" ) updateData = await migrateSceneData(ent);
-      expandObject(updateData);
-      updateData["_id"] = ent._id;
-      await pack.updateEntity(updateData);
+
       //console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
     } catch(err) {
       console.error(err);
