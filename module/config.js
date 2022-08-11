@@ -588,7 +588,7 @@ D35E.attackTypesIcon = {
   "ability": "D35E.AttackTypeAbilityIcon",
   "racialAbility": "D35E.AttackTypeRacialIcon",
   "extraordinary": "D35E.AttackTypeExtraordinarIcon",
-  "extraordinary": "D35E.AttackTypeSupernaturalIcon",
+  "supernatural": "D35E.AttackTypeSupernaturalIcon",
   "misc": "D35E.Misc",
 };
 
@@ -1040,7 +1040,14 @@ D35E.conditionTextures = {
   sickened: "systems/D35E/icons/conditions/sickened.png",
   shaken: "systems/D35E/icons/conditions/shaken.png",
   stunned: "systems/D35E/icons/conditions/stunned.png",
-  prone: "systems/D35E/icons/conditions/stunned.png",
+  dead: "systems/D35E/icons/conditions/dead.png",
+  dying: "systems/D35E/icons/conditions/dying.png",
+  disabled: "systems/D35E/icons/conditions/disabled.png",
+  stable: "systems/D35E/icons/conditions/stable.png",
+  unconscious: "systems/D35E/icons/conditions/unconscious.png",
+  staggered: "systems/D35E/icons/conditions/staggered.png",
+  invisibility: "systems/D35E/icons/conditions/invisibility.png",
+  banished: "systems/D35E/icons/conditions/banished.png",
 };
 
 

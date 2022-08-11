@@ -1,3 +1,18 @@
+export const migrateActor = async function(a) {
+  try {
+
+    let itemsToAdd = []
+    const updateData = await migrateActorData(a, itemsToAdd);
+    //console.log(`Migrating Actor entity ${a.name}`);
+    await a.update(updateData);
+    //console.log(`Adding missing items to ${a.name}`);
+    if (itemsToAdd.length)
+      await a.createEmbeddedEntity("OwnedItem", itemsToAdd, {stopUpdates: true});
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @return {Promise}      A Promise which resolves once the migration is completed
@@ -9,18 +24,7 @@ export const migrateWorld = async function() {
 
   // Migrate World Actors
   for ( let a of game.actors.contents ) {
-    try {
-
-      let itemsToAdd = []
-      const updateData = await migrateActorData(a,itemsToAdd);
-      //console.log(`Migrating Actor entity ${a.name}`);
-      await a.update(updateData);
-      //console.log(`Adding missing items to ${a.name}`);
-      if (itemsToAdd.length)
-        await a.createEmbeddedEntity("OwnedItem", itemsToAdd, {stopUpdates: true});
-    } catch(err) {
-      console.error(err);
-    }
+    await migrateActor(a);
   }
 
   // Migrate World Items
@@ -55,7 +59,7 @@ export const migrateWorld = async function() {
 
   // Migrate World Compendium Packs
   const packs = game.packs.filter(p => {
-    return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.entity)
+    return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.entity || p.metadata.type)
   });
   for ( let p of packs ) {
     await migrateCompendium(p);
@@ -74,7 +78,7 @@ export const migrateWorld = async function() {
  * @return {Promise}
  */
 export const migrateCompendium = async function(pack) {
-  const entity = pack.metadata.entity;
+  const entity = pack.metadata.entity || pack.metadata.type;
   if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
   let content = []
   try {
