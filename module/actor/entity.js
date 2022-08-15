@@ -7867,9 +7867,25 @@ export class ActorPF extends Actor {
                     ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
                 break;
             case "Roll":
-                if (action.parameters.length === 1) {
-                    // Do a roll
-                } else
+                if (action.parameters.length === 2) {
+                    return DicePF.d20Roll({
+                        parts: action.parameters[1],
+                        data: this.getRollData(),
+                        title: cleanParam(action.parameters[0]),
+                        speaker: ChatMessage.getSpeaker({ actor: this }),
+                        chatTemplate: "systems/D35E/templates/chat/roll-ext.html",
+                        chatTemplateData: { hasProperties: false}
+                    });
+                } else if (action.parameters.length === 1) {
+                return DicePF.d20Roll({
+                    parts: action.parameters[0],
+                    data: this.getRollData(),
+                    title: "Roll",
+                    speaker: ChatMessage.getSpeaker({ actor: this }),
+                    chatTemplate: "systems/D35E/templates/chat/roll-ext.html",
+                    chatTemplateData: { hasProperties: false}
+                });
+                }   else
                     ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
                 break;
             case "RunMacro":
