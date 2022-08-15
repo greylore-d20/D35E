@@ -64,7 +64,15 @@
   <label>{{localize "D35E.Duration"}}</label>
   <div class="form-fields">
     {{#if isSpell}}
-    <input type="text" name="data.spellDuration" value="{{data.data.spellDuration}}" placeholder="{{localize "D35E.SpellDurationExample"}}"/>
+    {{#if canInputSpellDuration}}<input type="text" name="data.spellDurationData.value" value="{{data.data.spellDurationData.value}}" placeholder="{{localize "D35E.Formula"}}"/>{{/if}}
+    <select name="data.spellDurationData.units">
+      {{#select data.data.spellDurationData.units}}
+      <option value=""></option>
+      {{#each config.timePeriodsSpells as |name key|}}
+      <option value="{{key}}">{{name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
     {{else}}
     {{#if canInputDuration}}<input type="text" name="data.duration.value" value="{{data.data.duration.value}}" placeholder="{{localize "D35E.Formula"}}"/>{{/if}}
     <select name="data.duration.units">
@@ -78,6 +86,19 @@
     {{/if}}
   </div>
 </div>
+{{#if isSpell}}
+<div class="form-group">
+  <label>{{localize "D35E.SpellDismissable"}}</label>
+  <label class="checkbox" style="position: relative; flex: 0 20px">
+    <input type="checkbox" class="stylized" name="data.spellDurationData.dismissable" {{checked data.data.spellDurationData.dismissable}}/>
+    <span class="checkmark"></span>
+  </label>
+</div>
+<div class="form-group">
+  <label>{{localize "D35E.SpellLegacyDuration"}}</label>
+  <input type="text" class="readonly" readonly value="{{data.data.spellDuration}}" placeholder="{{localize "D35E.SpellDurationExample"}}"/>
+</div>
+{{/if}}
 <div class="form-group">
   <label>{{localize "D35E.RequiresPsionicFocus"}}</label>
   <label class="checkbox" style="position: relative; flex: 0 20px">

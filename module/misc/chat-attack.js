@@ -415,6 +415,7 @@ export class ChatAttack {
             }
             let actionData = action.action
                 .replace(/\(@dc\)/g, `${this.rollData?.dc?.dc || 0}`)
+                .replace(/\(@spellDuration\)/g, `${this.rollData?.spellDuration || 0}`)
                 .replace(/\(@cl\)/g, `${cl}`)
                 .replace(/\(@useAmount\)/g, `${useAmount}`)
                 .replace(/\(@attack\)/g, `${this.attack.total}`)

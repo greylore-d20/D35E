@@ -13,6 +13,16 @@ export const migrateActor = async function(a) {
   }
 }
 
+export const migrateItem = async function(i) {
+  try {
+    const updateData = await migrateItemData(i);
+    await i.update(updateData);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @return {Promise}      A Promise which resolves once the migration is completed
@@ -94,7 +104,7 @@ export const migrateCompendium = async function(pack) {
   for ( let ent of content ) {
     try {
       let updateData = null;
-      if (entity === "Item") updateData = migrateItemData(ent);
+      if (entity === "Item") await migrateItem(ent);
       else if (entity === "Actor") await migrateActor(ent)
       else if ( entity === "Scene" ) updateData = await migrateSceneData(ent);
 
@@ -177,6 +187,7 @@ export const migrateItemData = function(item) {
   _migrateEnhancement(item, updateData);
   _migrateSpellName(item, updateData);
   _migrateClassSpellbook(item, updateData);
+  _migrateSpellDuration(item, updateData);
 
   // Return the migrated update data
   return updateData;
@@ -610,6 +621,94 @@ const _migrateSpellName = function(ent, updateData) {
   if (ent.type !== "spell") return;
   updateData["name"] = (ent.data.name || ent.name).trim()
 }
+
+const _migrateSpellDuration = function(ent, updateData) {
+  if (ent.type !== "spell") return;
+  let duration = getProperty(ent.data.data, "spellDuration").toLowerCase().trim()
+  let newDurationUnits = "spec"
+  let value = parseInt(duration) || "";
+  if (isNaN(value) || !value)
+    value = "";
+  let dismissable = false;
+  if (duration.indexOf("(D)") !== -1) {
+    dismissable = true;
+  }
+
+  function __updateValuePerLevel() {
+    if (value === "1") {
+      value = "@cl"
+    } else {
+      value = value + "*@cl"
+    }
+  }
+
+  if (duration.indexOf("concentration") !== -1) {
+    newDurationUnits = "spec"
+    value = getProperty(ent.data.data, "spellDuration").replace("(D)","").trim();
+  }
+  else if (duration.indexOf("until discharged") !== -1) {
+    newDurationUnits = "spec"
+    value = getProperty(ent.data.data, "spellDuration").replace("(D)","").trim();
+  }
+  else if (duration.indexOf("see text") !== -1) {
+    newDurationUnits = "seeText"
+  }
+  else if (duration.indexOf("round/level") !== -1) {
+    newDurationUnits = "roundPerLevel"
+    __updateValuePerLevel();
+  }
+  else if (duration.indexOf("rounds/level") !== -1) {
+    newDurationUnits = "roundPerLevel"
+    __updateValuePerLevel();
+  }
+  else if (duration.indexOf("hour/level") !== -1) {
+    newDurationUnits = "hourPerLevel"
+    __updateValuePerLevel();
+  }
+  else if (duration.indexOf("hours/level") !== -1) {
+    newDurationUnits = "hourPerLevel"
+    __updateValuePerLevel();
+  }
+  else if (duration.indexOf("minute/level") !== -1) {
+    newDurationUnits = "minutePerLevel"
+    __updateValuePerLevel();
+  }
+  else if (duration.indexOf("minutes/level") !== -1) {
+    newDurationUnits = "minutePerLevel"
+    __updateValuePerLevel();
+  }
+  else if (duration.indexOf("min./level") !== -1) {
+    newDurationUnits = "minutePerLevel"
+    __updateValuePerLevel();
+  }
+  else if (duration.indexOf("rounds") !== -1) {
+    newDurationUnits = "rounds"
+  }
+  else if (duration.indexOf("turns") !== -1) {
+    newDurationUnits = "turns"
+  }
+  else if (duration.indexOf("hours") !== -1) {
+    newDurationUnits = "hours"
+  }
+  else if (duration.indexOf("days") !== -1) {
+    newDurationUnits = "days"
+  }
+  else if (duration.indexOf("instantaneous") !== -1) {
+    newDurationUnits = "inst"
+  }
+  else if (duration.indexOf("permanent") !== -1) {
+    newDurationUnits = "perm"
+  }
+
+  const oldValue = getProperty(ent.data.data, "spellDurationData.units");
+  console.log(oldValue)
+  if (!oldValue) {
+    updateData["data.spellDurationData"] = {value: value, units: newDurationUnits, dismissable: dismissable}
+    console.log(duration, newDurationUnits, value, dismissable)
+  }
+
+}
+
 
 const _migrateClassSpellbook = function(ent, updateData) {
   if (ent.type !== "class") return;

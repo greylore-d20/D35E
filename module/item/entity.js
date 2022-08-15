@@ -1199,6 +1199,32 @@ export class ItemPF extends Item {
                 }
             }
 
+            // Duration
+            if (data.spellDurationData != null) {
+                let isPerLevel = (["hourPerLevel", "minutePerLevel", "roundPerLevel"].includes(data.spellDurationData.units))
+                if (!["inst", "perm"].includes(data.spellDurationData.units) && typeof data.spellDurationData.value === "string") {
+                    let rollString = data.spellDurationData.value.length > 0 ? data.spellDurationData.value : "0";
+                    let duration = data.spellDurationData.value
+                    if (rollString.indexOf("@cl") !== -1) {
+                        duration = new Roll35e(rollString, rollData).roll().total;
+                        let multiplier = 0
+                        if (data.spellDurationData.units === "hourPerLevel") {
+                            multiplier = 600
+                        } else if (data.spellDurationData.units === "minutePerLevel") {
+                            multiplier = 10
+                        } else if (data.spellDurationData.units === "roundPerLevel") {
+                            multiplier = 1
+                        }
+                        rollData.spellDuration = duration * multiplier;
+                    }
+                    if (data.spellDurationData.units === "spec") {
+                        dynamicLabels.duration = duration
+                    } else {
+                        dynamicLabels.duration = [duration, CONFIG.D35E.timePeriodsSpells[data.spellDurationData.units.replace("PerRound", "")]].filterJoin(" ");
+                    }
+                }
+            }
+
             // Item type specific properties
             const fn = this[`_${this.data.type}ChatData`];
             if (fn) fn.bind(this)(data, labels, props);
@@ -3455,8 +3481,13 @@ export class ItemPF extends Item {
 
         // Set duration label
         {
+            const durationData = getProperty(srcData, "data.spellDurationData");
             const duration = getProperty(srcData, "data.spellDuration");
-            if (duration) label.duration = duration;
+            if (durationData) {
+                label.duration = this.getSpellDuration(durationData);
+            } else if (duration) {
+                label.duration = duration;
+            }
         }
         // Set effect label
         {
@@ -3509,6 +3540,28 @@ export class ItemPF extends Item {
             label.powerPointsCost = getProperty(srcData, "data.powerPointsCost");
         label.display = getProperty(srcData, "data.display");
         return data;
+    }
+
+    getSpellDuration(durationData, level = 1) {
+        let durationLabel = "";
+        let needRounds = !(["", "inst", "perm", "seeText"].includes(durationData.units))
+        if (!needRounds || !durationData.value) {
+            durationLabel = CONFIG.D35E.timePeriodsSpells[durationData.units];
+        } else {
+            let isPerLevel = durationData.value.indexOf("@cl") !== -1
+            if (!isPerLevel) {
+                durationLabel = Roll35e.safeRoll(durationData.value,{cl: level}).total + " " + CONFIG.D35E.timePeriodsSpells[durationData.units];
+            } else {
+                let isSpecial = !(["spec"].includes(durationData.units))
+                if (isSpecial)
+                    durationLabel = durationData.value;
+                else
+                    durationLabel = durationData.value + " " + CONFIG.D35E.timePeriodsSpells[durationData.units];
+            }
+        }
+        if (durationData.dismissable)
+            durationLabel = label.duration + " (D)"
+        return durationLabel;
     }
 
     /* -------------------------------------------- */

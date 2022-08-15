@@ -142,6 +142,9 @@ export class ItemSheetPF extends ItemSheet {
         if (this.item.data.data.duration != null) {
             data.canInputDuration = !(["", "inst", "perm", "seeText"].includes(this.item.data.data.duration.units));
         }
+        if (this.item.data.data.spellDurationData != null) {
+            data.canInputSpellDuration = !(["", "inst", "perm", "seeText"].includes(this.item.data.data.spellDurationData.units));
+        }
 
         data.charges = this.item.charges
         data.maxCharges = this.item.maxCharges

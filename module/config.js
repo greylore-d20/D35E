@@ -735,6 +735,23 @@ D35E.timePeriods = {
   "spec": "D35E.Special",
 };
 
+D35E.timePeriodsSpells = {
+  "inst": "D35E.TimeInst",
+  "turn": "D35E.TimeTurn",
+  "round": "D35E.TimeRound",
+  "roundPerLevel": "D35E.TimeRoundPerLevel",
+  "minute": "D35E.TimeMinute",
+  "minutePerLevel": "D35E.TimeMinutePerLevel",
+  "hourPerLevel": "D35E.TimeHourPerLevel",
+  "hour": "D35E.TimeHour",
+  "day": "D35E.TimeDay",
+  "month": "D35E.TimeMonth",
+  "year": "D35E.TimeYear",
+  "perm": "D35E.TimePerm",
+  "seeText": "D35E.SeeText",
+  "spec": "D35E.Special",
+};
+
 /* -------------------------------------------- */
 
 // Healing Types
