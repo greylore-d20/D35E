@@ -330,7 +330,10 @@ export class CombatD35E extends Combat {
             return;
         }
     }
-    let buffCombatant = (await this.createEmbeddedDocuments("Combatant",[{name:buff.name,img:buff.img,initiative:(this.combatant.initiative+0.01), flags: {D35E: {buffId: buff.id, actor: actor.id, isToken: actor.isToken, tokenId: actor?.token?.id}}}]))[0]
+    let buffDelta = 0.01;
+    if (buff.data.data.timeline.tickOnEnd)
+        buffDelta = -0.01
+    let buffCombatant = (await this.createEmbeddedDocuments("Combatant",[{name:buff.name,img:buff.img,initiative:(this.combatant.initiative+buffDelta), flags: {D35E: {buffId: buff.id, actor: actor.id, isToken: actor.isToken, tokenId: actor?.token?.id}}}]))[0]
     
   }
 
