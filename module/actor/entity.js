@@ -3664,7 +3664,7 @@ export class ActorPF extends Actor {
                         _dr.items.push(obj.name);
                     }
                 } else {
-                    data.combinedDR.any = Math.max(data.combinedDR.any || 0, new Roll35e(dr[0] || "0", _obj.getRollData()).roll().total);
+                    data.combinedDR.any = Math.max(data.combinedDR.any || 0, new Roll35e(dr[0] || "0", erDrRollData).roll().total);
                 }
             });
         }
