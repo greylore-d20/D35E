@@ -2365,6 +2365,12 @@ export class ItemPF extends Item {
                     callback: html => {
                         wasRolled = true;
                         roll = _roll.call(this, false, html)
+                        if (game.combats.active) {
+                            let combatActor = this.actor.isToken ? game.combats.active.getCombatantByToken(this.actor.token.id) : game.combats.active.getCombatantByActor(this.actor.id)
+                            if (combatActor) {
+                                combatActor.useAction(this.data.data.activation)
+                            }
+                        }
                     }
                 };
             }
@@ -2374,6 +2380,17 @@ export class ItemPF extends Item {
                     callback: html => {
                         wasRolled = true;
                         roll = _roll.call(this, true, html)
+
+
+                        if (game.combats.active) {
+                            let combatActor = this.actor.isToken ? game.combats.active.getCombatantByToken(this.actor.token.id) : game.combats.active.getCombatantByActor(this.actor.id)
+                            if (combatActor) {
+                                if (extraAttacksCount > 1)
+                                    combatActor.useFullAttackAction();
+                                else
+                                    combatActor.useAction(this.data.data.activation)
+                            }
+                        }
                     }
                 };
             }
@@ -2383,6 +2400,12 @@ export class ItemPF extends Item {
                 callback: html => {
                     wasRolled = true;
                     roll = _roll.call(this, false, html)
+                    if (game.combats.active) {
+                        let combatActor = this.actor.isToken ? game.combats.active.getCombatantByToken(this.actor.token.id) : game.combats.active.getCombatantByActor(this.actor.id)
+                        if (combatActor) {
+                            combatActor.useAction(this.data.data.activation)
+                        }
+                    }
                 }
             };
         }

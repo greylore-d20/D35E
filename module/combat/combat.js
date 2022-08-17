@@ -101,6 +101,73 @@ export const addCombatTrackerContextOptions = function (result) {
   });
 };
 
+export class CombatantD35E extends Combatant {
+    constructor(...args) {
+        super(...args);
+    }
+
+    resetPerRoundCounters() {
+        if (this.actor) {
+            this.setFlag('D35E', 'aaoCount', 1);
+            this.setFlag('D35E', 'usedAaoCount', 0);
+            this.setFlag('D35E', 'usedAttackAction', false);
+            this.setFlag('D35E', 'usedMoveAction', false);
+            this.setFlag('D35E', 'usedSwiftAction', false);
+        }
+    }
+
+    useAttackAction() {
+        let isMyTurn = game.combats?.active?.current.combatantId === this.id;
+        if (isMyTurn) {
+            this.setFlag('D35E', 'usedAttackAction', true);
+        }
+        else {
+            const usedAao = this.getFlag('D35E', 'usedAaoCount') ?? 0;
+            this.setFlag('D35E', 'usedAaoCount', usedAao+1);
+        }
+    }
+
+    useAction(activationCost) {
+        if (activationCost.type === "attack" || activationCost.type === "standard") {
+            this.useAttackAction()
+        } else if (activationCost.type === "swift") {
+            this.setFlag('D35E', 'usedASwiftAction', true);
+
+        }
+    }
+
+
+    useFullAttackAction() {
+        this.setFlag('D35E', 'usedAttackAction', true);
+        this.setFlag('D35E', 'usedMoveAction', true);
+        this.update({})
+    }
+
+    get usedAttackAction() {
+        /* our turn is over this round if we have ended item
+         * or have been marked defeated */
+        return this.getFlag('D35E', 'usedAttackAction') ?? false;
+    }
+
+    get usedMoveAction() {
+        /* our turn is over this round if we have ended item
+         * or have been marked defeated */
+        return this.getFlag('D35E', 'usedMoveAction') ?? false;
+    }
+
+    get usedSwiftAction() {
+        /* our turn is over this round if we have ended item
+         * or have been marked defeated */
+        return this.getFlag('D35E', 'usedSwiftAction') ?? false;
+    }
+
+    get usedAllAao() {
+        /* our turn is over this round if we have ended item
+         * or have been marked defeated */
+        return this.getFlag('D35E', 'usedAaoCount') === this.getFlag('D35E', 'aaoCount') ?? false;
+    }
+}
+
 export class CombatD35E extends Combat {
     constructor(...args) {
         super(...args);
@@ -292,10 +359,10 @@ export class CombatD35E extends Combat {
             if (this.combatant.data?.flags?.D35E?.isToken) {
                 actor = canvas.scene.tokens.get(this.combatant.data?.flags?.D35E?.tokenId).actor; 
             } else {
-                actor = game.actors.get(this.combatant.data?.flags?.D35E?.actorId);
-            }           
-
+                actor = game.actors.get(this.combatant.data?.flags?.D35E?.actor);
+            }
             await actor.progressBuff(buffId,1);
+            await this.nextTurn();
         }
     } catch (error) {
       console.error(error);
@@ -308,6 +375,7 @@ export class CombatD35E extends Combat {
    */
   async nextRound() {
     const combat = await super.nextRound();
+    await this._resetPerRoundCounter()
     // TODO: Process skipped turns.
     await this._processCurrentCombatant();
     return combat;
@@ -333,7 +401,7 @@ export class CombatD35E extends Combat {
     let buffDelta = 0.01;
     if (buff.data.data.timeline.tickOnEnd)
         buffDelta = -0.01
-    let buffCombatant = (await this.createEmbeddedDocuments("Combatant",[{name:buff.name,img:buff.img,initiative:(this.combatant.initiative+buffDelta), flags: {D35E: {buffId: buff.id, actor: actor.id, isToken: actor.isToken, tokenId: actor?.token?.id}}}]))[0]
+    let buffCombatant = (await this.createEmbeddedDocuments("Combatant",[{name:buff.name,img:buff.img,initiative:(this.combatant.initiative+buffDelta), flags: {D35E: {buffId: buff.id, actor: actor.id, isToken: actor.isToken, tokenId: actor?.token?.id, actorImg: actor.img, actorName: actor.name}}}]))[0]
     
   }
 
@@ -350,4 +418,10 @@ export class CombatD35E extends Combat {
         console.error(error);
       }
   }
+
+    async _resetPerRoundCounter() {
+        for (let combatant of this.combatants) {
+            combatant.resetPerRoundCounters()
+        }
+    }
 }

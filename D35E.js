@@ -22,7 +22,7 @@ import { TokenPF } from "./module/token/token.js";
 import { addLowLightVisionToLightConfig } from "./module/low-light-vision.js";
 import { PatchCore } from "./module/patch-core.js";
 import { DicePF } from "./module/dice.js";
-import {CombatD35E, duplicateCombatantInitiative} from "./module/combat/combat.js";
+import {CombatantD35E, CombatD35E, duplicateCombatantInitiative} from "./module/combat/combat.js";
 import { createCustomChatMessage } from "./module/chat.js";
 import { AmbientLightPF, SightLayerPF } from "./module/low-light-vision.js";
 import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
@@ -54,6 +54,7 @@ import {genTreasureFromToken} from "./module/treasure/treasure.js"
 import { ActiveEffectD35E } from "./module/ae/entity.js";
 import { CollateAuras } from "./module/auras/aura-helpers.js";
 import {ActorSheetObject} from "./module/actor/sheets/object.js";
+import {D35ECombatTracker} from "./module/combat/combat-tracker.js";
 
 // Add String.format
 if (!String.prototype.format) {
@@ -123,10 +124,12 @@ Hooks.once("init", async function() {
   CONFIG.ui.compendium = CompendiumDirectoryPF;
   CONFIG.ChatMessage.documentClass = ChatMessagePF;
   CONFIG.Combat.documentClass = CombatD35E;
+  CONFIG.Combatant.documentClass = CombatantD35E;
   CONFIG.Token.objectClass = TokenPF;
   CONFIG.AmbientLight.objectClass = AmbientLightPF;
 
 
+  CONFIG.ui.combat = D35ECombatTracker;
 
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("D35E", ActorSheetPFCharacter, { types: ["character"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFCharacter") });
@@ -163,6 +166,8 @@ Hooks.once("init", async function() {
     CONFIG.Canvas.layers.templates = TemplateLayerPF;
     CONFIG.Canvas.layers.sight = SightLayerPF;
   }
+
+
 
 
   //CONFIG.Canvas.layers["d35e"] = D35ELayer;
