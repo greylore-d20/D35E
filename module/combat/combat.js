@@ -2,6 +2,7 @@ import { ActorPF } from "../actor/entity.js";
 import { D35E } from "../config.js";
 import { isMinimumCoreVersion } from "../lib.js";
 import {Roll35e} from "../roll.js"
+import {ActorSheetPFNPCCombat} from "../actor/sheets/npc-combat.js";
 
 /* -------------------------------------------- */
 
@@ -172,6 +173,7 @@ export class CombatD35E extends Combat {
     constructor(...args) {
         super(...args);
         this.buffs = new Map();
+        this.npcSheet = null;
       }
 
   /**
@@ -303,6 +305,7 @@ export class CombatD35E extends Combat {
   async deleteEmbeddedDocuments(type, documents) {
     await super.deleteEmbeddedDocuments(type, documents);
     Hooks.callAll("updateCombat", this, this.combatant);
+    this.updateCombatCharacterSheet();
   }
 
   static showInitiativeDialog = function (formula = null) {
@@ -381,7 +384,20 @@ export class CombatD35E extends Combat {
     return combat;
   }
 
-  /**
+    updateCombatCharacterSheet() {
+        if (game.settings.get("D35E", "useCombatCharacterSheet")) {
+            if (this.combatant.actor) {
+                if (this.npcSheet == null) {
+                    this.npcSheet = new ActorSheetPFNPCCombat(this.combatant.actor);
+                } else {
+                    this.npcSheet.object = this.combatant.actor;
+                }
+                this.npcSheet.render(true)
+            }
+        }
+    }
+
+    /**
    * @override
    * @returns {Promise<Combat>}
    */

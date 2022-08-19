@@ -670,6 +670,20 @@ export const registerSystemSettings = function() {
     },
   });
 
+  /**
+   * Option to allow the background skills optional ruleset.
+   */
+  game.settings.register("D35E", "useCombatCharacterSheet", {
+    name: "SETTINGS.D35EUseCombatCharacterSheetN",
+    hint: "SETTINGS.D35EUseCombatCharacterSheetH",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+    onChange: () => {
+      window.location.reload();
+    },
+  });
 
 
   // game.settings.register("D35E", 'displayItemsInContainers', {

@@ -349,6 +349,15 @@ Hooks.once("ready", async function() {
   }
 
 
+  Hooks.on("renderCombatTracker", (bar, data, slot) => {
+    game.combat.updateCombatCharacterSheet()
+  });
+  Hooks.on("changeSidebarTab", (tab) => {
+    if (tab instanceof D35ECombatTracker)
+      game.combat.updateCombatCharacterSheet()
+  });
+
+
   // Edit next line to match module.
   const system = game.system;
   const title = system.data.title;
@@ -686,6 +695,8 @@ Hooks.on("hotbarDrop", (bar, data, slot) => {
   createItemMacro(data.data, slot);
   return false;
 });
+
+
 
 Hooks.on("updateWorldTime", async (date, delta, other) => {
   let roundsDelta = Math.floor(delta / 6);

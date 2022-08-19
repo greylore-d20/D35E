@@ -25,6 +25,9 @@ export class D35ECombatTracker extends CombatTracker {
         let previousActorTurn = "final"
         let activeActorTurnId = ""
         let finalActorTurnId = ""
+        let hasActorSheet = context?.combat?.current?.tokenId;
+
+        context.hasActorSheet = hasActorSheet;
         context.turns = context.turns.reduce( (acc, turn) => {
             const combatant = context.combat.combatants.get(turn.id);
 
@@ -37,6 +40,7 @@ export class D35ECombatTracker extends CombatTracker {
 
             turn.ended = combatant?.turnEnded ?? true;
             let isActor = !!combatant.actor;
+            turn.isActor = isActor;
             if (isActor) {
                 previousActorTurn = turn.id;
                 finalActorTurnId = turn.id;
@@ -68,6 +72,8 @@ export class D35ECombatTracker extends CombatTracker {
 
         return context;
     }
+
+
 
 
 }

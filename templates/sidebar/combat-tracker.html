@@ -186,6 +186,14 @@
     {{/if}}
   </ol>
 
+
+  {{#if user.isGM}}
+  <ol id="combat-sheet" class="D35E sheet actor npc monster sidebar">
+  <template id="actor-combat-sheet"></template>
+  </ol>
+  {{/if}}
+
+
   <nav id="combat-controls" class="directory-footer flexrow">
     {{#if hasCombat}}
     {{#if user.isGM}}

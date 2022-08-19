@@ -78,6 +78,7 @@ export class ActorSheetPF extends ActorSheet {
     let isOwner = this.document.isOwner;
     const data = {
       owner: isOwner,
+      name: this.document.name,
       limited: this.document.limited,
       options: this.options,
       editable: this.isEditable,

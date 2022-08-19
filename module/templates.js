@@ -58,6 +58,8 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/D35E/templates/internal/spell-description.html",
     "systems/D35E/templates/internal/consumable-description.html",
     "systems/D35E/templates/internal/shapechange-description.html",
+
+    "systems/D35E/templates/sidebar/combat-charsheet.html",
   ];
 
   // Load the template parts
