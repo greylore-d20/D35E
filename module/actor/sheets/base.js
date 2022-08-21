@@ -176,7 +176,7 @@ export class ActorSheetPF extends ActorSheet {
       }
       skl.label = CONFIG.D35E.skills[s];
       skl.arbitrary = CONFIG.D35E.arbitrarySkills.includes(s);
-      skl.sourceDetails = (data.sourceDetails != null && data.sourceDetails.data.skills[s] != null) ? data.sourceDetails.data.skills[s].changeBonus : [];
+      skl.sourceDetails = (data.sourceDetails != null && data.sourceDetails.data.skills[s] != null) ? duplicate(data.sourceDetails.data.skills[s].changeBonus) : [];
       if (data.actor.data.attributes.acp.total && skl.acp)
         skl.sourceDetails.push({ name: game.i18n.localize("D35E.ACP"), value: `-${data.actor.data.attributes.acp.total}` })
       if (skl.ability)
