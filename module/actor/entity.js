@@ -161,6 +161,11 @@ export class ActorPF extends Actor {
         return this._cachedAuras;
     }
 
+    get trackedBuffs() {
+        if (this.items == null) return null;
+        return this.items.filter(o => o.data.type === "buff" && getProperty(o.data, "data.active") && getProperty(o.data, "data.timeline.enabled"));
+    }
+
     get race() {
         if (this.items == null) return null;
         return this.items.filter(o => o.data.type === "race")[0];

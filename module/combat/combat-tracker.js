@@ -57,7 +57,10 @@ export class D35ECombatTracker extends CombatTracker {
                 turn.previousActorTurn = previousActorTurn
                 turn.actorImage = combatant.data?.flags?.D35E?.actorImg
                 turn.actorName = combatant.data?.flags?.D35E?.actorName
-                acc["buff"].push(turn);
+                if (combatant.data?.flags?.D35E?.actor) {
+                    if (game.actors.get(combatant.data?.flags?.D35E?.actor).testUserPermission(game.user, "OWNER"))
+                        acc["buff"].push(turn);
+                }
             }
 
             return acc;

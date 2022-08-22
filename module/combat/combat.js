@@ -282,6 +282,7 @@ export class CombatD35E extends Combat {
         if (i > 0) chatData.sound = null; // Only play 1 sound for the whole set
         messages.push(chatData);
 
+
         // Return the Roll and the chat data
         return results;
       },
@@ -291,6 +292,17 @@ export class CombatD35E extends Combat {
 
     // Update multiple combatants
     await this.updateEmbeddedDocuments("Combatant", updates);
+
+    // Add enabled, existing buffs to combat tracker
+    for (let id of ids) {
+        const c = this.combatants.get(id);
+        if (!c) continue;
+        if (c.actor) {
+            for (let buff of c.actor.trackedBuffs) {
+                await this.addBuffToCombat(buff, c.actor)
+            }
+        }
+    }
 
     // Ensure the turn order remains with the same combatant
     if (updateTurn) await this.update({ turn: this.turns.findIndex((t) => t.id === currentId) });
@@ -403,7 +415,7 @@ export class CombatD35E extends Combat {
    */
   async nextTurn() {
     const combat = await super.nextTurn();
-   // await this._processCurrentCombatant();
+    await this._processCurrentCombatant();
     return combat;
   }
 
