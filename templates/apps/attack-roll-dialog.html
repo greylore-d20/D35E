@@ -550,10 +550,10 @@
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-img").attr("src",`${monster.img}`)
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-cr").text(`CR${monster.data.data.details.totalCr}`)
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-align").text(`${CONFIG.D35E.actorSizes[monster.data.data.traits.actualSize]} ${monster.racialHD.name} ${monster.data.data.details.alignment}`)
-                $('option:selected', select).closest("section").find(".monster-summon-box .monster-hp").text(`${monster.data.data.attributes.hp.max} hp (${monster.data.data.attributes.hd.total} HD)`)
-                $('option:selected', select).closest("section").find(".monster-summon-box .monster-ac").text(`${mdd.attributes.ac.normal.total} (${mdd.attributes.ac.touch.total} touch, ${mdd.attributes.ac.flatFooted.total} flat-footed)`)
-                $('option:selected', select).closest("section").find(".monster-summon-box .monster-bab").text(`${mdd.attributes.bab.total}/${mdd.attributes.cmd.total}`)
-                $('option:selected', select).closest("section").find(".monster-summon-box .monster-init").text(`${mdd.attributes.initiative.total}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-hp").text(`${monster.data.data.attributes.hp.max} hp (${monster.data.data.attributes?.hd?.total || "Unknown"} HD)`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-ac").text(`${mdd.attributes.ac?.normal?.total || "Unknown"} (${mdd.attributes.ac?.touch?.total || "Unknown"} touch, ${mdd.attributes?.ac?.flatFooted.total || "Unknown"} flat-footed)`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-bab").text(`${mdd.attributes?.bab?.total || "Unknown"}/${mdd.attributes?.cmd?.total || "Unknown"}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-init").text(`${mdd.attributes?.initiative?.total || "Unknown"}`)
             }
             updateMonster($('select[name="selected-monster"]'))
 

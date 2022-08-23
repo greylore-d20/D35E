@@ -245,7 +245,7 @@ const _migrateActorTokenVision = function(ent, updateData) {
 
 const _migrateActorSkillRanksToPoints = function(ent, updateData) {
   
-  for (let [sklKey, skl] of Object.entries(ent.data.data?.skills)) {
+  for (let [sklKey, skl] of Object.entries(ent.data.data?.skills || {})) {
     if (skl.points !== undefined) continue;
     updateData[`data.skills.${sklKey}.points`] = skl.rank;
     for (let [subSklKey, subSkl] of Object.entries(skl.subSkills || {})) {
@@ -624,7 +624,9 @@ const _migrateSpellName = function(ent, updateData) {
 
 const _migrateSpellDuration = function(ent, updateData) {
   if (ent.type !== "spell") return;
-  let duration = getProperty(ent.data.data, "spellDuration").toLowerCase().trim()
+  let duration = (getProperty(ent.data.data, "spellDuration") || "").toLowerCase().trim()
+  if (!duration)
+    return;
   let newDurationUnits = "spec"
   let value = parseInt(duration) || "";
   if (isNaN(value) || !value)
@@ -701,10 +703,8 @@ const _migrateSpellDuration = function(ent, updateData) {
   }
 
   const oldValue = getProperty(ent.data.data, "spellDurationData.units");
-  console.log(oldValue)
   if (!oldValue) {
     updateData["data.spellDurationData"] = {value: value, units: newDurationUnits, dismissable: dismissable}
-    console.log(duration, newDurationUnits, value, dismissable)
   }
 
 }
