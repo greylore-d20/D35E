@@ -259,8 +259,8 @@ const _migrateActorSkillRanksToPoints = function(ent, updateData) {
     for (let skill of Object.entries(a.skills || {})) {
       if (skill[1].points !== undefined) continue;
       skill[1].points = skill[1].rank
-      if (skill.subSkills) {
-        for (let skl of Object.entries(skill.subSkills || {})) {
+      if (skill[1].subSkills) {
+        for (let skl of Object.entries(skill[1].subSkills || {})) {
           if (skl[1].points !== undefined) continue;
           skl[1].points = skl[1].rank
         }
