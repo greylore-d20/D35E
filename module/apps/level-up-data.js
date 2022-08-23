@@ -29,7 +29,7 @@ export class LevelUpDataDialog extends FormApplication {
         let skillset = {}
         Object.keys(this.options.skillset.all.skills).forEach(s => {
             skillset[s] = {
-                rank: this.levelUpData.skills[s] !== undefined ? this.levelUpData.skills[s].points : 0,
+                points: this.levelUpData.skills[s] !== undefined ? this.levelUpData.skills[s].points : 0,
                 name: this.options.skillset.all.skills[s].name,
                 label: this.options.skillset.all.skills[s].label,
                 arbitrary: this.options.skillset.all.skills[s].arbitrary,
@@ -42,7 +42,7 @@ export class LevelUpDataDialog extends FormApplication {
 
             Object.keys(this.options.skillset.all.skills[s]?.subSkills || []).forEach(sb => {
                 skillset[s].subSkills[sb] = {
-                    rank: (this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined) ? this.levelUpData.skills[s].subskills[sb].points : 0,
+                    points: (this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined) ? this.levelUpData.skills[s].subskills[sb].points : 0,
                     name: this.options.skillset.all.skills[s].subSkills[sb].name,
                     label: this.options.skillset.all.skills[s].subSkills[sb].label,
                     arbitrary: this.options.skillset.all.skills[s].subSkills[sb].arbitrary,
