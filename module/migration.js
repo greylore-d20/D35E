@@ -254,20 +254,22 @@ const _migrateActorSkillRanksToPoints = function(ent, updateData) {
     }
 }
 
-  let data = duplicate(ent.data.data.details.levelUpData);
-  data.forEach(a => {
-    for (let skill of Object.entries(a.skills || {})) {
-      if (skill[1].points !== undefined) continue;
-      skill[1].points = skill[1].rank
-      if (skill[1].subskills) {
-        for (let skl of Object.entries(skill[1].subskills || {})) {
-          if (skl[1].points !== undefined) continue;
-          skl[1].points = skl[1].rank
+  let data = duplicate(ent.data.data?.details?.levelUpData || []);
+  if (data) {
+    data.forEach(a => {
+      for (let skill of Object.entries(a.skills || {})) {
+        if (skill[1].points !== undefined) continue;
+        skill[1].points = skill[1].rank
+        if (skill[1].subskills) {
+          for (let skl of Object.entries(skill[1].subskills || {})) {
+            if (skl[1].points !== undefined) continue;
+            skl[1].points = skl[1].rank
+          }
         }
       }
-    }
-  })
-  updateData[`data.details.levelUpData`] = data;
+    })
+    updateData[`data.details.levelUpData`] = data;
+  }
 };
 
 const migrateTokenVision = function(token, updateData) {

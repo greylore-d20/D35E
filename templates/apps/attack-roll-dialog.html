@@ -352,18 +352,19 @@
                         baseExtraAttacks = baseExtraAttacks * greaterManyshotCount;
                 }
                 console.log('Attacks', baseExtraAttacks, isRapidShot, isFlurryOfBlows)
-                $('option:selected', select).closest("section").find("input[name='ammo-dmg-formula']").val(damage)
-                $('option:selected', select).closest("section").find("input[name='ammo-dmg-type']").val(type)
-                $('option:selected', select).closest("section").find("input[name='ammo-dmg-uid']").val(uid)
-                $('option:selected', select).closest("section").find("input[name='ammo-attack']").val(attack)
-                $('option:selected', select).closest("section").find("input[name='ammo-id']").val(id)
-                $('option:selected', select).closest("section").find("input[name='ammo-note']").val(attackNote)
-                $('option:selected', select).closest("section").find("input[name='ammo-name']").val(attackName)
-                $('option:selected', select).closest("section").find("input[name='ammo-enh']").val(enh)
-                $('option:selected', select).closest("section").find("button[data-button='multi']").prop("disabled", baseExtraAttacks > arrowsCount);
-                $('option:selected', select).closest("section").find("button[data-button='normal']").prop("disabled", true);
-                console.log('D35E | Attack | Arrows Count ' + arrowsCount)
-                $('option:selected', select).closest("section").find("button[data-button='normal']").prop("disabled", arrowsCount === 0);
+                console.log( $('option:selected', select).closest(".window-content"))
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-dmg-formula']").val(damage)
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-dmg-type']").val(type)
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-dmg-uid']").val(uid)
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-attack']").val(attack)
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-id']").val(id)
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-note']").val(attackNote)
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-name']").val(attackName)
+                $('option:selected', select).closest(".window-content").find("input[name='ammo-enh']").val(enh)
+                $('option:selected', select).closest(".window-content").find("button[data-button='multi']").prop("disabled", baseExtraAttacks > arrowsCount);
+                $('option:selected', select).closest(".window-content").find("button[data-button='normal']").prop("disabled", true);
+                console.log('D35E | Attack | Arrows Count ' + arrowsCount, arrowsCount === 0)
+                $('option:selected', select).closest(".window-content").find("button[data-button='normal']").prop("disabled", arrowsCount === 0);
             }
         </script>
 

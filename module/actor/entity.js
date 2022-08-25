@@ -7501,7 +7501,7 @@ export class ActorPF extends Actor {
                     if (action.parameters[1] === "from") {
                         itemsToCreate.push(await this.importItemFromCollectionByName(cleanParam(action.parameters[2]), cleanParam(action.parameters[0])))
                     } else {
-                        ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                        ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotTargetDoesNotExist")}));
                     }
                 } else if (action.parameters.length === 4) {
                     if (action.parameters[2] === "from" && (action.parameters[0] === "unique" || action.parameters[0] === "u")) {
@@ -7509,10 +7509,10 @@ export class ActorPF extends Actor {
                         if (itemToCreate)
                             itemsToCreate.push(itemToCreate)
                     } else {
-                        ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                        ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionWrongSyntax")}));
                     }
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Activate":
                 if (action.parameters.length === 1) {
@@ -7540,7 +7540,7 @@ export class ActorPF extends Actor {
                         }
                     }
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Deactivate":
                 if (action.parameters.length === 1) {
@@ -7564,7 +7564,7 @@ export class ActorPF extends Actor {
                         } 
                     }
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Set":
                 // Set "Sneak Attack" field data.level to (@class.rogue.level) on self
@@ -7637,7 +7637,7 @@ export class ActorPF extends Actor {
                         }
                     }
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Condition":
                 // Condition set *name* to *value*
@@ -7651,7 +7651,7 @@ export class ActorPF extends Actor {
                     let name = cleanParam(action.parameters[1])
                     actorUpdates[`data.attributes.conditions.${name}`] = !getProperty(this.data.data, `attributes.conditions.${name}`)
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Trait":
                 // Condition set *name* to *value*
@@ -7672,7 +7672,7 @@ export class ActorPF extends Actor {
                     }
                     actorUpdates[`data.traits.${traitGroup}.value`] = currentTraits
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
 
             case "Update":
@@ -7705,7 +7705,7 @@ export class ActorPF extends Actor {
                         actorUpdates[`${field}`]= (getProperty(actionRollData,field.replace("data","self")) || 0) - value
                     }
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Damage":
                 // Rolls arbitrary attack
@@ -7741,7 +7741,7 @@ export class ActorPF extends Actor {
                     // Create message
                     await createCustomChatMessage("systems/D35E/templates/chat/simple-attack-roll.html", templateData, {}, damage);
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "ApplyDamage":
             case "SelfDamage":
@@ -7754,7 +7754,7 @@ export class ActorPF extends Actor {
                     
                     ActorPF.applyDamage(null,ActorPF.SPELL_AUTO_HIT,null,null,null,null,null,damage,null,null,null,null,false,false, this, this.id);
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula"));
                 break;
 
             case "Grapple":
@@ -7792,7 +7792,7 @@ export class ActorPF extends Actor {
                     await createCustomChatMessage("systems/D35E/templates/chat/special-actions-applied.html", templateData, {}, damage);
 
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "AbilityDrain":
                 // Rolls arbitrary attack
@@ -7821,7 +7821,7 @@ export class ActorPF extends Actor {
 
                     await createCustomChatMessage("systems/D35E/templates/chat/special-actions-applied.html", templateData, {}, damage);
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Regenerate":
                 // Rolls arbitrary attack
@@ -7830,7 +7830,7 @@ export class ActorPF extends Actor {
                     let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll().total
                     ActorPF.applyRegeneration(damage,this);
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Clear":
                 if (action.parameters.length === 1) {
@@ -7839,7 +7839,7 @@ export class ActorPF extends Actor {
                 if (action.parameters.length === 2) {
                     // Clear all items of type and subtype
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Use":
                 if (action.parameters.length === 1) {
@@ -7850,7 +7850,7 @@ export class ActorPF extends Actor {
                 if (action.parameters.length === 2) {
                     // Use n items/action
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula"));
                 break;
 
             case "Remove":
@@ -7866,10 +7866,10 @@ export class ActorPF extends Actor {
                         if (item !== null)
                             itemsToDelete.push(item.id);
                         else
-                            ui.notifications.error(game.i18n.localize("D35E.ErrorItemNotFound"));
+                            ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorItemNotFound")}));
                     }
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Roll":
                 if (action.parameters.length === 2) {
@@ -7891,7 +7891,7 @@ export class ActorPF extends Actor {
                         chatTemplateData: { hasProperties: false}
                     });
                 }   else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "RunMacro":
                 // Executes a macro defined on MacroDirectory
@@ -7900,12 +7900,40 @@ export class ActorPF extends Actor {
                     let macroToRun = MacroDirectory.collection.find(x => x.data.name === cleanParam(action.parameters[0]));
                     if (!macroToRun)
                     {
-                        ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                        ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotTargetDoesNotExist")}));
                         return;
                     }
                     await macroToRun.execute();
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
+                break;
+            case "RollTable":
+                // Executes a macro defined on MacroDirectory
+                //console.log(action)
+                if (action.parameters.length === 1) {
+                    let rollTable = RollTableDirectory.collection.find(x => x.data.name === cleanParam(action.parameters[0]));
+                    if (!rollTable)
+                    {
+                        ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotTargetDoesNotExist")}));
+                        return;
+                    }
+                    await rollTable.draw();
+                } if (action.parameters.length === 2) {
+                    let rollTableId = await game.packs.get(action.parameters[0]).index.find(x => x.name === cleanParam(action.parameters[1]));
+                    if (!rollTableId)
+                    {
+                        ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotTargetDoesNotExist")}));
+                        return;
+                    }
+                    let rollTable = await game.packs.get(action.parameters[0]).getDocument(rollTableId._id)
+                    if (!rollTable)
+                    {
+                        ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotTargetDoesNotExist")}));
+                        return;
+                    }
+                    await rollTable.draw();
+                } else
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             case "Eval":
                 await this.executeEvalOnSelf(action);
@@ -7924,7 +7952,7 @@ export class ActorPF extends Actor {
                     // Create message
                     await createCustomChatMessage("systems/D35E/templates/chat/gm-message.html", chatTemplateData, {}, {});
                 } else
-                    ui.notifications.error(game.i18n.localize("D35E.ErrorActionFormula"));
+                    ui.notifications.error(game.i18n.format("D35E.ErrorActionFormula", {action: action.originalAction, error: game.i18n.localize("D35E.ErrorActionNotEnoughParams")}));
                 break;
             default:
                 break;
@@ -7982,6 +8010,7 @@ export class ActorPF extends Actor {
                 case "Clear":
                 case "Use":
                 case "Roll":
+                case "RollTable":
                 case "RunMacro":
                 case "Eval":
                 case "Message":

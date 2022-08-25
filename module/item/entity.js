@@ -3235,6 +3235,7 @@ export class ItemPF extends Item {
             let actionParts = groupAction.match('([A-Za-z]+) (.*?) on (target|self)')
             if (actionParts !== null)
                 actions.push({
+                    originalAction: group,
                     action: actionParts[1],
                     condition: condition,
                     parameters: actionParts[2].match(/(?:[^\s"]+|"[^"]*")+/g),
@@ -3607,7 +3608,7 @@ export class ItemPF extends Item {
     async addCardCharges(value, data) {
         let newState = "deck"
         if (value < 0) newState = "discarded"
-        if (value >= 0) newCharges = "hand"
+        if (value >= 0) newState = "hand"
         const key = "data.state";
         if (data == null) {
             data = {};
