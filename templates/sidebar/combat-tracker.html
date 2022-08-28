@@ -187,10 +187,12 @@
   </ol>
 
 
+  {{#if useCharSheet}}
   {{#if user.isGM}}
   <ol id="combat-sheet" class="D35E sheet actor npc monster sidebar">
   <template id="actor-combat-sheet"></template>
   </ol>
+  {{/if}}
   {{/if}}
 
 

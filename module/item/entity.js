@@ -2019,7 +2019,7 @@ export class ItemPF extends Item {
                         extraParts: localAttackExtraParts,
                         primaryAttack: primaryAttack,
                         actor: actor,
-                        critConfirmBonus: new Roll35e(`${getProperty(this.data, "data.critConfirmBonus")}` || "0", rollData).roll().total,
+                        critConfirmBonus: new Roll35e(`${getProperty(this.data, "data.critConfirmBonus")}` || "0", rollData).roll().total + (rollData.featCritConfirmBonus || 0),
                     });
                     if (this.hasDamage) {
                         await attack.addDamage({

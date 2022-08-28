@@ -72,7 +72,7 @@ export class D35ECombatTracker extends CombatTracker {
                 || (finalActorTurnId === activeActorTurnId && buff.previousActorTurn === "final"))
                 context.nextTurnBuffs.push(buff)
         }
-
+        context.useCharSheet = game.settings.get("D35E", "useCombatCharacterSheet");
         return context;
     }
 
