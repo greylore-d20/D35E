@@ -27,6 +27,13 @@ if not args.icons_only:
     repo = Repo(os.getcwd())
     assert not repo.bare
 
+
+    f = open("version.yaml", "w")
+    f.write("variables:\n")
+    f.write("    VERSION: \'"+version+'\'\n')
+    f.close()
+
+
     with open('system.json') as json_file:
         data = json.load(json_file)
         data['version'] = version
@@ -66,6 +73,7 @@ if not args.icons_only:
 
     repo.git.add("changelogs/changelog.%s.md" % version)
     repo.git.add("templates/welcome-screen.html")
+    repo.git.add("version.yaml")
 
     repo.git.commit('-m', 'Release %s' % version, author='rughalt@gmail.com')
 
@@ -74,11 +82,6 @@ if os.path.exists("dnd35e-icons.tbz2"):
 p = subprocess.run(["tar", "-cvjSf", "dnd35e-icons.tbz2","icons"])
 subprocess.run(["scp", "dnd35e-icons.tbz2", f"{user}@{server}:/home/dragonsh/special/"])
 
-
-f = open("version.yaml", "w")
-f.write("variables:\n")
-f.write("    VERSION:"+version+'\n')
-f.close()
 
 # origin = repo.remote(name='origin')
 # origin.push()
