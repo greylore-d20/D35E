@@ -350,11 +350,16 @@ Hooks.once("ready", async function() {
 
 
   Hooks.on("renderCombatTracker", (bar, data, slot) => {
-    game.combat.updateCombatCharacterSheet()
+    if (game.combat) {
+      game.combat.updateCombatCharacterSheet()
+    }
   });
   Hooks.on("changeSidebarTab", (tab) => {
-    if (tab instanceof D35ECombatTracker)
-      game.combat.updateCombatCharacterSheet()
+    if (tab instanceof D35ECombatTracker) {
+      if (game.combat) {
+        game.combat.updateCombatCharacterSheet();
+      }
+    }
   });
 
 
@@ -602,21 +607,22 @@ Hooks.on("updateCombat", async (combat, combatant, info, data) => {
     return;
   if ((combat.current.turn <= combat.previous.turn && combat.current.round === combat.previous.round) || combat.current.round < combat.previous.round)
     return; // We moved back in time
-  const actor = combat.combatant.actor;
-  const buffId = combat.combatant.data?.flags?.D35E?.buffId;
-  if (actor != null) {
-      await actor.progressRound();
-  } else if (buffId) {
-      let actor;
-      if (combat.combatant.data?.flags?.D35E?.isToken) {
-          actor = canvas.scene.tokens.get(combat.combatant.data?.flags?.D35E?.tokenId).actor; 
-      } else {
-          actor = game.actors.get(combat.combatant.data?.flags?.D35E?.actor);
-      }           
-
-      await actor.progressBuff(buffId,1);
-      debouncedCollate(canvas.scene.id, true, true, "updateToken")
-  }
+  debouncedCollate(canvas.scene.id, true, true, "updateToken")
+  // const actor = combat.combatant.actor;
+  // const buffId = combat.combatant.data?.flags?.D35E?.buffId;
+  // if (actor != null) {
+  //     await actor.progressRound();
+  // } else if (buffId) {
+  //     let actor;
+  //     if (combat.combatant.data?.flags?.D35E?.isToken) {
+  //         actor = canvas.scene.tokens.get(combat.combatant.data?.flags?.D35E?.tokenId).actor;
+  //     } else {
+  //         actor = game.actors.get(combat.combatant.data?.flags?.D35E?.actor);
+  //     }
+  //
+  //     await actor.progressBuff(buffId,1);
+  //     debouncedCollate(canvas.scene.id, true, true, "updateToken")
+  // }
 });
 
 

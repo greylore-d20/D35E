@@ -74,6 +74,12 @@ if os.path.exists("dnd35e-icons.tbz2"):
 p = subprocess.run(["tar", "-cvjSf", "dnd35e-icons.tbz2","icons"])
 subprocess.run(["scp", "dnd35e-icons.tbz2", f"{user}@{server}:/home/dragonsh/special/"])
 
+
+f = open("version.yaml", "w")
+f.write("variables:\n")
+f.write("    VERSION:"+version+'\n')
+f.close()
+
 # origin = repo.remote(name='origin')
 # origin.push()
 print("Commited, you can push now")

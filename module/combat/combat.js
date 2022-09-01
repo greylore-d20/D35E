@@ -415,7 +415,7 @@ export class CombatD35E extends Combat {
    */
   async nextTurn() {
     const combat = await super.nextTurn();
-    //await this._processCurrentCombatant();
+    await this._processCurrentCombatant();
     return combat;
   }
 
