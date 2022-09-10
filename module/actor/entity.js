@@ -7,7 +7,7 @@ import {DamageTypes} from "../damage-types.js";
 import {D35E} from "../config.js";
 import {Roll35e} from "../roll.js";
 import {  ActorRestDialog } from "../apps/actor-rest.js";
-import {VisionPermissionSheet} from "../misc/vision-permission.js"
+import {VisionPermissionSheet} from "../apps/vision-permission.js"
 import {Propagator} from "../misc/propagator.js"
 
 
@@ -139,7 +139,7 @@ export class ActorPF extends Actor {
     }
 
     isInvisible() {
-        return getProperty(this.data,`data.attributes.conditions.invisibility`) || false;
+        return getProperty(this.data,`data.attributes.conditions.invisible`) || false;
     }
 
     isBanished() {
@@ -1080,52 +1080,7 @@ export class ActorPF extends Actor {
             }
             if (!getProperty(this.data,"data.noVisionOverride") && !game.settings.get("D35E", "globalDisableTokenVision"))
             {
-                //console.log('D35E | Changing Vision', darkvision, lowLight)
-                if (this.isToken) {
-                    let tokens = []
-                    tokens.push(this.token);
-                    for (const o of tokens) {
-                        if (darkvision !== o.data.brightSight || lowLight !== getProperty(o.data, "flags.D35E.lowLightVision") || lowLightMultiplier !== getProperty(o.data, "flags.D35E.lowLightVisionMultiplier"))
-                        if (o.document) {
-                            await o.document.update({
-                                brightSight: darkvision,
-                                flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
-                            }, { stopUpdates: true, tokenOnly: true });
-                        } else {
-                            await o.update({
-                                brightSight: darkvision,
-                                flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
-                            }, { stopUpdates: true, tokenOnly: true });
-                        }
-                    }
-                }
-                if (!this.isToken) {
-                    let tokens = this.getActiveTokens().filter(o => o?.data?.actorLink);
-                    for (const o of tokens) {
-                        if (darkvision !== o.data.brightSight || lowLight !== getProperty(o.data, "flags.D35E.lowLightVision") || lowLightMultiplier !== getProperty(o.data, "flags.D35E.lowLightVisionMultiplier"))
-                        if (o.document) {    
-                            await o.document.update({
-                                    brightSight: darkvision,
-                                    flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
-                                }, { stopUpdates: true, tokenOnly: true });
-                        } else {
-                            await o.update({
-                                brightSight: darkvision,
-                                flags: {D35E: {lowLightVision : lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
-                            }, { stopUpdates: true, tokenOnly: true });
-                        }
-                    }
-                    let token = this.data.token;
-                    if (darkvision !== token.brightSight || lowLight !== getProperty(token, "flags.D35E.lowLightVision") || lowLightMultiplier !== getProperty(token, "flags.D35E.lowLightVisionMultiplier")) {
-                        await token.update({
-                            brightSight: darkvision,
-                            flags: {D35E: {lowLightVision: lowLight, lowLightVisionMultiplier: lowLightMultiplier}}
-                        })
-                    }
-                    data[`token.brightSight`] = darkvision;
-                    data[`token.flags.D35E.lowLightVision`] = lowLight;
-                    data[`token.flags.D35E.lowLightVisionMultiplier`] = lowLightMultiplier;
-                }
+
             }
         }
 
@@ -1437,42 +1392,13 @@ export class ActorPF extends Actor {
     }
 
     async updateTokenLight(dimLight, o, brightLight, color, animationIntensity, type, animationSpeed, lightAngle, alpha) {
-        if (!isMinimumCoreVersion("9")) {
-            if (dimLight !== o.data.dimLight ||
-                brightLight !== o.data.brightLight ||
-                color !== o.data.lightColor ||
-                animationIntensity !== o.data.lightAnimation.intensity ||
-                type !== o.data.lightAnimation.type ||
-                animationSpeed !== o.data.lightAnimation.speed ||
-                lightAngle !== o.data.lightAnimation.lightAngle)
-                if (o.document) {
-                    await o.document.update({
-                        dimLight: dimLight,
-                        brightLight: brightLight,
-                        lightColor: color || '#000',
-                        lightAlpha: alpha,
-                        lightAngle: lightAngle,
-                        lightAnimation: { type: type, intensity: animationIntensity, speed: animationSpeed }
-                    }, { stopUpdates: true, tokenOnly: true });
-                } else {
-
-                    await o.update({
-                        dimLight: dimLight,
-                        brightLight: brightLight,
-                        lightColor: color || '#000',
-                        lightAlpha: alpha,
-                        lightAngle: lightAngle,
-                        lightAnimation: { type: type, intensity: animationIntensity, speed: animationSpeed }
-                    }, { stopUpdates: true, tokenOnly: true });
-                }
-        } else {
-            if (dimLight !== o.data.light.dim ||
-                brightLight !== o.data.light.bright ||
-                color !== o.data.light.color ||
-                animationIntensity !== o.data.light.animation.intensity ||
-                type !== o.data.light.animation.type ||
-                animationSpeed !== o.data.light.animation.speed ||
-                lightAngle !== o.data.light.angle)
+            if (dimLight !== o.light.dim ||
+                brightLight !== o.light.bright ||
+                color !== o.light.color ||
+                animationIntensity !== o.light.animation.intensity ||
+                type !== o.light.animation.type ||
+                animationSpeed !== o.light.animation.speed ||
+                lightAngle !== o.light.angle)
                 if (o.document) {
                     await o.document.update({light:{
                         dim: dimLight,
@@ -1492,8 +1418,8 @@ export class ActorPF extends Actor {
                         animation: { type: type, intensity: animationIntensity, speed: animationSpeed }}
                     }, { stopUpdates: true, tokenOnly: true });
                 }
-                
-        }
+
+
     }
 
     applySkillSynergies(data, changes) {
@@ -4271,12 +4197,12 @@ export class ActorPF extends Actor {
             data[`data.attributes.conditions.helpless`] = true;
         }
 
-        if (data[`data.attributes.conditions.invisibility`] && !this.data.data.attributes.conditions.invisibility) {
-            const tokens = this.getActiveTokens();
-            const deadEffect = CONFIG.controlIcons.visibility;
-            for (let token of tokens) {
-                token.toggleEffect(deadEffect, { active: true, overlay: true });
-            }
+        if (data[`data.attributes.conditions.invisible`] && !this.data.data.attributes.conditions.invisible) {
+            // const tokens = this.getActiveTokens();
+            // const deadEffect = CONFIG.controlIcons.visibility;
+            // for (let token of tokens) {
+            //     token.toggleEffect(deadEffect, { active: true, overlay: true });
+            // }
         } else if (!data[`data.attributes.conditions.invisibility`] && this.data.data.attributes.conditions.invisibility) {
             const tokens = this.getActiveTokens();
             const deadEffect = CONFIG.controlIcons.visibility;

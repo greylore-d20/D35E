@@ -1,5 +1,5 @@
 
-import "./misc/vision-permission.js";
+import "./apps/vision-permission.js";
 import { _preProcessDiceFormula } from "./dice.js";
 import { ActorPF } from "./actor/entity.js";
 
@@ -22,59 +22,48 @@ export async function PatchCore() {
     return _templateCache[path];
   }
 
-  // Patch TokenHUD.getData to show resource bars even if their value is 0
-  // const TokenHUD_getData = TokenHUD.prototype.getData;
-  // TokenHUD.prototype.getData = function() {
-  //   const data = TokenHUD_getData.call(this);
-  //   const bar1 = this.object.getBarAttribute("bar1");
-  //   const bar2 = this.object.getBarAttribute("bar2");
-  //   return mergeObject(data, {
-  //     displayBar1: bar1 != null && bar1.attribute != null && bar1.value != null,
-  //     displayBar2: bar2 != null && bar2.attribute != null && bar2.value != null
-  //   });
+  // const Token_drawEffects = Token.prototype.drawEffects;
+  // Token.prototype.drawEffects = async function() {
+  //   let effects = this.effects || this.hud.effects;
+  //   effects.removeChildren().forEach(c => c.destroy());
+  //   const tokenEffects = this.data.effects;
+  //   const actorEffects = this.actor?.temporaryEffects || [];
+  //   let overlay = {
+  //     src: this.data.overlayEffect,
+  //     tint: null
+  //   };
+  //
+  //   // Draw status effects
+  //   if ( tokenEffects.length || actorEffects.length ) {
+  //     const promises = [];
+  //     let w = Math.round(canvas.dimensions.size / 2 / 5) * 2;
+  //     let bg = effects.addChild(new PIXI.Graphics()).beginFill(0x000000, 0.40).lineStyle(1.0, 0x000000);
+  //     let i = 0;
+  //
+  //     // Draw actor effects first
+  //     for ( let f of actorEffects ) {
+  //       if ( !f.data.icon ) continue;
+  //       if (f?.data?.flags?.D35E?.show && this.actor?.data?.data?.noBuffDisplay && !this.actor?.testUserPermission(game.user, "OWNER")) continue;
+  //       const tint = f.data.tint ? colorStringToHex(f.data.tint) : null;
+  //       if ( f.getFlag("core", "overlay") ) {
+  //         overlay = {src: f.data.icon, tint};
+  //         continue;
+  //       }
+  //       promises.push(this._drawEffect(f.data.icon, i, bg, w, tint));
+  //       i++;
+  //     }
+  //
+  //     // Next draw token effects
+  //     for ( let f of tokenEffects ) {
+  //       promises.push(this._drawEffect(f, i, bg, w, null));
+  //       i++;
+  //     }
+  //     await Promise.all(promises);
+  //   }
+  //
+  //   // Draw overlay effect
+  //   return this._drawOverlay(overlay)
   // }
-  const Token_drawEffects = Token.prototype.drawEffects;
-  Token.prototype.drawEffects = async function() {
-    let effects = this.effects || this.hud.effects;
-    effects.removeChildren().forEach(c => c.destroy());
-    const tokenEffects = this.data.effects;
-    const actorEffects = this.actor?.temporaryEffects || [];
-    let overlay = {
-      src: this.data.overlayEffect,
-      tint: null
-    };
-
-    // Draw status effects
-    if ( tokenEffects.length || actorEffects.length ) {
-      const promises = [];
-      let w = Math.round(canvas.dimensions.size / 2 / 5) * 2;
-      let bg = effects.addChild(new PIXI.Graphics()).beginFill(0x000000, 0.40).lineStyle(1.0, 0x000000);
-      let i = 0;
-
-      // Draw actor effects first
-      for ( let f of actorEffects ) {
-        if ( !f.data.icon ) continue;
-        if (f?.data?.flags?.D35E?.show && this.actor?.data?.data?.noBuffDisplay && !this.actor?.testUserPermission(game.user, "OWNER")) continue;
-        const tint = f.data.tint ? colorStringToHex(f.data.tint) : null;
-        if ( f.getFlag("core", "overlay") ) {
-          overlay = {src: f.data.icon, tint};
-          continue;
-        }
-        promises.push(this._drawEffect(f.data.icon, i, bg, w, tint));
-        i++;
-      }
-
-      // Next draw token effects
-      for ( let f of tokenEffects ) {
-        promises.push(this._drawEffect(f, i, bg, w, null));
-        i++;
-      }
-      await Promise.all(promises);
-    }
-
-    // Draw overlay effect
-    return this._drawOverlay(overlay)
-  }
 
   // Patch FormApplication
   FormApplication.prototype.saveMCEContent = async function(updateData=null) {};
@@ -102,57 +91,6 @@ export async function PatchCore() {
     };
   }
 
-
-  if (isMinimumCoreVersion("0.7.6") && !isMinimumCoreVersion("0.7.7")) {
-    const Roll__splitDiceTerms = Roll.prototype._splitDiceTerms;
-    Roll.prototype._splitDiceTerms = function (formula) {
-
-      // Split on arithmetic terms and operators
-      const operators = this.constructor.ARITHMETIC.concat(["(", ")"]);
-      const arith = new RegExp(operators.map(o => "\\" + o).join("|"), "g");
-      const split = formula.replace(arith, ";$&;").split(";");
-
-      // Strip whitespace-only terms
-      let terms = split.reduce((arr, term) => {
-        term = term.trim();
-        if (term === "") return arr;
-        arr.push(term);
-        return arr;
-      }, []);
-
-      // Categorize remaining non-whitespace terms
-      terms = terms.reduce((arr, term, i, split) => {
-
-        // Arithmetic terms
-        if (this.constructor.ARITHMETIC.includes(term)) {
-          if ((term !== "-" && !arr.length) || (i === (split.length - 1))) return arr; // Ignore leading or trailing arithmetic
-          arr.push(term);
-        }
-
-        // Numeric terms
-        else if (Number.isNumeric(term)) arr.push(Number(term));
-
-        // Dice terms
-        else {
-          const die = DiceTerm.fromExpression(term);
-          arr.push(die || term);
-        }
-        return arr;
-      }, []);
-      return terms;
-    };
-  }
-
-
-
-
-  // const ActorTokenHelpers_createEmbeddedEntity = ActorTokenHelpers.prototype.createEmbeddedEntity;
-  // ActorTokenHelpers.prototype.createEmbeddedEntity = async function(...args) {
-  //   await ActorTokenHelpers_createEmbeddedEntity.call(this, ...args);
-  //
-  //   return ActorPF.prototype.update.call(this, {});
-  // };
-
   const Token_animateMovement = Token.prototype.animateMovement;
   Token.prototype.animateMovement = async function(...args) {
     await Token_animateMovement.call(this, ...args);
@@ -160,16 +98,6 @@ export async function PatchCore() {
     ActorPF.prototype._calculateMinionDistance.call(this.actor, {});
     // Do something?
   };
-
-  // Patch ActorTokenHelpers.updateEmbeddedEntity
-  // const ActorTokenHelpers_updateEmbeddedEntity = ActorTokenHelpers.prototype.updateEmbeddedEntity;
-  // ActorTokenHelpers.prototype.updateEmbeddedEntity = async function(embeddedName, data, options={}) {
-  //   await ActorTokenHelpers_updateEmbeddedEntity.call(this, embeddedName, data, options);
-  //
-  //   if (options.stopUpdates) return;
-  //   return ActorPF.prototype.update.call(this, options);
-  // };
-  // Patch ActorTokenHelpers.deleteEmbeddedEntity
 
   Object.defineProperty(ActiveEffect.prototype, "isTemporary", {
     get: function () {
@@ -180,15 +108,18 @@ export async function PatchCore() {
 
 
 
-  // Patch, patch, patch\
+  // Patch, patch, patch
   window.getTemplate = D35E_getTemplate;
-// This system assumes that evalate should be run on StringTerm.eval
+
   const StringTerm_eval = StringTerm.prototype.evaluate;
   StringTerm.prototype.evaluate = async function(...args) {
     return this;
   };
 
+  //patchCoreForLowLightVision()
+
   import("./lib/intro.js")
+
 
 }
 
@@ -196,4 +127,5 @@ export async function PatchCore() {
 
 
 import { isMinimumCoreVersion } from "./lib.js";
+import {patchCoreForLowLightVision} from "./canvas/low-light-vision.js";
 

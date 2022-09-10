@@ -551,8 +551,11 @@ const _migrateActorBaseStats = function(ent, updateData) {
   if (getProperty(ent.data, "data.attributes.conditions.unconscious") == null) {
     updateData["data.attributes.conditions.unconscious"] = false;
   }
-  if (getProperty(ent.data, "data.attributes.conditions.invisibility") == null) {
-    updateData["data.attributes.conditions.invisibility"] = false;
+  if (getProperty(ent.data, "data.attributes.conditions.invisibility")) {
+    updateData["data.attributes.conditions.invisibility"] = null;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.invisible") == null) {
+    updateData["data.attributes.conditions.invisible"] = false;
   }
   if (getProperty(ent.data, "data.attributes.conditions.banished") == null) {
     updateData["data.attributes.conditions.banished"] = false;

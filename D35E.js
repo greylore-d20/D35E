@@ -8,7 +8,7 @@
 import { D35E } from "./module/config.js";
 import { registerSystemSettings } from "./module/settings.js";
 import { preloadHandlebarsTemplates } from "./module/templates.js";
-import {measureDistances, measureDistance, getConditions} from "./module/canvas.js";
+import {measureDistances, measureDistance, getConditions} from "./module/canvas/canvas.js";
 import { ActorPF } from "./module/actor/entity.js";
 import { ActorSheetPFCharacter } from "./module/actor/sheets/character.js";
 import { ActorSheetPFNPC } from "./module/actor/sheets/npc.js";
@@ -19,12 +19,12 @@ import { ItemPF } from "./module/item/entity.js";
 import { ItemSheetPF } from "./module/item/sheets/base.js";
 import { CompendiumDirectoryPF } from "./module/sidebar/compendium.js";
 import { TokenPF } from "./module/token/token.js";
-import { addLowLightVisionToLightConfig } from "./module/low-light-vision.js";
+import { addLowLightVisionToLightConfig } from "./module/canvas/low-light-vision.js";
 import { PatchCore } from "./module/patch-core.js";
 import { DicePF } from "./module/dice.js";
 import {CombatantD35E, CombatD35E, duplicateCombatantInitiative} from "./module/combat/combat.js";
 import { createCustomChatMessage } from "./module/chat.js";
-import { AmbientLightPF, SightLayerPF } from "./module/low-light-vision.js";
+import { } from "./module/canvas/low-light-vision.js";
 import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
 
 import {
@@ -55,6 +55,12 @@ import { ActiveEffectD35E } from "./module/ae/entity.js";
 import { CollateAuras } from "./module/auras/aura-helpers.js";
 import {ActorSheetObject} from "./module/actor/sheets/object.js";
 import {D35ECombatTracker} from "./module/combat/combat-tracker.js";
+import {TokenDocumentPF} from "./module/token/tokenDocument.js";
+import {
+  DetectionModeBlindSightD35E,
+  DetectionModeInvisibilityD35E,
+  DetectionModeTremorD35E
+} from "./module/canvas/detection-modes.js";
 
 // Add String.format
 if (!String.prototype.format) {
@@ -126,7 +132,23 @@ Hooks.once("init", async function() {
   CONFIG.Combat.documentClass = CombatD35E;
   CONFIG.Combatant.documentClass = CombatantD35E;
   CONFIG.Token.objectClass = TokenPF;
-  CONFIG.AmbientLight.objectClass = AmbientLightPF;
+  CONFIG.Token.documentClass = TokenDocumentPF;
+
+  CONFIG.Canvas.detectionModes[DetectionModeInvisibilityD35E.ID] = new DetectionModeInvisibilityD35E({
+    id: DetectionModeInvisibilityD35E.ID,
+    label: DetectionModeInvisibilityD35E.LABEL,
+    type: DetectionModeInvisibilityD35E.DETECTION_TYPE || DetectionMode.DETECTION_TYPES.SIGHT,
+  });
+  CONFIG.Canvas.detectionModes[DetectionModeTremorD35E.ID] = new DetectionModeTremorD35E({
+    id: DetectionModeTremorD35E.ID,
+    label: DetectionModeTremorD35E.LABEL,
+    type: DetectionModeTremorD35E.DETECTION_TYPE || DetectionMode.DETECTION_TYPES.SIGHT,
+  });
+  CONFIG.Canvas.detectionModes[DetectionModeBlindSightD35E.ID] = new DetectionModeBlindSightD35E({
+    id: DetectionModeBlindSightD35E.ID,
+    label: DetectionModeBlindSightD35E.LABEL,
+    type: DetectionModeBlindSightD35E.DETECTION_TYPE || DetectionMode.DETECTION_TYPES.SIGHT,
+  });
 
 
   CONFIG.ui.combat = D35ECombatTracker;
@@ -147,6 +169,7 @@ Hooks.once("init", async function() {
   registerSystemSettings();
 
   if (isMinimumCoreVersion("10.0")) {
+    CONFIG.statusEffects = getConditions();
   } else {
     CONFIG.statusEffects = getConditions();
     const layers = {
@@ -157,9 +180,9 @@ Hooks.once("init", async function() {
       }
     CONFIG.Canvas.layers = foundry.utils.mergeObject(Canvas.layers, layers);
   }
-  if (isMinimumCoreVersion("10.0")) {
+  if (isMinimumCoreVersion("10")) {
     CONFIG.Canvas.layers.templates.layerClass = TemplateLayerPF;
-  } else if (isMinimumCoreVersion("9.0")) {
+  } else if (isMinimumCoreVersion("9")) {
     CONFIG.Canvas.layers.templates.layerClass = TemplateLayerPF;
     CONFIG.Canvas.layers.sight.layerClass = SightLayerPF;
   } else {
@@ -515,6 +538,13 @@ Hooks.on("updateItem", (item, changedData, options, user) => {
 
 Hooks.on("renderTokenConfig", async (app, html) => {
   console.log(app.object.data)
+  // Disable vision elements if custom vision is disabled
+  const enableCustomVision = getProperty(object, "flags.D35E.customVisionRules") === true;
+  if (!enableCustomVision) {
+    const tabElem = html.find(`.tab[data-tab="vision"]`);
+    tabElem.find(`input, select`).prop("disabled", true);
+    tabElem.find("a").unbind();
+  }
   let token = app.object.data.token || app.object.data;
   let newHTML = await renderTemplate("systems/D35E/templates/internal/token-light-info.html", {
     object: duplicate(token.actorLink ? token.document.data.toObject(false) : token.flags ? token.toObject(false) : app.object.data.toObject(false)),
