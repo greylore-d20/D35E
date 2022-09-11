@@ -1,6 +1,6 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
     <span class="uid-warning flexrow">
-  {{#if data.data.uniqueId}}
+  {{#if data.system.uniqueId}}
       <div class="tooltip">
       <i class="fas fa-anchor"></i>
       <div class="tooltipcontent">{{{ localize 'D35E.ItemHasUID' }}}</div>
@@ -51,14 +51,14 @@
     {{!-- Description Tab --}}
     {{#if isSpellSpecialization}}
     <div class="tab flexcol active" data-group="primary" data-tab="description">
-      {{#if data.data.spellSpecialization.isDomain}}
+      {{#if data.system.spellSpecialization.isDomain}}
       <h3 class="form-header" style="flex: 0">{{localize "D35E.SpellSpecializationGrantedPowers"}}</h3>
       {{/if}}
-      {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
+      {{editor content=data.system.description.value target="data.description.value" button=true owner=owner
       editable=editable}}
         <section class="description-body" style="display: block; height: 100%">
           <div class="flexcol">
-            {{#if data.data.spellSpecialization.isDomain}}
+            {{#if data.system.spellSpecialization.isDomain}}
               <h3 class="form-header">{{localize "D35E.Spells"}}</h3>
               <div class="inventory-group flexcol" style="padding-bottom: 8px">
                 <ol class="inventory-list sub-scroll scroll-inventory">
@@ -70,7 +70,7 @@
                     </div>
                   </li>
                   <ol class="item-list" data-pack="D35E.class-abilities">
-                    {{#each data.data.spellSpecialization.spells as |item level|}}
+                    {{#each data.system.spellSpecialization.spells as |item level|}}
                     <li class="item item-box  flexrow" data-item-id="{{item.id}}" data-pack="{{item.pack}}"
                         data-item-level="{{item.level}}">
                       <div class="item-name child-item flexrow">
@@ -116,8 +116,8 @@
               {{!-- Feat Type --}}
               <div class="form-group select">
                 <label>{{localize "D35E.Type"}}</label>
-                <select name="data.featType" value="{{data.data.featType}}">
-                  {{#select data.data.featType}}
+                <select name="data.featType" value="{{data.system.featType}}">
+                  {{#select data.system.featType}}
                   {{#each config.featTypes as |type a|}}
                   <option value="{{a}}">{{type}}</option>
                   {{/each}}
@@ -128,8 +128,8 @@
 
               <div class="form-group select">
                 <label>{{localize "D35E.AbilityType"}}</label>
-                <select name="data.abilityType" value="{{data.data.abilityType}}">
-                  {{#select data.data.abilityType}}
+                <select name="data.abilityType" value="{{data.system.abilityType}}">
+                  {{#select data.system.abilityType}}
                   <option value="">{{localize "D35E.None"}}</option>
                   {{#each config.abilityTypes as |type a|}}
                   <option value="{{a}}">{{type}}</option>
@@ -155,41 +155,41 @@
 
               <div class="form-group stacked">
                 <label class="checkbox">
-                  <input type="checkbox" name="data.showInQuickbar" {{checked data.data.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
+                  <input type="checkbox" name="data.showInQuickbar" {{checked data.system.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
                 </label>
               </div>
 
             <div class="form-group">
               <label>{{localize "D35E.Metamagic"}}</label>
               <label class="checkbox" style="position: relative; flex: 0 20px">
-                <input type="checkbox" class="stylized" name="data.metamagic.enabled" {{checked data.data.metamagic.enabled}}/>
+                <input type="checkbox" class="stylized" name="data.metamagic.enabled" {{checked data.system.metamagic.enabled}}/>
                 <span class="checkmark"></span>
               </label>
             </div>
 
-            {{#if data.data.metamagic.enabled}}
+            {{#if data.system.metamagic.enabled}}
               <div class="form-group">
                 <label>{{localize "D35E.ShortDescription"}}</label>
-                <input type="text" name="data.metamagic.shortDesc" value="{{data.data.metamagic.shortDesc}}" data-dtype="String"/>
+                <input type="text" name="data.metamagic.shortDesc" value="{{data.system.metamagic.shortDesc}}" data-dtype="String"/>
               </div>
-              <textarea class="metamagic-editor" style="font-family: monospace; min-height: 120px" name="data.metamagic.code">{{data.data.metamagic.code}}</textarea>
+              <textarea class="metamagic-editor" style="font-family: monospace; min-height: 120px" name="data.metamagic.code">{{data.system.metamagic.code}}</textarea>
             {{/if}}
 
               {{#if isSpellSpecialization}}
               <h3 class="form-header">{{localize "D35E.FeatTypeSpellSpecialization"}}</h3>
               <div class="form-group">
                 <label>{{localize "D35E.SpellSpecializationSchool"}}</label>
-                <input type="text" name="data.spellSpecializationName" value="{{data.data.spellSpecializationName}}" data-dtype="String"/>
+                <input type="text" name="data.spellSpecializationName" value="{{data.system.spellSpecializationName}}" data-dtype="String"/>
               </div>
               <div class="form-group">
                 <label>{{localize "D35E.SpellSpecializationForbidden"}}</label>
-                <input type="text" name="data.spellSpecializationForbiddenNames" value="{{data.data.spellSpecializationForbiddenNames}}" data-dtype="String"/>
+                <input type="text" name="data.spellSpecializationForbiddenNames" value="{{data.system.spellSpecializationForbiddenNames}}" data-dtype="String"/>
               </div>
 
             <div class="form-group">
               <label>{{localize "D35E.SpellSpecializationIdDomain"}}</label>
               <label class="checkbox" style="position: relative; flex: 0 20px">
-                <input type="checkbox" class="stylized" name="data.spellSpecialization.isDomain" {{checked data.data.spellSpecialization.isDomain}}/>
+                <input type="checkbox" class="stylized" name="data.spellSpecialization.isDomain" {{checked data.system.spellSpecialization.isDomain}}/>
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -198,7 +198,7 @@
 
               <h3 class="form-header">{{localize "D35E.SpellSpecializationSpells"}}</h3>
               <section>
-                {{#each data.data.spellSpecialization.spells as |spell level|}}
+                {{#each data.system.spellSpecialization.spells as |spell level|}}
                 <div class="spell flexcol" data-spell="{{level}}">
                   <h4>{{localize "D35E.Level"}} {{spell.level}}</h4>
                   <div class="form-group">
@@ -239,7 +239,7 @@
               <h3 class="form-header">System Properties</h3>
               <div class="form-group">
                 <label>UID</label>
-                <input type="text" name="data.uniqueId" value="{{data.data.uniqueId}}" data-dtype="String"/>
+                <input type="text" name="data.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
               </div>
               {{/if}}
             {{/if}}
@@ -262,7 +262,7 @@
   </section>
   </section>
   {{#unless showUnidentifiedData}}
-  {{#if data.data.spellSpecialization.isDomain}}
+  {{#if data.system.spellSpecialization.isDomain}}
   {{#if owner}}
   <div class="form-group" >
     <button type="button" name="add-domain-spells">{{localize "D35E.AddSpellsToSpellbook"}}</button>

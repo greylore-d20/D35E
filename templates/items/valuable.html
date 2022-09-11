@@ -14,7 +14,7 @@
       </h3>
 
       <h3 class="charname">
-        <input name="data.unidentified.name" type="text" value="{{data.data.unidentified.name}}" placeholder="{{localize "D35E.UnidentifiedName"}}"/>
+        <input name="data.unidentified.name" type="text" value="{{data.system.unidentified.name}}" placeholder="{{localize "D35E.UnidentifiedName"}}"/>
       </h3>
       {{else}}
       {{#if showUnidentifiedData}}
@@ -63,7 +63,7 @@
       <div class="form-group">
         <label>Item Type</label>
         <select name="data.subType">
-          {{#select data.data.subType}}
+          {{#select data.system.subType}}
           {{#each config.lootTypes as |name type|}}
           <option value="{{type}}">{{name}}</option>
           {{/each}}
@@ -75,7 +75,7 @@
       <div class="form-group">
         <label>{{localize "D35E.BagOfHoldingLike"}}</label>
         <label class="checkbox">
-          <input type="checkbox" name="data.bagOfHoldingLike" {{checked data.data.bagOfHoldingLike}}/>
+          <input type="checkbox" name="data.bagOfHoldingLike" {{checked data.system.bagOfHoldingLike}}/>
         </label>
       </div>
 
@@ -93,27 +93,27 @@
       {{#if isAmmo}}
       <div class="form-group ammo-formula">
         <label>{{localize "D35E.BonusAmmoDamage"}}</label>
-        <input type="text" name="data.bonusAmmoDamage" value="{{data.data.bonusAmmoDamage}}" placeholder="{{localize "D35E.BonusAmmoDamageFormula"}}"/>
+        <input type="text" name="data.bonusAmmoDamage" value="{{data.system.bonusAmmoDamage}}" placeholder="{{localize "D35E.BonusAmmoDamageFormula"}}"/>
       </div>
       <div class="form-group ammo-formula">
         <label>{{localize "D35E.BonusAmmoDamageType"}}</label>
-        <input type="text" name="data.bonusAmmoDamageType" value="{{data.data.bonusAmmoDamageType}}" placeholder="{{localize "D35E.BonusAmmoDamageTypePlaceholder"}}"/>
+        <input type="text" name="data.bonusAmmoDamageType" value="{{data.system.bonusAmmoDamageType}}" placeholder="{{localize "D35E.BonusAmmoDamageTypePlaceholder"}}"/>
       </div>
       <div class="form-group ammo-formula">
         <label>{{localize "D35E.BonusAmmoAttack"}}</label>
-        <input type="text" name="data.bonusAmmoAttack" value="{{data.data.bonusAmmoAttack}}" placeholder="{{localize "D35E.BonusAmmoAttackPlaceholder"}}"/>
+        <input type="text" name="data.bonusAmmoAttack" value="{{data.system.bonusAmmoAttack}}" placeholder="{{localize "D35E.BonusAmmoAttackPlaceholder"}}"/>
       </div>
 
       <div class="form-group stacked">
         <label>{{localize "D35E.AttackNotes"}}</label>
-        <textarea type="text" name="data.bonusAmmoAttackNote">{{data.databonusAmmoAttackNote}}</textarea>
+        <textarea type="text" name="data.bonusAmmoAttackNote">{{data.systembonusAmmoAttackNote}}</textarea>
       </div>
 
       <div class="form-group">
 
         <label>{{localize "D35E.ShowInQuickbar"}}</label>
         <label class="checkbox" style="position: relative; flex: 0 20px">
-          <input type="checkbox" class="stylized" name="data.showInQuickbar" {{checked data.data.showInQuickbar}}/>
+          <input type="checkbox" class="stylized" name="data.showInQuickbar" {{checked data.system.showInQuickbar}}/>
           <span class="checkmark"></span>
         </label>
       </div>
@@ -121,7 +121,7 @@
 
       {{#if isGM}}
       <label class="checkbox">
-        <input type="checkbox" name="data.identified" {{checked data.data.identified}}/> {{localize "D35E.Identified"}}
+        <input type="checkbox" name="data.identified" {{checked data.system.identified}}/> {{localize "D35E.Identified"}}
       </label>
       {{/if}}
 
@@ -132,7 +132,7 @@
           <a class="creation-changes-control add-change" style="font-size: 15px; line-height: 15px;"><i class="fas fa-plus"></i></a>
         </h3>
         <ol class="changes form-group">
-          {{#each data.data.creationChanges as |change a|}}
+          {{#each data.system.creationChanges as |change a|}}
           <li class="change flexrow" data-change="{{a}}">
       
             <select name="data.creationChanges.{{a}}.0">
@@ -148,7 +148,7 @@
             <a class="creation-changes-control delete-change"><i class="fas fa-minus"></i></a>
           </li>
           {{/each}}
-          {{#unless data.data.creationChanges}}
+          {{#unless data.system.creationChanges}}
           <li class="change flexrow">
             <div style="width: 100%; opacity: 0.7; text-align: center">{{localize "D35E.ThereAreNo"}} {{localize "D35E.CreationChanges"}}. {{{localize "D35E.UsePlusToAdd"}}}</div>
           </li>

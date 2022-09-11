@@ -278,7 +278,7 @@ export class ItemPF extends Item {
         const labels = {};
         
         // Physical items
-        if (hasProperty(itemData, "data.weight")) {
+        if (hasProperty(itemData, "weight")) {
             // Sync name
             if (!hasProperty(this.system,"identifiedName")) setProperty(this.system,"identifiedName", this.name);
             // Prepare unidentified cost
@@ -579,7 +579,7 @@ export class ItemPF extends Item {
         }
 
         if (data["data.selectedMaterial"] && data["data.selectedMaterial"] !== "none") {
-            data["data.material"] = duplicate(CACHE.Materials.get(data["data.selectedMaterial"]).data);
+            data["data.material"] = duplicate(CACHE.Materials.get(data["data.selectedMaterial"]));
         } else if (data["data.selectedMaterial"]  && data["data.selectedMaterial"] === "none") {
             data["data.-=material"] = null;
         }

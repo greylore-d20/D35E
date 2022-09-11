@@ -173,6 +173,11 @@ export class ItemSheetPF extends ItemSheet {
         sheetData.availableContainers = {}
         sheetData.availableContainers['none'] = "None"
 
+        sheetData.material = this.item.system.material?.system || this.item.system.material?.data;
+        sheetData.materialMetadata = {
+            name: this.item.system.material?.name,
+            img: this.item.system.material?.img
+        };
 
         if (this.actor != null) {
             this.actor.items.forEach(i => {
@@ -472,19 +477,19 @@ export class ItemSheetPF extends ItemSheet {
                 }
             })
 
-            sheetData.powerPointBonusBaseAbility = sheetData.data.powerPointBonusBaseAbility
+            sheetData.powerPointBonusBaseAbility = this.item.system.powerPointBonusBaseAbility
             sheetData.abilities = {}
             for (let [a, s] of Object.entries(CONFIG.D35E.abilities)) {
                 sheetData.abilities[a] = {}
                 sheetData.abilities[a].label = s;
             }
             sheetData.hasRequirements = true;
-            sheetData.hasMaxLevel = sheetData.data.maxLevel !== undefined && sheetData.data.maxLevel !== null && sheetData.data.maxLevel !== "" && sheetData.data.maxLevel !== 0;
-            sheetData.isBaseClass = sheetData.data.classType === "base";
-            sheetData.isRacialHD = sheetData.data.classType === "racial";
-            sheetData.isTemplate = sheetData.data.classType === "template";
-            sheetData.isPsionSpellcaster = sheetData.data.spellcastingType === "psionic";
-            sheetData.isSpellcaster = sheetData.data.spellcastingType !== undefined && sheetData.data.spellcastingType !== null && sheetData.data.spellcastingType !== "none";
+            sheetData.hasMaxLevel = this.item.system.maxLevel !== undefined && this.item.system.maxLevel !== null && this.item.system.maxLevel !== "" && this.item.system.maxLevel !== 0;
+            sheetData.isBaseClass = this.item.system.classType === "base";
+            sheetData.isRacialHD = this.item.system.classType === "racial";
+            sheetData.isTemplate = this.item.system.classType === "template";
+            sheetData.isPsionSpellcaster = this.item.system.spellcastingType === "psionic";
+            sheetData.isSpellcaster = this.item.system.spellcastingType !== undefined && this.item.system.spellcastingType !== null && this.item.system.spellcastingType !== "none";
             sheetData.isNonPsionSpellcaster = sheetData.isSpellcaster && !sheetData.isPsionSpellcaster
             sheetData.progression = []
             sheetData.spellProgression = []
@@ -1780,7 +1785,8 @@ export class ItemSheetPF extends ItemSheet {
     _onMaterialItemSummary(event) {
         event.preventDefault();
         let li = $(event.currentTarget).parents(".item-box"),
-            item = CACHE.Materials.get(this.item.system.material.data.uniqueId),
+            materialData = this.item.system.material?.system || this.item.system.material?.data,
+            item = CACHE.Materials.get(materialData.uniqueId),
             pack = this.childItemMap.get(li.attr("data-pack"));
 
 

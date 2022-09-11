@@ -23,8 +23,8 @@
           {{labels.buffType}}
         </li>
         <li class="tooltip">
-          <span class="tooltipcontent">@item.level : {{data.data.level}}</span>
-          <input type="text" name="data.level" value="{{#if data.data.level}}{{data.data.level}}{{/if}}" placeholder="{{localize "D35E.Level"}}"/>
+          <span class="tooltipcontent">@item.level : {{data.system.level}}</span>
+          <input type="text" name="data.level" value="{{#if data.system.level}}{{data.system.level}}{{/if}}" placeholder="{{localize "D35E.Level"}}"/>
         </li>
       </ul>
     </div>
@@ -45,7 +45,7 @@
 
     {{!-- Description Tab --}}
     <div class="tab flexcol active" data-group="primary" data-tab="description">
-      {{editor content=data.data.description.value target="data.description.value" button=true owner=owner editable=editable}}
+      {{editor content=data.system.description.value target="data.description.value" button=true owner=owner editable=editable}}
     </div>
 
     {{!-- Timeline Tab --}}
@@ -53,59 +53,59 @@
         <em style="flex: none">{{localize "D35E.TimelineInfo"}}</em>
         <div class="form-group">
           <label>{{localize "D35E.TimelineEnabled"}}</label>
-          <input type="checkbox" name="data.timeline.enabled" {{checked data.data.timeline.enabled}}/>
+          <input type="checkbox" name="data.timeline.enabled" {{checked data.system.timeline.enabled}}/>
         </div>
         {{!-- Total time --}}
         <div class="form-group">
           <label>{{localize "D35E.TimelineFormula"}}</label>
-          <input type="text" name="data.timeline.formula" value="{{data.data.timeline.formula}}" data-dtype="String" />
+          <input type="text" name="data.timeline.formula" value="{{data.system.timeline.formula}}" data-dtype="String" />
         </div>
         {{!-- Total time --}}
         <div class="form-group">
           <label>{{localize "D35E.TimelineTotal"}}</label>
-          <input type="text" name="data.timeline.total" value="{{data.data.timeline.total}}" data-dtype="Number" disabled />
+          <input type="text" name="data.timeline.total" value="{{data.system.timeline.total}}" data-dtype="Number" disabled />
         </div>
 
         {{!-- Elapsed time --}}
         <div class="form-group">
           <label>{{localize "D35E.TimelineElapsed"}}</label>
-          <input type="text" name="data.timeline.elapsed" value="{{data.data.timeline.elapsed}}" data-dtype="Number"/>
+          <input type="text" name="data.timeline.elapsed" value="{{data.system.timeline.elapsed}}" data-dtype="Number"/>
         </div>
 
         <div class="form-group">
           <label>{{localize "D35E.TimelineDeleteOnExpiry"}}</label>
-          <input type="checkbox" name="data.timeline.deleteOnExpiry" {{checked data.data.timeline.deleteOnExpiry}}/>
+          <input type="checkbox" name="data.timeline.deleteOnExpiry" {{checked data.system.timeline.deleteOnExpiry}}/>
         </div>
       <div class="form-group">
         <label>{{localize "D35E.TimelineTickOnEndOfRound"}}</label>
-        <input type="checkbox" name="data.timeline.tickOnEnd" {{checked data.data.timeline.tickOnEnd}}/>
+        <input type="checkbox" name="data.timeline.tickOnEnd" {{checked data.system.timeline.tickOnEnd}}/>
       </div>
         <h4>{{localize "D35E.DamagePool"}}</h4>
         <em style="flex: none">{{localize "D35E.DamagePoolInfo"}}</em>
         <div class="form-group">
           <label>{{localize "D35E.DamagePoolEnabled"}}</label>
-          <input type="checkbox" name="data.damagePool.enabled" {{checked data.data.damagePool.enabled}}/>
+          <input type="checkbox" name="data.damagePool.enabled" {{checked data.system.damagePool.enabled}}/>
         </div>
         {{!-- Damage pool formula --}}
         <div class="form-group">
           <label>{{localize "D35E.DamagePoolFormula"}}</label>
-          <input type="text" name="data.damagePool.formula" value="{{data.data.damagePool.formula}}" data-dtype="String" />
+          <input type="text" name="data.damagePool.formula" value="{{data.system.damagePool.formula}}" data-dtype="String" />
         </div>
         {{!-- Total time --}}
         <div class="form-group">
           <label>{{localize "D35E.DamagePoolTotal"}}</label>
-          <input type="text" name="data.damagePool.total" value="{{data.data.damagePool.total}}" data-dtype="Number" disabled />
+          <input type="text" name="data.damagePool.total" value="{{data.system.damagePool.total}}" data-dtype="Number" disabled />
         </div>
 
         {{!-- Elapsed time --}}
         <div class="form-group">
           <label>{{localize "D35E.DamagePoolCurrent"}}</label>
-          <input type="text" name="data.damagePool.current" value="{{data.data.damagePool.current}}" data-dtype="Number"/>
+          <input type="text" name="data.damagePool.current" value="{{data.system.damagePool.current}}" data-dtype="Number"/>
         </div>
 
         <div class="form-group">
           <label>{{localize "D35E.DamagePoolDeleteOnDepleted"}}</label>
-          <input type="checkbox" name="data.damagePool.deleteOnDamagePoolEmpty" {{checked data.data.damagePool.deleteOnDamagePoolEmpty}}/>
+          <input type="checkbox" name="data.damagePool.deleteOnDamagePoolEmpty" {{checked data.system.damagePool.deleteOnDamagePoolEmpty}}/>
         </div>
     </div>
     <div class="tab flexcol" data-group="primary" data-tab="special-actions">
@@ -114,7 +114,7 @@
         <a class="a-special-control add-special"><i class="fas fa-plus"></i></a>
       </h4>
       <ol class="special-parts form-group">
-        {{#each data.data.activateActions as |part a|}}
+        {{#each data.system.activateActions as |part a|}}
         <li class="special-part flexcol" data-activate-actions="{{a}}">
           <div class="flexrow"><span>Name:</span><input type="text" name="data.activateActions.{{a}}.name" placeholder="{{localize "D35E.Name"}}" value="{{lookup this "name"}}"/></div>
           <div class="flexrow"><span>Action:</span><input type="text" name="data.activateActions.{{a}}.action" placeholder="{{localize "D35E.Action"}}" value="{{lookup this "action"}}"/></div>
@@ -130,7 +130,7 @@
         <a class="d-special-control add-special"><i class="fas fa-plus"></i></a>
       </h4>
       <ol class="special-parts form-group">
-        {{#each data.data.deactivateActions as |part a|}}
+        {{#each data.system.deactivateActions as |part a|}}
         <li class="special-part flexcol" data-deactivate-actions="{{a}}">
           <div class="flexrow"><span>Name:</span><input type="text" name="data.deactivateActions.{{a}}.name" placeholder="{{localize "D35E.Name"}}" value="{{lookup this "name"}}"/></div>
           <div class="flexrow"><span>Action:</span><input type="text" name="data.deactivateActions.{{a}}.action" placeholder="{{localize "D35E.Action"}}" value="{{lookup this "action"}}"/></div>
@@ -147,7 +147,7 @@
         <a class="r-special-control add-special"><i class="fas fa-plus"></i></a>
       </h4>
       <ol class="special-parts form-group">
-        {{#each data.data.perRoundActions as |part a|}}
+        {{#each data.system.perRoundActions as |part a|}}
         <li class="special-part flexcol" data-per-round-actions="{{a}}">
           <div class="flexrow"><span>Name:</span><input type="text" name="data.perRoundActions.{{a}}.name" placeholder="{{localize "D35E.Name"}}" value="{{lookup this "name"}}"/></div>
           <div class="flexrow"><span>Action:</span><input type="text" name="data.perRoundActions.{{a}}.action" placeholder="{{localize "D35E.Action"}}" value="{{lookup this "action"}}"/></div>
@@ -162,8 +162,8 @@
     <div class="tab flexcol" data-group="primary" data-tab="changes">
       <div class="form-group select">
         <label>{{localize "D35E.Type"}}</label>
-        <select name="data.buffType" value="{{data.data.buffType}}">
-          {{#select data.data.buffType}}
+        <select name="data.buffType" value="{{data.system.buffType}}">
+          {{#select data.system.buffType}}
           {{#each config.buffTypes as |type a|}}
           <option value="{{a}}">{{type}}</option>
           {{/each}}
@@ -174,7 +174,7 @@
       <div class="form-group">
         <label>{{localize "D35E.HideBuffFromToken"}}</label>
         <label class="checkbox" style="position: relative; flex: 0 20px">
-          <input type="checkbox" class="stylized" name="data.hideFromToken" {{checked data.data.hideFromToken}}/>
+          <input type="checkbox" class="stylized" name="data.hideFromToken" {{checked data.system.hideFromToken}}/>
           <span class="checkmark"></span>
         </label>
       </div>
@@ -189,7 +189,7 @@
       <h3 class="form-header">System Properties</h3>
       <div class="form-group">
         <label>UID</label>
-        <input type="text" name="data.uniqueId" value="{{data.data.uniqueId}}" data-dtype="String"/>
+        <input type="text" name="data.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
       </div>
       {{/if}}
     </div>
