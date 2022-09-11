@@ -25,8 +25,8 @@ export class ItemSpellHelper {
         const reSplit = CONFIG.D35E.re.traitSeparator;
 
         const label = {
-            school: (CONFIG.D35E.spellSchools[getProperty(srcData, "data.school")] || "").toLowerCase(),
-            subschool: (getProperty(srcData, "data.subschool") || ""),
+            school: (CONFIG.D35E.spellSchools[getProperty(srcData, "system.school")] || "").toLowerCase(),
+            subschool: (getProperty(srcData, "system.subschool") || ""),
             types: "",
         };
         const data = {
@@ -35,32 +35,32 @@ export class ItemSpellHelper {
         };
 
         // Set subschool and types label
-        const types = getProperty(srcData, "data.types");
+        const types = getProperty(srcData, "system.types");
         if (typeof types === "string" && types.length > 0) {
             label.types = types.split(reSplit).join(", ");
         }
         // Set information about when the spell is learned
         data.learnedAt = {};
-        data.learnedAt.class = (getProperty(srcData, "data.learnedAt.class") || []).map(o => {
+        data.learnedAt.class = (getProperty(srcData, "system.learnedAt.class") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.domain = (getProperty(srcData, "data.learnedAt.domain") || []).map(o => {
+        data.learnedAt.domain = (getProperty(srcData, "system.learnedAt.domain") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.subDomain = (getProperty(srcData, "data.learnedAt.subDomain") || []).map(o => {
+        data.learnedAt.subDomain = (getProperty(srcData, "system.learnedAt.subDomain") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.elementalSchool = (getProperty(srcData, "data.learnedAt.elementalSchool") || []).map(o => {
+        data.learnedAt.elementalSchool = (getProperty(srcData, "system.learnedAt.elementalSchool") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.bloodline = (getProperty(srcData, "data.learnedAt.bloodline") || []).map(o => {
+        data.learnedAt.bloodline = (getProperty(srcData, "system.learnedAt.bloodline") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
 
         // Set casting time label
-        if (getProperty(srcData, "data.activation")) {
-            const activationCost = getProperty(srcData, "data.activation.cost");
-            const activationType = getProperty(srcData, "data.activation.type");
+        if (getProperty(srcData, "system.activation")) {
+            const activationCost = getProperty(srcData, "system.activation.cost");
+            const activationType = getProperty(srcData, "system.activation.type");
 
             if (activationType) {
                 if (CONFIG.D35E.abilityActivationTypesPlurals[activationType] != null) {
@@ -73,19 +73,19 @@ export class ItemSpellHelper {
         }
 
 
-        data.psionicPower = getProperty(srcData, "data.isPower");
+        data.psionicPower = getProperty(srcData, "system.isPower");
 
         // Set components label
         let components = [];
-        for (let [key, value] of Object.entries(getProperty(srcData, "data.components") || {})) {
+        for (let [key, value] of Object.entries(getProperty(srcData, "system.components") || {})) {
             if (key === "value" && value.length > 0) components.push(...value.split(reSplit));
             else if (key === "verbal" && value) components.push("V");
             else if (key === "somatic" && value) components.push("S");
             else if (key === "material" && value) components.push("M");
             else if (key === "focus" && value) components.push("F");
         }
-        if (getProperty(srcData, "data.components.divineFocus") === 1) components.push("DF");
-        const df = getProperty(srcData, "data.components.divineFocus");
+        if (getProperty(srcData, "system.components.divineFocus") === 1) components.push("DF");
+        const df = getProperty(srcData, "system.components.divineFocus");
         // Sort components
         const componentsOrder = ["V", "S", "M", "F", "DF"];
         components.sort((a, b) => {
@@ -98,11 +98,11 @@ export class ItemSpellHelper {
         components = components.map(o => {
             if (o === "M") {
                 if (df === 2) o = "M/DF";
-                if (getProperty(srcData, "data.materials.value")) o = `${o} (${getProperty(srcData, "data.materials.value")})`;
+                if (getProperty(srcData, "system.materials.value")) o = `${o} (${getProperty(srcData, "system.materials.value")})`;
             }
             if (o === "F") {
                 if (df === 3) o = "F/DF";
-                if (getProperty(srcData, "data.materials.focus")) o = `${o} (${getProperty(srcData, "data.materials.focus")})`;
+                if (getProperty(srcData, "system.materials.focus")) o = `${o} (${getProperty(srcData, "system.materials.focus")})`;
             }
             return o;
         });
@@ -110,8 +110,8 @@ export class ItemSpellHelper {
 
         // Set duration label
         {
-            const durationData = getProperty(srcData, "data.spellDurationData");
-            const duration = getProperty(srcData, "data.spellDuration");
+            const durationData = getProperty(srcData, "system.spellDurationData");
+            const duration = getProperty(srcData, "system.spellDuration");
             if (durationData) {
                 label.duration = ItemSpellHelper.getSpellDuration(durationData);
             } else if (duration) {
@@ -120,18 +120,18 @@ export class ItemSpellHelper {
         }
         // Set effect label
         {
-            const effect = getProperty(srcData, "data.spellEffect");
+            const effect = getProperty(srcData, "system.spellEffect");
             if (effect) label.effect = effect;
         }
         // Set targets label
         {
-            const targets = getProperty(srcData, "data.target.value");
+            const targets = getProperty(srcData, "system.target.value");
             if (targets) label.targets = targets;
         }
         // Set range label
         {
-            const rangeUnit = getProperty(srcData, "data.range.units");
-            const rangeValue = getProperty(srcData, "data.range.value");
+            const rangeUnit = getProperty(srcData, "system.range.units");
+            const rangeValue = getProperty(srcData, "system.range.value");
 
             if (rangeUnit != null && rangeUnit !== "none") {
                 label.range = (CONFIG.D35E.distanceUnits[rangeUnit] || "").toLowerCase();
@@ -146,7 +146,7 @@ export class ItemSpellHelper {
         }
         // Set area label
         {
-            const area = getProperty(srcData, "data.spellArea");
+            const area = getProperty(srcData, "system.spellArea");
 
             if (area) label.area = area;
         }
@@ -157,17 +157,17 @@ export class ItemSpellHelper {
             if (savingThrowDescription) label.savingThrow = savingThrowDescription;
             else label.savingThrow = "none";
 
-            const sr = getProperty(srcData, "data.sr");
+            const sr = getProperty(srcData, "system.sr");
             label.sr = (sr === true ? "yes" : "no");
-            const pr = getProperty(srcData, "data.pr");
+            const pr = getProperty(srcData, "system.pr");
             label.pr = (pr === true ? "yes" : "no");
 
-            if (getProperty(srcData, "data.range.units") !== "personal") data.useDCandSR = true;
+            if (getProperty(srcData, "system.range.units") !== "personal") data.useDCandSR = true;
         }
 
-        if (getProperty(srcData, "data.powerPointsCost") > 0)
-            label.powerPointsCost = getProperty(srcData, "data.powerPointsCost");
-        label.display = getProperty(srcData, "data.display");
+        if (getProperty(srcData, "system.powerPointsCost") > 0)
+            label.powerPointsCost = getProperty(srcData, "system.powerPointsCost");
+        label.display = getProperty(srcData, "system.display");
         return data;
     }
 

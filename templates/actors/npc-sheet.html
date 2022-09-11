@@ -83,7 +83,7 @@
         </div>
         <div class="level" style="line-height: 14px">
           <label style="font-size: 14px;">{{ localize 'D35E.BaseCR' }}</label>
-          <input name="data.details.cr" style="font-size: 14px; height: 16px" type="text" value="{{labels.cr}}" placeholder="1"/>
+          <input name="system.details.cr" style="font-size: 14px; height: 16px" type="text" value="{{labels.cr}}" placeholder="1"/>
         </div>
         <div class="experience">
           <span>{{labels.totalExp}} {{ localize 'D35E.XP' }}</span>
@@ -101,11 +101,11 @@
         <div class="flexcol">
           <ul class="summary">
             <li>
-              <input type="text" name="data.details.type" value="{{data.details.type}}"
+              <input type="text" name="system.details.type" value="{{data.details.type}}"
                      placeholder="{{ localize 'D35E.TypeSubType' }}" title="{{ localize 'D35E.TypeSubType' }}"/>
             </li>
             <li>
-              <input type="text" name="data.details.alignment" value="{{data.details.alignment}}"
+              <input type="text" name="system.details.alignment" value="{{data.details.alignment}}"
                      placeholder="{{ localize 'D35E.Alignment' }}" title="{{ localize 'D35E.Alignment' }}"/>
             </li>
             <ol class="item-list race-container" style="margin: 0">
@@ -156,14 +156,14 @@
                   </div>
                 </h4>
                 <div class="attribute-value multiple">
-                  <input name="data.attributes.vigor.value" type="text"
+                  <input name="system.attributes.vigor.value" type="text"
                          value="{{data.attributes.vigor.value}}"
                          data-dtype="Number" placeholder="0"/>
                   <span class="sep"> / </span>
                   <div class="attribute">{{data.attributes.vigor.max}}</div>
                 </div>
                 <footer class="attribute-footer">
-                  <input name="data.attributes.vigor.temp" type="text" class="temphp"
+                  <input name="system.attributes.vigor.temp" type="text" class="temphp"
                          placeholder="{{ localize 'D35E.Temporary' }}"
                          value="{{#if data.attributes.vigor.temp}}{{data.attributes.vigor.temp}}{{/if}}"
                          data-dtype="Number"/>
@@ -184,7 +184,7 @@
                   </div>
                 </h4>
                 <div class="attribute-value multiple">
-                  <input name="data.attributes.wounds.value" type="text"
+                  <input name="system.attributes.wounds.value" type="text"
                          value="{{data.attributes.wounds.value}}"
                          data-dtype="Number" placeholder="0"/>
                   <span class="sep"> / </span>
@@ -206,17 +206,17 @@
                   </div>
                 </h4>
                 <div class="attribute-value multiple">
-                  <input name="data.attributes.hp.value" type="text" value="{{data.attributes.hp.value}}"
+                  <input name="system.attributes.hp.value" type="text" value="{{data.attributes.hp.value}}"
                          data-dtype="String" placeholder="10"/>
                   <span class="sep"> / </span>
                   <div class="attribute">{{data.attributes.hp.max}}</div>
                 </div>
                 <footer class="attribute-footer">
-                  <input name="data.attributes.hp.temp" type="text" class="temphp"
+                  <input name="system.attributes.hp.temp" type="text" class="temphp"
                          placeholder="+{{ localize 'D35E.TempShort' }}"
                          value="{{#if data.attributes.hp.temp}}{{data.attributes.hp.temp}}{{/if}}"
                          data-dtype="Number" title="{{ localize 'D35E.TempHP' }}"/>
-                  <input name="data.attributes.hp.nonlethal" type="text" class="temphp"
+                  <input name="system.attributes.hp.nonlethal" type="text" class="temphp"
                          placeholder="{{ localize 'D35E.Nonlethal' }}"
                          value="{{#if data.attributes.hp.nonlethal}}{{data.attributes.hp.nonlethal}}{{/if}}"
                          data-dtype="Number" title="{{ localize 'D35E.Nonlethal' }}"/>
@@ -236,7 +236,7 @@
                 </div>
               </div>
                 <footer class="attribute-footer">
-                  <input name="data.attributes.speed.land.base" type="text"
+                  <input name="system.attributes.speed.land.base" type="text"
                          value="{{#if data.attributes.speed.land.base}}{{data.attributes.speed.land.base}}{{/if}}"
                          data-dtype="Number" placeholder="{{ localize 'D35E.Base' }}"/>
                 </footer>
@@ -249,7 +249,7 @@
                 </div>
               </div>
               <footer class="attribute-footer">
-                <input name="data.attributes.speed.climb.base" type="text"
+                <input name="system.attributes.speed.climb.base" type="text"
                        value="{{#if data.attributes.speed.climb.base}}{{data.attributes.speed.climb.base}}{{/if}}"
                        data-dtype="Number" placeholder="{{ localize 'D35E.Base' }}"/>
               </footer>
@@ -262,7 +262,7 @@
                 </div>
               </div>
               <footer class="attribute-footer">
-                <input name="data.attributes.speed.swim.base" type="text"
+                <input name="system.attributes.speed.swim.base" type="text"
                        value="{{#if data.attributes.speed.swim.base}}{{data.attributes.speed.swim.base}}{{/if}}"
                        data-dtype="Number" placeholder="{{ localize 'D35E.Base' }}"/>
               </footer>
@@ -275,7 +275,7 @@
                 </div>
               </div>
               <footer class="attribute-footer">
-                <input name="data.attributes.speed.burrow.base" type="text"
+                <input name="system.attributes.speed.burrow.base" type="text"
                        value="{{#if data.attributes.speed.burrow.base}}{{data.attributes.speed.burrow.base}}{{/if}}"
                        data-dtype="Number" placeholder="{{ localize 'D35E.Base' }}"/>
               </footer>
@@ -288,14 +288,14 @@
                 </div>
               </div>
               <footer class="attribute-footer">
-                <input name="data.attributes.speed.fly.base" type="text"
+                <input name="system.attributes.speed.fly.base" type="text"
                        value="{{#if data.attributes.speed.fly.base}}{{data.attributes.speed.fly.base}}{{/if}}"
                        data-dtype="Number" placeholder="{{ localize 'D35E.Base' }}"/>
               </footer>
             </div>
             <div class="attribute-speed">
               <h4 class="attribute-name box-title">{{ localize 'D35E.FlyManeuverabilityShort' }}</h4>
-              <select name="data.attributes.speed.fly.maneuverability">
+              <select name="system.attributes.speed.fly.maneuverability">
                   {{#select data.attributes.speed.fly.maneuverability}}
                   {{#each config.flyManeuverabilities as |name type|}}
                     <option value="{{type}}">{{name}}</option>
@@ -377,7 +377,7 @@
               <input class="ability-base readonly" type="text" value="{{ability.value}}" data-dtype="Number" placeholder="10"
                 readonly />
               {{else}}
-              <input style="width: calc(100% - 24px);" class="ability-base" name="data.abilities.{{id}}.value" type="text" value="{{ability.value}}"
+              <input style="width: calc(100% - 24px);" class="ability-base" name="system.abilities.{{id}}.value" type="text" value="{{ability.value}}"
                 data-dtype="Number" placeholder="10" />
                 <div class="data-selector" style="float: right; width: 24px; line-height: 24px;">
                   <a class="configure-ability" for="{{id}}"><i class="fas fa-edit"></i></a>
@@ -463,7 +463,7 @@
               </li>
           </ul>
 
-          <textarea name="data.attributes.cmbNotes" placeholder="CMB {{ localize 'D35E.Notes' }}">{{data.attributes.cmbNotes}}</textarea>
+          <textarea name="system.attributes.cmbNotes" placeholder="CMB {{ localize 'D35E.Notes' }}">{{data.attributes.cmbNotes}}</textarea>
       </div>
 
       <section class="center-pane flexcol">
@@ -493,7 +493,7 @@
         <div class="traits">
           <div class="form-group">
             <label>{{ localize 'D35E.BuffTarACNatural' }}</label>
-            <input name="data.attributes.naturalAC" type="text" placeholder="0"
+            <input name="system.attributes.naturalAC" type="text" placeholder="0"
                    value="{{#if data.attributes.naturalAC}}{{data.attributes.naturalAC}}{{/if}}"/>
             <span style="flex: 0 80px; text-align: end">{{ localize 'D35E.Total' }}: </span>
             <input style="flex: 0 30px" disabled type="text"
@@ -504,7 +504,7 @@
         <div class="traits">
           <div class="form-group">
             <label>{{ localize 'D35E.SpellResistance' }}</label>
-            <input style="width: calc(100% - 60px);" name="data.attributes.sr.formula" type="text" placeholder="{{ localize 'D35E.Formula' }}"
+            <input style="width: calc(100% - 60px);" name="system.attributes.sr.formula" type="text" placeholder="{{ localize 'D35E.Formula' }}"
                    value="{{#if data.attributes.sr.formula}}{{data.attributes.sr.formula}}{{/if}}"/>
             <span style="flex: 0 80px; text-align: end">{{ localize 'D35E.Total' }}: </span>
             <input style="flex: 0 30px" disabled type="text"
@@ -516,7 +516,7 @@
         <div class="traits">
           <div class="form-group">
             <label>{{ localize 'D35E.PowerResistance' }}</label>
-            <input style="width: calc(100% - 60px);" name="data.attributes.pr.formula" type="text" placeholder="{{ localize 'D35E.Formula' }}"
+            <input style="width: calc(100% - 60px);" name="system.attributes.pr.formula" type="text" placeholder="{{ localize 'D35E.Formula' }}"
                    value="{{#if data.attributes.pr.formula}}{{data.attributes.pr.formula}}{{/if}}"/>
             <span style="flex: 0 80px; text-align: end">{{ localize 'D35E.Total' }}: </span>
             <input style="flex: 0 30px" disabled type="text"
@@ -528,7 +528,7 @@
         <div class="traits">
           <div class="form-group">
             <label>{{ localize 'D35E.Fortification' }}</label>
-            <input style="width: calc(100% - 60px);" name="data.attributes.fortification.value" type="text" placeholder="{{ localize 'D35E.Value' }}"  data-dtype="Number"
+            <input style="width: calc(100% - 60px);" name="system.attributes.fortification.value" type="text" placeholder="{{ localize 'D35E.Value' }}"  data-dtype="Number"
                    value="{{#if data.attributes.fortification.value}}{{data.attributes.fortification.value}}{{/if}}"/>
             <span style="flex: 0 80px; text-align: end">{{ localize 'D35E.Total' }}: </span>
             <input style="flex: 0 30px" disabled type="text"
@@ -538,7 +538,7 @@
         <div class="traits">
           <div class="form-group">
             <label>{{ localize 'D35E.Concealment' }}</label>
-            <input style="width: calc(100% - 60px);" name="data.attributes.concealment.value" type="text" placeholder="{{ localize 'D35E.Value' }}"  data-dtype="Number"
+            <input style="width: calc(100% - 60px);" name="system.attributes.concealment.value" type="text" placeholder="{{ localize 'D35E.Value' }}"  data-dtype="Number"
                    value="{{#if data.attributes.concealment.value}}{{data.attributes.concealment.value}}{{/if}}"/>
             <span style="flex: 0 80px; text-align: end">{{ localize 'D35E.Total' }}: </span>
             <input style="flex: 0 30px" disabled type="text"
@@ -548,7 +548,7 @@
           <div class="traits">
             <div class="form-group">
               <label>{{ localize 'D35E.FastHealing' }}</label>
-              <input name="data.traits.fastHealing" type="text" placeholder="0"
+              <input name="system.traits.fastHealing" type="text" placeholder="0"
                      value="{{#if data.traits.fastHealing}}{{data.traits.fastHealing}}{{/if}}" data-dtype="Number"/>
               <span style="flex: 0 80px; text-align: end">{{ localize 'D35E.Total' }}: </span>
               <input style="flex: 0 30px" disabled type="text"
@@ -558,7 +558,7 @@
           <div class="traits">
             <div class="form-group">
               <label>{{ localize 'D35E.Regeneration' }}</label>
-              <input name="data.traits.regen" type="text" placeholder="0"
+              <input name="system.traits.regen" type="text" placeholder="0"
                      value="{{#if data.traits.regen}}{{data.traits.regen}}{{/if}}" data-dtype="Number"/>
               <span style="flex: 0 80px; text-align: end">{{ localize 'D35E.Total' }}: </span>
               <input style="flex: 0 30px" disabled type="text"
@@ -615,13 +615,13 @@
 
     {{!-- Biography Tab --}}
     <div class="tab biography flexcol" data-group="primary" data-tab="biography">
-      {{editor content=data.details.biography.value target="data.details.biography.value" button=true owner=owner
+      {{editor content=data.details.biography.value target="system.details.biography.value" button=true owner=owner
       editable=editable}}
     </div>
 
     {{!-- Notes Tab --}}
     <div class="tab actor-notes flexcol" data-group="primary" data-tab="notes">
-      {{editor content=data.details.notes.value target="data.details.notes.value" button=true owner=owner
+      {{editor content=data.details.notes.value target="system.details.notes.value" button=true owner=owner
       editable=editable}}
     </div>
 

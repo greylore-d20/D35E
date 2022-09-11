@@ -5,18 +5,18 @@
 <ol class="conditionals form-group">
     {{#each conditionals as |conditional a|}}
     <li class="conditional flexcolumn" data-conditional="{{a}}"><div class="conditional flexrow" data-conditional="{{a}}">
-        <input class="conditional-default" type="checkbox" title="{{localize "D35E.Default"}}" name="data.conditionals.{{a}}.default" {{checked this.default}}/>
-        <input class="conditional-name" type="text" name="data.conditionals.{{a}}.name" value="{{lookup this "name"}}"
+        <input class="conditional-default" type="checkbox" title="{{localize "D35E.Default"}}" name="system.conditionals.{{a}}.default" {{checked this.default}}/>
+        <input class="conditional-name" type="text" name="system.conditionals.{{a}}.name" value="{{lookup this "name"}}"
         placeholder="{{localize "D35E.Name"}}"/>
         <a class="delete-conditional conditional-control delete-conditional"><i class="fas fa-trash"></i></a>
     </div>
         <ol class="conditionals form-group">
             {{#each this.modifiers as |modifier m|}}
             <li class="conditional-modifier flexrow" data-conditional="{{a}}" data-modifier="{{m}}">
-                <input class="conditional-formula" type="text" name="data.conditionals.{{a}}.{{m}}.formula" value="{{lookup this "formula"}}"
+                <input class="conditional-formula" type="text" name="system.conditionals.{{a}}.{{m}}.formula" value="{{lookup this "formula"}}"
                 placeholder="{{localize "D35E.Formula"}}" required/>
 
-                <select class="conditional-target" name="data.conditionals.{{a}}.{{m}}.target" required>
+                <select class="conditional-target" name="system.conditionals.{{a}}.{{m}}.target" required>
                     {{#select (lookup this "target") }}
                     <option value=""></option>
                     {{#each targets as |target type|}}
@@ -25,7 +25,7 @@
                     {{/select}}
                 </select>
 
-                <select class="conditional-sub-target" name="data.conditionals.{{a}}.{{m}}.subTarget">
+                <select class="conditional-sub-target" name="system.conditionals.{{a}}.{{m}}.subTarget">
                     {{#select (lookup this "subTarget") }}
                     {{#if (lookup this "target") }}
                     {{#each subTargets as |target type|}}
@@ -38,7 +38,7 @@
                 </select>
 
                 {{#if modifier.isAttack}}
-                <select class="conditional-type" name="data.conditionals.{{a}}.{{m}}.type">
+                <select class="conditional-type" name="system.conditionals.{{a}}.{{m}}.type">
                     {{#select (lookup this "type") }}
                     {{#if (lookup this "target") }}
                     {{#each conditionalModifierTypes as |modifierType mt|}}
@@ -52,7 +52,7 @@
                 {{/if}}
 
                 {{#if modifier.isDamage}}
-                <select name="data.conditionals.{{a}}.{{m}}.type">
+                <select name="system.conditionals.{{a}}.{{m}}.type">
 
                     {{#select (lookup this "type") }}
                     {{#each conditionalModifierTypes as |modifierType mt|}}

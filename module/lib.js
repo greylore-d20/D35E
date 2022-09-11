@@ -185,6 +185,9 @@ export const radtodeg = function(radians) {
 };
 
 export const linkData = function(expanded, flattened, key, value) {
+  if (key.startsWith("data.")) {
+    key.replace("data.","system.")
+  }
   setProperty(expanded, key, value);
   flattened[key] = value;
 };

@@ -883,8 +883,8 @@ export class ItemSheetPF extends ItemSheet {
      */
     _updateObject(event, formData) {
         // Handle Damage Array
-        let damage = Object.entries(formData).filter(e => e[0].startsWith("data.damage.parts"));
-        formData["data.damage.parts"] = damage.reduce((arr, entry) => {
+        let damage = Object.entries(formData).filter(e => e[0].startsWith("system.damage.parts"));
+        formData["system.damage.parts"] = damage.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(3);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
@@ -892,8 +892,8 @@ export class ItemSheetPF extends ItemSheet {
         }, []);
 
 
-        let altDamage = Object.entries(formData).filter(e => e[0].startsWith("data.damage.alternativeParts"));
-        formData["data.damage.alternativeParts"] = altDamage.reduce((arr, entry) => {
+        let altDamage = Object.entries(formData).filter(e => e[0].startsWith("system.damage.alternativeParts"));
+        formData["system.damage.alternativeParts"] = altDamage.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(3);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
@@ -901,8 +901,8 @@ export class ItemSheetPF extends ItemSheet {
         }, []);
 
         // Handle Attack Array
-        let attacks = Object.entries(formData).filter(e => e[0].startsWith("data.attackParts"));
-        formData["data.attackParts"] = attacks.reduce((arr, entry) => {
+        let attacks = Object.entries(formData).filter(e => e[0].startsWith("system.attackParts"));
+        formData["system.attackParts"] = attacks.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
@@ -910,12 +910,12 @@ export class ItemSheetPF extends ItemSheet {
         }, []);
 
         // Handle conditionals array
-        let conditionals = Object.entries(formData).filter((e) => e[0].startsWith("data.conditionals"));
-        formData["data.conditionals"] = conditionals.reduce((arr, entry) => {
+        let conditionals = Object.entries(formData).filter((e) => e[0].startsWith("system.conditionals"));
+        formData["system.conditionals"] = conditionals.reduce((arr, entry) => {
             let [i, j, k] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = ItemPF.defaultConditional;
             if (k) {
-                const target = formData[`data.conditionals.${i}.${j}.target`];
+                const target = formData[`system.conditionals.${i}.${j}.target`];
                 if (!arr[i].modifiers[j]) arr[i].modifiers[j] = ItemPF.defaultConditionalModifier;
                 arr[i].modifiers[j][k] = entry[1];
                 // Target dependent keys
@@ -947,25 +947,16 @@ export class ItemSheetPF extends ItemSheet {
 
 
         // Handle change array
-        let change = Object.entries(formData).filter(e => e[0].startsWith("data.changes"));
-        formData["data.changes"] = change.reduce((arr, entry) => {
+        let change = Object.entries(formData).filter(e => e[0].startsWith("system.changes"));
+        formData["system.changes"] = change.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
             return arr;
         }, []);
 
-        let changes = Object.entries(formData).filter(e => e[0].startsWith("data.combatChanges"));
-        formData["data.combatChanges"] = changes.reduce((arr, entry) => {
-            let [i, j] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = [];
-            arr[i][j] = entry[1];
-            return arr;
-        }, []);
-
-
-        let requirements = Object.entries(formData).filter(e => e[0].startsWith("data.requirements"));
-        formData["data.requirements"] = requirements.reduce((arr, entry) => {
+        let changes = Object.entries(formData).filter(e => e[0].startsWith("system.combatChanges"));
+        formData["system.combatChanges"] = changes.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
@@ -973,24 +964,33 @@ export class ItemSheetPF extends ItemSheet {
         }, []);
 
 
-        let creationChanges = Object.entries(formData).filter(e => e[0].startsWith("data.creationChanges"));
-        formData["data.creationChanges"] = creationChanges.reduce((arr, entry) => {
+        let requirements = Object.entries(formData).filter(e => e[0].startsWith("system.requirements"));
+        formData["system.requirements"] = requirements.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
             return arr;
         }, []);
 
-        let resistances = Object.entries(formData).filter(e => e[0].startsWith("data.resistances"));
-        formData["data.resistances"] = resistances.reduce((arr, entry) => {
+
+        let creationChanges = Object.entries(formData).filter(e => e[0].startsWith("system.creationChanges"));
+        formData["system.creationChanges"] = creationChanges.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
             return arr;
         }, []);
 
-        let damageReduction = Object.entries(formData).filter(e => e[0].startsWith("data.damageReduction"));
-        formData["data.damageReduction"] = damageReduction.reduce((arr, entry) => {
+        let resistances = Object.entries(formData).filter(e => e[0].startsWith("system.resistances"));
+        formData["system.resistances"] = resistances.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = [];
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
+        let damageReduction = Object.entries(formData).filter(e => e[0].startsWith("system.damageReduction"));
+        formData["system.damageReduction"] = damageReduction.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
@@ -998,16 +998,16 @@ export class ItemSheetPF extends ItemSheet {
         }, []);
 
         // Handle notes array
-        let note = Object.entries(formData).filter(e => e[0].startsWith("data.contextNotes"));
-        formData["data.contextNotes"] = note.reduce((arr, entry) => {
+        let note = Object.entries(formData).filter(e => e[0].startsWith("system.contextNotes"));
+        formData["system.contextNotes"] = note.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = [];
             arr[i][j] = entry[1];
             return arr;
         }, []);
 
-        let actions = Object.entries(formData).filter(e => e[0].startsWith("data.specialActions"));
-        formData["data.specialActions"] = actions.reduce((arr, entry) => {
+        let actions = Object.entries(formData).filter(e => e[0].startsWith("system.specialActions"));
+        formData["system.specialActions"] = actions.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = {name: "", action: ""};
 
@@ -1016,8 +1016,8 @@ export class ItemSheetPF extends ItemSheet {
         }, []);
 
 
-        let summon = Object.entries(formData).filter(e => e[0].startsWith("data.summon"));
-        formData["data.summon"] = summon.reduce((arr, entry) => {
+        let summon = Object.entries(formData).filter(e => e[0].startsWith("system.summon"));
+        formData["system.summon"] = summon.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = {name: "", id: "", pack: "", formula: ""};
 
@@ -1025,8 +1025,8 @@ export class ItemSheetPF extends ItemSheet {
             return arr;
         }, []);
 
-        let activateActions = Object.entries(formData).filter(e => e[0].startsWith("data.activateActions"));
-        formData["data.activateActions"] = activateActions.reduce((arr, entry) => {
+        let activateActions = Object.entries(formData).filter(e => e[0].startsWith("system.activateActions"));
+        formData["system.activateActions"] = activateActions.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = {name: "", action: ""};
 
@@ -1034,8 +1034,8 @@ export class ItemSheetPF extends ItemSheet {
             return arr;
         }, []);
 
-        let deactivateActions = Object.entries(formData).filter(e => e[0].startsWith("data.deactivateActions"));
-        formData["data.deactivateActions"] = deactivateActions.reduce((arr, entry) => {
+        let deactivateActions = Object.entries(formData).filter(e => e[0].startsWith("system.deactivateActions"));
+        formData["system.deactivateActions"] = deactivateActions.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = {name: "", action: ""};
 
@@ -1043,8 +1043,8 @@ export class ItemSheetPF extends ItemSheet {
             return arr;
         }, []);
 
-        let perRoundActions = Object.entries(formData).filter(e => e[0].startsWith("data.perRoundActions"));
-        formData["data.perRoundActions"] = perRoundActions.reduce((arr, entry) => {
+        let perRoundActions = Object.entries(formData).filter(e => e[0].startsWith("system.perRoundActions"));
+        formData["system.perRoundActions"] = perRoundActions.reduce((arr, entry) => {
             let [i, j] = entry[0].split(".").slice(2);
             if (!arr[i]) arr[i] = {name: "", action: ""};
 
@@ -1054,12 +1054,12 @@ export class ItemSheetPF extends ItemSheet {
 
         // Update the Item
 
-        if (this.containerMap.has(formData['data.containerId'])) {
-            formData['data.container'] = this.containerMap.get(formData['data.containerId']).name
-            formData['data.containerWeightless'] = this.containerMap.get(formData['data.containerId']).system.bagOfHoldingLike
+        if (this.containerMap.has(formData['system.containerId'])) {
+            formData['system.container'] = this.containerMap.get(formData['system.containerId']).name
+            formData['system.containerWeightless'] = this.containerMap.get(formData['system.containerId']).system.bagOfHoldingLike
         } else {
-            formData['data.container'] = "None"
-            formData['data.containerWeightless'] = false
+            formData['system.container'] = "None"
+            formData['system.containerWeightless'] = false
         }
 
         //console.log("IM IN _UPDATE OBJECT FIXING THINGS", formData)

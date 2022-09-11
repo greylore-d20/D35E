@@ -12,7 +12,7 @@
     <!--    <div class="form-group spellcasting-class tooltip flexrow" style="padding: 0 0 0 0.5rem; flex: 1;">-->
     <!--      <span class="tooltipcontent">@cl : {{spellbook.orig.cl.total}}</span>-->
     <!--      <label><h3>{{localize "D35E.SpellcastingClass"}}</h3></label>-->
-    <!--      <select name="data.attributes.spells.spellbooks.{{spellbookIndex}}.class" data-dtype="String">-->
+    <!--      <select name="system.attributes.spells.spellbooks.{{spellbookIndex}}.class" data-dtype="String">-->
     <!--        {{#select spellbook.orig.class}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
     <!--        <option value="_hd">{{localize "D35E.HitDie"}}</option>-->
@@ -25,7 +25,7 @@
 
     <!--    <div class="form-group spellcasting-ability flexrow" style="padding: 0 0.5rem 0 0.5rem; flex: 1;">-->
     <!--      <label><h3>{{localize "D35E.SpellcastingAbility"}}</h3></label>-->
-    <!--      <select name="data.attributes.spells.spellbooks.{{spellbookIndex}}.ability" data-dtype="String">-->
+    <!--      <select name="system.attributes.spells.spellbooks.{{spellbookIndex}}.ability" data-dtype="String">-->
     <!--        {{#select spellbook.orig.ability}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
     <!--        {{#each data.abilities as |abl a|}}-->
@@ -49,7 +49,7 @@
                     <label for="data.learnedAt.domain">Notes</label>
                 </div>
                 <input type="text" style="width: calc(100% - 60px);"
-                       name="data.attributes.spells.spellbooks.{{spellbookIndex}}.cl.formula"
+                       name="system.attributes.spells.spellbooks.{{spellbookIndex}}.cl.formula"
                        value="{{spellbook.orig.cl.formula}}"
                        placeholder="{{ localize 'D35E.CasterLevelBonusFormula' }}"/>
             </footer>
@@ -71,7 +71,7 @@
                     <label for="data.learnedAt.domain">Notes</label>
                 </div>
                 <input type="text" style="width: calc(100% - 60px);"
-                       name="data.attributes.spells.spellbooks.{{spellbookIndex}}.concentrationFormula"
+                       name="system.attributes.spells.spellbooks.{{spellbookIndex}}.concentrationFormula"
                        value="{{spellbook.orig.concentrationFormula}}"
                        placeholder="{{ localize 'D35E.ConcentrationBonusFormula' }}"/>
             </footer>
@@ -92,16 +92,16 @@
             <h4 class="attribute-name box-title">{{ localize 'D35E.PowerPoints' }}</h4>
             <div class="attribute-value flexrow" style="padding: 0 20px">
 
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.powerPoints"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.powerPoints"
                        value="{{spellbook.orig.powerPoints}}" placeholder="{{ localize 'D35E.PowerPoints' }}"
                        data-dtype="Number"/>
                 <span style="flex: 0 12px;  line-height: 24px;">/</span>
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.powerPointsTotal"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.powerPointsTotal"
                        value="{{spellbook.orig.powerPointsTotal}}" disabled placeholder="{{ localize 'D35E.PowerPoints' }}"
                        data-dtype="Number"/>
             </div>
             <footer class="attribute-footer">
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.dailyPowerPointsFormula"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.dailyPowerPointsFormula"
                        value="{{spellbook.orig.dailyPowerPointsFormula}}"
                        placeholder="{{ localize 'D35E.DailyPowerPointsFormula' }}"/>
             </footer>
@@ -132,7 +132,7 @@
                 {{else}}
                 <a class="remove-prestige-cl-disabled"><i class="fas fa-minus"></i></a>
                 {{/if}}
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.bonusPrestigeCl"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.bonusPrestigeCl"
                        value="{{spellbook.orig.bonusPrestigeCl}}" placeholder="{{ localize 'D35E.PowerPoints' }}"
                        data-dtype="Number"/>
 
@@ -162,7 +162,7 @@
     <!--    <div class="flexcol">-->
     <!--      <div class="flexrow formulas">-->
     <!--        <label><h3>{{localize "D35E.BaseDCFormula"}}</h3></label>-->
-    <!--        <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.baseDCFormula"-->
+    <!--        <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.baseDCFormula"-->
     <!--        value="{{spellbook.orig.baseDCFormula}}" placeholder="{{localize "D35E.BaseDCFormula"}}" />-->
     <!--      </div>-->
 
@@ -171,22 +171,22 @@
     <!--    -->
     <!--    <div class="flexcol">-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.autoSpellLevels"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.autoSpellLevels"-->
     <!--        {{checked spellbook.orig.autoSpellLevels}}/> {{localize "D35E.AutomaticSpellSlots"}}-->
     <!--      </label>-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.spontaneous"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.spontaneous"-->
     <!--        {{checked spellbook.orig.spontaneous}}/> {{localize "D35E.SpellPrepSpontaneous"}}-->
     <!--      </label>-->
     <!--    </div>-->
     <!--    <div class="flexcol">-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.arcaneSpellFailure"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.arcaneSpellFailure"-->
     <!--        {{checked spellbook.orig.arcaneSpellFailure}}/> {{localize "D35E.ArcaneSpellFailure"}}-->
     <!--      </label>-->
 
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.usePowerPoints"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.usePowerPoints"-->
     <!--               {{checked spellbook.orig.usePowerPoints}}/> {{localize "D35E.UsePowerPoints"}}-->
     <!--      </label>-->
     <!--    </div>-->
@@ -197,7 +197,7 @@
             <label>{{localize "D35E.OnlyPrepared"}}</label>
 
             <label class="checkbox" style="position: relative; flex: 0 20px">
-                <input type="checkbox" class="stylized" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.showOnlyPrepared"
+                <input type="checkbox" class="stylized" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.showOnlyPrepared"
                        {{checked spellbook.orig.showOnlyPrepared}}/>
                 <span class="checkmark"></span>
             </label>
@@ -252,7 +252,7 @@
             {{#unless ../spellbook.orig.spontaneous}}
             {{#unless ../spellbook.orig.autoSpellLevels}}
             <input class="base" type="text"
-                   name="data.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
+                   name="system.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
                    value="{{section.baseSlots}}" placeholder="Base"/>
             {{/unless}}
             <span>Slots</span><input type="text" disabled value="{{section.slots}}" placeholder="0"
@@ -260,11 +260,11 @@
             {{ else }}
             {{#unless ../spellbook.orig.autoSpellLevels}}
             <input class="base" type="text"
-                   name="data.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
+                   name="system.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
                    value="{{section.baseSlots}}" placeholder="Base"/>
             {{/unless}}
             <input type="text" value="{{section.uses}}"
-                   name="data.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.value"
+                   name="system.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.value"
                    placeholder="0" data-dtype="Number"/>
             <span class="sep"> / </span>
             <input type="text" value="{{section.slots}}" disabled placeholder="0" data-dtype="Number"/>

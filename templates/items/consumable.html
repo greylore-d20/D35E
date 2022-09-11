@@ -15,12 +15,12 @@
       </h3>
 
       <h3 class="charname">
-        <input name="data.unidentified.name" type="text" value="{{data.system.unidentified.name}}" placeholder="{{localize "D35E.UnidentifiedName"}}"/>
+        <input name="system.unidentified.name" type="text" value="{{data.system.unidentified.name}}" placeholder="{{localize "D35E.UnidentifiedName"}}"/>
       </h3>
       {{else}}
       {{#if showUnidentifiedData}}
       <h1 class="charname">
-        <input name="data.unidentified.name" type="text" value="{{itemName}}" placeholder="{{localize "D35E.ItemName"}}"/>
+        <input name="system.unidentified.name" type="text" value="{{itemName}}" placeholder="{{localize "D35E.ItemName"}}"/>
       </h1>
       {{else}}
       <h1 class="charname">
@@ -67,7 +67,7 @@
       {{#unless showUnidentifiedData}}
       <div class="form-group">
         <label>{{localize "D35E.Type"}}</label>
-        <select name="data.consumableType">
+        <select name="system.consumableType">
           {{#select data.system.consumableType}}
           {{#each config.consumableTypes as |name type|}}
           <option value="{{type}}">{{name}}</option>
@@ -78,7 +78,7 @@
       {{#if isScroll}}
       <div class="form-group">
         <label>{{localize "D35E.ScrollType"}}</label>
-        <select name="data.scrollType">
+        <select name="system.scrollType">
           {{#select data.system.scrollType}}
           <option value="">{{localize "D35E.None"}}</option>
           <option value="arcane">{{localize "D35E.Arcane"}}</option>
@@ -90,7 +90,7 @@
 
       {{#if isGM}}
       <label class="checkbox">
-        <input type="checkbox" name="data.identified" {{checked data.system.identified}}/> {{localize "D35E.Identified"}}
+        <input type="checkbox" name="system.identified" {{checked data.system.identified}}/> {{localize "D35E.Identified"}}
       </label>
       {{/if}}
 

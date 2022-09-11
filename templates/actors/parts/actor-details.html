@@ -18,7 +18,7 @@
                         <input class="ability-base-simple readonly" type="text"
                                value="0" data-dtype="Number" placeholder="10" readonly/>
                     {{else}}
-                        <input class="ability-base-simple" name="data.abilities.{{id}}.tempvalue" type="text"
+                        <input class="ability-base-simple" name="system.abilities.{{id}}.tempvalue" type="text"
                                value="{{ability.value}}" data-dtype="Number" placeholder="10"/>
                     {{/if}}
                     <div class="flexrow">
@@ -70,13 +70,13 @@
                         </div>
                     </h4>
                     <div class="attribute-value multiple">
-                        <input name="data.attributes.vigor.value" type="text" value="{{data.attributes.vigor.value}}"
+                        <input name="system.attributes.vigor.value" type="text" value="{{data.attributes.vigor.value}}"
                                data-dtype="Number" placeholder="0"/>
                         <span class="sep"> / </span>
                         <div class="attribute">{{data.attributes.vigor.max}}</div>
                     </div>
                     <footer class="attribute-footer">
-                        <input name="data.attributes.vigor.temp" type="text" class="temphp"
+                        <input name="system.attributes.vigor.temp" type="text" class="temphp"
                                placeholder="{{ localize 'D35E.Temporary' }}"
                                value="{{#if data.attributes.vigor.temp}}{{data.attributes.vigor.temp}}{{/if}}"
                                data-dtype="Number"/>
@@ -96,7 +96,7 @@
                         </div>
                     </h4>
                     <div class="attribute-value multiple">
-                        <input name="data.attributes.wounds.value" type="text" value="{{data.attributes.wounds.value}}"
+                        <input name="system.attributes.wounds.value" type="text" value="{{data.attributes.wounds.value}}"
                                data-dtype="Number" placeholder="0"/>
                         <span class="sep"> / </span>
                         <div class="attribute">{{data.attributes.wounds.max}}</div>
@@ -118,7 +118,7 @@
                     </h4>
                     {{#unless dead}}
                     <div class="attribute-value multiple">
-                        <input name="data.attributes.hp.value" type="text"  value="{{data.attributes.hp.value}}"
+                        <input name="system.attributes.hp.value" type="text"  value="{{data.attributes.hp.value}}"
                                data-dtype="String" placeholder="10"/>
                         <span class="sep"> / </span>
                         <div class="attribute">{{data.attributes.hp.max}}</div>
@@ -136,11 +136,11 @@
                     </div>
                     {{/unless}}
                     <footer class="attribute-footer">
-                        <input name="data.attributes.hp.temp" type="text" class="temphp"
+                        <input name="system.attributes.hp.temp" type="text" class="temphp"
                                placeholder="+{{ localize 'D35E.TempShort' }}"
                                value="{{#if data.attributes.hp.temp}}{{data.attributes.hp.temp}}{{/if}}"
                                data-dtype="Number" title="{{ localize 'D35E.TempHP' }}"/>
-                        <input name="data.attributes.hp.nonlethal" type="text" class="temphp"
+                        <input name="system.attributes.hp.nonlethal" type="text" class="temphp"
                                placeholder="{{ localize 'D35E.Nonlethal' }}"
                                value="{{#if data.attributes.hp.nonlethal}}{{data.attributes.hp.nonlethal}}{{/if}}"
                                data-dtype="Number" title="{{ localize 'D35E.Nonlethal' }}"/>

@@ -7,7 +7,7 @@
 
             <div class="form-group stacked">
                 <label class="checkbox">
-                    <input type="checkbox" name="data.enhancements.uses.commonPool" {{checked
+                    <input type="checkbox" name="system.enhancements.uses.commonPool" {{checked
                            data.system.enhancements.uses.commonPool}}/> {{localize "D35E.CommonUsesPool"}}
                 </label>
             </div>
@@ -15,11 +15,11 @@
             <div class="form-group uses-per">
                 <label>{{localize "D35E.LimitedUses"}}</label>
                 <div class="form-fields">
-                    <input type="text" name="data.enhancements.uses.value" value="{{data.system.enhancements.uses.value}}"
+                    <input type="text" name="system.enhancements.uses.value" value="{{data.system.enhancements.uses.value}}"
                            data-dtype="Number"/>
                     <span class="sep"> / </span>
                     <input type="text" value="{{data.system.enhancements.uses.max}}" disabled data-dtype="Number"/>
-                    <select name="data.enhancements.uses.per">
+                    <select name="system.enhancements.uses.per">
                         {{#select data.system.enhancements.uses.per}}
                         <option value=""></option>
                         {{#each config.limitedUsePeriods as |name key|}}
@@ -31,18 +31,18 @@
             </div>
             <div class="form-group uses-per">
                 <label>{{localize "D35E.MaximumUsesFormula"}}</label>
-                <input type="text" name="data.enhancements.uses.maxFormula"
+                <input type="text" name="system.enhancements.uses.maxFormula"
                        value="{{data.system.enhancements.uses.maxFormula}}" placeholder="{{localize "D35E.MaximumUsesFormula"}}"/>
             </div>
             <div class="form-group uses-recharge-formula">
                 <label>{{localize "D35E.RechargeFormula"}} <i class="fas fa-info-circle tooltip">
                     <div class="tooltipcontent"><strong>{{localize "D35E.RechargeFormula"}}</strong><br><p style="white-space: normal;"> {{localize "D35E.RechargeFormulaInfo"}}</p></div>
                 </i></label>
-                <input type="text" name="data.enhancements.uses.rechargeFormula" value="{{data.system.enhancements.uses.rechargeFormula}}" placeholder="{{localize "D35E.RechargeFormula"}}"/>
+                <input type="text" name="system.enhancements.uses.rechargeFormula" value="{{data.system.enhancements.uses.rechargeFormula}}" placeholder="{{localize "D35E.RechargeFormula"}}"/>
             </div>
             <div class="form-group stacked">
                 <label class="checkbox">
-                    <input type="checkbox" name="data.enhancements.uses.autoDeductCharges" {{checked
+                    <input type="checkbox" name="system.enhancements.uses.autoDeductCharges" {{checked
                            data.system.enhancements.uses.autoDeductCharges}}/> {{localize "D35E.AutoDeductCharges"}}
                 </label>
             </div>
@@ -56,11 +56,11 @@
             </h3>
             <div class="form-group stacked">
                 <label class="checkbox">
-                    <input type="checkbox" name="data.enhancements.automation.updateName" {{checked
+                    <input type="checkbox" name="system.enhancements.automation.updateName" {{checked
                            data.system.enhancements.automation.updateName}}/> {{localize "D35E.MagicItemUpdateName"}}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.enhancements.automation.updatePrice" {{checked
+                    <input type="checkbox" name="system.enhancements.automation.updatePrice" {{checked
                            data.system.enhancements.automation.updatePrice}}/> {{localize "D35E.MagicItemUpdatePrice"}}
                 </label>
             </div>
@@ -252,13 +252,13 @@
                     <div class="form-group uses-per">
                         <label>{{localize "D35E.CasterLevel"}}</label>
                         <div class="form-fields">
-                            <input type="text" name="data.enhancements.clFormula" value="{{data.system.enhancements.clFormula}}"  />
+                            <input type="text" name="system.enhancements.clFormula" value="{{data.system.enhancements.clFormula}}"  />
                         </div>
                     </div>
                     <div class="form-group uses-per">
                         <label>{{localize "D35E.SpellcastingAbility"}}</label>
                         <div class="form-fields">
-                            <select name="data.enhancements.spellcastingAbility" data-dtype="String">
+                            <select name="system.enhancements.spellcastingAbility" data-dtype="String">
                                 {{#select data.system.enhancements.spellcastingAbility}}
                                 <option value="">{{localize "D35E.None"}}</option>
                                 {{#each config.abilities as |abl a|}}

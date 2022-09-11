@@ -122,7 +122,7 @@
             {{#if data.canLevelUp}}
             <a class="btn level-up blue-button" onkeydown="e.preventDefault();">{{ localize 'D35E.LevelUp' }}</a>
             {{/if}}
-              <input name="data.details.xp.value" type="text" value="{{data.details.xp.value}}"
+              <input name="system.details.xp.value" type="text" value="{{data.details.xp.value}}"
                      placeholder="0"/>
               <span class="max"> / {{data.details.xp.max}}</span>
             </div>
@@ -137,22 +137,22 @@
       <div class="flexcol">
         <ul class="summary">
           <li>
-            <input type="text" name="data.details.gender" value="{{data.details.gender}}" placeholder="{{ localize 'D35E.Gender' }}" title="{{ localize 'D35E.Gender' }}"/>
+            <input type="text" name="system.details.gender" value="{{data.details.gender}}" placeholder="{{ localize 'D35E.Gender' }}" title="{{ localize 'D35E.Gender' }}"/>
           </li>
           <li>
-            <input type="text" name="data.details.alignment" value="{{data.details.alignment}}" placeholder="{{ localize 'D35E.Alignment' }}" title="{{ localize 'D35E.Alignment' }}"/>
+            <input type="text" name="system.details.alignment" value="{{data.details.alignment}}" placeholder="{{ localize 'D35E.Alignment' }}" title="{{ localize 'D35E.Alignment' }}"/>
           </li>
           <li>
-            <input type="text" name="data.details.deity" value="{{data.details.deity}}" placeholder="{{ localize 'D35E.Deity' }}" title="{{ localize 'D35E.Deity' }}"/>
+            <input type="text" name="system.details.deity" value="{{data.details.deity}}" placeholder="{{ localize 'D35E.Deity' }}" title="{{ localize 'D35E.Deity' }}"/>
           </li>
           <li>
-            <input type="text" name="data.details.age" value="{{data.details.age}}" placeholder="{{ localize 'D35E.Age'}}" title="{{ localize 'D35E.Age' }}"/>
+            <input type="text" name="system.details.age" value="{{data.details.age}}" placeholder="{{ localize 'D35E.Age'}}" title="{{ localize 'D35E.Age' }}"/>
           </li>
           <li>
-            <input type="text" name="data.details.height" value="{{data.details.height}}" placeholder="{{ localize 'D35E.Height' }}" title="{{ localize 'D35E.Height' }}"/>
+            <input type="text" name="system.details.height" value="{{data.details.height}}" placeholder="{{ localize 'D35E.Height' }}" title="{{ localize 'D35E.Height' }}"/>
           </li>
           <li>
-            <input type="text" name="data.details.weight" value="{{data.details.weight}}" placeholder="{{ localize 'D35E.Weight' }}" title="{{ localize 'D35E.Weight' }}"/>
+            <input type="text" name="system.details.weight" value="{{data.details.weight}}" placeholder="{{ localize 'D35E.Weight' }}" title="{{ localize 'D35E.Weight' }}"/>
           </li>
           <ol class="item-list race-container" style="width: 66.66%">
           <li class="flexrow item {{#unless race}}norace{{/unless}}" {{#if race}}data-item-id="{{race._id}}"{{/if}} style="width: 100%">
@@ -269,12 +269,12 @@
 
     {{!-- Biography Tab --}}
     <div class="tab biography flexcol" data-group="primary" data-tab="biography">
-      {{editor content=data.details.biography.value target="data.details.biography.value" button=true owner=owner editable=editable}}
+      {{editor content=data.details.biography.value target="system.details.biography.value" button=true owner=owner editable=editable}}
     </div>
 
     {{!-- Notes Tab --}}
     <div class="tab actor-notes flexcol" data-group="primary" data-tab="notes">
-      {{editor content=data.details.notes.value target="data.details.notes.value" button=true owner=owner editable=editable}}
+      {{editor content=data.details.notes.value target="system.details.notes.value" button=true owner=owner editable=editable}}
     </div>
 
     {{!-- Config Tab --}}

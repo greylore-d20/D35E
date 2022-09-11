@@ -9,12 +9,12 @@
       </h1>
       <div class="hd" style="flex: 0 0 148px;">
         <Label>{{ localize 'D35E.FindDC' }}</label>
-        <input name="data.details.findDC" type="text" value="{{data.details.findDC}}" placeholder="1"
+        <input name="system.details.findDC" type="text" value="{{data.details.findDC}}" placeholder="1"
                data-dtype="Number"/>
       </div>
       <div class="hd" style="flex: 0 0 168px;">
         <Label>{{ localize 'D35E.DisarmDC' }}</label>
-        <input name="data.details.disarmDC" type="text" value="{{data.details.disarmDC}}" placeholder="1"
+        <input name="system.details.disarmDC" type="text" value="{{data.details.disarmDC}}" placeholder="1"
                data-dtype="Number"/>
       </div>
       <div class="charlevel" style="flex: 0 0 80px;">
@@ -23,7 +23,7 @@
         </div>
         <div class="level" style="line-height: 14px">
           <label style="font-size: 14px;">{{ localize 'D35E.BaseCR' }}</label>
-          <input name="data.details.cr" style="font-size: 14px; height: 16px" type="text" value="{{labels.cr}}" placeholder="1"/>
+          <input name="system.details.cr" style="font-size: 14px; height: 16px" type="text" value="{{labels.cr}}" placeholder="1"/>
         </div>
         <div class="experience">
           <span>{{data.details.xp.value}} {{ localize 'D35E.XP' }}</span>
@@ -125,7 +125,7 @@
   </nav>
   <section class="primary-body">
 
-    {{editor content=data.details.notes.value target="data.details.notes.value" button=true owner=owner
+    {{editor content=data.details.notes.value target="system.details.notes.value" button=true owner=owner
     editable=editable}}
   </section>
 

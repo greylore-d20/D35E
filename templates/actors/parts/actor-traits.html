@@ -3,7 +3,7 @@
   {{!-- Racial Type --}}
   <div class="form-group">
     <label>{{localize "D35E.CreatureType"}}</label>
-    <select name="data.attributes.creatureType" disabled>
+    <select name="system.attributes.creatureType" disabled>
       {{#select data.attributes.creatureType}}
       {{#each config.creatureTypes as |name type|}}
       <option value="{{type}}">{{name}}</option>
@@ -16,7 +16,7 @@
   <div class="traits">
   <div class="form-group">
     <label>{{ localize 'D35E.Size' }}</label>
-    <select style="flex: 0 30px" class="actor-size" name="data.traits.size">
+    <select style="flex: 0 30px" class="actor-size" name="system.traits.size">
       {{#select data.traits.size}}
       {{#each config.actorSizes as |label size|}}
       <option value="{{size}}">{{label}}</option>
@@ -38,7 +38,7 @@
 
   <div class="form-group">
     <label>{{ localize 'D35E.TokenSize' }}</label>
-    <select class="actor-size" name="data.traits.tokenSize">
+    <select class="actor-size" name="system.traits.tokenSize">
       {{#select data.traits.tokenSize}}
       {{#each config.actorTokenSizes as |label size|}}
       <option value="{{size}}">{{label}}</option>
@@ -63,7 +63,7 @@
 
   <div class="form-group {{#unless data.traits.cres}}inactive{{/unless}}">
     <label>{{ localize 'D35E.ConRes' }}</label>
-    <input type="text" name="data.traits.cres" value="{{data.traits.cres}}" placeholder="{{ localize 'D35E.None-FrF' }}"/>
+    <input type="text" name="system.traits.cres" value="{{data.traits.cres}}" placeholder="{{ localize 'D35E.None-FrF' }}"/>
   </div>
 
 
@@ -79,7 +79,7 @@
     <div class="form-group">
       <label>{{ localize 'D35E.Incorporeal' }}</label>
       <label class="checkbox">
-        <input type="checkbox" name="data.traits.incorporeal" {{checked data.traits.incorporeal}}/>
+        <input type="checkbox" name="system.traits.incorporeal" {{checked data.traits.incorporeal}}/>
       </label>
     </div>
 
@@ -129,14 +129,14 @@
   <div class="form-group">
     <label>{{ localize 'D35E.Quadruped' }}</label>
     <label class="checkbox">
-      <input type="checkbox" name="data.attributes.quadruped" {{checked data.attributes.quadruped}}/>
+      <input type="checkbox" name="system.attributes.quadruped" {{checked data.attributes.quadruped}}/>
     </label>
   </div>
 
   <div class="form-group">
     <label>{{ localize 'D35E.LevelDrain' }}</label>
     <label class="checkbox">
-      <input type="text" name="data.attributes.energyDrain" value="{{#if data.attributes.energyDrain}}{{data.attributes.energyDrain}}{{/if}}"
+      <input type="text" name="system.attributes.energyDrain" value="{{#if data.attributes.energyDrain}}{{data.attributes.energyDrain}}{{/if}}"
              placeholder="0" data-dtype="Number" />
     </label>
   </div>
@@ -148,12 +148,12 @@
   <h3 class="block-header">{{localize "D35E.LegacyAttributes"}}</h3>
   <div class="form-group {{#unless data.traits.dr}}inactive{{/unless}}">
     <label>{{ localize 'D35E.DamRed' }}</label>
-    <input type="text" name="data.traits.dr" value="{{data.traits.dr}}" placeholder="{{ localize 'D35E.None-FrF' }}"/>
+    <input type="text" name="system.traits.dr" value="{{data.traits.dr}}" placeholder="{{ localize 'D35E.None-FrF' }}"/>
   </div>
 
   <div class="form-group {{#unless data.traits.eres}}inactive{{/unless}}">
     <label>{{ localize 'D35E.EnRes' }}</label>
-    <input type="text" name="data.traits.eres" value="{{data.traits.eres}}" placeholder="{{ localize 'D35E.None-FrF' }}"/>
+    <input type="text" name="system.traits.eres" value="{{data.traits.eres}}" placeholder="{{ localize 'D35E.None-FrF' }}"/>
   </div>
 
   <div class="form-group {{data.traits.di.cssClass}}">
@@ -178,6 +178,6 @@
 
   <div class="form-group {{#unless data.traits.senses}}inactive{{/unless}}">
     <label>{{ localize 'D35E.Senses' }}</label>
-    <input type="text" name="data.traits.senses" value="{{data.traits.senses}}" placeholder="{{ localize 'D35E.None-FrM' }}"/>
+    <input type="text" name="system.traits.senses" value="{{data.traits.senses}}" placeholder="{{ localize 'D35E.None-FrM' }}"/>
   </div>
 </div>

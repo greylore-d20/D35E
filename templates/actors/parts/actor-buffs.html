@@ -99,7 +99,7 @@
             {{#each data.attributes.conditions as |value con|}}
             <div class="condition">
                 <label class="checkbox">
-                    <input type="checkbox" name="data.attributes.conditions.{{con}}" {{checked value}}/>
+                    <input type="checkbox" name="system.attributes.conditions.{{con}}" {{checked value}}/>
                     <span>{{lookup ../config.conditions con}}</span>
                 </label>
             </div>

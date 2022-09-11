@@ -16,7 +16,7 @@
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseHP' }}</label>
-          <input name="data.staticBonus.hp" style="font-size: 14px; height: 16px" type="Number" value="{{data.staticBonus.hp}}" placeholder="0"/>
+          <input name="system.staticBonus.hp" style="font-size: 14px; height: 16px" type="Number" value="{{data.staticBonus.hp}}" placeholder="0"/>
         </div>
       </div>
       <div class="hd flexcol" style="flex: 0 0 110px;">
@@ -28,7 +28,7 @@
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseACBonus' }}</label>
-          <input name="data.staticBonus.ac" style="font-size: 14px; height: 16px" type="Number" value="{{data.staticBonus.ac}}" placeholder="0"/>
+          <input name="system.staticBonus.ac" style="font-size: 14px; height: 16px" type="Number" value="{{data.staticBonus.ac}}" placeholder="0"/>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseBreakDC' }}</label>
-          <input name="data.details.breakDC.base" style="font-size: 14px; height: 16px" type="text" value="{{data.details.breakDC.base}}" placeholder="0"/>
+          <input name="system.details.breakDC.base" style="font-size: 14px; height: 16px" type="text" value="{{data.details.breakDC.base}}" placeholder="0"/>
         </div>
       </div>
       <div class="hd flexcol" style="flex: 0 0 168px;">
@@ -56,7 +56,7 @@
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseHardness' }}</label>
-          <input name="data.attributes.hardness.formula" style="font-size: 14px; height: 16px" type="text" value="{{data.attributes.hardness.formula}}" placeholder="0"/>
+          <input name="system.attributes.hardness.formula" style="font-size: 14px; height: 16px" type="text" value="{{data.attributes.hardness.formula}}" placeholder="0"/>
         </div>
       </div>
     </div>
@@ -176,7 +176,7 @@
   </nav>
   <section class="primary-body">
 
-    {{editor content=data.details.notes.value target="data.details.notes.value" button=true owner=owner
+    {{editor content=data.details.notes.value target="system.details.notes.value" button=true owner=owner
     editable=editable}}
   </section>
 

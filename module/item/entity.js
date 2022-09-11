@@ -456,19 +456,19 @@ export class ItemPF extends Item {
         }
         console.log('Is true/false', data, getProperty(this.system,"active"))
         let expandedData = expandObject(data);
-        const srcData = mergeObject(this.data.toObject(), expandedData);
+        const srcData = mergeObject(this.toObject(), expandedData);
 
         let needsUpdate = false; // if we do not have changes we often do not need to update actor
         if (this.type === 'class' ||
-            srcData.data?.changes?.length > 0 ||
-            srcData.data?.damageReduction?.length > 0 ||
-            srcData.data?.resistances?.length > 0 ||
-            srcData.data?.requirements?.length > 0 ||
-            srcData.data.uses?.isResource ||
-            srcData.data.uses?.canBeLinked ||
-            data['data.quantity'] !== undefined ||
-            data['data.equipped'] !== undefined ||
-            data['data.carried'] !== undefined)
+            srcData.system?.changes?.length > 0 ||
+            srcData.system?.damageReduction?.length > 0 ||
+            srcData.system?.resistances?.length > 0 ||
+            srcData.system?.requirements?.length > 0 ||
+            srcData.system.uses?.isResource ||
+            srcData.system.uses?.canBeLinked ||
+            data['system.quantity'] !== undefined ||
+            data['system.equipped'] !== undefined ||
+            data['system.carried'] !== undefined)
             needsUpdate = true
 
         
@@ -476,22 +476,22 @@ export class ItemPF extends Item {
         console.log('Should be true/false, is true true', data, getProperty(this.system,"active"))
 
         for (var key in expandedData?.data?.customAttributes) {
-            if (data[`data.customAttributes.${key}`] === null) continue;
+            if (data[`system.customAttributes.${key}`] === null) continue;
             if (expandedData.data.customAttributes.hasOwnProperty(key)) {
                 let customAttribute = expandedData.data.customAttributes[key];
                 let addedAttributes = new Set()
                 if (customAttribute.selectList !== undefined) {
                     if (customAttribute.selectList) {
-                        data[`data.customAttributes.${key}.selectListArray`] = {}
+                        data[`system.customAttributes.${key}.selectListArray`] = {}
                         for (let selectAttribute of customAttribute.selectList.split("|")) {
                             if (selectAttribute.indexOf(":") !== -1) {
                                 if (!selectAttribute.split(":")[1]) continue;
                                 addedAttributes.add(selectAttribute.split(":")[1])
-                                data[`data.customAttributes.${key}.selectListArray`][selectAttribute.split(":")[1]] = selectAttribute.split(":")[0];
+                                data[`system.customAttributes.${key}.selectListArray`][selectAttribute.split(":")[1]] = selectAttribute.split(":")[0];
                             } else {
                                 if (!selectAttribute) continue;
                                 addedAttributes.add(selectAttribute)
-                                data[`data.customAttributes.${key}.selectListArray`][selectAttribute] = selectAttribute;
+                                data[`system.customAttributes.${key}.selectListArray`][selectAttribute] = selectAttribute;
                             }
                             
                         }
@@ -499,7 +499,7 @@ export class ItemPF extends Item {
                     let existingCustomAttribute = this.system.customAttributes[key];
                     for (var _key in existingCustomAttribute.selectListArray) {
                         if (!addedAttributes.has(_key))
-                            data[`data.customAttributes.${key}.selectListArray.-=${_key}`] = null;
+                            data[`system.customAttributes.${key}.selectListArray.-=${_key}`] = null;
                     }
                 }
             }
@@ -507,8 +507,8 @@ export class ItemPF extends Item {
 
         //const srcDataWithRolls = srcsystem;
         if (data["firstChangeTarget"]) {
-            data["data.changes.0.2"] = data["firstChangeTarget"].split(":")[0];
-            data["data.changes"][0][2] = data["firstChangeTarget"].split(":")[0];
+            data["system.changes.0.2"] = data["firstChangeTarget"].split(":")[0];
+            data["system.changes"][0][2] = data["firstChangeTarget"].split(":")[0];
             srcData.firstChangeTargetName = data["firstChangeTarget"].split(":")[1];
             delete data["firstChangeTarget"];
         }
@@ -518,70 +518,70 @@ export class ItemPF extends Item {
             data["name"] = ItemPF._fillTemplate(data['data.nameFormula'] || getProperty(this.system,"nameFormula"), srcDataWithRolls) || data["name"]
         }
         // Update name
-        if (data["data.identifiedName"]) data["name"] = data["data.identifiedName"];
-        else if (data["name"]) data["data.identifiedName"] = data["name"];
+        if (data["system.identifiedName"]) data["name"] = data["system.identifiedName"];
+        else if (data["name"]) data["system.identifiedName"] = data["name"];
 
 
-        let activateBuff = data["data.active"] && data["data.active"] !== getProperty(this.system,"active");
-        let deactivateBuff = getProperty(this.system,"active") && (data["data.active"] !== undefined && !data["data.active"]);
+        let activateBuff = data["system.active"] && data["system.active"] !== getProperty(this.system,"active");
+        let deactivateBuff = getProperty(this.system,"active") && (data["system.active"] !== undefined && !data["system.active"]);
         // Update description
         if (this.type === "spell") await this._updateSpellDescription(data, srcData);
         if (this.type === "card") await this._updateCardDescription(data, srcData);
 
         // Set weapon subtype
-        if (data["data.weaponType"] != null && data["data.weaponType"] !== getProperty(this.system,"weaponType")) {
-            const type = data["data.weaponType"];
-            const subtype = data["data.weaponSubtype"] || getProperty(this.system,"weaponSubtype") || "";
+        if (data["system.weaponType"] != null && data["system.weaponType"] !== getProperty(this.system,"weaponType")) {
+            const type = data["system.weaponType"];
+            const subtype = data["system.weaponSubtype"] || getProperty(this.system,"weaponSubtype") || "";
             const keys = Object.keys(CONFIG.D35E.weaponTypes[type])
                 .filter(o => !o.startsWith("_"));
             if (!subtype || !keys.includes(subtype)) {
-                data["data.weaponSubtype"] = keys[0];
+                data["system.weaponSubtype"] = keys[0];
             }
         }
 
-        if (data["data.hasSpellbook"] != null && data["data.hasSpellbook"] !== getProperty(this.system,"hasSpellbook")) {
+        if (data["system.hasSpellbook"] != null && data["system.hasSpellbook"] !== getProperty(this.system,"hasSpellbook")) {
             const curValue = getProperty(this.system, "spellbook");
             if (curValue == null || curValue.length === 0) {
                 let spellbook = []
                 for (let a = 0; a < 10; a++) {
                     spellbook.push({level: a, spells: []})
                 }
-                data["data.spellbook"] = spellbook;
+                data["system.spellbook"] = spellbook;
             }
         }
 
         if (this.pack && this.pack.startsWith("D35E")) {
-            data["data.originVersion"] = getProperty(this.system,"originVersion") + 1;
+            data["system.originVersion"] = getProperty(this.system,"originVersion") + 1;
         }
 
-        if (data["data.weaponData.size"] && data["data.weaponData.size"] !== getProperty(this.system,"weaponData.size")) {
-            let newSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(data["data.weaponData.size"] || "");
+        if (data["system.weaponData.size"] && data["system.weaponData.size"] !== getProperty(this.system,"weaponData.size")) {
+            let newSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(data["system.weaponData.size"] || "");
             let oldSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(getProperty(this.system,"weaponData.size") || "");
             let weightChange = Math.pow(2,newSize-oldSize);
-            data["data.weight"] = getProperty(this.system,"weight") * weightChange;
+            data["system.weight"] = getProperty(this.system,"weight") * weightChange;
         }
 
         //console.log("D35E Item Update", data)
-        if (data["data.convertedWeight"] !== undefined && data["data.convertedWeight"] !== null ) {
+        if (data["system.convertedWeight"] !== undefined && data["system.convertedWeight"] !== null ) {
             const conversion = game.settings.get("D35E", "units") === "metric" ? 2 : 1;
-            data["data.weight"] = data["data.convertedWeight"] * conversion;
+            data["system.weight"] = data["system.convertedWeight"] * conversion;
         }
 
-        if (data["data.classType"] !== undefined && data["data.classType"] === 'template') {
-            data["data.hp"] = 0;
+        if (data["system.classType"] !== undefined && data["system.classType"] === 'template') {
+            data["system.hp"] = 0;
         }
 
         this._updateCalculateAutoDC(data);
 
-        if (data["data.convertedCapacity"] !== undefined && data["data.convertedCapacity"] !== null) {
+        if (data["system.convertedCapacity"] !== undefined && data["system.convertedCapacity"] !== null) {
             const conversion = game.settings.get("D35E", "units") === "metric" ? 2 : 1;
-            data["data.capacity"] = data["data.convertedCapacity"] * conversion;
+            data["system.capacity"] = data["system.convertedCapacity"] * conversion;
         }
 
-        if (data["data.selectedMaterial"] && data["data.selectedMaterial"] !== "none") {
-            data["data.material"] = duplicate(CACHE.Materials.get(data["data.selectedMaterial"]));
-        } else if (data["data.selectedMaterial"]  && data["data.selectedMaterial"] === "none") {
-            data["data.-=material"] = null;
+        if (data["system.selectedMaterial"] && data["system.selectedMaterial"] !== "none") {
+            data["system.material"] = duplicate(CACHE.Materials.get(data["system.selectedMaterial"]));
+        } else if (data["system.selectedMaterial"]  && data["system.selectedMaterial"] === "none") {
+            data["system.-=material"] = null;
         }
 
         {
@@ -595,26 +595,26 @@ export class ItemPF extends Item {
         }
 
         // Set equipment subtype and slot
-        if (data["data.equipmentType"] != null && data["data.equipmentType"] !== getProperty(this.system,"equipmentType")) {
+        if (data["system.equipmentType"] != null && data["system.equipmentType"] !== getProperty(this.system,"equipmentType")) {
             // Set subtype
-            const type = data["data.equipmentType"];
-            const subtype = data["data.equipmentSubtype"] || getProperty(this.system,"equipmentSubtype") || "";
+            const type = data["system.equipmentType"];
+            const subtype = data["system.equipmentSubtype"] || getProperty(this.system,"equipmentSubtype") || "";
             let keys = Object.keys(CONFIG.D35E.equipmentTypes[type])
                 .filter(o => !o.startsWith("_"));
             if (!subtype || !keys.includes(subtype)) {
-                data["data.equipmentSubtype"] = keys[0];
+                data["system.equipmentSubtype"] = keys[0];
             }
 
             // Set slot
-            const slot = data["data.slot"] || getProperty(this.system,"slot") || "";
+            const slot = data["system.slot"] || getProperty(this.system,"slot") || "";
             keys = Object.keys(CONFIG.D35E.equipmentSlots[type]);
             if (!slot || !keys.includes(slot)) {
-                data["data.slot"] = keys[0];
+                data["system.slot"] = keys[0];
             }
         }
 
         // Update enh from Enhancements
-        let _enhancements = duplicate(getProperty(srcData, `data.enhancements.items`) || []);
+        let _enhancements = duplicate(getProperty(srcData, `system.enhancements.items`) || []);
         this._updateBaseEnhancement(data, _enhancements, this.type, srcData);
         this._updateAlignmentEnhancement(data, _enhancements, this.type, srcData);
 
@@ -623,22 +623,21 @@ export class ItemPF extends Item {
 
         this._updateMaxUses(data, {srcData: srcData});
 
-        const diff = diffObject(flattenObject(this.data.toObject()), data);
         let updatedItem = null;
         // if (Object.keys(diff).length) {
         //     updatedItem = await super.update(diff, options);
         // }
 
         if (activateBuff) {
-            data["data.timeline.elapsed"] = 0;
-            data["data.damagePool.current"] = data["data.damagePool.total"] || getProperty(this.system,"damagePool.total");
+            data["system.timeline.elapsed"] = 0;
+            data["system.damagePool.current"] = data["system.damagePool.total"] || getProperty(this.system,"damagePool.total");
         }
         let updateData = await super.update(data, options);
         if (this.actor !== null && !options.massUpdate) {
 
             if (activateBuff) {
                 //Buff or item was activated
-                data["data.timeline.elapsed"] = 0
+                data["system.timeline.elapsed"] = 0
                 let actionValue = (getProperty(this.system,"activateActions") || []).map(a => a.action).join(";")
                 if (!actionValue) await this.actor.refresh(options); 
                 else {
@@ -719,7 +718,7 @@ export class ItemPF extends Item {
     
             } else {
 
-                if ((data["data.range"] || data["data.auraTarget"]) && this.type === "aura") {
+                if ((data["system.range"] || data["system.auraTarget"]) && this.type === "aura") {
                     await this.actor.refresh({reloadAuras: true})
                 } else {
                     if (needsUpdate)
@@ -735,10 +734,10 @@ export class ItemPF extends Item {
     }
 
     _updateCalculateAutoDC(data) {
-        if (data["data.save.dcAutoType"] !== undefined && data["data.save.dcAutoType"] !== null && data["data.save.dcAutoType"] !== "") {
+        if (data["system.save.dcAutoType"] !== undefined && data["system.save.dcAutoType"] !== null && data["system.save.dcAutoType"] !== "") {
             let autoDCBonus = 0;
             if (this.actor && this.actor.racialHD) {
-                let autoType = data["data.save.dcAutoType"];
+                let autoType = data["system.save.dcAutoType"];
                 switch (autoType) {
                     case "racialHD":
                         autoDCBonus += this.actor.racialHD.system.levels;
@@ -757,75 +756,75 @@ export class ItemPF extends Item {
                     default:
                         break;
                 }
-                let ability = data["data.save.dcAutoAbility"];
-                data["data.save.dc"] = 10 + (this.actor.system.abilities[ability]?.mod || 0) + autoDCBonus;
+                let ability = data["system.save.dcAutoAbility"];
+                data["system.save.dc"] = 10 + (this.actor.system.abilities[ability]?.mod || 0) + autoDCBonus;
             } else {
-                data["data.save.dc"] = 0;
+                data["system.save.dc"] = 0;
             }
         }
     }
 
     _updateCalculatePriceData(data, rollData) {
         let rollFormula = getProperty(this.system,"priceFormula");
-        if (data["data.priceFormula"] != null && data["data.priceFormula"] !== getProperty(this.system,"priceFormula"))
-            rollFormula = data["data.priceFormula"];
+        if (data["system.priceFormula"] != null && data["system.priceFormula"] !== getProperty(this.system,"priceFormula"))
+            rollFormula = data["system.priceFormula"];
         if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
-            data["data.price"] = new Roll35e(rollFormula, rollData).roll().total;
+            data["system.price"] = new Roll35e(rollFormula, rollData).roll().total;
         }
     }
 
     _updateCalculateMaxDamageDice(data, rollData) {
-        if (data["data.maxDamageDiceFormula"] != null && data["data.maxDamageDiceFormula"] !== getProperty(this.system,"maxDamageDiceFormula")) {
-            let roll = new Roll35e(data["data.maxDamageDiceFormula"], rollData).roll();
-            data["data.maxDamageDice"] = roll.total;
+        if (data["system.maxDamageDiceFormula"] != null && data["system.maxDamageDiceFormula"] !== getProperty(this.system,"maxDamageDiceFormula")) {
+            let roll = new Roll35e(data["system.maxDamageDiceFormula"], rollData).roll();
+            data["system.maxDamageDice"] = roll.total;
         }
     }
 
     _updateCalculateEnhancementData(rollData, data) {
-        rollData.enhancement = data["data.enh"] !== undefined ? data["data.enh"] : getProperty(this.system,"enh");
+        rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.system,"enh");
         let rollFormula = getProperty(this.system,"enhIncreaseFormula");
-        if (data["data.enhIncreaseFormula"] != null && data["data.enhIncreaseFormula"] !== getProperty(this.system,"enhIncreaseFormula"))
-            rollFormula = data["data.enhIncreaseFormula"];
+        if (data["system.enhIncreaseFormula"] != null && data["system.enhIncreaseFormula"] !== getProperty(this.system,"enhIncreaseFormula"))
+            rollFormula = data["system.enhIncreaseFormula"];
         if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
-            data["data.enhIncrease"] = new Roll35e(rollFormula, rollData).roll().total;
+            data["system.enhIncrease"] = new Roll35e(rollFormula, rollData).roll().total;
         }
-        rollData.enhancement = data["data.enh"] !== undefined ? data["data.enh"] : getProperty(this.system,"enh");
-        rollData.enhIncrease = data["data.enhIncrease"] !== undefined ? data["data.enhIncrease"] : getProperty(this.system,"enhIncrease");
+        rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.system,"enh");
+        rollData.enhIncrease = data["system.enhIncrease"] !== undefined ? data["system.enhIncrease"] : getProperty(this.system,"enhIncrease");
         
     }
 
     _updateCalculateDamagePoolData(data, rollData) {
         let rollFormula = getProperty(this.system,"damagePool.formula");
-        if (data["data.damagePool.formula"] != null && data["data.damagePool.formula"] !== getProperty(this.system,"damagePool.formula"))
-            rollFormula = data["data.damagePool.formula"];
+        if (data["system.damagePool.formula"] != null && data["system.damagePool.formula"] !== getProperty(this.system,"damagePool.formula"))
+            rollFormula = data["system.damagePool.formula"];
         if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
 
             rollData.item = {};
             rollData.item.level = getProperty(this.system,"level");
-            if (data["data.level"] != null && data["data.level"] !== getProperty(this.system,"level"))
-                rollData.item.level = data["data.level"];
+            if (data["system.level"] != null && data["system.level"] !== getProperty(this.system,"level"))
+                rollData.item.level = data["system.level"];
             try {
-                data["data.damagePool.total"] = new Roll35e(rollFormula, rollData).roll().total;
+                data["system.damagePool.total"] = new Roll35e(rollFormula, rollData).roll().total;
             } catch (e) {
-                data["data.damagePool.total"] = 0;
+                data["system.damagePool.total"] = 0;
             }
         }
     }
 
     _updateCalculateTimelineData(data, rollData) {
         let rollFormula = getProperty(this.system,"timeline.formula");
-        if (data["data.timeline.formula"] != null && data["data.timeline.formula"] !== getProperty(this.system,"timeline.formula"))
-            rollFormula = data["data.timeline.formula"];
+        if (data["system.timeline.formula"] != null && data["system.timeline.formula"] !== getProperty(this.system,"timeline.formula"))
+            rollFormula = data["system.timeline.formula"];
         if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
 
             rollData.item = {};
             rollData.item.level = getProperty(this.system,"level");
-            if (data["data.level"] != null && data["data.level"] !== getProperty(this.system,"level"))
-                rollData.item.level = data["data.level"];
+            if (data["system.level"] != null && data["system.level"] !== getProperty(this.system,"level"))
+                rollData.item.level = data["system.level"];
             try {
-                data["data.timeline.total"] = new Roll35e(rollFormula.toString(), rollData).roll().total;
+                data["system.timeline.total"] = new Roll35e(rollFormula.toString(), rollData).roll().total;
             } catch (e) {
-                data["data.timeline.total"] = 0;
+                data["system.timeline.total"] = 0;
             }
         }
     }
@@ -833,7 +832,7 @@ export class ItemPF extends Item {
     _updateAlignmentEnhancement(data, enhancements, type, srcData) {
         let doLinkData = true;
         if (srcData == null) {
-            srcData = this.data;
+            srcData = this.toObject();
             doLinkData = false;
         }
 
@@ -854,7 +853,7 @@ export class ItemPF extends Item {
         });
         //console.log('Total enh',totalEnchancement, type)
         if (type === 'weapon' && enhancements.length) {
-            if (doLinkData) linkData(srcData, data, "data.weaponData.alignment", alignment);
+            if (doLinkData) linkData(srcData, data, "system.weaponData.alignment", alignment);
             else data['data.weaponData.alignment'] = alignment
         }
     }
@@ -862,7 +861,7 @@ export class ItemPF extends Item {
     _updateBaseEnhancement(data, enhancements, type, srcData) {
         let doLinkData = true;
         if (srcData == null) {
-            srcData = this.data;
+            srcData = this.toObject();
             doLinkData = false;
         }
         let totalEnchancement = 0;
@@ -878,11 +877,11 @@ export class ItemPF extends Item {
         //console.log('Total enh',totalEnchancement, type)
         if (totalEnchancement > 0) {
             if (type === 'weapon') {
-                if (doLinkData) linkData(srcData, data, "data.enh", totalEnchancement);
+                if (doLinkData) linkData(srcData, data, "system.enh", totalEnchancement);
                 else data['data.enh'] = totalEnchancement
             }
             else if (type === 'equipment') {
-                if (doLinkData) linkData(srcData, data, "data.armor.enh", totalEnchancement);
+                if (doLinkData) linkData(srcData, data, "system.armor.enh", totalEnchancement);
                 else data['data.armor.enh'] = totalEnchancement
             }
         }
@@ -1177,7 +1176,7 @@ export class ItemPF extends Item {
      * @returns {Object} An object with data to be used in rolls in relation to this item.
      */
     getRollData(customData = null) {
-        let _base = this.data.toObject(false).data;
+        let _base = this.toObject(false).system;
         let result = {}
         if (customData)
             result = mergeObject(_base, customsystem)
@@ -1262,7 +1261,7 @@ export class ItemPF extends Item {
             let itemData = this.system
             let updateData = {}
             if (itemData.uses && itemData.uses.per === "encounter" && itemData.uses.value !== itemData.uses.max) {
-                updateData["data.uses.value"] = itemData.uses.max;
+                updateData["system.uses.value"] = itemData.uses.max;
                 this.update(updateData);
             }
         }
@@ -1277,7 +1276,7 @@ export class ItemPF extends Item {
             if (getProperty(this.system,"timeline.elapsed") + time >= getProperty(this.system,"timeline.total")) {
                 if (!getProperty(this.system,"timeline.deleteOnExpiry")) {
                     let updateData = {}
-                    updateData["data.active"] = false;
+                    updateData["system.active"] = false;
                     await this.update(updateData);
                 } else {
                     if (!this.actor) return;
@@ -1285,7 +1284,7 @@ export class ItemPF extends Item {
                 }
             } else {
                 let updateData = {}
-                updateData["data.timeline.elapsed"] = getProperty(this.system,"timeline.elapsed") + time;
+                updateData["system.timeline.elapsed"] = getProperty(this.system,"timeline.elapsed") + time;
                 await this.update(updateData);
             }
         }
@@ -1297,16 +1296,16 @@ export class ItemPF extends Item {
                 if (getProperty(this.system,"timeline.elapsed") + time >= getProperty(this.system,"timeline.total")) {
                     if (!getProperty(this.system,"timeline.deleteOnExpiry")) {
                         let updateData = {}
-                        updateData["data.active"] = false;
-                        updateData["data.timeline.elapsed"] = 0;
+                        updateData["system.active"] = false;
+                        updateData["system.timeline.elapsed"] = 0;
                         updateData["_id"] = this._id;
                         return updateData;
                     } else {
                         if (!this.actor) return;
                         if (this.actor.token) {
                             let updateData = {}
-                            updateData["data.active"] = false;
-                            //updateData["data.timeline.elapsed"] = 0;
+                            updateData["system.active"] = false;
+                            //updateData["system.timeline.elapsed"] = 0;
                             updateData["_id"] = this._id;
                             updateData["delete"] = true;
                             return updateData;
@@ -1315,8 +1314,8 @@ export class ItemPF extends Item {
                     }
                 } else {
                     let updateData = {}
-                    updateData["data.active"] = true;
-                    updateData["data.timeline.elapsed"] = getProperty(this.system,"timeline.elapsed") + time;
+                    updateData["system.active"] = true;
+                    updateData["system.timeline.elapsed"] = getProperty(this.system,"timeline.elapsed") + time;
                     updateData["_id"] = this._id;
                     return updateData;
                 }
@@ -1327,13 +1326,13 @@ export class ItemPF extends Item {
 
                 if (getProperty(this.system,"recharge.current") - time < 1) {
                     let updateData = {}
-                    updateData["data.recharge.current"] = 0;
-                    updateData["data.uses.value"] = getProperty(this.system,"uses.max");
+                    updateData["system.recharge.current"] = 0;
+                    updateData["system.uses.value"] = getProperty(this.system,"uses.max");
                     updateData["_id"] = this._id;
                     return updateData;
                 } else {
                     let updateData = {}
-                    updateData["data.recharge.current"] = getProperty(this.system,"recharge.current") - time;
+                    updateData["system.recharge.current"] = getProperty(this.system,"recharge.current") - time;
                     updateData["_id"] = this._id;
                     return updateData;
                 }
@@ -1377,13 +1376,13 @@ export class ItemPF extends Item {
     async _updateSpellDescription(updateData, srcData) {
         const data = ItemSpellHelpers.generateSpellDescription(this,srcData);
 
-        linkData(srcData, updateData, "data.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
+        linkData(srcData, updatedata, "system.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
     }
 
     async _updateCardDescription(updateData, srcData) {
         const data = this._generateSpellDescription(srcData);
 
-        linkData(srcData, updateData, "data.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
+        linkData(srcData, updatedata, "system.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
     }
 
 
@@ -1441,15 +1440,15 @@ export class ItemPF extends Item {
             ...(origData.items.find(i => i.type === "class")?.data?.changes || [])
         )
         if (type === "polymorph" || type === "wildshape") {
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.abilities.str.total")}`, "ability", "str", "replace", getProperty(origData, "data.abilities.str.total")]]) // Strength
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.abilities.dex.total")}`, "ability", "dex", "replace", getProperty(origData, "data.abilities.dex.total")]]) // Dexterity
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.abilities.con.total")}`, "ability", "con", "replace", getProperty(origData, "data.abilities.con.total")]]) // Constitution
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.attributes.speed.land.total")}`, "speed", "landSpeed", "replace", getProperty(origData, "data.attributes.speed.land.total")]])
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.attributes.speed.climb.total")}`, "speed", "climbSpeed", "replace", getProperty(origData, "data.attributes.speed.climb.total")]])
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.attributes.speed.swim.total")}`, "speed", "swimSpeed", "replace", getProperty(origData, "data.attributes.speed.swim.total")]])
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.attributes.speed.burrow.total")}`, "speed", "burrowSpeed", "replace", getProperty(origData, "data.attributes.speed.burrow.total")]])
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.attributes.speed.fly.total")}`, "speed", "flySpeed", "replace", getProperty(origData, "data.attributes.speed.fly.total")]])
-            system.changes = system.changes.concat([[`${getProperty(origData, "data.attributes.naturalACTotal")}`, "ac", "nac", "base", getProperty(origData, "data.attributes.naturalACTotal")]])
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.abilities.str.total")}`, "ability", "str", "replace", getProperty(origdata, "system.abilities.str.total")]]) // Strength
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.abilities.dex.total")}`, "ability", "dex", "replace", getProperty(origdata, "system.abilities.dex.total")]]) // Dexterity
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.abilities.con.total")}`, "ability", "con", "replace", getProperty(origdata, "system.abilities.con.total")]]) // Constitution
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.attributes.speed.land.total")}`, "speed", "landSpeed", "replace", getProperty(origdata, "system.attributes.speed.land.total")]])
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.attributes.speed.climb.total")}`, "speed", "climbSpeed", "replace", getProperty(origdata, "system.attributes.speed.climb.total")]])
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.attributes.speed.swim.total")}`, "speed", "swimSpeed", "replace", getProperty(origdata, "system.attributes.speed.swim.total")]])
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.attributes.speed.burrow.total")}`, "speed", "burrowSpeed", "replace", getProperty(origdata, "system.attributes.speed.burrow.total")]])
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.attributes.speed.fly.total")}`, "speed", "flySpeed", "replace", getProperty(origdata, "system.attributes.speed.fly.total")]])
+            system.changes = system.changes.concat([[`${getProperty(origdata, "system.attributes.naturalACTotal")}`, "ac", "nac", "base", getProperty(origdata, "system.attributes.naturalACTotal")]])
         }
 
         system.activateActions = []
@@ -1583,12 +1582,12 @@ export class ItemPF extends Item {
 
         // Set measure template
         if (type !== "potion" && type !== "tattoo") {
-            system.measureTemplate = getProperty(origData, "data.measureTemplate");
+            system.measureTemplate = getProperty(origdata, "system.measureTemplate");
         }
 
         // Set damage formula
         system.actionType = origsystem.actionType;
-        for (let d of getProperty(origData, "data.damage.parts")) {
+        for (let d of getProperty(origdata, "system.damage.parts")) {
             d[0] = d[0].replace(/@sl/g, slcl[0]);
             d[0] = d[0].replace(/@cl/g, slcl[1]);
             system.damage.parts.push(d);
@@ -1620,7 +1619,7 @@ export class ItemPF extends Item {
         ItemSpellHelper.calculateSpellCasterLevelLabels(slcl);
 
         // Set description
-        system.description.value = getProperty(origData, "data.description.value");
+        system.description.value = getProperty(origdata, "system.description.value");
 
         return data;
     }
@@ -1649,11 +1648,11 @@ export class ItemPF extends Item {
 
         system.activation.type = "standard";
 
-        system.measureTemplate = getProperty(origData, "data.measureTemplate");
+        system.measureTemplate = getProperty(origdata, "system.measureTemplate");
 
         // Set damage formula
         system.actionType = origsystem.actionType;
-        for (let d of getProperty(origData, "data.damage.parts")) {
+        for (let d of getProperty(origdata, "system.damage.parts")) {
             d[0] = d[0].replace(/@sl/g, slcl[0]);
             d[0] = d[0].replace(/@cl/g, "@attributes.hd.total");
             system.damage.parts.push(d);
@@ -1672,7 +1671,7 @@ export class ItemPF extends Item {
         system.specialActions = origsystem.specialActions;
         system.attackCountFormula = origsystem.attackCountFormula.replace(/@cl/g, slcl[1]).replace(/@sl/g, slcl[0]);
 
-        system.description.value = getProperty(origData, "data.description.value");
+        system.description.value = getProperty(origdata, "system.description.value");
 
         return data;
     }
@@ -1738,7 +1737,7 @@ export class ItemPF extends Item {
         }
         // Add subtargets affecting effects
         if (target === "effect") {
-            if (this.data.type === "spell") result["cl"] = game.i18n.localize("D35E.CasterLevel");
+            if (this.system.type === "spell") result["cl"] = game.i18n.localize("D35E.CasterLevel");
             if (this.hasSave) result["dc"] = game.i18n.localize("D35E.DC");
         }
         // Add misc subtargets
@@ -1864,7 +1863,7 @@ export class ItemPF extends Item {
         linkedData.itemId = itemData._id;
         linkedData.packId = itemData.document.pack;
         _linkedItems.push(linkedData);
-        updateData[`data.linkedItems`] = _linkedItems;
+        updateData[`system.linkedItems`] = _linkedItems;
         return updateData
     }
 
@@ -1873,10 +1872,10 @@ export class ItemPF extends Item {
             if (getProperty(this.system,"enhancements.automation.updateName") || force) {
                 let baseName = useIdentifiedName && getProperty(this.system,"identifiedName") || getProperty(this.system,"unidentified.name") 
                 if (getProperty(this.system,"unidentified.name") === '') {
-                    updateData[`data.unidentified.name`] = this.name;
+                    updateData[`system.unidentified.name`] = this.name;
                     baseName = this.name
                 }
-                updateData[`data.identifiedName`] = this.buildName(baseName, _enhancements)
+                updateData[`system.identifiedName`] = this.buildName(baseName, _enhancements)
             }
         }
     }
@@ -1886,10 +1885,10 @@ export class ItemPF extends Item {
             if (getProperty(this.system,"enhancements.automation.updateName") || force) {
                 let basePrice = this.system.unidentified.price
                 if (!getProperty(this.system,"unidentified.price")) {
-                    updateData[`data.unidentified.price`] = getProperty(this.system,"price");
+                    updateData[`system.unidentified.price`] = getProperty(this.system,"price");
                     basePrice = this.system.price
                 }
-                updateData[`data.price`] = this.buildPrice(basePrice, _enhancements)
+                updateData[`system.price`] = this.buildPrice(basePrice, _enhancements)
             }
         }
     }
@@ -2057,7 +2056,7 @@ export class ItemPF extends Item {
             if (_spell.id === spell.id) return;
         }
         _spells.push(spell);
-        updateData[`data.spellbook`] = _spellbook;
+        updateData[`system.spellbook`] = _spellbook;
         await this.update(updateData);
     }
 
@@ -2066,7 +2065,7 @@ export class ItemPF extends Item {
         let _spellbook = duplicate(this.system?.spellbook|| []);
         let _spells = (_spellbook[level]?.spells || []).filter(_spell => _spell.id !== spellId)
         _spellbook[level].spells = _spells;
-        updateData[`data.spellbook`] = _spellbook;
+        updateData[`system.spellbook`] = _spellbook;
         await this.update(updateData);
     }
 

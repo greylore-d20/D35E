@@ -79,7 +79,7 @@
 
       {{!-- Description Tab --}}
       <div class="tab flexcol active" data-group="primary" data-tab="description">
-        {{editor content=data.system.description.value target="data.description.value" button=true owner=owner editable=editable}}
+        {{editor content=data.system.description.value target="system.description.value" button=true owner=owner editable=editable}}
       </div>
 
       {{!-- Details Tab --}}
@@ -88,13 +88,13 @@
         <h3 class="form-header">Weapon Details</h3>
         <div class="form-group">
           <label>Base Weapon Type</label>
-          <input type="text" name="data.baseWeaponType" value="{{data.system.baseWeaponType}}" data-dtype="String"/>
+          <input type="text" name="system.baseWeaponType" value="{{data.system.baseWeaponType}}" data-dtype="String"/>
         </div>
 
         {{!-- Material Type --}}
         <div class="form-group">
           <label>{{localize "D35E.Material"}}</label>
-          <select name="data.selectedMaterial">
+          <select name="system.selectedMaterial">
             {{#select material.uniqueId}}
             <option value="none">{{localize "D35E.NoMaterial"}}</option>
             {{#each materials as |material type|}}
@@ -106,15 +106,15 @@
 
         <div class="form-group stacked">
           <label class="checkbox">
-            <input type="checkbox" name="data.proficient" {{checked data.system.proficient}}/> {{localize "D35E.Proficient"}}
+            <input type="checkbox" name="system.proficient" {{checked data.system.proficient}}/> {{localize "D35E.Proficient"}}
           </label>
           {{#if isNaturalAttack}}
           <label class="checkbox">
-            <input type="checkbox" name="data.primaryAttack" {{checked data.system.primaryAttack}}/> {{localize "D35E.PrimaryAttack"}}
+            <input type="checkbox" name="system.primaryAttack" {{checked data.system.primaryAttack}}/> {{localize "D35E.PrimaryAttack"}}
           </label>
           {{/if}}
           <label class="checkbox">
-            <input type="checkbox" name="data.showInQuickbar" {{checked data.system.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
+            <input type="checkbox" name="system.showInQuickbar" {{checked data.system.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
           </label>
 
           <div class="data-selector">
@@ -130,25 +130,25 @@
         <div class="flexrow">
           <div class="form-group" style="flex: 1">
             <div class="toggle" style="width: 125px">
-              <input id="{{randomUuid}}-data.melded" type="checkbox" name="data.melded" {{checked data.system.melded}}/>
+              <input id="{{randomUuid}}-data.melded" type="checkbox" name="system.melded" {{checked data.system.melded}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.melded">{{#if data.system.melded}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.Melded"}}</label>
             </div>
           </div>
           <div class="form-group" style="flex: 1">
             <div class="toggle" style="width: 125px">
-              <input id="{{randomUuid}}-data.thrown" type="checkbox" name="data.thrown" {{checked data.system.thrown}}/>
+              <input id="{{randomUuid}}-data.thrown" type="checkbox" name="system.thrown" {{checked data.system.thrown}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.thrown">{{#if data.system.thrown}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.Thrown"}}</label>
             </div>
           </div>
           <div class="form-group" style="flex: 1">
             <div class="toggle" style="width: 125px">
-              <input id="{{randomUuid}}-data.returning" type="checkbox" name="data.returning" {{checked data.system.returning}}/>
+              <input id="{{randomUuid}}-data.returning" type="checkbox" name="system.returning" {{checked data.system.returning}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.returning">{{#if data.system.returning}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.Returning"}}</label>
             </div>
           </div>
           <div class="form-group" style="flex: 1">
             <div class="toggle" style="width: 125px">
-              <input id="{{randomUuid}}-data.masterwork" type="checkbox" name="data.masterwork" {{checked data.system.masterwork}}/>
+              <input id="{{randomUuid}}-data.masterwork" type="checkbox" name="system.masterwork" {{checked data.system.masterwork}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.masterwork">{{#if data.system.masterwork}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.Masterwork"}}</label>
             </div>
           </div>
@@ -157,14 +157,14 @@
         <div class="form-group">
           <label>{{localize "D35E.WeaponExtendedThreatRange"}}</label>
           <label class="checkbox" style="position: relative; flex: 0 20px">
-            <input type="checkbox" class="stylized" name="data.threatRangeExtended" {{checked data.system.threatRangeExtended}}/>
+            <input type="checkbox" class="stylized" name="system.threatRangeExtended" {{checked data.system.threatRangeExtended}}/>
             <span class="checkmark"></span>
           </label>
         </div>
         <div class="form-group">
           <label>{{localize "D35E.WeaponPropNonLethal"}}</label>
           <label class="checkbox" style="position: relative; flex: 0 20px">
-            <input type="checkbox" class="stylized" name="data.nonLethal" {{checked data.system.nonLethal}}/>
+            <input type="checkbox" class="stylized" name="system.nonLethal" {{checked data.system.nonLethal}}/>
             <span class="checkmark"></span>
           </label>
         </div>
@@ -172,21 +172,21 @@
         <div class="form-group">
           <label>{{localize "D35E.WeaponTreatAsMagic"}}</label>
           <label class="checkbox" style="position: relative; flex: 0 20px">
-            <input type="checkbox" class="stylized" name="data.magic" {{checked data.system.magic}}/>
+            <input type="checkbox" class="stylized" name="system.magic" {{checked data.system.magic}}/>
             <span class="checkmark"></span>
           </label>
         </div>
         <div class="form-group">
           <label>{{localize "D35E.WeaponTreatAsEpic"}}</label>
           <label class="checkbox" style="position: relative; flex: 0 20px">
-            <input type="checkbox" class="stylized" name="data.epic" {{checked data.system.epic}}/>
+            <input type="checkbox" class="stylized" name="system.epic" {{checked data.system.epic}}/>
             <span class="checkmark"></span>
           </label>
         </div>
         {{else}}
         <div class="form-group">
           <label>{{localize "D35E.Type"}}</label>
-          <select name="data.weaponSubtype">
+          <select name="system.weaponSubtype">
             {{#select data.system.weaponSubtype}}
             {{#each weaponCategories.subTypes as |name type|}}
             <option value="{{type}}">{{name}}</option>
@@ -198,14 +198,14 @@
         <div class="form-group">
           <label>{{localize "D35E.Finesseable"}}</label>
           <label class="checkbox" style="position: relative; flex: 0 20px">
-            <input type="checkbox" class="stylized" name="data.finesseable" {{checked data.system.finesseable}}/>
+            <input type="checkbox" class="stylized" name="system.finesseable" {{checked data.system.finesseable}}/>
             <span class="checkmark"></span>
           </label>
         </div>
         <div class="form-group">
           <label>{{localize "D35E.Incorporeal"}}</label>
           <label class="checkbox" style="position: relative; flex: 0 20px">
-            <input type="checkbox" class="stylized" name="data.incorporeal" {{checked data.system.incorporeal}}/>
+            <input type="checkbox" class="stylized" name="system.incorporeal" {{checked data.system.incorporeal}}/>
             <span class="checkmark"></span>
           </label>
         </div>
@@ -215,25 +215,25 @@
         <div class="flexrow">
           <div class="form-group" style="flex: 1">
             <div class="toggle" style="width: 125px">
-              <input id="{{randomUuid}}-data.weaponData.alignment.good" type="checkbox" name="data.alignment.good" {{checked data.system.alignment.good}}/>
+              <input id="{{randomUuid}}-data.weaponData.alignment.good" type="checkbox" name="system.alignment.good" {{checked data.system.alignment.good}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.weaponData.alignment.good">{{#if data.system.alignment.good}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.AlignmentGood"}}</label>
             </div>
           </div>
           <div class="form-group" style="flex: 1">
             <div class="toggle" style="width: 125px">
-              <input id="{{randomUuid}}-data.weaponData.alignment.evil" type="checkbox" name="data.alignment.evil" {{checked data.system.alignment.evil}}/>
+              <input id="{{randomUuid}}-data.weaponData.alignment.evil" type="checkbox" name="system.alignment.evil" {{checked data.system.alignment.evil}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.weaponData.alignment.evil">{{#if data.system.alignment.evil}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.AlignmentEvil"}}</label>
             </div>
           </div>
           <div class="form-group" style="flex: 1">
             <div class="toggle" style="width: 125px">
-              <input id="{{randomUuid}}-data.weaponData.alignment.chaotic" type="checkbox" name="data.alignment.chaotic" {{checked data.system.alignment.chaotic}}/>
+              <input id="{{randomUuid}}-data.weaponData.alignment.chaotic" type="checkbox" name="system.alignment.chaotic" {{checked data.system.alignment.chaotic}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.weaponData.alignment.chaotic">{{#if data.system.alignment.chaotic}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.AlignmentChaotic"}}</label>
             </div>
           </div>
           <div class="form-group" style="flex: 1">
             <div class="toggle">
-              <input id="{{randomUuid}}-data.weaponData.alignment.lawful" type="checkbox" name="data.alignment.lawful" {{checked data.system.alignment.lawful}}/>
+              <input id="{{randomUuid}}-data.weaponData.alignment.lawful" type="checkbox" name="system.alignment.lawful" {{checked data.system.alignment.lawful}}/>
               <label style="width: 125px" for="{{randomUuid}}-data.weaponData.alignment.lawful">{{#if data.system.alignment.lawful}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.AlignmentLawful"}}</label>
             </div>
           </div>
@@ -242,7 +242,7 @@
         <div class="form-group">
           <label>{{localize "D35E.EnhancementBonus"}}</label>
           <div class="form-fields">
-            <input type="text" name="data.enh" value="{{data.system.enh}}" data-dtype="Number" placeholder="0"/>
+            <input type="text" name="system.enh" value="{{data.system.enh}}" data-dtype="Number" placeholder="0"/>
           </div>
         </div>
 
@@ -251,7 +251,7 @@
         {{!-- Attack Type --}}
         <div class="form-group">
           <label>{{localize "D35E.AttackType"}}</label>
-          <select name="data.attackType">
+          <select name="system.attackType">
             {{#select data.system.attackType}}
             {{#each config.attackTypes as |name type|}}
             <option value="{{type}}">{{name}}</option>
@@ -267,7 +267,7 @@
 
         <div class="form-group">
           <label>{{localize "D35E.AutoScaleAttack"}}</label>
-          <select name="data.autoScaleOption">
+          <select name="system.autoScaleOption">
             {{#select data.system.autoScaleOption}}
             <option value="default">{{localize "D35E.Default"}}</option>
             <option value="always">{{localize "D35E.Always"}}</option>
@@ -291,7 +291,7 @@
         <h3 class="form-header">System Properties</h3>
         <div class="form-group">
           <label>UID</label>
-          <input type="text" name="data.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
+          <input type="text" name="system.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
         </div>
         {{/if}}
       </div>

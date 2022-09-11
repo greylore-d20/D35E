@@ -38,7 +38,7 @@ export class ItemChargeUpdateHelper {
      * @param actorRollData
      */
     static updateMaxUses(item, data, {srcData = null, actorData = null, actorRollData = null} = {}) {
-        if (data['data.uses.max'] !== undefined) return;
+        if (data['system.uses.max'] !== undefined) return;
         let doLinkData = true;
         if (srcData == null) {
             srcData = item.data;
@@ -55,44 +55,44 @@ export class ItemChargeUpdateHelper {
         }
         rollData.item = item.getRollData();
 
-        if (hasProperty(srcData, "data.uses.maxFormula")) {
-            if (getProperty(srcData, "data.uses.maxFormula") !== "") {
-                let roll = new Roll35e(getProperty(srcData, "data.uses.maxFormula"), rollData).roll();
-                if (doLinkData) linkData(srcData, data, "data.uses.max", roll.total);
-                else data["data.uses.max"] = roll.total;
+        if (hasProperty(srcData, "system.uses.maxFormula")) {
+            if (getProperty(srcData, "system.uses.maxFormula") !== "") {
+                let roll = new Roll35e(getProperty(srcData, "system.uses.maxFormula"), rollData).roll();
+                if (doLinkData) linkData(srcData, data, "system.uses.max", roll.total);
+                else data["system.uses.max"] = roll.total;
             }
         }
 
 
-        if (hasProperty(srcData, "data.uses.maxPerUseFormula")) {
-            if (getProperty(srcData, "data.uses.maxPerUseFormula") !== "") {
-                let roll = new Roll35e(getProperty(srcData, "data.uses.maxPerUseFormula"), rollData).roll();
-                if (doLinkData) linkData(srcData, data, "data.uses.maxPerUse", roll.total);
-                else data["data.uses.maxPerUse"] = roll.total;
+        if (hasProperty(srcData, "system.uses.maxPerUseFormula")) {
+            if (getProperty(srcData, "system.uses.maxPerUseFormula") !== "") {
+                let roll = new Roll35e(getProperty(srcData, "system.uses.maxPerUseFormula"), rollData).roll();
+                if (doLinkData) linkData(srcData, data, "system.uses.maxPerUse", roll.total);
+                else data["system.uses.maxPerUse"] = roll.total;
             }
         }
 
-        if (hasProperty(srcData, "data.enhancements.uses.maxFormula")) {
-            if (getProperty(srcData, "data.enhancements.uses.maxFormula") !== "") {
-                let roll = new Roll35e(getProperty(srcData, "data.enhancements.uses.maxFormula"), rollData).roll();
-                if (doLinkData) linkData(srcData, data, "data.enhancements.uses.max", roll.total);
-                else data["data.enhancements.uses.max"] = roll.total;
+        if (hasProperty(srcData, "system.enhancements.uses.maxFormula")) {
+            if (getProperty(srcData, "system.enhancements.uses.maxFormula") !== "") {
+                let roll = new Roll35e(getProperty(srcData, "system.enhancements.uses.maxFormula"), rollData).roll();
+                if (doLinkData) linkData(srcData, data, "system.enhancements.uses.max", roll.total);
+                else data["system.enhancements.uses.max"] = roll.total;
             }
         }
 
-        if (hasProperty(srcData, "data.combatChangesRange.maxFormula")) {
-            if (getProperty(srcData, "data.combatChangesRange.maxFormula") !== "") {
-                let roll = new Roll35e(getProperty(srcData, "data.combatChangesRange.maxFormula"), rollData).roll();
-                if (doLinkData) linkData(srcData, data, "data.combatChangesRange.max", roll.total);
-                else data["data.combatChangesRange.max"] = roll.total;
+        if (hasProperty(srcData, "system.combatChangesRange.maxFormula")) {
+            if (getProperty(srcData, "system.combatChangesRange.maxFormula") !== "") {
+                let roll = new Roll35e(getProperty(srcData, "system.combatChangesRange.maxFormula"), rollData).roll();
+                if (doLinkData) linkData(srcData, data, "system.combatChangesRange.max", roll.total);
+                else data["system.combatChangesRange.max"] = roll.total;
             }
         }
         for (let i = 1; i <= 3; i++)
-            if (hasProperty(srcData, `data.combatChangesAdditionalRanges.slider${i}.maxFormula`)) {
-                if (getProperty(srcData, `data.combatChangesAdditionalRanges.slider${i}.maxFormula`) !== "") {
-                    let roll = new Roll35e(getProperty(srcData, `data.combatChangesAdditionalRanges.slider${i}.maxFormula`), rollData).roll();
-                    if (doLinkData) linkData(srcData, data, `data.combatChangesAdditionalRanges.slider${i}.max`, roll.total);
-                    else data[`data.combatChangesAdditionalRanges.slider${i}.max`] = roll.total;
+            if (hasProperty(srcData, `system.combatChangesAdditionalRanges.slider${i}.maxFormula`)) {
+                if (getProperty(srcData, `system.combatChangesAdditionalRanges.slider${i}.maxFormula`) !== "") {
+                    let roll = new Roll35e(getProperty(srcData, `system.combatChangesAdditionalRanges.slider${i}.maxFormula`), rollData).roll();
+                    if (doLinkData) linkData(srcData, data, `system.combatChangesAdditionalRanges.slider${i}.max`, roll.total);
+                    else data[`system.combatChangesAdditionalRanges.slider${i}.max`] = roll.total;
                 }
             }
     }

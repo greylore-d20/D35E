@@ -12,7 +12,7 @@
             </h3>
             {{#each data.currency as |v k|}}
             <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
-            <input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number" />
+            <input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" />
             {{/each}}
         </ol>
         {{#if isCharacter}}
@@ -23,7 +23,7 @@
             </h3>
             {{#each data.altCurrency as |v k|}}
             <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
-            <input type="text" name="data.altCurrency.{{k}}" value="{{v}}" data-dtype="Number" />
+            <input type="text" name="system.altCurrency.{{k}}" value="{{v}}" data-dtype="Number" />
             {{/each}}
         </ol>
         {{/if}}
@@ -35,7 +35,7 @@
             </h3>
             {{#each c as |curr|}}
             <label class="denomination {{k}}">{{ lookup curr 1 }}</label>
-            <input type="text" name="data.customCurrency.{{lookup curr 0}}"
+            <input type="text" name="system.customCurrency.{{lookup curr 0}}"
                 value="{{lookup ../../data.customCurrency (lookup curr 0)}}" data-dtype="Number" />
             {{/each}}
         </ol>
@@ -426,10 +426,10 @@
 {{#unless isLootSheet}}
 <div class="form-group carry-bonus">
     <label>{{ localize 'D35E.BonusCarryStrength' }}</label>
-    <input type="text" name="data.abilities.str.carryBonus" value="{{data.abilities.str.carryBonus}}"
+    <input type="text" name="system.abilities.str.carryBonus" value="{{data.abilities.str.carryBonus}}"
         data-dtype="Number" placeholder="0" />
     <label>{{ localize 'D35E.Multiplier' }}</label>
-    <input type="text" name="data.abilities.str.carryMultiplier" value="{{data.abilities.str.carryMultiplier}}"
+    <input type="text" name="system.abilities.str.carryMultiplier" value="{{data.abilities.str.carryMultiplier}}"
         data-dtype="Number" placeholder="1" />
     <label style="flex: 1">{{ localize 'D35E.TotalInventoryValue' }}</label>
     <input type="text" style="flex: 0 0 80px" value="{{totalInventoryValue}}" data-dtype="Number" disabled
