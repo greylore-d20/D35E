@@ -9,6 +9,9 @@ import {Roll35e} from "../roll.js";
 import {  ActorRestDialog } from "../apps/actor-rest.js";
 import {VisionPermissionSheet} from "../apps/vision-permission.js"
 import {Propagator} from "../misc/propagator.js"
+import {ItemCharges} from "../item/actions/charges.js";
+import {ItemConsumableConverter} from "../item/converters/consumable.js";
+import {ItemCombatChangesHelper} from "../item/helpers/itemCombatChangesHelper.js";
 
 
 /**
@@ -4642,31 +4645,6 @@ export class ActorPF extends Actor {
 
     /* -------------------------------------------- */
 
-    /**
-     * Cast a Spell, consuming a spell slot of a certain level
-     * @param {ItemPF} item   The spell being cast by the actor
-     * @param {MouseEvent} ev The click event
-     */
-    async useSpell(item, ev, { skipDialog = false, replacement = false, replacementItem = null, rollModeOverride = null } = {}, actor = null) {
-        let usedItem = replacementItem ? replacementItem : item;
-        if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
-        if (item.data.type !== "spell") throw new Error("Wrong Item type");
-        if (getProperty(this.data, "data.requiresPsionicFocus") && !this.actor?.data?.data?.attributes?.psionicFocus) return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
-        if (getProperty(item.data, "data.preparation.mode") !== "atwill" && item.getSpellUses() <= 0) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoSpellsLeft"));
-
-        // Invoke the Item roll
-        if (usedItem.hasAction)
-        {
-            let attackResult = await usedItem.useAttack({ ev: ev, skipDialog: skipDialog, rollModeOverride:rollModeOverride }, actor, true);
-            if(!attackResult.wasRolled) return;
-            let roll = await attackResult.roll;
-            await item.addSpellUses(-1+(-1*roll?.rollData?.useAmount || 0));
-            return ;
-        }
-
-        await item.addSpellUses(-1);
-        return usedItem.roll({rollMode: rollModeOverride});
-    }
 
     async addSpellFromSpellListToSpellbook(level, itemId, itemPack) {
         if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
@@ -5272,7 +5250,7 @@ export class ActorPF extends Actor {
             let allCombatChanges = []
             let rollModifiers = []
             let attackType = 'resistance';
-            allCombatChanges = this._getAllSelectedCombatChangesForRoll(attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
+            allCombatChanges = ItemCombatChangesHelper.getAllSelectedCombatChangesForRoll(this.items,attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
 
             if (rollModifiers.length > 0) props.push({
                 header: game.i18n.localize("D35E.RollModifiers"),
@@ -5356,8 +5334,8 @@ export class ActorPF extends Actor {
             data: rollData,
             rollMode: options.rollMode ? options.rollMode : (game.settings.get("D35E", `rollConfig`).rollConfig[this.type].grapple  || game.settings.get("core", "rollMode")),
             rollModes: CONFIG.Dice.rollModes,
-            resFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('spellPowerResistance',rollData)),
-            resFeatsOptional: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange(`spellPowerResistanceOptional`,rollData)),
+            resFeats: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'spellPowerResistance')),
+            resFeatsOptional: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,`spellPowerResistanceOptional`)),
             label: label,
         };
         const html = await renderTemplate(template, dialogData);
@@ -5438,7 +5416,7 @@ export class ActorPF extends Actor {
             let allCombatChanges = []
             let rollModifiers = []
             let attackType = 'savingThrow';
-            allCombatChanges = this._getAllSelectedCombatChangesForRoll(attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
+            allCombatChanges = ItemCombatChangesHelper.getAllSelectedCombatChangesForRoll(this.items,attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
 
             if (rollModifiers.length > 0) props.push({
                 header: game.i18n.localize("D35E.RollModifiers"),
@@ -5533,8 +5511,8 @@ export class ActorPF extends Actor {
             id: `${this.id}-${_savingThrow}`,
             rollMode: options.rollMode ? options.rollMode : (game.settings.get("D35E", `rollConfig`).rollConfig[this.type].savingThrow || game.settings.get("core", "rollMode")),
             rollModes: CONFIG.Dice.rollModes,
-            stFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('savingThrow',rollData)),
-            stFeatsOptional: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange(`savingThrowOptional`,rollData)),
+            stFeats: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'savingThrow')),
+            stFeatsOptional: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'savingThrowOptional')),
             label: label,
         };
         const html = await renderTemplate(template, dialogData);
@@ -5623,7 +5601,7 @@ export class ActorPF extends Actor {
             let allCombatChanges = []
             let rollModifiers = []
             let attackType = 'skill';
-            allCombatChanges = this._getAllSelectedCombatChangesForRoll(attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
+            allCombatChanges = ItemCombatChangesHelper.getAllSelectedCombatChangesForRoll(this.items,attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
 
             if (rollModifiers.length > 0) props.push({
                 header: game.i18n.localize("D35E.RollModifiers"),
@@ -5719,8 +5697,8 @@ export class ActorPF extends Actor {
             ability: skl.ability,
             rollMode: options.rollMode ? options.rollMode : (game.settings.get("D35E", `rollConfig`).rollConfig[this.type].skill  || game.settings.get("core", "rollMode")),
             rollModes: CONFIG.Dice.rollModes,
-            skFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('skill',rollData)),
-            skFeatsOptional: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange(`skillOptional`,rollData)),
+            skFeats: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'skill')),
+            skFeatsOptional: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'skillOptional')),
             label: label  
         };
         const html = await renderTemplate(template, dialogData);
@@ -5760,34 +5738,6 @@ export class ActorPF extends Actor {
                 }
             }).render(true);
         });
-    }
-
-
-    
-    _getAllSelectedCombatChangesForRoll(attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges) {
-        this.items.filter(o => this.isCombatChangeItemType(o)).forEach(i => {
-            if (i.hasCombatChange(attackType, rollData)) {
-                allCombatChanges = allCombatChanges.concat(i.getPossibleCombatChanges(attackType, rollData))
-                rollModifiers.push(`${i.data.data.combatChangeCustomReferenceName || i.name}`)
-            }
-            if (i.hasCombatChange(attackType + 'Optional', rollData) && optionalFeatIds.indexOf(i._id) !== -1) {
-                allCombatChanges = allCombatChanges.concat(i.getPossibleCombatChanges(attackType + 'Optional', rollData, optionalFeatRanges.get(i._id)))
-
-                if (optionalFeatRanges.get(i._id)) {
-                    let ranges = []
-                    if (optionalFeatRanges.get(i._id).base) ranges.push(optionalFeatRanges.get(i._id).base)
-                    if (optionalFeatRanges.get(i._id).slider1) ranges.push(optionalFeatRanges.get(i._id).slider1)
-                    if (optionalFeatRanges.get(i._id).slider2) ranges.push(optionalFeatRanges.get(i._id).slider2)
-                    if (optionalFeatRanges.get(i._id).slider3) ranges.push(optionalFeatRanges.get(i._id).slider3)
-                    rollModifiers.push(`${i.data.data.combatChangeCustomReferenceName || i.name} (${ranges.join(", ")})`)
-                }
-                else
-                    rollModifiers.push(`${i.data.data.combatChangeCustomReferenceName || i.name}`)
-
-                i.addCharges(-1 * (i.data.data.combatChangesUsesCost === 'chargesPerUse' ? i.data.data?.uses?.chargesPerUse || 1 : optionalFeatRanges.get(i._id).base));
-            }
-        });
-        return allCombatChanges;
     }
 
     /**
@@ -5832,7 +5782,7 @@ export class ActorPF extends Actor {
             let allCombatChanges = []
             let rollModifiers = []
             let attackType = 'grapple';
-            allCombatChanges = this._getAllSelectedCombatChangesForRoll(attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
+            allCombatChanges = ItemCombatChangesHelper.getAllSelectedCombatChangesForRoll(this.items,attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
 
             if (rollModifiers.length > 0) props.push({
                 header: game.i18n.localize("D35E.RollModifiers"),
@@ -5934,8 +5884,8 @@ export class ActorPF extends Actor {
             data: rollData,
             rollMode: options.rollMode ? options.rollMode : (game.settings.get("D35E", `rollConfig`).rollConfig[this.type].grapple  || game.settings.get("core", "rollMode")),
             rollModes: CONFIG.Dice.rollModes,
-            grFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('grapple',rollData)),
-            grFeatsOptional: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange(`grappleOptional`,rollData)),
+            grFeats: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'grapple')),
+            grFeatsOptional: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'grappleOptional')),
             label: label,
         };
         const html = await renderTemplate(template, dialogData);
@@ -6374,7 +6324,7 @@ export class ActorPF extends Actor {
             let allCombatChanges = []
             let attackType = 'defense';
 
-            allCombatChanges = this._getAllSelectedCombatChangesForRoll(attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
+            allCombatChanges = ItemCombatChangesHelper.getAllSelectedCombatChangesForRoll(this.items,attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges);
 
 
 
@@ -6411,8 +6361,8 @@ export class ActorPF extends Actor {
             isAlreadyProne: getProperty(this.data,"data.attributes.conditions.prone"),
             baseConcealmentAtLeast20: getProperty(this.data,"data.attributes.concealment.total") > 20,
             baseConcealmentAtLeast50: getProperty(this.data,"data.attributes.concealment.total") > 50,
-            defenseFeats: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange('defense',rollData)),
-            defenseFeatsOptional: this.items.filter(o => this.isCombatChangeItemType(o) && o.hasCombatChange(`defenseOptional`,rollData)),
+            defenseFeats: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'defense')),
+            defenseFeatsOptional: this.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,'defenseOptional')),
             conditionals: getProperty(this.data,"data.conditionals"),
         };
         dialogData.hasFeats = dialogData.defenseFeats.length || dialogData.defenseFeatsOptional.length;
@@ -8133,7 +8083,7 @@ export class ActorPF extends Actor {
     async createConsumableSpell(itemData, type, html) {
         let cl = parseInt(html.find('[name="caster-level"]').val());
         let scrollType = html.find('[name="scroll-type"]').val();
-        let data = await ItemPF.toConsumable(itemData, type, cl, scrollType);
+        let data = await ItemConsumableConverter.toConsumable(itemData, type, cl, scrollType);
 
         if (data._id) delete data._id;
         await this.createEmbeddedEntity("Item", data);

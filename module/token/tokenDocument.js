@@ -77,7 +77,7 @@ export class TokenDocumentPF extends TokenDocument {
             if (!(this.actor?.system?.attributes?.senses?.seeInvisible || this.actor?.system?.attributes?.senses?.truesight)) {
                 this.detectionModes.splice(this.detectionModes.indexOf(seeInvMode, 1));
             } else {
-                seeInvMode.range = this.sight.range;
+                seeInvMode.range = this.actor?.system?.attributes?.senses?.seeInvisible || this.actor?.system?.attributes?.senses?.truesight;
             }
         }
 

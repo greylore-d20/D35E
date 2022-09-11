@@ -1,5 +1,6 @@
-import {ItemPF} from "../item/entity.js";
-import {Roll35e} from "../roll.js"
+import {ItemPF} from "../entity.js";
+import {Roll35e} from "../../roll.js"
+import {ItemRolls} from "../actions/rolls.js";
 
 export class ChatAttack {
     constructor(item, label = "", actor = null, rollData = null, ammoMaterial = null, ammoEnh = 0) {
@@ -94,7 +95,7 @@ export class ChatAttack {
         if (critical === true) data = this.critConfirm;
 
         // Roll attack
-        let roll = this.item.rollAttack({
+        let roll = new ItemRolls(this.item).rollAttack({
             data: this.rollData,
             bonus: bonus || 0,
             extraParts: extraParts,
@@ -202,7 +203,7 @@ export class ChatAttack {
         }
         if (critical === true) data = this.critDamage;
 
-        const rolls = this.item.rollDamage({
+        const rolls = new ItemRolls(this.item).rollDamage({
             data: this.rollData,
             extraParts: extraParts,
             primaryAttack: primaryAttack,
@@ -276,7 +277,7 @@ export class ChatAttack {
 
         let data = this.altDamage;
 
-        const rolls = this.item.rollAlternativeDamage({
+        const rolls = new ItemRolls(this.item).rollAlternativeDamage({
             data: this.rollData
         });
         if (!rolls || rolls.length === 0) {
@@ -382,7 +383,7 @@ export class ChatAttack {
 
     async addEffect({primaryAttack = true, actor = null, useAmount = 1, cl = null, spellPenetration = null} = {}) {
         if (!this.item) return;
-        this.effectNotes = this.item.rollEffect({primaryAttack: primaryAttack}, actor, this.rollData);
+        this.effectNotes = new ItemRolls(this.item).rollEffect({primaryAttack: primaryAttack}, actor, this.rollData);
         this.spellPenetration = spellPenetration;
         this.isSpell = !!cl;
         await this.addSpecial(actor, useAmount, cl, spellPenetration);

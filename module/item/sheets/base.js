@@ -2173,13 +2173,13 @@ export class ItemSheetPF extends ItemSheet {
     async importItem(itemData, itemType, importType) {
         if (importType === "enh") {
             if (itemData.type === 'enhancement') {
-                await this.item.addEnhancementFromData(itemData)// update(updateData);
+                await this.item.enhancements.addEnhancementFromData(itemData)// update(updateData);
             }
             if (itemData.type === 'spell') {
                 this._createEnhancementSpellDialog(itemData)
             }
             if (itemData.type === 'buff') {
-                await this.item.createEnhBuff(itemData)
+                await this.item.enhancements.createEnhancementBuff(itemData)
             }
         } else {
             if (itemType !== "compendium") {
@@ -2241,17 +2241,17 @@ export class ItemSheetPF extends ItemSheet {
                 potion: {
                     icon: '<i class="fas fa-prescription-bottle"></i>',
                     label: "50 Charges",
-                    callback: () => this.item.createEnhSpell(itemData, "charges"),
+                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "charges"),
                 },
                 scroll: {
                     icon: '<i class="fas fa-scroll"></i>',
                     label: "Per Day (Command Word)",
-                    callback: () => this.item.createEnhSpell(itemData, "command"),
+                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "command"),
                 },
                 wand: {
                     icon: '<i class="fas fa-magic"></i>',
                     label: "Per Day (Use)",
-                    callback: () => this.item.createEnhSpell(itemData, "use"),
+                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "use"),
                 },
             },
             default: "command",

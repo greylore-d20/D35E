@@ -10,6 +10,7 @@ import {
 	meleeWeaponsAbilityTable,
 	rangedWeaponsAbilityTable,
 } from './treasureTables.js'
+import {ItemConsumableConverter} from "../item/converters/consumable.js";
 
 //#region utility functions
 function log(message) {
@@ -186,7 +187,7 @@ export default class TreasureGenerator {
 						execFunctions(item.itemOverride)	
 						await it.data.update({...item.itemOverride.data})
 					}
-					let consumableItem = await ItemPF.toConsumable(
+					let consumableItem = await ItemConsumableConverter.toConsumable(
 						it.data,
 						item.consumableType
 					)

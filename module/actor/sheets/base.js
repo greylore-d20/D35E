@@ -17,6 +17,7 @@ import {Roll35e} from "../../roll.js"
 import ActorSensesConfig from "../../apps/senses-config.js";
 import AbilityConfig from "../../apps/ability-config.js";
 import {EntrySelector} from "../../apps/entry-selector.js";
+import {ItemDescriptionsHelper} from "../../item/helpers/itemDescriptionsHelper.js";
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -114,9 +115,9 @@ export class ActorSheetPF extends ActorSheet {
       i.hasTimedRecharge = item.hasTimedRecharge;
       i.container = getProperty(i.data, "data.container");
       i.hasAction = item.hasAction || item.isCharged;
-      i.attackDescription = item.type === "attack" ? item.attackDescription(featRollData) : "";
-      i.damageDescription = item.type === "attack" ? item.damageDescription(featRollData) : "";
-      i.range = item.type === "attack" ? item.range : "";
+      i.attackDescription = item.type === "attack" ? ItemDescriptionsHelper.attackDescription(item,featRollData) : "";
+      i.damageDescription = item.type === "attack" ? ItemDescriptionsHelper.damageDescription(item,featRollData) : "";
+      i.range = item.type === "attack" ? ItemDescriptionsHelper.rangeDescription(item) : "";
       i.isCurseKnown = getProperty(item.data, "data.curseActive") || getProperty(item.data, "data.identifiedCurse")
       i.timelineLeftText = item.getTimelineTimeLeftDescriptive();
       i.showUnidentifiedData = item.showUnidentifiedData;
