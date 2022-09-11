@@ -15,6 +15,8 @@ export class ItemUse {
      */
     constructor(item) {
         this.item = item;
+        this.itemUpdateData = {};
+        this.itemData = {};
     }
 
     async use(tempActor, replacementId, ev, skipDialog, rollModeOverride, temporaryItem, skipChargeCheck) {
@@ -23,7 +25,7 @@ export class ItemUse {
             actor = tempActor;
         }
 
-        if (getProperty(this.item.data, "data.requiresPsionicFocus") && !this.item.actor?.data?.data?.attributes?.psionicFocus) return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
+        if (getProperty(this.item.system,"requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus) return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
         if (this.item.type === "spell") {
             if (replacementId) {
                 return this.useSpell(ev, {
@@ -37,7 +39,7 @@ export class ItemUse {
             }
         } else if (this.item.type === "full-attack") {
             if (game.settings.get("D35E", "showFullAttackChatCard")) await this.item.roll();
-            for (let attack of Object.values(getProperty(this.item.data, "data.attacks"))) {
+            for (let attack of Object.values(getProperty(this.item.system,"attacks"))) {
                 if (!attack.id) continue;
                 let attackItem = actor.items.find(i => i._id === attack.id);
                 for (let i = 0; i < attack.count; i++) {
@@ -60,7 +62,7 @@ export class ItemUse {
                 skipDialog: skipDialog,
                 rollModeOverride: rollModeOverride,
                 temporaryItem: temporaryItem,
-                attackType: getProperty(this.item.data, "data.weaponSubtype") === "2h" ? 'two-handed' : 'primary'
+                attackType: getProperty(this.item.system,"weaponSubtype") === "2h" ? 'two-handed' : 'primary'
             }, actor, skipChargeCheck);
         }
 
@@ -97,7 +99,7 @@ export class ItemUse {
             greaterManyshotCount = 0,
             twoWeaponFightingOffhand = false,
             hasTwoWeaponFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Two-Weapon Fighting")?.length > 0,
-            multiweaponFighting = actor.items.filter(o => o.type === "feat" && (getOriginalNameIfExists(o) === "Multiweapon Fighting" || o.data.data.changeFlags.multiweaponAttack)).length > 0,
+            multiweaponFighting = actor.items.filter(o => o.type === "feat" && (getOriginalNameIfExists(o) === "Multiweapon Fighting" || o.system.changeFlags.multiweaponAttack)).length > 0,
             hasTwoImprovedWeaponFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Improved Two-Weapon Fighting")?.length > 0,
             hasTwoGreaterFightingFeat = actor.items.filter(o => o.type === "feat" && getOriginalNameIfExists(o) === "Greater Two-Weapon Fighting")?.length > 0,
             rollMode = null,
@@ -161,17 +163,17 @@ export class ItemUse {
         let allAttacks = []
         // Auto scaling attacks
 
-        let autoScaleAttacks = (game.settings.get("D35E", "autoScaleAttacksBab") && actor.data.type !== "npc" && getProperty(this.item.data, "data.attackType") === "weapon" && getProperty(this.item.data, "data.autoScaleOption") !== "never") || getProperty(this.item.data, "data.autoScaleOption") === "always";
+        let autoScaleAttacks = (game.settings.get("D35E", "autoScaleAttacksBab") && actor.data.type !== "npc" && getProperty(this.item.system,"attackType") === "weapon" && getProperty(this.item.system,"autoScaleOption") !== "never") || getProperty(this.item.system,"autoScaleOption") === "always";
         if (autoScaleAttacks && fullAttack) {
             allAttacks.push({bonus: 0, label: `${game.i18n.localize("D35E.Attack")}`})
-            for (let a = 5; a < actor.data.data.attributes.bab.total; a += 5) {
+            for (let a = 5; a < actor.system.attributes.bab.total; a += 5) {
                 allAttacks.push({
                     bonus: `-${a}`,
                     label: `${game.i18n.localize("D35E.Attack")} ${Math.floor((a + 5) / 5)}`
                 });
             }
         } else {
-            allAttacks = fullAttack ? this.item.data.data.attackParts.reduce((cur, r) => {
+            allAttacks = fullAttack ? this.item.system.attackParts.reduce((cur, r) => {
                 cur.push({bonus: r[0], label: r[1]});
                 return cur;
             }, [{bonus: 0, label: `${game.i18n.localize("D35E.Attack")}`}]) : [{
@@ -180,7 +182,7 @@ export class ItemUse {
             }];
         }
 
-        if ((fullAttack || actor.data.data.attributes.bab.total < 6) && rapidShot) {
+        if ((fullAttack || actor.system.attributes.bab.total < 6) && rapidShot) {
             allAttacks.unshift({
                 bonus: 0,
                 label: `Rapid Shot`
@@ -194,19 +196,19 @@ export class ItemUse {
                 bonus: 0,
                 label: `Flurry of Blows`
             })
-            let monkClass = (actor?.items || []).filter(o => o.type === "class" && (o.name === "Monk" || o.data.data.customTag === "monk"))[0];
+            let monkClass = (actor?.items || []).filter(o => o.type === "class" && (o.name === "Monk" || o.system.customTag === "monk"))[0];
             //1-4 = -2
-            if (monkClass.data.data.levels < 5) {
+            if (monkClass.system.levels < 5) {
                 rollData.flurryOfBlowsPenalty = -2;
                 attackExtraParts.push("@flurryOfBlowsPenalty");
             }
             //5-8 = -1
-            else if (monkClass.data.data.levels < 9) {
+            else if (monkClass.system.levels < 9) {
                 rollData.flurryOfBlowsPenalty = -1;
                 attackExtraParts.push("@flurryOfBlowsPenalty");
                 //9+ = 0
                 //11+ = 2nd extra attack
-            } else if (monkClass.data.data.levels > 10) {
+            } else if (monkClass.system.levels > 10) {
                 allAttacks.push({
                     bonus: 0,
                     label: `Flurry of Blows 2`
@@ -215,8 +217,8 @@ export class ItemUse {
         }
 
 
-        let isHasted = (actor?.items || []).filter(o => o.type === "buff" && o.data.data.active && (o.name === "Haste" || o.data.data.changeFlags.hasted)).length > 0;
-        if ((fullAttack || actor.data.data.attributes.bab.total < 6) && isHasted && (getProperty(this.item.data, "data.attackType") === "weapon" || getProperty(this.item.data, "data.attackType") === "natural")) {
+        let isHasted = (actor?.items || []).filter(o => o.type === "buff" && o.system.active && (o.name === "Haste" || o.system.changeFlags.hasted)).length > 0;
+        if ((fullAttack || actor.system.attributes.bab.total < 6) && isHasted && (getProperty(this.item.system,"attackType") === "weapon" || getProperty(this.item.system,"attackType") === "natural")) {
             allAttacks.unshift({
                 bonus: 0,
                 label: `Haste`
@@ -240,7 +242,7 @@ export class ItemUse {
         let attackEnhancementMap = new Map();
         let damageEnhancementMap = new Map();
         for (let enabledConditional of enabledConditionals) {
-            let conditional = itemData.conditionals.find(c => c.name === enabledConditional);
+            let conditional = this.itemData.conditionals.find(c => c.name === enabledConditional);
             rollModifiers.push(`${conditional.name}`)
             for (let modifier of conditional.modifiers) {
                 if (modifier.target === "attack") {
@@ -269,32 +271,32 @@ export class ItemUse {
         // Getting all combat changes from items
         let allCombatChanges = []
         let attackType = this.item.type;
-        actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type === "buff" && o.data.data.active) || (o.type === "equipment" && o.data.data.equipped === true && !o.data.data.melded))).forEach(i => {
+        actor.items.filter(o => (o.type === "aura" || o.type === "feat" || (o.type === "buff" && o.system.active) || (o.type === "equipment" && o.system.equipped === true && !o.system.melded))).forEach(i => {
             if (i.combatChanges.hasCombatChange(attackType, rollData)) {
                 allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData))
-                rollModifiers.push(`${i.data.data.combatChangeCustomReferenceName || i.name}`)
+                rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name}`)
             }
             if (i.combatChanges.hasCombatChange(attackType + 'Optional', rollData) && optionalFeatIds.indexOf(i._id) !== -1) {
                 allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType + 'Optional', rollData, optionalFeatRanges.get(i._id)))
-                i.addCharges(-1 * (i.data.data.combatChangesUsesCost === 'chargesPerUse' ? i.data.data?.uses?.chargesPerUse || 1 : optionalFeatRanges.get(i._id).base));
+                i.addCharges(-1 * (i.system.combatChangesUsesCost === 'chargesPerUse' ? i.system?.uses?.chargesPerUse || 1 : optionalFeatRanges.get(i._id).base));
                 if (optionalFeatRanges.get(i._id)) {
                     let ranges = []
                     if (optionalFeatRanges.get(i._id).base) ranges.push(optionalFeatRanges.get(i._id).base)
                     if (optionalFeatRanges.get(i._id).slider1) ranges.push(optionalFeatRanges.get(i._id).slider1)
                     if (optionalFeatRanges.get(i._id).slider2) ranges.push(optionalFeatRanges.get(i._id).slider2)
                     if (optionalFeatRanges.get(i._id).slider3) ranges.push(optionalFeatRanges.get(i._id).slider3)
-                    rollModifiers.push(`${i.data.data.combatChangeCustomReferenceName || i.name} (${ranges.join(", ")})`)
+                    rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name} (${ranges.join(", ")})`)
                 } else
-                    rollModifiers.push(`${i.data.data.combatChangeCustomReferenceName || i.name}`)
+                    rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name}`)
             }
         })
         this.item._addCombatChangesToRollData(allCombatChanges, rollData);
 
-        if (rollData.isKeen && !getProperty(this.item.data, "data.threatRangeExtended")) {
-            let baseCrit = getProperty(this.item.data, "data.ability.critRange") || 20;
+        if (rollData.isKeen && !getProperty(this.item.system,"threatRangeExtended")) {
+            let baseCrit = getProperty(this.item.system,"ability.critRange") || 20;
             baseCrit = 21 - 2 * (21 - baseCrit)
             rollData.item.ability.critRange = baseCrit;
-            //getProperty(this.item.data,"data.ability.critRange") = baseCrit;
+            //getProperty(this.item.system,"ability.critRange") = baseCrit;
         }
 
         if (rollData.featDamageBonus) {
@@ -341,9 +343,9 @@ export class ItemUse {
         }
 
         // Lock useAmount for powers to max value
-        if (this.item.type === "spell" && getProperty(this.item.data, "data.isPower")) {
-            rollData.useAmount = Math.max(0, Math.min(rollData.useAmount, rollData.cl - (getProperty(this.item.data, "data.powerPointsCost") || 0)))
-            rollData.powerPointsUsed = rollData.useAmount + parseInt(getProperty(this.item.data, "data.powerPointsCost"));
+        if (this.item.type === "spell" && getProperty(this.item.system,"isPower")) {
+            rollData.useAmount = Math.max(0, Math.min(rollData.useAmount, rollData.cl - (getProperty(this.item.system,"powerPointsCost") || 0)))
+            rollData.powerPointsUsed = rollData.useAmount + parseInt(getProperty(this.item.system,"powerPointsCost"));
             rollData.additionalPowerPointsUsed = rollData.useAmount;
         }
         let attacks = [];
@@ -353,7 +355,7 @@ export class ItemUse {
             if (rollData.item.attackCountFormula && rollData.item.attackParts.length === 0) {
 
                 if (this.item.isSpellLike()) {
-                    ItemSpellHelper.adjustSpellCL(this.item,itemData, rollData)
+                    ItemSpellHelper.adjustSpellCL(this.item,this.itemData, rollData)
                 }
                 let attackCount = (new Roll35e(rollData.item.attackCountFormula, rollData).roll().total || 1) - 1;
                 for (let i = 0; i < attackCount; i++) {
@@ -365,7 +367,7 @@ export class ItemUse {
             }
             for (let atk of allAttacks) {
                 // Create attack object
-                let attack = new ChatAttack(this, atk.label, actor, rollData, ammoMaterial, ammoEnh);
+                let attack = new ChatAttack(this.item, atk.label, actor, rollData, ammoMaterial, ammoEnh);
                 let localAttackExtraParts = duplicate(attackExtraParts);
                 for (let aepConditional of attackEnhancementMap.get(`attack.${attackId}`) || []) {
                     localAttackExtraParts.push(aepConditional)
@@ -379,7 +381,7 @@ export class ItemUse {
                     extraParts: localAttackExtraParts,
                     primaryAttack: primaryAttack,
                     actor: actor,
-                    critConfirmBonus: new Roll35e(`${getProperty(this.item.data, "data.critConfirmBonus")}` || "0", rollData).roll().total + (rollData.featCritConfirmBonus || 0),
+                    critConfirmBonus: new Roll35e(`${getProperty(this.item.system,"critConfirmBonus")}` || "0", rollData).roll().total + (rollData.featCritConfirmBonus || 0),
                 });
                 if (this.item.hasDamage) {
                     await attack.addDamage({
@@ -430,12 +432,12 @@ export class ItemUse {
             let attackCount = 1;
             if (rollData.item.attackCountFormula) {
                 if (this.item.isSpellLike()) {
-                    ItemSpellHelper.adjustSpellCL(this.item,itemData, rollData)
+                    ItemSpellHelper.adjustSpellCL(this.item,this.itemData, rollData)
                 }
                 attackCount = new Roll35e(rollData.item.attackCountFormula, rollData).roll().total || 1;
             }
             for (let i = 0; i < attackCount; i++) {
-                let attack = new ChatAttack(this, "", actor, rollData, ammoMaterial, ammoEnh);
+                let attack = new ChatAttack(this.item, "", actor, rollData, ammoMaterial, ammoEnh);
                 attack.rollData = rollData;
                 await attack.addDamage({
                     extraParts: damageExtraParts,
@@ -458,10 +460,10 @@ export class ItemUse {
         }
         // Add effect notes only
         else if (this.item.hasEffect) {
-            let attack = new ChatAttack(this, "", actor, rollData, ammoMaterial, ammoEnh);
+            let attack = new ChatAttack(this.item, "", actor, rollData, ammoMaterial, ammoEnh);
             attack.rollData = rollData;
             if (this.item.isSpellLike()) {
-                ItemSpellHelper.adjustSpellCL(this.item,itemData, rollData)
+                ItemSpellHelper.adjustSpellCL(this.item,this.itemData, rollData)
             }
             await attack.addEffect({
                 primaryAttack: primaryAttack,
@@ -473,10 +475,10 @@ export class ItemUse {
             await this.item._addCombatSpecialActionsToAttack(allCombatChanges, attack, actor, rollData, optionalFeatRanges, 0);
             // Add to list
             attacks.push(attack);
-        } else if (getProperty(this.item.data, "data.actionType") === "special") {
-            let attack = new ChatAttack(this, "", actor, rollData, ammoMaterial, ammoEnh);
+        } else if (getProperty(this.item.system,"actionType") === "special") {
+            let attack = new ChatAttack(this.item, "", actor, rollData, ammoMaterial, ammoEnh);
             if (this.item.isSpellLike()) {
-                ItemSpellHelper.adjustSpellCL(this.item,itemData, rollData)
+                ItemSpellHelper.adjustSpellCL(this.item,this.itemData, rollData)
             }
             attack.rollData = rollData;
             await attack.addSpecial(actor, rollData.useAmount || 1, rollData.cl, rollData.spellPenetration);
@@ -535,22 +537,22 @@ export class ItemUse {
         if (this.item.autoDeductCharges && !skipChargeCheck) {
             // //console.log(`D35E | Deducting ${this.item.chargeCost} charges.`)
             if (rollData.useAmount === undefined)
-                await this.item.addCharges(-1 * this.item.chargeCost, itemUpdateData);
+                await this.item.addCharges(-1 * this.item.chargeCost, this.itemUpdateData);
             else
-                await this.item.addCharges(-1 * parseFloat(rollData.useAmount) * this.item.chargeCost, itemUpdateData);
+                await this.item.addCharges(-1 * parseFloat(rollData.useAmount) * this.item.chargeCost, this.itemUpdateData);
         } else {
-            if (getProperty(this.item.data, "data.requiresPsionicFocus")) {
+            if (getProperty(this.item.system,"requiresPsionicFocus")) {
                 if (this.item.actor) {
                     await this.item.actor.update({'data.attributes.psionicFocus': false})
                 }
             }
         }
-        if (useAmmoId !== "none" && actor !== null && !getProperty(this.item.data, "data.returning")) {
+        if (useAmmoId !== "none" && actor !== null && !getProperty(this.item.system,"returning")) {
             await actor.quickChangeItemQuantity(useAmmoId, -1 * attacks.length * (1 + Math.max(0, manyshotCount - 1)))
         }
         // Update item, only if it has an id (is real item, not item from enhancement)
-        if (itemUpdateData._id && !temporaryItem)
-            await this.item.update(itemUpdateData);
+        if (this.itemUpdateData._id && !temporaryItem)
+            await this.item.update(this.itemUpdateData);
 
         // Set chat data
         let chatData = {
@@ -561,12 +563,12 @@ export class ItemUse {
         };
 
         // Post message
-        if (this.item.data.type === "spell" || getProperty(this.item.data, "data.isFromSpell")) {
+        if (this.item.data.type === "spell" || getProperty(this.item.system,"isFromSpell")) {
             if (!game.settings.get("D35E", "hideSpellDescriptionsIfHasAction"))
                 await this.item.roll({rollMode: rollMode});
         }
         let rolled = false;
-        if (this.item.hasAttack || this.item.hasDamage || this.item.hasEffect || getProperty(this.item.data, "data.actionType") === "special" || getProperty(this.item.data, "data.actionType") === "summon") {
+        if (this.item.hasAttack || this.item.hasDamage || this.item.hasEffect || getProperty(this.item.system,"actionType") === "special" || getProperty(this.item.system,"actionType") === "summon") {
 
             // //console.log(`D35E | Generating chat message.`)
             // Get extra text and properties
@@ -575,15 +577,15 @@ export class ItemUse {
             const noteObjects = actor.getContextNotes("attacks.attack");
             for (let noteObj of noteObjects) {
                 rollData.item = {};
-                if (noteObj.item != null) rollData.item = duplicate(noteObj.item.data.data);
+                if (noteObj.item != null) rollData.item = duplicate(noteObj.item.system);
 
                 for (let note of noteObj.notes) {
 
                     attackNotes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(`<span class="tag">${ItemPF._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
                 }
             }
-            if (typeof itemData.attackNotes === "string" && itemData.attackNotes.length) {
-                attackNotes.push(...itemData.attackNotes.split(/[\n\r]+/));
+            if (typeof this.itemData.attackNotes === "string" && this.itemData.attackNotes.length) {
+                attackNotes.push(...this.itemData.attackNotes.split(/[\n\r]+/));
             }
 
             if (useAmmoNote !== '') {
@@ -623,14 +625,14 @@ export class ItemUse {
                 dc: dc,
                 nonLethal: nonLethal,
                 useAmmoId: useAmmoId,
-                incorporeal: getProperty(this.item.data, "data.incorporeal") || this.item.actor?.data?.data?.traits?.incorporeal,
+                incorporeal: getProperty(this.item.system,"incorporeal") || this.item.actor?.system?.traits?.incorporeal,
                 targets: selectedTargets,
                 hiddenTargets: hiddenTargets,
                 targetIds: selectedTargetIds,
                 hasTargets: selectedTargets.length || hiddenTargets.length,
                 isSpell: this.item.type === "spell",
-                hasPr: getProperty(this.item.data, "data.pr"),
-                hasSr: getProperty(this.item.data, "data.sr"),
+                hasPr: getProperty(this.item.system,"pr"),
+                hasSr: getProperty(this.item.system,"sr"),
                 cl: rollData.cl,
                 summonPack: summonPack,
                 summonId: summonId,
@@ -648,9 +650,9 @@ export class ItemUse {
             rolled = true;
         }
         if (this.item.hasRolltableDraw) {
-            let rollTable = await game.packs.get(getProperty(this.item.data, "data.rollTableDraw.pack")).getDocument(getProperty(this.item.data, "data.rollTableDraw.id"))
-            if (getProperty(this.item.data, "data.rollTableDraw.formula")) {
-                var roll = new Roll35e(getProperty(this.item.data, "data.rollTableDraw.formula"), rollData);
+            let rollTable = await game.packs.get(getProperty(this.item.system,"rollTableDraw.pack")).getDocument(getProperty(this.item.system,"rollTableDraw.id"))
+            if (getProperty(this.item.system,"rollTableDraw.formula")) {
+                var roll = new Roll35e(getProperty(this.item.system,"rollTableDraw.formula"), rollData);
                 await rollTable.draw({roll: roll, rollMode: rollMode});
             } else {
                 await rollTable.draw({rollMode: rollMode});
@@ -661,28 +663,28 @@ export class ItemUse {
 
 
     #_applyMetamagicModifiers(damageModifiers, rollModifiers) {
-        if (this.item.data.data?.metamagicFeats?.maximized) {
+        if (this.item.system?.metamagicFeats?.maximized) {
             damageModifiers.maximize = true;
             rollModifiers.push(`${game.i18n.localize("D35E.SpellMaximized")}`)
         }
-        if (this.item.data.data?.metamagicFeats?.empowered) {
+        if (this.item.system?.metamagicFeats?.empowered) {
             damageModifiers.multiplier = 1.5
             rollModifiers.push(`${game.i18n.localize("D35E.SpellEmpowered")}`)
         }
-        if (this.item.data.data?.metamagicFeats?.intensified) {
+        if (this.item.system?.metamagicFeats?.intensified) {
             damageModifiers.maximize = true;
             damageModifiers.multiplier = 2
             rollModifiers.push(`${game.i18n.localize("D35E.SpellIntensified")}`)
         }
-        if (this.item.data.data?.metamagicFeats?.enlarged) {
+        if (this.item.system?.metamagicFeats?.enlarged) {
             rollData.spellEnlarged = true;
             rollModifiers.push(`${game.i18n.localize("D35E.SpellEnlarged")}`)
         }
-        if (this.item.data.data?.metamagicFeats?.widened) {
+        if (this.item.system?.metamagicFeats?.widened) {
             rollData.spellWidened = true;
             rollModifiers.push(`${game.i18n.localize("D35E.SpellWidened")}`)
         }
-        if (this.item.data.data?.metamagicFeats?.enhanced) {
+        if (this.item.system?.metamagicFeats?.enhanced) {
             rollData.maxDamageDice += 10;
             rollModifiers.push(`${game.i18n.localize("D35E.SpellEnhanced")}`)
         }
@@ -696,50 +698,50 @@ export class ItemUse {
         }
         if (actor && !actor.isOwner) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
-        const itemQuantity = getProperty(this.item.data, "data.quantity");
+        const itemQuantity = getProperty(this.item.system,"quantity");
         if (itemQuantity != null && itemQuantity <= 0 && !skipChargeCheck) {
             return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoQuantity"));
         }
 
-        if (getProperty(this.item.data, "data.requiresPsionicFocus") && !this.item.actor?.data?.data?.attributes?.psionicFocus && !skipChargeCheck) return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
+        if (getProperty(this.item.system,"requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus && !skipChargeCheck) return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
 
         if (this.item.isCharged && this.item.charges < this.item.chargeCost && !skipChargeCheck) {
             return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoCharges").format(this.item.name));
         }
 
-        const itemData = this.item.getRollData();
+        this.itemData = this.item.getRollData();
         const rollData = actor ? duplicate(actor.getRollData(null, true)) : {};
-        rollData.item = duplicate(itemData);
-        const itemUpdateData = {};
-        itemUpdateData._id = this.item._id;
-        console.log('D35E | Attack item update', itemUpdateData)
+        rollData.item = duplicate(this.itemData);
+        this.itemUpdateData = {};
+        this.itemUpdateData._id = this.item._id;
+        console.log('D35E | Attack item update', this.itemUpdateData)
 
         let rolled = false;
 
 
         // Handle fast-forwarding
-        if (skipDialog || (ev instanceof MouseEvent && (ev.shiftKey || ev.button === 2)) || getProperty(this.item.data, "data.actionType") === "special") return {
+        if (skipDialog || (ev instanceof MouseEvent && (ev.shiftKey || ev.button === 2)) || getProperty(this.item.system,"actionType") === "special") return {
             wasRolled: true,
             roll: this.rollAttack(true, null, temporaryItem, actor, rollData)
         };
 
         // Render modal dialog
         let template = "systems/D35E/templates/apps/attack-roll-dialog.html";
-        let weaponName = getProperty(this.item.data, "data.baseWeaponType") || "";
+        let weaponName = getProperty(this.item.system,"baseWeaponType") || "";
         let featWeaponName = `(${weaponName})`;
         let bonusMaxPowerPoints = 0;
-        if (this.item.type === "spell" && getProperty(this.item.data, "data.isPower")) {
-            let spellbookIndex = getProperty(this.item.data, "data.spellbook");
-            let spellbook = getProperty(this.item.actor.data, `data.attributes.spells.spellbooks.${spellbookIndex}`) || {};
-            let availablePowerPoints = (spellbook.powerPoints || 0) - (getProperty(this.item.data, "data.powerPointsCost") || 0);
-            bonusMaxPowerPoints = Math.max(spellbook.maximumPowerPointLimit ? Math.min((spellbook?.cl?.total || 0) - (getProperty(this.item.data, "data.powerPointsCost") || 0), availablePowerPoints) : availablePowerPoints, 0);
+        if (this.item.type === "spell" && getProperty(this.item.system,"isPower")) {
+            let spellbookIndex = getProperty(this.item.system,"spellbook");
+            let spellbook = getProperty(this.item.actor.system,`attributes.spells.spellbooks.${spellbookIndex}`) || {};
+            let availablePowerPoints = (spellbook.powerPoints || 0) - (getProperty(this.item.system,"powerPointsCost") || 0);
+            bonusMaxPowerPoints = Math.max(spellbook.maximumPowerPointLimit ? Math.min((spellbook?.cl?.total || 0) - (getProperty(this.item.system,"powerPointsCost") || 0), availablePowerPoints) : availablePowerPoints, 0);
         }
-        let autoScaleAttacks = (game.settings.get("D35E", "autoScaleAttacksBab") && actor.data.type !== "npc" && getProperty(this.item.data, "data.attackType") === "weapon" && getProperty(this.item.data, "data.autoScaleOption") !== "never") || getProperty(this.item.data, "data.autoScaleOption") === "always"
-        let extraAttacksCount = autoScaleAttacks ? Math.ceil((actor.data.data.attributes.bab.total) / 5.0) : (getProperty(this.item.data, "data.attackParts") || []).length + 1;
+        let autoScaleAttacks = (game.settings.get("D35E", "autoScaleAttacksBab") && actor.data.type !== "npc" && getProperty(this.item.system,"attackType") === "weapon" && getProperty(this.item.system,"autoScaleOption") !== "never") || getProperty(this.item.system,"autoScaleOption") === "always"
+        let extraAttacksCount = autoScaleAttacks ? Math.ceil((actor.system.attributes.bab.total) / 5.0) : (getProperty(this.item.system,"attackParts") || []).length + 1;
         let rc = game.settings.get("D35E", `rollConfig`).rollConfig;
         let summonableMonsters = [];
-        if (this.item.data.data.summon instanceof Array && this.item.data.data.summon) {
-            for (let summon of this.item.data.data.summon) {
+        if (this.item.system.summon instanceof Array && this.item.system.summon) {
+            for (let summon of this.item.system.summon) {
 
                 const pack = game.packs.get(summon.pack || "D35E.summoning-roll-tables");
                 const table = await pack.getDocument(summon.id);
@@ -751,7 +753,7 @@ export class ItemUse {
         let dialogData = {
             data: rollData,
             id: this.item.id,
-            item: this.item.data.data,
+            item: this.item.system,
             targets: Array.from(game.user.targets) || [],
             hasTargets: (game.user.targets || new Set()).size,
             rollMode: rollModeOverride ? rollModeOverride : (game.settings.get("D35E", `rollConfig`).rollConfig[actor.type]?.attack || game.settings.get("core", "rollMode")),
@@ -762,31 +764,31 @@ export class ItemUse {
             hasAttack: this.item.hasAttack,
             hasDamage: this.item.hasDamage,
             allowNoAmmo: game.settings.get("D35E", "allowNoAmmo") || actor.type === "npc",
-            nonLethal: getProperty(this.item.data, "data.nonLethal") || false,
-            allowMultipleUses: this.item.data.data?.uses?.allowMultipleUses,
-            multipleUsesMax: this.item.data.data?.uses?.maxPerUse ? Math.min(Math.floor(this.item.charges / this.item.chargeCost), getProperty(this.item.data, "data.uses.maxPerUse")) : Math.floor(this.item.charges / this.item.chargeCost),
+            nonLethal: getProperty(this.item.system,"nonLethal") || false,
+            allowMultipleUses: this.item.system?.uses?.allowMultipleUses,
+            multipleUsesMax: this.item.system?.uses?.maxPerUse ? Math.min(Math.floor(this.item.charges / this.item.chargeCost), getProperty(this.item.system,"uses.maxPerUse")) : Math.floor(this.item.charges / this.item.chargeCost),
             bonusPowerPointsMax: bonusMaxPowerPoints,
-            isSpell: this.item.type === "spell" && !getProperty(this.item.data, "data.isPower"),
-            isPower: this.item.type === "spell" && getProperty(this.item.data, "data.isPower"),
-            hasDamageAbility: getProperty(this.item.data, "data.ability.damage") !== "",
-            isNaturalAttack: getProperty(this.item.data, "data.attackType") === "natural",
-            isWeaponAttack: getProperty(this.item.data, "data.attackType") === "weapon",
-            isRangedWeapon: getProperty(this.item.data, "data.attackType") === "weapon" && getProperty(this.item.data, "data.actionType") === "rwak",
-            ammunition: getProperty(this.item.data, "data.thrown") ? actor.items.filter(o => o._id === getProperty(this.item.data, "data.originalWeaponId")) : actor.items.filter(o => o.type === "loot" && o.data.data.subType === "ammo" && o.data.data.quantity > 0),
+            isSpell: this.item.type === "spell" && !getProperty(this.item.system,"isPower"),
+            isPower: this.item.type === "spell" && getProperty(this.item.system,"isPower"),
+            hasDamageAbility: getProperty(this.item.system,"ability.damage") !== "",
+            isNaturalAttack: getProperty(this.item.system,"attackType") === "natural",
+            isWeaponAttack: getProperty(this.item.system,"attackType") === "weapon",
+            isRangedWeapon: getProperty(this.item.system,"attackType") === "weapon" && getProperty(this.item.system,"actionType") === "rwak",
+            ammunition: getProperty(this.item.system,"thrown") ? actor.items.filter(o => o._id === getProperty(this.item.system,"originalWeaponId")) : actor.items.filter(o => o.type === "loot" && o.system.subType === "ammo" && o.system.quantity > 0),
             extraAttacksCount: extraAttacksCount,
             hasTemplate: this.item.hasTemplate,
-            isAlreadyProne: this?.actor?.data?.data?.attributes?.conditions?.prone || false,
+            isAlreadyProne: this?.actor?.system?.attributes?.conditions?.prone || false,
             canPowerAttack: actor.items.filter(o => o.type === "feat" && o.originalName === "Power Attack")?.length > 0,
-            maxPowerAttackValue: getProperty(actor.data, "data.attributes.bab.total"),
+            maxPowerAttackValue: getProperty(actor.system,"attributes.bab.total"),
             canManyshot: actor.items.filter(o => o.type === "feat" && o.originalName === "Manyshot")?.length > 0,
-            maxManyshotValue: 2 + Math.floor((getProperty(actor.data, "data.attributes.bab.total") - 6) / 5),
+            maxManyshotValue: 2 + Math.floor((getProperty(actor.system,"attributes.bab.total") - 6) / 5),
             canGreaterManyshot: actor.items.filter(o => o.type === "feat" && o.originalName === "Greater Manyshot")?.length > 0,
             canRapidShot: actor.items.filter(o => o.type === "feat" && o.originalName === "Rapid Shot")?.length > 0,
-            canFlurryOfBlows: actor.items.filter(o => o.type === "feat" && (o.originalName === "Flurry of Blows" || o.data.data.customTag === "flurryOfBlows")).length > 0,
-            maxGreaterManyshotValue: getProperty(actor.data, "data.abilities.wis.mod"),
+            canFlurryOfBlows: actor.items.filter(o => o.type === "feat" && (o.originalName === "Flurry of Blows" || o.system.customTag === "flurryOfBlows")).length > 0,
+            maxGreaterManyshotValue: getProperty(actor.system,"abilities.wis.mod"),
             weaponFeats: actor.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData,`${this.item.type}`)),
             weaponFeatsOptional: actor.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData,`${this.item.type}Optional`)),
-            conditionals: getProperty(this.item.data, "data.conditionals"),
+            conditionals: getProperty(this.item.system,"conditionals"),
             summonableMonsters: summonableMonsters
         };
 
@@ -807,7 +809,7 @@ export class ItemUse {
                         if (game.combats.active) {
                             let combatActor = this.item.getCombatActor(actor)
                             if (combatActor) {
-                                combatActor.useAction(this.item.data.data.activation)
+                                combatActor.useAction(this.item.system.activation)
                             }
                         }
                     }
@@ -827,7 +829,7 @@ export class ItemUse {
                                 if (extraAttacksCount > 1)
                                     combatActor.useFullAttackAction();
                                 else
-                                    combatActor.useAction(this.item.data.data.activation)
+                                    combatActor.useAction(this.item.system.activation)
                             }
                         }
                     }
@@ -842,7 +844,7 @@ export class ItemUse {
                     if (game.combats.active) {
                         let combatActor = this.item.getCombatActor(actor)
                         if (combatActor) {
-                            combatActor.useAction(this.item.data.data.activation)
+                            combatActor.useAction(this.item.system.activation)
                         }
                     }
                 }
@@ -905,13 +907,13 @@ export class ItemUse {
             useAmmoName = form.find('[name="ammo-name"]').val()
             var ammo = actor.items.get(useAmmoId)
             if (ammo) {
-                useAmmoDamageType = ammo.data.data.bonusAmmoDamageType || ""
-                useAmmoDamageUid = ammo.data.data.bonusAmmoDamageUid || "";
-                useAmmoAttack = ammo.data.data.bonusAmmoAttack || 0;
-                useAmmoNote = ammo.data.data.bonusAmmoNote || "";
+                useAmmoDamageType = ammo.system.bonusAmmoDamageType || ""
+                useAmmoDamageUid = ammo.system.bonusAmmoDamageUid || "";
+                useAmmoAttack = ammo.system.bonusAmmoAttack || 0;
+                useAmmoNote = ammo.system.bonusAmmoNote || "";
                 useAmmoName = ammo.name;
-                useAmmoDamage = ammo.data.data.bonusAmmoDamage || 0;
-                ammoMaterial = JSON.stringify(ammo.data.data.material)
+                useAmmoDamage = ammo.system.bonusAmmoDamage || 0;
+                ammoMaterial = JSON.stringify(ammo.system.material)
             }
             if (useAmmoDamage !== '') {
                 damageExtraParts.push([useAmmoDamage, useAmmoDamageType, useAmmoDamageUid]);
@@ -949,7 +951,7 @@ export class ItemUse {
         if (form.find('[name="nonLethal"]').prop("checked")) {
             nonLethal = true
         }
-        const itemNonLethal = getProperty(this.item.data, "data.nonLethal") || false;
+        const itemNonLethal = getProperty(this.item.system,"nonLethal") || false;
         if (nonLethal !== itemNonLethal) {
             rollData.nonLethalPenalty = -4;
             attackExtraParts.push("@nonLethalPenalty");
@@ -1142,8 +1144,8 @@ export class ItemUse {
         let usedItem = replacementItem ? replacementItem : this.item;
         if (!actor.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
         if (this.item.data.type !== "spell") throw new Error("Wrong Item type");
-        if (getProperty(this.item.data, "data.requiresPsionicFocus") && !this.item.actor?.data?.data?.attributes?.psionicFocus) return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
-        if (getProperty(this.item.data, "data.preparation.mode") !== "atwill" && new ItemCharges(this.item).getCharges() <= 0) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoSpellsLeft"));
+        if (getProperty(this.item.system,"requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus) return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
+        if (getProperty(this.item.system,"preparation.mode") !== "atwill" && new ItemCharges(this.item).getCharges() <= 0) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoSpellsLeft"));
 
         // Invoke the Item roll
         if (usedItem.hasAction)
@@ -1161,7 +1163,7 @@ export class ItemUse {
 
 
     #_getSpellDC(_rollData) {
-        const data = duplicate(this.item.data.data);
+        const data = duplicate(this.item.system);
         let spellDC = {dc: null, type: null, description: null}
 
         const rollData = _rollData ? _rollData : this.item.actor ? this.item.actor.getRollData() : {};
@@ -1185,13 +1187,13 @@ export class ItemUse {
         let sl = 0;
         if (this.item.type === "spell") {
             spellbookIndex = data.spellbook;
-            spellbook = getProperty(this.item.actor.data, `data.attributes.spells.spellbooks.${spellbookIndex}`) || {};
+            spellbook = getProperty(this.item.actor.system,`attributes.spells.spellbooks.${spellbookIndex}`) || {};
             spellAbility = spellbook.ability;
-            if (spellAbility !== "") ablMod = getProperty(this.item.actor.data, `data.abilities.${spellAbility}.mod`);
+            if (spellAbility !== "") ablMod = getProperty(this.item.actor.system,`abilities.${spellAbility}.mod`);
 
             cl += getProperty(spellbook, "cl.total") || 0;
             cl += data.clOffset || 0;
-            cl -= this.item.actor.data.data.attributes.energyDrain || 0
+            cl -= this.item.actor.system.attributes.energyDrain || 0
 
             cl += rollData.featClBonus || 0;
 
@@ -1203,14 +1205,14 @@ export class ItemUse {
             rollData.ablMod = ablMod;
         } else if (this.item.type === "card") {
             let deckIndex = data.deck;
-            let deck = getProperty(this.item.actor.data, `data.attributes.cards.decks.${deckIndex}`) || {};
+            let deck = getProperty(this.item.actor.system,`attributes.cards.decks.${deckIndex}`) || {};
             spellAbility = deck.ability;
-            if (spellAbility !== "") ablMod = getProperty(this.item.actor.data, `data.abilities.${spellAbility}.mod`);
+            if (spellAbility !== "") ablMod = getProperty(this.item.actor.system,`abilities.${spellAbility}.mod`);
 
             cl += getProperty(deck, "cl.total") || 0;
             cl += data.clOffset || 0;
             cl += rollData.featClBonus || 0;
-            cl -= this.item.actor.data.data.attributes.energyDrain || 0
+            cl -= this.item.actor.system.attributes.energyDrain || 0
 
             sl += data.level;
             sl += data.slOffset || 0;

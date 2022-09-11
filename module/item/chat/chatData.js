@@ -33,14 +33,14 @@ export class ItemChatData {
         let sl = 0;
         if (this.item.type === "spell") {
             spellbookIndex = data.spellbook;
-            spellbook = getProperty(this.item.actor.data, `data.attributes.spells.spellbooks.${spellbookIndex}`) || {};
+            spellbook = getProperty(this.item.actor.system,`attributes.spells.spellbooks.${spellbookIndex}`) || {};
             spellAbility = spellbook.ability;
-            if (spellAbility !== "") ablMod = getProperty(this.item.actor.data, `data.abilities.${spellAbility}.mod`);
+            if (spellAbility !== "") ablMod = getProperty(this.item.actor.system,`abilities.${spellAbility}.mod`);
 
             cl += getProperty(spellbook, "cl.total") || 0;
             cl += data.clOffset || 0;
             cl += rollData.featClBonus || 0;
-            cl -= this.item.actor.data.data.attributes.energyDrain || 0
+            cl -= this.item.actor.system.attributes.energyDrain || 0
 
             sl += data.level;
             sl += data.slOffset || 0;
@@ -50,14 +50,14 @@ export class ItemChatData {
             rollData.ablMod = ablMod;
         } else if (this.item.type === "card") {
             let deckIndex = data.deck;
-            let deck = getProperty(this.item.actor.data, `data.attributes.cards.decks.${deckIndex}`) || {};
+            let deck = getProperty(this.item.actor.system,`attributes.cards.decks.${deckIndex}`) || {};
             spellAbility = deck.ability;
-            if (spellAbility !== "") ablMod = getProperty(this.item.actor.data, `data.abilities.${spellAbility}.mod`);
+            if (spellAbility !== "") ablMod = getProperty(this.item.actor.system,`abilities.${spellAbility}.mod`);
 
             cl += getProperty(deck, "cl.total") || 0;
             cl += data.clOffset || 0;
             cl += rollData.featClBonus || 0;
-            cl -= this.item.actor.data.data.attributes.energyDrain || 0
+            cl -= this.item.actor.system.attributes.energyDrain || 0
 
             sl += data.level;
             sl += data.slOffset || 0;
@@ -154,12 +154,12 @@ export class ItemChatData {
 
 
             rollData.powerAbl = 0;
-            if (data.school === "bol") rollData.powerAbl = getProperty(this.item.actor.data, `data.abilities.str.mod`)
-            if (data.school === "kin") rollData.powerAbl = getProperty(this.item.actor.data, `data.abilities.con.mod`)
-            if (data.school === "por") rollData.powerAbl = getProperty(this.item.actor.data, `data.abilities.dex.mod`)
-            if (data.school === "met") rollData.powerAbl = getProperty(this.item.actor.data, `data.abilities.int.mod`)
-            if (data.school === "cla") rollData.powerAbl = getProperty(this.item.actor.data, `data.abilities.wis.mod`)
-            if (data.school === "tel") rollData.powerAbl = getProperty(this.item.actor.data, `data.abilities.cha.mod`)
+            if (data.school === "bol") rollData.powerAbl = getProperty(this.item.actor.system,`abilities.str.mod`)
+            if (data.school === "kin") rollData.powerAbl = getProperty(this.item.actor.system,`abilities.con.mod`)
+            if (data.school === "por") rollData.powerAbl = getProperty(this.item.actor.system,`abilities.dex.mod`)
+            if (data.school === "met") rollData.powerAbl = getProperty(this.item.actor.system,`abilities.int.mod`)
+            if (data.school === "cla") rollData.powerAbl = getProperty(this.item.actor.system,`abilities.wis.mod`)
+            if (data.school === "tel") rollData.powerAbl = getProperty(this.item.actor.system,`abilities.cha.mod`)
 
             // Add save DC
             if (data.hasOwnProperty("actionType") && (getProperty(data, "save.description") || getProperty(data, "save.type")) && getProperty(data, "save.description") !== "None") {

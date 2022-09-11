@@ -9,13 +9,13 @@ export class ItemSpellHelper {
         let cl = 0
         if (itemData.spellbook) {
             const spellbookIndex = itemData.spellbook;
-            const spellbook = item.actor.data.data.attributes.spells.spellbooks[spellbookIndex];
-            cl = spellbook.cl.total + (itemData.clOffset || 0) + (rollData.featClBonus || 0) - (item.actor.data.data.attributes.energyDrain || 0);
+            const spellbook = item.actor.system.attributes.spells.spellbooks[spellbookIndex];
+            cl = spellbook.cl.total + (itemData.clOffset || 0) + (rollData.featClBonus || 0) - (item.actor.system.attributes.energyDrain || 0);
         }
         if (itemData.deck) {
             const deckIndex = itemData.deck;
-            const deck = item.actor.data.data.attributes.cards.decks[deckIndex];
-            cl = deck.cl.total + (itemData.clOffset || 0) + (rollData.featClBonus || 0) - (item.actor.data.data.attributes.energyDrain || 0);
+            const deck = item.actor.system.attributes.cards.decks[deckIndex];
+            cl = deck.cl.total + (itemData.clOffset || 0) + (rollData.featClBonus || 0) - (item.actor.system.attributes.energyDrain || 0);
         }
         rollData.cl = Math.max((new Roll35e(`${itemData.baseCl}`, rollData).roll()).total, cl);
         rollData.spellPenetration = rollData.cl + (rollData?.featSpellPenetrationBonus || 0);
@@ -30,7 +30,7 @@ export class ItemSpellHelper {
             types: "",
         };
         const data = {
-            data: mergeObject(item.data.data, srcData.data, {inplace: false}),
+            data: mergeObject(item.system, srcsystem, {inplace: false}),
             label: label,
         };
 
@@ -153,7 +153,7 @@ export class ItemSpellHelper {
 
         // Set DC and SR
         {
-            const savingThrowDescription = data?.data?.save?.type ? CONFIG.D35E.savingThrowTypes[data.data.save.type] : (data?.data?.save?.description || "");
+            const savingThrowDescription = data?.data?.save?.type ? CONFIG.D35E.savingThrowTypes[system.save.type] : (data?.data?.save?.description || "");
             if (savingThrowDescription) label.savingThrow = savingThrowDescription;
             else label.savingThrow = "none";
 

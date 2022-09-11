@@ -96,7 +96,7 @@ export class ItemCharges {
         if (getProperty(this.item.system, "atWill")) return Number.POSITIVE_INFINITY;
 
         if (getProperty(this.item.system, "requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus) return 0;
-        const spellbook = getProperty(this.item.actor.data, `data.attributes.spells.spellbooks.${this.item.system.spellbook}`),
+        const spellbook = getProperty(this.item.actor.system,`attributes.spells.spellbooks.${this.item.system.spellbook}`),
             isSpontaneous = spellbook.spontaneous, usePowerPoints = spellbook.usePowerPoints, isEpic = getProperty(this.item.system, "level") > 9,
             spellLevel = getProperty(this.item.system, "level");
         return usePowerPoints ? (getProperty(spellbook, `powerPoints`) - getProperty(this.item.system, "powerPointsCost") >= 0 || 0) : (isSpontaneous && !isEpic)
@@ -120,8 +120,8 @@ export class ItemCharges {
 
     async #addSpellUses(value, data = null) {
         if (!this.item.actor) return;
-        if (getProperty(this.item.data,"data.atWill")) return;
-        //if (getProperty(this.item.data,"data.level") === 0) return;
+        if (getProperty(this.item.system,"atWill")) return;
+        //if (getProperty(this.item.system,"level") === 0) return;
 
         //console.log(`D35E | Adding spell uses ${value}`)
         const spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${this.item.system.spellbook}`),

@@ -221,7 +221,7 @@ export class CombatD35E extends Combat {
         // Get Combatant data
         const c = this.combatants.get(id);
         if (!c) return results;
-        const actorData = c.actor ? c.actor.data.data : {};
+        const actorData = c.actor ? c.actor.system : {};
         formula = formula || this._getInitiativeFormula(c.actor ? c.actor : null);
 
         actorData.bonus = bonus;
@@ -366,15 +366,15 @@ export class CombatD35E extends Combat {
   async _processCurrentCombatant() {
     try {
         const actor = this.combatant.actor;
-        const buffId = this.combatant.data?.flags?.D35E?.buffId;
+        const buffId = this.combatant?.flags?.D35E?.buffId;
         if (actor != null) {
             await actor.progressRound();
         } else if (buffId) {
             let actor;
-            if (this.combatant.data?.flags?.D35E?.isToken) {
-                actor = canvas.scene.tokens.get(this.combatant.data?.flags?.D35E?.tokenId).actor; 
+            if (this.combatant?.flags?.D35E?.isToken) {
+                actor = canvas.scene.tokens.get(this.combatant?.flags?.D35E?.tokenId).actor;
             } else {
-                actor = game.actors.get(this.combatant.data?.flags?.D35E?.actor);
+                actor = game.actors.get(this.combatant?.flags?.D35E?.actor);
             }
             await actor.progressBuff(buffId,1);
             await this.nextTurn();
@@ -421,13 +421,13 @@ export class CombatD35E extends Combat {
 
   async addBuffToCombat(buff, actor) {
     for (let combatant of this.combatants) {
-        if (this.combatant.data?.flags?.D35E?.buffId === buff.id) {
+        if (this.combatant?.flags?.D35E?.buffId === buff.id) {
             await combatant.update({initiative:(this.combatant.initiaitve+0.01)});
             return;
         }
     }
     let buffDelta = 0.01;
-    if (buff.data.data.timeline.tickOnEnd)
+    if (buff.system.timeline.tickOnEnd)
         buffDelta = -0.01
     let buffCombatant = (await this.createEmbeddedDocuments("Combatant",[{name:buff.name,img:buff.img,initiative:(this.combatant.initiative+buffDelta), flags: {D35E: {buffId: buff.id, actor: actor.id, isToken: actor.isToken, tokenId: actor?.token?.id, actorImg: actor.img, actorName: actor.name}}}]))[0]
     
@@ -437,7 +437,7 @@ export class CombatD35E extends Combat {
     try {
         let combatantsToDelete = [];
         for (let combatant of this.combatants) {
-            if (combatant.data?.flags?.D35E?.buffId === buff.id) {
+            if (combatant?.flags?.D35E?.buffId === buff.id) {
                 combatantsToDelete.push(combatant.id);
             }
         }

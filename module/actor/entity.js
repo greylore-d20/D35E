@@ -4777,10 +4777,10 @@ export class ActorPF extends Actor {
         let identified = getProperty(item.data, `data.identified`)
         // Get attack template
         let attackData = { data: {} };
-        for (const template of game.data.system.template.Item.attack.templates) {
-            mergeObject(attackData.data, game.data.system.template.Item.templates[template]);
+        for (const template of game.system.template.Item.attack.templates) {
+            mergeObject(attackData.data, game.system.template.Item.templates[template]);
         }
-        mergeObject(attackData.data, duplicate(game.data.system.template.Item.attack));
+        mergeObject(attackData.data, duplicate(game.system.template.Item.attack));
         attackData = flattenObject(attackData);
         let isIncorporeal = false;
 

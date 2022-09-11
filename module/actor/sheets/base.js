@@ -389,7 +389,7 @@ export class ActorSheetPF extends ActorSheet {
       if ( trait.custom ) {
         trait.custom.split(CONFIG.D35E.re.traitSeparator).forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
       }
-      trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+      trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
     }
   }
 

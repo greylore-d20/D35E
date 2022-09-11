@@ -13,61 +13,61 @@ export class ItemEnhancementConverter {
             data: data,
         };
 
-        const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origData.data);
-        data.data.enhancementType = "misc";
+        const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origsystem);
+        system.enhancementType = "misc";
 
         // Set name
         data.name = `${origData.name}`;
         data.img = origData.img;
         data.id = origData._id
         if (type === 'command' || type === 'use') {
-            data.data.uses.per = "day";
-            data.data.uses.maxFormula = "1";
-            data.data.uses.value = 1;
-            data.data.uses.max = 1;
+            system.uses.per = "day";
+            system.uses.maxFormula = "1";
+            system.uses.value = 1;
+            system.uses.max = 1;
         } else {
-            data.data.uses.per = "charges";
-            data.data.uses.maxFormula = "50";
-            data.data.uses.value = 50;
-            data.data.uses.max = 50;
+            system.uses.per = "charges";
+            system.uses.maxFormula = "50";
+            system.uses.value = 50;
+            system.uses.max = 50;
         }
 
-        data.data.uses.chargesPerUse = 1
+        system.uses.chargesPerUse = 1
 
 
-        data.data.baseCl = slcl[1]
-        data.data.enhIncreaseFormula = ""
-        data.data.priceFormula = ""
-        data.data.price = 0
+        system.baseCl = slcl[1]
+        system.enhIncreaseFormula = ""
+        system.priceFormula = ""
+        system.price = 0
 
-        data.data.isFromSpell = true;
+        system.isFromSpell = true;
 
         // Set activation method
-        data.data.activation.type = "standard";
+        system.activation.type = "standard";
 
-        data.data.measureTemplate = getProperty(origData, "data.measureTemplate");
+        system.measureTemplate = getProperty(origData, "data.measureTemplate");
 
 
         // Set damage formula
-        data.data.actionType = origData.data.actionType;
+        system.actionType = origsystem.actionType;
         for (let d of getProperty(origData, "data.damage.parts")) {
             d[0] = d[0].replace(/@sl/g, slcl[0]);
-            data.data.damage.parts.push(d);
+            system.damage.parts.push(d);
         }
 
         // Set saves
-        data.data.save.description = origData.data.save.description;
-        data.data.save.type = origData.data.save.type;
-        data.data.save.ability = origData.data.save.ability;
-        data.data.save.dc = 10 + slcl[0] + Math.floor(slcl[0] / 2);
+        system.save.description = origsystem.save.description;
+        system.save.type = origsystem.save.type;
+        system.save.ability = origsystem.save.ability;
+        system.save.dc = 10 + slcl[0] + Math.floor(slcl[0] / 2);
 
         // Copy variables
-        data.data.attackNotes = origData.data.attackNotes;
-        data.data.effectNotes = origData.data.effectNotes;
-        data.data.attackBonus = origData.data.attackBonus;
-        data.data.critConfirmBonus = origData.data.critConfirmBonus;
-        data.data.specialActions = origData.data.specialActions;
-        data.data.attackCountFormula = origData.data.attackCountFormula;
+        system.attackNotes = origsystem.attackNotes;
+        system.effectNotes = origsystem.effectNotes;
+        system.attackBonus = origsystem.attackBonus;
+        system.critConfirmBonus = origsystem.critConfirmBonus;
+        system.specialActions = origsystem.specialActions;
+        system.attackCountFormula = origsystem.attackCountFormula;
 
         // Determine aura power
         let auraPower = "faint";
@@ -77,7 +77,7 @@ export class ItemEnhancementConverter {
         ItemSpellHelper.calculateSpellCasterLevelLabels(slcl);
 
         // Set description
-        data.data.description.value = getProperty(origData, "data.description.value");
+        system.description.value = getProperty(origData, "data.description.value");
 
         return data;
     }
@@ -95,32 +95,32 @@ export class ItemEnhancementConverter {
         };
 
 
-        data.data.enhancementType = "misc";
+        system.enhancementType = "misc";
 
         // Set name
         data.name = `${origData.name}`;
         data.img = origData.img;
         data.id = origData._id
 
-        data.data.isFromBuff = true;
+        system.isFromBuff = true;
 
-        data.data.enh = 1
-        data.data.enhIncreaseFormula = ""
-        data.data.priceFormula = ""
-        data.data.price = 0
+        system.enh = 1
+        system.enhIncreaseFormula = ""
+        system.priceFormula = ""
+        system.price = 0
 
 
-        data.data.changes = origData.data.changes;
-        for (const c of data.data.changes) {
+        system.changes = origsystem.changes;
+        for (const c of system.changes) {
             c[0] = c[0].replace(new RegExp('@item.level', 'g'), '@enhancement');
         }
-        data.data.contextNotes = origData.data.contextNotes;
-        for (const c of data.data.contextNotes) {
+        system.contextNotes = origsystem.contextNotes;
+        for (const c of system.contextNotes) {
             c[0] = c[0].replace(new RegExp('@item.level', 'g'), '@enhancement');
         }
 
 
-        data.data.description.value = getProperty(origData, "data.description.value");
+        system.description.value = getProperty(origData, "data.description.value");
 
         return data;
     }

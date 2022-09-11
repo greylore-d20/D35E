@@ -48,7 +48,7 @@ export class ItemChargeUpdateHelper {
         if (actorRollData == null) {
             if (item.actor != null) rollData = item.actor.getRollData();
             if (actorData !== null) {
-                rollData = mergeObject(rollData, actorData.data, {inplace: false});
+                rollData = mergeObject(rollData, actorsystem, {inplace: false});
             }
         } else {
             rollData = actorRollData;

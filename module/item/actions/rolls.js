@@ -49,7 +49,7 @@ export class ItemRolls {
 
         // Roll spell failure chance
         if (templateData.isSpell && this.item.actor != null && this.item.actor.spellFailure > 0) {
-            const spellbook = getProperty(this.item.actor.data, `data.attributes.spells.spellbooks.${this.item.data.data.spellbook}`);
+            const spellbook = getProperty(this.item.actor.system,`attributes.spells.spellbooks.${this.item.system.spellbook}`);
             if (spellbook && spellbook.arcaneSpellFailure) {
                 templateData.spellFailure = new Roll35e("1d100").roll().total;
                 templateData.spellFailureSuccess = templateData.spellFailure > this.item.actor.spellFailure;
@@ -149,7 +149,7 @@ export class ItemRolls {
         }
         // Add secondary natural attack penalty
 
-        let hasMultiattack = this.item.actor ? this.item.actor.items.filter(o => o.type === "feat" && (o.name === "Multiattack" || o.data.data.changeFlags.multiAttack)).length > 0 : false;
+        let hasMultiattack = this.item.actor ? this.item.actor.items.filter(o => o.type === "feat" && (o.name === "Multiattack" || o.system.changeFlags.multiAttack)).length > 0 : false;
         if (options.primaryAttack === false && hasMultiattack) parts.push("-2");
         if (options.primaryAttack === false && !hasMultiattack) parts.push("-5");
         // Add bonus
@@ -173,13 +173,13 @@ export class ItemRolls {
      * Only roll the item's effect.
      */
     rollEffect({critical = false, primaryAttack = true} = {}, tempActor = null, _rollData = rollData) {
-        const itemData = this.item.data.data;
+        const itemData = this.item.system;
         let actor = this.item.actor;
         if (tempActor !== null) {
             actor = tempActor;
         }
 
-        const actorData = actor.data.data;
+        const actorData = actor.system;
         const rollData = mergeObject(duplicate(actorData), {
             item: mergeObject(itemData, this.item.getRollData(), {inplace: false}),
             ablMult: 0
@@ -192,7 +192,7 @@ export class ItemRolls {
         // Add spell data
         if (this.item.isSpellLike()) {
             ItemSpellHelper.adjustSpellCL(this.item,itemData, rollData)
-            const sl = getProperty(this.item.data, "data.level") + (getProperty(this.item.data, "data.slOffset") || 0);
+            const sl = getProperty(this.item.system,"level") + (getProperty(this.item.system,"slOffset") || 0);
             rollData.sl = sl;
         }
 
@@ -203,7 +203,7 @@ export class ItemRolls {
         // Determine ability multiplier
         if (rollData.item.ability.damageMult != null) rollData.ablMult = rollData.item.ability.damageMult;
         if (primaryAttack === false && rollData.ablMult > 0) rollData.ablMult = 0.5;
-        let naturalAttackCount = (this.item.actor?.items || []).filter(o => o.type === "attack" && o.data.data.attackType === "natural")?.length;
+        let naturalAttackCount = (this.item.actor?.items || []).filter(o => o.type === "attack" && o.system.attackType === "natural")?.length;
         if (rollData.item.attackType === "natural" && primaryAttack && naturalAttackCount === 1) rollData.ablMult = 1.5;
 
         // Create effect string
@@ -212,8 +212,8 @@ export class ItemRolls {
 
         for (let noteObj of noteObjects) {
             rollData.item = {};
-            //if (noteObj.item != null) rollData.item = duplicate(noteObj.item.data.data);
-            if (noteObj.item != null) rollData.item = mergeObject(duplicate(noteObj.item.data.data), noteObj.item.getRollData(), {inplace: false})
+            //if (noteObj.item != null) rollData.item = duplicate(noteObj.item.system);
+            if (noteObj.item != null) rollData.item = mergeObject(duplicate(noteObj.item.system), noteObj.item.getRollData(), {inplace: false})
 
             for (let note of noteObj.notes) {
                 notes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(`<span class="tag">${ItemPF._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
@@ -240,7 +240,7 @@ export class ItemRolls {
                    modifiers = {},
                    replacedEnh = 0
                } = {}) {
-        const itemData = this.item.data.data;
+        const itemData = this.item.system;
         let rollData = null;
         let baseModifiers = [];
         if (!data) {
@@ -260,11 +260,11 @@ export class ItemRolls {
         // Determine critical multiplier
         rollData.critMult = 1;
         rollData.ablMult = 1;
-        if (critical) rollData.critMult = getProperty(this.item.data, "data.ability.critMult");
+        if (critical) rollData.critMult = getProperty(this.item.system,"ability.critMult");
         // Determine ability multiplier
         if (rollData.damageAbilityMultiplier !== undefined && rollData.damageAbilityMultiplier !== null) rollData.ablMult = rollData.damageAbilityMultiplier;
         if (primaryAttack === false && rollData.ablMult > 0) rollData.ablMult = 0.5;
-        let naturalAttackCount = (this.item.actor?.items || []).filter(o => o.type === "attack" && o.data.data.attackType === "natural")?.length;
+        let naturalAttackCount = (this.item.actor?.items || []).filter(o => o.type === "attack" && o.system.attackType === "natural")?.length;
         if (rollData.item.attackType === "natural" && primaryAttack && naturalAttackCount === 1) rollData.ablMult = 1.5;
 
 
@@ -365,8 +365,8 @@ export class ItemRolls {
                 p[1] = CACHE.DamageTypes.get(p[2]).data.name
             else if (p[1]) {
                 for (let damageType of CACHE.DamageTypes.values()) {
-                    if (damageType.data.data.identifiers.some(i => i[0].toLowerCase() === p[1].toLowerCase()))
-                        p[2] = damageType.data.data.uniqueId;
+                    if (damageType.system.identifiers.some(i => i[0].toLowerCase() === p[1].toLowerCase()))
+                        p[2] = damageType.system.uniqueId;
                 }
             }
             return {base: p[0], extra: [], damageType: p[1], damageTypeUid: p[2]}
@@ -401,7 +401,7 @@ export class ItemRolls {
     }
 
     rollAlternativeDamage({data = null} = {}) {
-        const itemData = this.item.data.data;
+        const itemData = this.item.system;
         let rollData = null;
         let baseModifiers = [];
         if (!data) {
@@ -443,9 +443,9 @@ export class ItemRolls {
                 p[1] = CACHE.DamageTypes.get(p[2]).data.name
             else if (p[1]) {
                 for (let damageType of CACHE.DamageTypes.values()) {
-                    let identifiers = damageType.data.data.identifiers;
+                    let identifiers = damageType.system.identifiers;
                     if (identifiers.some(i => i[0].toLowerCase() === p[1].toLowerCase()))
-                        p[2] = damageType.data.data.uniqueId;
+                        p[2] = damageType.system.uniqueId;
                 }
             }
 
