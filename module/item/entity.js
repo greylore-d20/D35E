@@ -921,108 +921,6 @@ export class ItemPF extends Item {
         })
     }
 
-    /* -------------------------------------------- */
-
-    /**
-     * Prepare chat card data for equipment type items
-     * @private
-     */
-    _equipmentChatData(data, m, labels, props) {
-        props.push(
-            CONFIG.D35E.equipmentTypes[data.equipmentType][data.equipmentSubtype],
-            labels.armor || null,
-        );
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Prepare chat card data for weapon type items
-     * @private
-     */
-    _weaponChatData(data, labels, props) {
-        props.push(
-            CONFIG.D35E.weaponTypes[data.weaponType]._label,
-            CONFIG.D35E.weaponTypes[data.weaponType][data.weaponSubtype],
-        );
-    }
-
-
-
-    /* -------------------------------------------- */
-
-    /**
-     * Prepare chat card data for consumable type items
-     * @private
-     */
-    _consumableChatData(data, labels, props) {
-        props.push(
-            CONFIG.D35E.consumableTypes[data.consumableType]
-        );
-        if (["day", "week", "charges"].includes(data.uses.per)) {
-            props.push(data.uses.value + "/" + data.uses.max + " Charges");
-        } else props.push(CONFIG.D35E.limitedUsePeriods[data.uses.per]);
-        data.hasCharges = data.uses.value >= 0;
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Prepare chat card data for tool type items
-     * @private
-     */
-    _lootChatData(data,  labels, props) {
-        props.push(
-            data.weight ? data.weight + " " + (game.settings.get("D35E", "units") === "metric" ? game.i18n.localize("D35E.Kgs") : game.i18n.localize("D35E.Lbs")) : null
-        );
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Render a chat card for Spell type data
-     * @return {Object}
-     * @private
-     */
-    _spellChatData(data,  labels, props) {
-        const ad = this.actor.system;
-
-        // Spell saving throw text
-        // const abl = data.ability || ad.attributes.spellcasting || "int";
-        // if ( this.hasSave && !data.save.dc ) data.save.dc = 8 + ad.abilities[abl].mod + ad.attributes.prof;
-        // labels.save = `DC ${data.save.dc} ${CONFIG.D35E.abilities[data.save.ability]}`;
-
-        // Spell properties
-        props.push(
-            labels.level,
-            labels.components,
-        );
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Prepare chat card data for items of the "Feat" type
-     */
-    _featChatData(data, labels, props) {
-        //const ad = this.actor.system;
-
-        // Spell saving throw text
-        // const abl = data.ability || ad.attributes.spellcasting || "str";
-        // if ( this.hasSave && !data.save.dc ) data.save.dc = 8 + ad.abilities[abl].mod + ad.attributes.prof;
-        // labels.save = `DC ${data.save.dc} ${CONFIG.D35E.abilities[data.save.ability]}`;
-
-        // Feat properties
-        props.push(
-            CONFIG.D35E.featTypes[data.featType]
-        );
-    }
-
-    /* -------------------------------------------- */
-    /*  Item Rolls - Attack, Damage, Saves, Checks  */
-
-    /* -------------------------------------------- */
-
     async use({ev = null, skipDialog = false, replacementId = null, rollModeOverride = null, temporaryItem = false}, tempActor= null, skipChargeCheck=false) {
         return await this.uses.use(tempActor, replacementId, ev, skipDialog, rollModeOverride, temporaryItem, skipChargeCheck);
     }
@@ -1202,10 +1100,7 @@ export class ItemPF extends Item {
 
     /* -------------------------------------------- */
 
-    static chatListeners(html) {
-        html.on('click', '.card-buttons button', ItemChatAction._onChatCardAction.bind(this));
-        html.on('click', '.item-name', ItemChatAction._onChatCardToggleContent.bind(this));
-    }
+
 
     static parseAction(action) {
         let actions = []

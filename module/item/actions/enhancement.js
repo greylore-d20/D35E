@@ -69,7 +69,7 @@ export class ItemEnhancements {
         }).forEach(i => {
             i.data.uses.value = i.data.uses.value + charges;
         });
-        updateData[`data.enhancements.items`] = _enhancements;
+        updateData[`system.enhancements.items`] = _enhancements;
         await this.item.update(updateData);
     }
 
@@ -83,7 +83,7 @@ export class ItemEnhancements {
         _enhancements.push(enhancement);
         this.item.updateMagicItemName(updateData, _enhancements);
         this.item.updateMagicItemProperties(updateData, _enhancements);
-        updateData[`data.enhancements.items`] = _enhancements;
+        updateData[`system.enhancements.items`] = _enhancements;
         await this.item.update(updateData);
     }
 
@@ -97,7 +97,7 @@ export class ItemEnhancements {
         _enhancements.push(enhancement);
         this.item.updateMagicItemName(updateData, _enhancements);
         this.item.updateMagicItemProperties(updateData, _enhancements);
-        updateData[`data.enhancements.items`] = _enhancements;
+        updateData[`system.enhancements.items`] = _enhancements;
         await this.item.update(updateData);
     }
 
@@ -109,7 +109,7 @@ export class ItemEnhancements {
         _enhancements.push(enhancement);
         this.item.updateMagicItemName(updateData, _enhancements);
         this.item.updateMagicItemProperties(updateData, _enhancements);
-        updateData[`data.enhancements.items`] = _enhancements;
+        updateData[`system.enhancements.items`] = _enhancements;
         return updateData
     }
 

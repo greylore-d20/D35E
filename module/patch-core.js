@@ -95,7 +95,7 @@ export async function PatchCore() {
   Token.prototype.animateMovement = async function(...args) {
     await Token_animateMovement.call(this, ...args);
     //console.log("D35E | Calling _calculateMinionDistance")
-    ActorPF.prototype._calculateMinionDistance.call(this.actor, {});
+    ActorMinionsHelper.calculateMinionDistance(this.actor, {});
     // Do something?
   };
 

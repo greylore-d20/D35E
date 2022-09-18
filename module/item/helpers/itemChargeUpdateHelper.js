@@ -7,7 +7,7 @@ export class ItemChargeUpdateHelper {
      * @param data
      * @param rollData
      */
-    static setMaxUses(data, rollData) {
+    static setMaxUses(system, rollData) {
         if (hasProperty(system, "uses.maxFormula")) {
             if (getProperty(system, "uses.maxFormula") !== "") {
                 let roll = new Roll35e(getProperty(system, "uses.maxFormula"), rollData).roll();

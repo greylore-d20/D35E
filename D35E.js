@@ -54,6 +54,8 @@ import {genTreasureFromToken} from "./module/treasure/treasure.js"
 import { ActiveEffectD35E } from "./module/ae/entity.js";
 import { CollateAuras } from "./module/auras/aura-helpers.js";
 import {ActorSheetObject} from "./module/actor/sheets/object.js";
+import {ActorChatListener} from "./module/actor/chat/chatListener.js";
+import {ItemChatListener} from "./module/item/chat/chatListener.js";
 import {D35ECombatTracker} from "./module/combat/combat-tracker.js";
 import {TokenDocumentPF} from "./module/token/tokenDocument.js";
 import {
@@ -513,10 +515,10 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 });
 
 // Hooks.on("getChatLogEntryContext", addChatMessageContextOptions);
-Hooks.on("renderChatLog", (_, html) => ItemPF.chatListeners(html));
-Hooks.on("renderChatLog", (_, html) => ActorPF.chatListeners(html));
-Hooks.on("renderChatPopout", (_, html) => ItemPF.chatListeners(html));
-Hooks.on("renderChatPopout", (_, html) => ActorPF.chatListeners(html));
+Hooks.on("renderChatLog", (_, html) => ItemChatListener.chatListeners(html));
+Hooks.on("renderChatLog", (_, html) => ActorChatListener.chatListeners(html));
+Hooks.on("renderChatPopout", (_, html) => ItemChatListener.chatListeners(html));
+Hooks.on("renderChatPopout", (_, html) => ActorChatListener.chatListeners(html));
 
 
 const debouncedCollate = debounce((a, b, c, d) => CollateAuras(a, b, c, d), 500)
@@ -566,7 +568,7 @@ Hooks.on("createToken", async (token, options, userId) => {
   if (userId !== game.user.id) return;
 
   const actor = game.actors.tokens[token.id] ?? game.actors.get(token.data.actorId);
-  actor.toggleConditionStatusIcons();
+  actor.conditions.toggleConditionStatusIcons();
 
   // Update changes and generate sourceDetails to ensure valid actor data
   if (actor != null) await actor.refresh();

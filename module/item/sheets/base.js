@@ -2156,19 +2156,15 @@ export class ItemSheetPF extends ItemSheet {
             }
 
             // Case 2 - Data explicitly provided
-            else if (system) {
-                let sameActor = droppedData.actorId === actor._id;
-                if (sameActor && actor.isToken) sameActor = droppedData.tokenId === actor.token.id;
-                if (sameActor) return this._onSortItem(event, system); // Sort existing items
-
+            else if (droppedData.data) {
                 dataType = "data";
-                itemData = system;
+                itemData = droppedData.data;
             }
 
             // Case 3 - Import from World entity
             else {
                 dataType = "world";
-                itemData = game.items.get(droppedData.id).data;
+                itemData = game.items.get(droppedData.id).system;
             }
             return this.importItem(itemData, dataType, importType);
         }

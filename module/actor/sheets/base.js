@@ -18,6 +18,7 @@ import ActorSensesConfig from "../../apps/senses-config.js";
 import AbilityConfig from "../../apps/ability-config.js";
 import {EntrySelector} from "../../apps/entry-selector.js";
 import {ItemDescriptionsHelper} from "../../item/helpers/itemDescriptionsHelper.js";
+import {ActorWealthHelper} from "../helpers/actorWealthHelper.js";
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -65,7 +66,7 @@ export class ActorSheetPF extends ActorSheet {
   }
   get currentSpellbookKey() {
     const elems = this.element.find("nav.spellbooks .item.active");
-    if (elems.length !== 1) return Object.keys(getProperty(this.data, "data.attributes.spells.spellbook") || { "primary": null })[0];
+    if (elems.length !== 1) return Object.keys(getProperty(this.system, "attributes.spells.spellbook") || { "primary": null })[0];
     return elems.attr("data-tab");
   }
 
@@ -86,7 +87,7 @@ export class ActorSheetPF extends ActorSheet {
       cssClass: isOwner ? "editable" : "locked",
       actorId: this.actor.id || this.actor._id,
       isCharacter: this.entity.data.type === "character",
-      isPlayerEditLocked: (this.entity.data.data.lockEditingByPlayers || false) && !game.user.isGM,
+      isPlayerEditLocked: (this.entity.system.lockEditingByPlayers || false) && !game.user.isGM,
       hasRace: false,
       config: CONFIG.D35E,
       useBGSkills: this.entity.data.type === "character" && game.settings.get("D35E", "allowBackgroundSkills"),
@@ -104,26 +105,26 @@ export class ActorSheetPF extends ActorSheet {
       i.labels = item.labels;
       i.id = item.id;
       i.hasAttack = item.hasAttack;
-      i.possibleUpdate = item.data.data.possibleUpdate;
+      i.possibleUpdate = item.system.possibleUpdate;
       i.hasMultiAttack = item.hasMultiAttack;
-      i.containerId = getProperty(item.data, "data.containerId");
+      i.containerId = getProperty(item.system, "containerId");
       i.hasDamage = item.hasDamage;
       i.hasEffect = item.hasEffect;
       i.charges = item.charges;
       i.maxCharges = item.maxCharges;
       i.isRecharging = item.isRecharging
       i.hasTimedRecharge = item.hasTimedRecharge;
-      i.container = getProperty(i.data, "data.container");
+      i.container = getProperty(i.system, "container");
       i.hasAction = item.hasAction || item.isCharged;
       i.attackDescription = item.type === "attack" ? ItemDescriptionsHelper.attackDescription(item,featRollData) : "";
       i.damageDescription = item.type === "attack" ? ItemDescriptionsHelper.damageDescription(item,featRollData) : "";
       i.range = item.type === "attack" ? ItemDescriptionsHelper.rangeDescription(item) : "";
-      i.isCurseKnown = getProperty(item.data, "data.curseActive") || getProperty(item.data, "data.identifiedCurse")
+      i.isCurseKnown = getProperty(item.system, "curseActive") || getProperty(item.system, "identifiedCurse")
       i.timelineLeftText = item.getTimelineTimeLeftDescriptive();
       i.showUnidentifiedData = item.showUnidentifiedData;
       i.unmetRequirements = (item.type === "feat" || item.type === "class") ? item.hasUnmetRequirements(featRollData) : false;
-      if (i.showUnidentifiedData) i.name = getProperty(item.data, "data.unidentified.name") || game.i18n.localize("D35E.Unidentified");
-      else i.name = getProperty(item.data, "data.identifiedName") || item.data.name;
+      if (i.showUnidentifiedData) i.name = getProperty(item.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
+      else i.name = getProperty(item.system, "identifiedName") || item.data.name;
       return i;
     });
     data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
@@ -147,7 +148,7 @@ export class ActorSheetPF extends ActorSheet {
       if (data.actor.data.abilities[a].value !== data.actor.data.abilities[a].total) {
         data.actor.data.abilities[a].modified = true;
       }
-      abl.sourceDetails = data.sourceDetails != null ? data.sourceDetails.data.abilities[a].total : {};
+      abl.sourceDetails = data.sourceDetails != null ? data.sourceDetails.system.abilities[a].total : {};
       for ( let [_s, _sobj] of Object.entries(abl.sourceDetails)) {
           if (_sobj.isItemBonus) abl.hasItemBonus = true;
       }
@@ -161,13 +162,13 @@ export class ActorSheetPF extends ActorSheet {
       ac.label = CONFIG.D35E.ac[a];
       ac.labelShort = CONFIG.D35E.acShort[a];
       ac.valueLabel = CONFIG.D35E.acValueLabels[a];
-      ac.sourceDetails = data.sourceDetails != null ? data.sourceDetails.data.attributes.ac[a].total : [];
+      ac.sourceDetails = data.sourceDetails != null ? data.sourceDetails.system.attributes.ac[a].total : [];
     }
 
     // Saving Throws
     for (let [a, savingThrow] of Object.entries(data.actor.data.attributes.savingThrows)) {
       savingThrow.label = CONFIG.D35E.savingThrows[a];
-      savingThrow.sourceDetails = data.sourceDetails != null ? data.sourceDetails.data.attributes.savingThrows[a].total : [];
+      savingThrow.sourceDetails = data.sourceDetails != null ? data.sourceDetails.system.attributes.savingThrows[a].total : [];
     }
 
     // Update skill labels
@@ -177,7 +178,7 @@ export class ActorSheetPF extends ActorSheet {
       }
       skl.label = CONFIG.D35E.skills[s];
       skl.arbitrary = CONFIG.D35E.arbitrarySkills.includes(s);
-      skl.sourceDetails = (data.sourceDetails != null && data.sourceDetails.data.skills[s] != null) ? duplicate(data.sourceDetails.data.skills[s].changeBonus) : [];
+      skl.sourceDetails = (data.sourceDetails != null && data.sourceDetails.system.skills[s] != null) ? duplicate(data.sourceDetails.system.skills[s].changeBonus) : [];
       if (data.actor.data.attributes.acp.total && skl.acp)
         skl.sourceDetails.push({ name: game.i18n.localize("D35E.ACP"), value: `-${data.actor.data.attributes.acp.total}` })
       if (skl.ability)
@@ -196,9 +197,9 @@ export class ActorSheetPF extends ActorSheet {
       if (skl.subSkills != null) {
         for (let [s2, skl2] of Object.entries(skl.subSkills)) {
           if (data.sourceDetails == null) continue;
-          if (data.sourceDetails.data.skills[s] == null) continue;
-          if (data.sourceDetails.data.skills[s].subSkills == null) continue;
-          skl2.sourceDetails = data.sourceDetails.data.skills[s].subSkills[s2] != null ? data.sourceDetails.data.skills[s].subSkills[s2].changeBonus : [];
+          if (data.sourceDetails.system.skills[s] == null) continue;
+          if (data.sourceDetails.system.skills[s].subSkills == null) continue;
+          skl2.sourceDetails = data.sourceDetails.system.skills[s].subSkills[s2] != null ? data.sourceDetails.system.skills[s].subSkills[s2].changeBonus : [];
           if (data.actor.data.attributes.acp.total && skl2.acp)
             skl2.sourceDetails.push({ name: game.i18n.localize("D35E.ACP"), value: `-${data.actor.data.attributes.acp.total}` })
           if (skl2.ability)
@@ -264,7 +265,7 @@ export class ActorSheetPF extends ActorSheet {
     // Skill rank counting
     const skillRanks = { allowed: 0, used: 0, bgAllowed: 0, bgUsed: 0, sentToBG: 0 };
     // Count used skill ranks
-    for (let skl of Object.values(this.actor.data.data.skills)) {
+    for (let skl of Object.values(this.actor.system.skills)) {
       if (skl === null)
         continue
       if (skl.subSkills != null) {
@@ -297,18 +298,18 @@ export class ActorSheetPF extends ActorSheet {
       const fcSkills = cls.data.fc.skill.value;
       if (clsLevel > 0) {
         if (firstOnList) {
-          skillRanks.allowed += (Math.max(((clsLevel - 1) + 4 ) , (((this.actor.data.data.abilities.int.mod + clsSkillsPerLevel + itemBonusSkillPointRanks) * 3) + ((this.actor.data.data.abilities.int.mod + clsSkillsPerLevel + itemBonusSkillPointRanks) * clsLevel)) + fcSkills));
+          skillRanks.allowed += (Math.max(((clsLevel - 1) + 4 ) , (((this.actor.system.abilities.int.mod + clsSkillsPerLevel + itemBonusSkillPointRanks) * 3) + ((this.actor.system.abilities.int.mod + clsSkillsPerLevel + itemBonusSkillPointRanks) * clsLevel)) + fcSkills));
           firstOnList = false;
         } else {
-          skillRanks.allowed += (((this.actor.data.data.abilities.int.mod + clsSkillsPerLevel + itemBonusSkillPointRanks) * clsLevel));
+          skillRanks.allowed += (((this.actor.system.abilities.int.mod + clsSkillsPerLevel + itemBonusSkillPointRanks) * clsLevel));
         }
       }
-      if (data.useBGSkills) skillRanks.bgAllowed = this.actor.data.data.details.level.value * 2;
+      if (data.useBGSkills) skillRanks.bgAllowed = this.actor.system.details.level.value * 2;
     });
-    if (this.actor.data.data.details.bonusSkillRankFormula !== "") {
+    if (this.actor.system.details.bonusSkillRankFormula !== "") {
       let roll = new Roll35e(
-        this.actor.data.data.details.bonusSkillRankFormula,
-        duplicate(this.actor.data.data)
+        this.actor.system.details.bonusSkillRankFormula,
+        duplicate(this.actor.system)
       ).roll();
       skillRanks.allowed += roll.total;
     }
@@ -323,13 +324,13 @@ export class ActorSheetPF extends ActorSheet {
       }
     }
     data.skillRanks = skillRanks;
-    let sizeMod = CONFIG.D35E.sizeMods[this.actor.data.data.traits.actualSize] || 0
-    data.attackBonuses = { sizeMod: sizeMod, melee: this.actor.data.data.attributes.bab.total + this.actor.data.data.abilities.str.mod + sizeMod - (this.actor.data.data.attributes.energyDrain || 0) + this.actor.data.data.attributes.attack.general + this.actor.data.data.attributes.attack.melee, ranged: this.actor.data.data.attributes.bab.total + this.actor.data.data.abilities.dex.mod + sizeMod - (this.actor.data.data.attributes.energyDrain || 0) + this.actor.data.data.attributes.attack.general + this.actor.data.data.attributes.attack.ranged}
+    let sizeMod = CONFIG.D35E.sizeMods[this.actor.system.traits.actualSize] || 0
+    data.attackBonuses = { sizeMod: sizeMod, melee: this.actor.system.attributes.bab.total + this.actor.system.abilities.str.mod + sizeMod - (this.actor.system.attributes.energyDrain || 0) + this.actor.system.attributes.attack.general + this.actor.system.attributes.attack.melee, ranged: this.actor.system.attributes.bab.total + this.actor.system.abilities.dex.mod + sizeMod - (this.actor.system.attributes.energyDrain || 0) + this.actor.system.attributes.attack.general + this.actor.system.attributes.attack.ranged}
 
-    data.coinWeight = game.settings.get("D35E", "units") === "metric" ? game.i18n.localize("D35E.GenericCarryLabelKg").format(this.actor._calculateCoinWeight(this.actor.data)) : game.i18n.localize("D35E.GenericCarryLabel").format(this.actor._calculateCoinWeight(this.actor.data)); 
+    data.coinWeight = game.settings.get("D35E", "units") === "metric" ? game.i18n.localize("D35E.GenericCarryLabelKg").format(ActorWealthHelper.calculateCoinWeight(this.actor.data)) : game.i18n.localize("D35E.GenericCarryLabel").format(ActorWealthHelper.calculateCoinWeight(this.actor.data));
 
     data.maxDexBonus = { sourceDetails: [] }
-    switch (this.actor.data.data.attributes.encumbrance.level) {
+    switch (this.actor.system.attributes.encumbrance.level) {
       case 0:
         data.maxDexBonus.sourceDetails.push({name: game.i18n.localize("D35E.Encumbrance"), value: game.i18n.localize("D35E.NotLimited")})
           break;
@@ -341,8 +342,8 @@ export class ActorSheetPF extends ActorSheet {
           break;
   }
    
-  data.maxDexBonus.sourceDetails.push({name: game.i18n.localize("D35E.Gear"), value: this.actor.data.data.attributes?.maxDex?.gear || game.i18n.localize("D35E.NotLimited")})
-  data.maxDexUnlimited = this.actor.data.data.attributes?.maxDex?.total === 999
+  data.maxDexBonus.sourceDetails.push({name: game.i18n.localize("D35E.Gear"), value: this.actor.system.attributes?.maxDex?.gear || game.i18n.localize("D35E.NotLimited")})
+  data.maxDexUnlimited = this.actor.system.attributes?.maxDex?.total === 999
 
     // Fetch the game settings relevant to sheet rendering.
     data.healthConfig =  game.settings.get("D35E", "healthConfig");
@@ -404,7 +405,7 @@ export class ActorSheetPF extends ActorSheet {
    */
   _prepareSpellbook(data, spells, bookKey, availableSpellSpecialization, bannedSpellSpecialization, domainSpellNames) {
     const owner = this.actor.isOwner;
-    const book = this.actor.data.data.attributes.spells.spellbooks[bookKey];
+    const book = this.actor.system.attributes.spells.spellbooks[bookKey];
 
     // Reduce spells to the nested spellbook structure
     let spellbook = {};
@@ -421,8 +422,8 @@ export class ActorSheetPF extends ActorSheet {
         isEpic: a === 10,
         slotsLeft: false,
         spells: [],
-        maxPrestigeClSources: (data.sourceDetails !== null && data.sourceDetails.data.attributes.prestigeCl !== undefined && data.sourceDetails.data.attributes.prestigeCl[book.spellcastingType] !== undefined
-            && data.sourceDetails.data.attributes.prestigeCl[book.spellcastingType].max != null) ? data.sourceDetails.data.attributes.prestigeCl[book.spellcastingType].max : [],
+        maxPrestigeClSources: (data.sourceDetails !== null && data.sourceDetails.system.attributes.prestigeCl !== undefined && data.sourceDetails.system.attributes.prestigeCl[book.spellcastingType] !== undefined
+            && data.sourceDetails.system.attributes.prestigeCl[book.spellcastingType].max != null) ? data.sourceDetails.system.attributes.prestigeCl[book.spellcastingType].max : [],
         uses: book.spells === undefined ? 0 : book?.spells["spell"+a]?.value || 0,
         baseSlots: book.spells === undefined ? 0 : book?.spells["spell"+a]?.base || 0,
         maxKnown: book.spells === undefined ? 0 : book?.spells["spell"+a]?.maxKnown || 0,
@@ -502,7 +503,7 @@ export class ActorSheetPF extends ActorSheet {
       if (skl === null) return ;
       if (settings.worldDefaults?.skills[a] === "hide") return;
       result.all.skills[a] = skl;
-      if ((skl.points > 0 || (!skl.rt && this.actor.data.data.displayNonRTSkills) || (skl.visibility === "always")) && (skl.visibility !== "never")) result.known.skills[a] = skl;
+      if ((skl.points > 0 || (!skl.rt && this.actor.system.displayNonRTSkills) || (skl.visibility === "always")) && (skl.visibility !== "never")) result.known.skills[a] = skl;
       else if (skl.subSkills !== undefined && (skl.visibility !== "never")) {
         result.known.skills[a] = skl;
       }
@@ -915,14 +916,14 @@ export class ActorSheetPF extends ActorSheet {
       }
     }
 
-    if (this.actor.data.data.companionPublicId) {
-      const toggleString = "<a style='color: white; text-decoration: none' href='https://companion.legaciesofthedragon.com/character/public/"+this.actor.data.data.companionPublicId+"' class='header-button companion-view-button' title='" + game.i18n.localize("D35E.DisplayInCompanion") + "'><i class='fa fa-user'></i>"+game.i18n.localize("D35E.DisplayInCompanion")+"</a>";
+    if (this.actor.system.companionPublicId) {
+      const toggleString = "<a style='color: white; text-decoration: none' href='https://companion.legaciesofthedragon.com/character/public/"+this.actor.system.companionPublicId+"' class='header-button companion-view-button' title='" + game.i18n.localize("D35E.DisplayInCompanion") + "'><i class='fa fa-user'></i>"+game.i18n.localize("D35E.DisplayInCompanion")+"</a>";
       const toggleButton = $(toggleString);
       html.closest('.app').find('.companion-view-button').remove();
       const titleElement = html.closest('.app').find('.window-title');
       toggleButton.insertAfter(titleElement);
-    } else if (this.actor.data.data.companionUuid) {
-        const toggleString = "<a style='color: white; text-decoration: none' href='https://companion.legaciesofthedragon.com/character/"+this.actor.data.data.companionUuid+"' class='header-button companion-view-button' title='" + game.i18n.localize("D35E.DisplayInCompanion") + "'><i class='fa fa-user'></i>"+game.i18n.localize("D35E.DisplayInCompanion")+"</a>";
+    } else if (this.actor.system.companionUuid) {
+        const toggleString = "<a style='color: white; text-decoration: none' href='https://companion.legaciesofthedragon.com/character/"+this.actor.system.companionUuid+"' class='header-button companion-view-button' title='" + game.i18n.localize("D35E.DisplayInCompanion") + "'><i class='fa fa-user'></i>"+game.i18n.localize("D35E.DisplayInCompanion")+"</a>";
         const toggleButton = $(toggleString);
         html.closest('.app').find('.companion-view-button').remove();
         const titleElement = html.closest('.app').find('.window-title');
@@ -950,10 +951,10 @@ export class ActorSheetPF extends ActorSheet {
       },
     };
     // Add spellbooks to tabGroups
-    for (let a of Object.keys(this.actor.data.data.attributes.spells.spellbooks)) {
+    for (let a of Object.keys(this.actor.system.attributes.spells.spellbooks)) {
       tabGroups["primary"]["spellbooks"][`spells_${a}`] = {};
     }
-    for (let a of Object.keys(this.actor.data.data.attributes?.cards?.decks || {})) {
+    for (let a of Object.keys(this.actor.system.attributes?.cards?.decks || {})) {
       tabGroups["primary"]["decks"][`spells_${a}`] = {};
     }
     createTabs.call(this, html, tabGroups);
@@ -963,11 +964,11 @@ export class ActorSheetPF extends ActorSheet {
   _rollRandomHitDie(event) {
     let itemUpdates = []
     this.actor.data.items.filter(obj => { return obj.type === "class" }).forEach(item => {
-      if (item.data.data.classType === 'template') return;
-      if (item.data.data.classType === 'minion') return;
-      let hd = item.data.data.hd;
+      if (item.system.classType === 'template') return;
+      if (item.system.classType === 'minion') return;
+      let hd = item.system.hd;
       let hp = 0;
-      let levels = item.data.data.levels;
+      let levels = item.system.levels;
       for (let i = 0; i < levels; i++) {
         hp += this.getRandomInt(1,hd);
       }
@@ -1088,8 +1089,8 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
 
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
-    const spellbook = this.actor.data.data.attributes.spells.spellbooks[spellbookKey];
-    const rollData = duplicate(this.actor.data.data);
+    const spellbook = this.actor.system.attributes.spells.spellbooks[spellbookKey];
+    const rollData = duplicate(this.actor.system);
     rollData.cl = spellbook.cl.total;
 
     // Add contextual concentration string
@@ -1117,7 +1118,7 @@ export class ActorSheetPF extends ActorSheet {
       event: event,
       parts: ["@concentrationBonus + @formulaBonus"],
       data: {
-        concentrationBonus: this.actor.data.data.skills["coc"].mod, // This is standard concentration skill
+        concentrationBonus: this.actor.system.skills["coc"].mod, // This is standard concentration skill
         formulaBonus: formulaRoll.total
       },
       title: game.i18n.localize("D35E.ConcentrationCheck"),
@@ -1137,7 +1138,7 @@ export class ActorSheetPF extends ActorSheet {
         do: {
           icon: '<i class="fas fa-check"></i>',
           label: game.i18n.localize("D35E.Change"),
-          callback: () => this.actor.update({data : {details: {levelUpProgression : !this.actor.data.data.details.levelUpProgression}}}),
+          callback: () => this.actor.update({data : {details: {levelUpProgression : !this.actor.system.details.levelUpProgression}}}),
         },
         dont: {
           icon: '<i class="fas fa-times"></i>',
@@ -1153,8 +1154,8 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
 
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
-    const spellbook = this.actor.data.data.attributes.spells.spellbooks[spellbookKey];
-    const rollData = duplicate(this.actor.data.data);
+    const spellbook = this.actor.system.attributes.spells.spellbooks[spellbookKey];
+    const rollData = duplicate(this.actor.system);
 
     // Add contextual caster level string
     let notes = [];
@@ -1263,8 +1264,8 @@ export class ActorSheetPF extends ActorSheet {
         let props = $(`<div class="item-properties"></div>`);
         chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
         if (!item.showUnidentifiedData) {
-          //console.log('D35E | Enchancement item data', getProperty(item.data, `data.enhancements.items`) || []);
-          (getProperty(item.data, `data.enhancements.items`) || []).forEach(__enh => {
+          //console.log('D35E | Enchancement item data', getProperty(item.system, `enhancements.items`) || []);
+          (getProperty(item.system, `enhancements.items`) || []).forEach(__enh => {
             const _enh = duplicate(__enh)
             delete _enh._id;
             let enh = new ItemPF(_enh, {owner: this.isOwner})
@@ -1273,7 +1274,7 @@ export class ActorSheetPF extends ActorSheet {
                     <div class="item-name  flexrow">
                         <div class="item-image item-enh-image" style="background-image: url('${enh.img}')"></div>
                         <h4 class="rollable{{#if item.incorrect}} strikethrough-text{{/if}}">
-                            ${enh.name} <em style="opacity: 0.7">${enh.data.data.uses.per} ${item.data.data.enhancements.uses.commonPool ? 'common pool' : ''}</em>
+                            ${enh.name} <em style="opacity: 0.7">${enh.system.uses.per} ${item.system.enhancements.uses.commonPool ? 'common pool' : ''}</em>
                         </h4>
                     </div>
                     <div class="item-detail item-actions">
@@ -1282,26 +1283,26 @@ export class ActorSheetPF extends ActorSheet {
                                                                      src="systems/D35E/icons/actions/gladius.svg"></a>
                         </div>
                     </div>` +
-                  (item.data.data.enhancements.uses.commonPool ? (
+                  (item.system.enhancements.uses.commonPool ? (
                       `
                     <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
-                        <input type="text" class="uses" disabled value="${item.data.data.enhancements.uses.value}" data-dtype="Number"/>
+                        <input type="text" class="uses" disabled value="${item.system.enhancements.uses.value}" data-dtype="Number"/>
                         <span class="sep"> of </span>
-                        <input type="text" class="maxuses" disabled value="${item.data.data.enhancements.uses.max}" data-dtype="Number"/>
+                        <input type="text" class="maxuses" disabled value="${item.system.enhancements.uses.max}" data-dtype="Number"/>
                     </div>
                     <div class="item-detail item-per-use flexrow {{#if item.isCharged}}tooltip{{/if}}"  style="flex: 0 48px">
-                        <input type="text" disabled value="${enh.data.data.uses.chargesPerUse}" data-dtype="Number"/>
+                        <input type="text" disabled value="${enh.system.uses.chargesPerUse}" data-dtype="Number"/>
                     </div>
 
                 </li>`
                   ) : (enh.isCharged ? `
                     <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
-                        <input type="text" class="uses" disabled value="${enh.data.data.uses.value}" data-dtype="Number"/>
+                        <input type="text" class="uses" disabled value="${enh.system.uses.value}" data-dtype="Number"/>
                         <span class="sep"> of </span>
-                        <input type="text" class="maxuses" disabled value="${enh.data.data.uses.max}" data-dtype="Number"/>
+                        <input type="text" class="maxuses" disabled value="${enh.system.uses.max}" data-dtype="Number"/>
                     </div>
                     <div class="item-detail item-per-use flexrow {{#if item.isCharged}}tooltip{{/if}}"  style="flex: 0 48px">
-                        <input type="text" disabled value="${enh.data.data.uses.chargesPerUse}" data-dtype="Number"/>
+                        <input type="text" disabled value="${enh.system.uses.chargesPerUse}" data-dtype="Number"/>
                     </div>
 
                 </li>` : `</li>`))
@@ -1360,7 +1361,7 @@ export class ActorSheetPF extends ActorSheet {
   _onArbitrarySkillCreate(event) {
     event.preventDefault();
     const skillId = $(event.currentTarget).parents(".skill").attr("data-skill");
-    const mainSkillData = this.actor.data.data.skills[skillId];
+    const mainSkillData = this.actor.system.skills[skillId];
     const skillData = {
       name: "",
       ability: mainSkillData.ability,
@@ -1403,7 +1404,7 @@ export class ActorSheetPF extends ActorSheet {
 
     let tag = createTag(skillData.name || "skill");
     let count = 1;
-    while (this.actor.data.data.skills[tag] != null) {
+    while (this.actor.system.skills[tag] != null) {
       count++;
       tag = createTag(skillData.name || "skill") + count.toString();
     }
@@ -1452,7 +1453,7 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
 
-    const currentCl = getProperty(this.actor.data, `data.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`) || 0;
+    const currentCl = getProperty(this.actor.system, `attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`) || 0;
     const newCl = Math.max(0, currentCl + add);
     const k = `data.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`;
     let updateData = {}
@@ -1464,7 +1465,7 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
     const spellbookKey = $(event.currentTarget).closest(".deck-group").data("tab");
 
-    const currentCl = getProperty(this.actor.data, `data.attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`) || 0;
+    const currentCl = getProperty(this.actor.system, `attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`) || 0;
     const newCl = Math.max(0, currentCl + add);
     const k = `data.attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`;
     let updateData = {}
@@ -1476,7 +1477,7 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
 
-    const currentPF = getProperty(this.actor.data, `data.attributes.psionicFocus`) || false;
+    const currentPF = getProperty(this.actor.system, `attributes.psionicFocus`) || false;
     const newPF = !currentPF;
     const k = `data.attributes.psionicFocus`;
     let updateData = {}
@@ -1504,7 +1505,7 @@ export class ActorSheetPF extends ActorSheet {
   async _onCharacterClearContainers(event) {
     event.preventDefault();
     let itemUpdates = []
-    this.actor.items.filter(i => getProperty(i.data, "data.subType") === "container").forEach(item => {
+    this.actor.items.filter(i => getProperty(i.system, "subType") === "container").forEach(item => {
       itemUpdates.push({_id: item._id, "data.containerId": "none"})
     })
     await this.actor.updateOwnedItem(itemUpdates, {stopUpdates: true})
@@ -1514,12 +1515,12 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
     let itemUpdates = []
     for (let item of this.actor.items) {
-      if (item.data.data.originVersion && item.data.data.originPack && item.data.data.originId) {
-        let compendiumItem = await game.packs.get(item.data.data.originPack).getDocument(item.data.data.originId);
+      if (item.system.originVersion && item.system.originPack && item.system.originId) {
+        let compendiumItem = await game.packs.get(item.system.originPack).getDocument(item.system.originId);
         if (!compendiumItem) {
           console.log('Item missing from compendium...')
         } else {
-          if (compendiumItem.data.data.originVersion > item.data.data.originVersion)
+          if (compendiumItem.system.originVersion > item.system.originVersion)
             itemUpdates.push({_id: item.id, "data.possibleUpdate": true})
           else
             itemUpdates.push({_id: item.id, "data.possibleUpdate": false})
@@ -1535,7 +1536,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    const curQuantity = getProperty(item.data, "data.quantity") || 0;
+    const curQuantity = getProperty(item.system, "quantity") || 0;
     const newQuantity = Math.max(0, curQuantity + add);
     item.update({ "data.quantity": newQuantity });
   }
@@ -1545,8 +1546,8 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    if (hasProperty(item.data, "data.equipped")) {
-      item.update({ "data.equipped": !item.data.data.equipped });
+    if (hasProperty(item.system, "equipped")) {
+      item.update({ "data.equipped": !item.system.equipped });
     }
   }
 
@@ -1555,8 +1556,8 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    if (hasProperty(item.data, "data.carried")) {
-      item.update({ "data.carried": !item.data.data.carried });
+    if (hasProperty(item.system, "carried")) {
+      item.update({ "data.carried": !item.system.carried });
     }
   }
 
@@ -1569,8 +1570,8 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    if (hasProperty(item.data, "data.identified")) {
-      item.update({ "data.identified": !item.data.data.identified });
+    if (hasProperty(item.system, "identified")) {
+      item.update({ "data.identified": !item.system.identified });
     }
   }
 
@@ -1655,7 +1656,7 @@ export class ActorSheetPF extends ActorSheet {
         let itemId = li.dataset.itemId;
         const item = this.actor.getOwnedItem(li.dataset.itemId);
         let itemUpdate = {};
-        const itemData = item.data.data;
+        const itemData = item.system;
         itemUpdate['_id'] = itemId
         if (itemData.uses && itemData.uses.value !== itemData.uses.max) {
           if (itemData.uses.rechargeFormula) {
@@ -1713,7 +1714,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    const curQuantity = getProperty(item.data, "data.preparation.maxAmount") || 0;
+    const curQuantity = getProperty(item.system, "preparation.maxAmount") || 0;
     const newQuantity = Math.max(0, curQuantity + add);
     item.update({ "data.preparation.maxAmount": newQuantity });
   }
@@ -1724,7 +1725,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    const curQuantity = getProperty(item.data, "data.preparation.maxAmount") || 0;
+    const curQuantity = getProperty(item.system, "preparation.maxAmount") || 0;
     const newQuantity = Math.max(0, curQuantity + add);
     item.update({ "data.preparation.maxAmount": newQuantity });
   }
@@ -1735,7 +1736,7 @@ export class ActorSheetPF extends ActorSheet {
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
     const level = $(event.currentTarget).parents(".spellbook-list").attr("data-level");
     const k = `data.attributes.spells.spellbooks.${spellbookKey}.specialSlots.level${level}`;
-    let previousItemId = getProperty(this.actor.data, `data.attributes.spells.spellbooks.${spellbookKey}.specialSlots.level${level}`);
+    let previousItemId = getProperty(this.actor.system, `attributes.spells.spellbooks.${spellbookKey}.specialSlots.level${level}`);
     if (previousItemId)
       await this.actor.deleteOwnedItem(previousItemId);
 
@@ -1801,7 +1802,7 @@ export class ActorSheetPF extends ActorSheet {
     const newSpell = duplicate(this.actor.getOwnedItem(itemId).data.toObject(false));
     delete newSpell._id
 
-    let metamagicFeats = this.actor.items.filter(o => (o.type === "feat" && o.data.data?.metamagic.enabled));
+    let metamagicFeats = this.actor.items.filter(o => (o.type === "feat" && o.system?.metamagic.enabled));
 
 
     const _roll = async function (newSpell, form) {
@@ -1818,7 +1819,7 @@ export class ActorSheetPF extends ActorSheet {
       for (const i of metamagicFeats) {
         if (optionalFeatIds.indexOf(i._id) !== -1) {
 
-          await eval("(async () => {" + i.data.data.metamagic.code + "})()");
+          await eval("(async () => {" + i.system.metamagic.code + "})()");
         }
       }
 
@@ -1961,7 +1962,7 @@ export class ActorSheetPF extends ActorSheet {
    */
   _prepareItems(data) {
     // Set item tags
-    for (let [key, res] of Object.entries(getProperty(this.actor.data, "data.resources"))) {
+    for (let [key, res] of Object.entries(getProperty(this.actor.system, "resources"))) {
       if (!res) continue;
       const id = res._id;
       if (!id) continue;
@@ -2093,9 +2094,9 @@ export class ActorSheetPF extends ActorSheet {
         isSpellLike: a === "spelllike",
         orig: spellbook,
 
-        psionicFocus: this.actor.data.data.attributes.psionicFocus,
+        psionicFocus: this.actor.system.attributes.psionicFocus,
         canCreate: this.actor.isOwner === true,
-        concentration: this.actor.data.data.skills["coc"].mod,
+        concentration: this.actor.system.skills["coc"].mod,
         spellcastingTypeName: spellbook.spellcastingType !== undefined && spellbook.spellcastingType !== null ? game.i18n.localize(CONFIG.D35E.spellcastingType[spellbook.spellcastingType]) : "None"
       };
 
@@ -2282,10 +2283,10 @@ export class ActorSheetPF extends ActorSheet {
     data.features = Object.values(features);
     data.buffs = buffSections;
     data.attacks = attackSections;
-    data.counters = this.actor.data.data.counters;
+    data.counters = this.actor.system.counters;
     data.featCounters = []
-    data.dying = this.actor.data.data.attributes.conditions.dying;
-    data.dead = this.actor.data.data.attributes.conditions.dead;
+    data.dying = this.actor.system.attributes.conditions.dying;
+    data.dead = this.actor.system.attributes.conditions.dead;
     for (let [a, s] of Object.entries(data.actor.data?.counters?.feat || [])) {
         if (a === "base") continue;
         data.featCounters.push({name: a.charAt(0).toUpperCase() + a.substr(1).toLowerCase(), val: a})
@@ -2298,7 +2299,7 @@ export class ActorSheetPF extends ActorSheet {
   _isAttackUseable(a,equippedWeapons) {
     if (a.data.melded) return false;
     if (a.data.originalWeaponId && !equippedWeapons.has(a.data.originalWeaponId)) return false;
-    if (a.data.originalWeaponId && this.actor.items.get(a.data.originalWeaponId).data.data.quantity < 1) return false;
+    if (a.data.originalWeaponId && this.actor.items.get(a.data.originalWeaponId).system.quantity < 1) return false;
     if (a.data.originalWeaponId && this.actor.items.get(a.data.originalWeaponId).broken) return false;
     return true;
   }
@@ -2446,7 +2447,7 @@ export class ActorSheetPF extends ActorSheet {
    */
   async _onDropActor(event) {
     event.preventDefault();
-    if (this.actor.data.data.lockEditingByPlayers && !game.user.isGM) {
+    if (this.actor.system.lockEditingByPlayers && !game.user.isGM) {
         ui.notifications.error(game.i18n.localize("D35E.GMLockedCharacterSheet"));
         return;
     }
@@ -2494,7 +2495,7 @@ export class ActorSheetPF extends ActorSheet {
    */
   async _onDropItem(event) {
     event.preventDefault();
-    if (this.actor.data.data.lockEditingByPlayers && !game.user.isGM) {
+    if (this.actor.system.lockEditingByPlayers && !game.user.isGM) {
         ui.notifications.error(game.i18n.localize("D35E.GMLockedCharacterSheet"));
         return;
     }
@@ -2720,10 +2721,10 @@ export class ActorSheetPF extends ActorSheet {
     $(`#items-add-${this.randomUuid}-label`).text(`${game.i18n.localize("D35E.Add")} ${label}`)
     //console.log("D35E | Item Browser | Loading pack inline browser", this.randomUuid, `.item-add-${this.randomUuid}-overlay`, $(`.item-add-${this.randomUuid}-overlay`).css('display'))
     function _filterItems(item, entityType, type, subtype) {
-      if (item.data.data.uniqueId) return false;
+      if (item.system.uniqueId) return false;
       if (entityType === "spells" && item.type !== type) return false;
-      if (entityType === "items" && type.split(',').indexOf(item.type) !== -1 && (item.data.data.subType === subtype || subtype === "-")) return true;
-      if (entityType === "feats" && item.type === type && item.data.data.featType === subtype && !item.data.data.uniqueId) return true;
+      if (entityType === "items" && type.split(',').indexOf(item.type) !== -1 && (item.system.subType === subtype || subtype === "-")) return true;
+      if (entityType === "feats" && item.type === type && item.system.featType === subtype && !item.system.uniqueId) return true;
       if (entityType === "buffs" && item.type !== type) return false;
       if (entityType === "enhancements" && item.type !== "enhancement") return false;
       return false;
@@ -2759,8 +2760,8 @@ export class ActorSheetPF extends ActorSheet {
                                 </a>
                                 <a class="add-from-compendium blue-button" style="flex: 0 40px; text-align: center">Add</a> </div>
                                 <div style="display: none" class="item-browser-details flexcol">
-                                <div style="max-height:100px; overflow: hidden;  -webkit-mask-image: linear-gradient(to bottom, black 75px, transparent 100px); mask-image: linear-gradient(to bottom, black 75px, transparent 100px);">${i.data.data.description.value}</div>
-                                ` + (i.type !== 'feat' ? `<div style="flex: 0 20px; opacity: 0.8" ><i class="fas fa-coins"></i> ${i.data.data.price} gp</div>` : '') + `
+                                <div style="max-height:100px; overflow: hidden;  -webkit-mask-image: linear-gradient(to bottom, black 75px, transparent 100px); mask-image: linear-gradient(to bottom, black 75px, transparent 100px);">${i.system.description.value}</div>
+                                ` + (i.type !== 'feat' ? `<div style="flex: 0 20px; opacity: 0.8" ><i class="fas fa-coins"></i> ${i.system.price} gp</div>` : '') + `
                                 </div>
                         </li>`);
           li.find(".add-from-compendium").mouseup(ev => {
@@ -2770,7 +2771,7 @@ export class ActorSheetPF extends ActorSheet {
           );
           if (!$(`#${this.randomUuid}-itemList li[data-item-id='${i.id}']`).length) {
             $(`#${this.randomUuid}-itemList`).append(li);
-            addedItems.push({id: i.id, name: i.name, pack: p.collection, img: i.img, description: i.data.data.description, price: i.data.data.price, type: i.type })
+            addedItems.push({id: i.id, name: i.name, pack: p.collection, img: i.img, description: i.system.description, price: i.system.price, type: i.type })
           }
         }
 
@@ -2889,7 +2890,7 @@ export class ActorSheetPF extends ActorSheet {
   async _onMonsterAdvance(event) {
     event.preventDefault();
 
-    let advancement = this.actor.data.data.details.advancement.hd;
+    let advancement = this.actor.system.details.advancement.hd;
     let advancementHdMinimum = 0;
     let advancementHdMaximum = 0;
     advancement.forEach(hd => {
@@ -2909,15 +2910,15 @@ export class ActorSheetPF extends ActorSheet {
     console.log(JSON.stringify(advancement))
     let dialogData = {
       advancement: JSON.stringify(advancement),
-      hdData: this.actor.racialHD.data.data,
-      naturalAC: this.actor.data.data.attributes.naturalAC,
-      size: this.actor.data.data.traits.size,
+      hdData: this.actor.racialHD.system,
+      naturalAC: this.actor.system.attributes.naturalAC,
+      size: this.actor.system.traits.size,
       actorSizes: CONFIG.D35E.actorSizes,
       actorSizesJSON: JSON.stringify(CONFIG.D35E.actorSizes),
       sizeAdvancementChangesJSON: JSON.stringify(CONFIG.D35E.sizeAdvancementChanges),
-      cr: parseInt(this.actor.data.data.details.cr),
+      cr: parseInt(this.actor.system.details.cr),
       maximum: advancementHdMaximum,
-      minimum: Math.max(advancementHdMinimum, this.actor.racialHD.data.data.levels+1)
+      minimum: Math.max(advancementHdMinimum, this.actor.racialHD.system.levels+1)
     };
     const html = await renderTemplate(template, dialogData);
     let roll;

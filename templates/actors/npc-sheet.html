@@ -148,9 +148,9 @@
                     @attributes.vigor.max : {{data.attributes.vigor.max}}<br/>
                     @attributes.vigor.temp : {{data.attributes.vigor.temp}}
 
-                    {{#if sourceDetails.data.attributes.vigor.max.length}}
+                    {{#if sourceDetails.system.attributes.vigor.max.length}}
                       <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                      {{#each sourceDetails.data.attributes.vigor.max as |src|}}{{src.name}}:
+                      {{#each sourceDetails.system.attributes.vigor.max as |src|}}{{src.name}}:
                       {{src.value}}<br/>{{/each}}
                     {{/if}}
                   </div>
@@ -176,9 +176,9 @@
                       @attributes.wounds.value : {{data.attributes.wounds.value}}<br/>
                       @attributes.wounds.max : {{data.attributes.wounds.max}}<br/>
 
-                      {{#if sourceDetails.data.attributes.wounds.max.length}}
+                      {{#if sourceDetails.system.attributes.wounds.max.length}}
                         <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                        {{#each sourceDetails.data.attributes.wounds.max as |src|}}{{src.name}}:
+                        {{#each sourceDetails.system.attributes.wounds.max as |src|}}{{src.name}}:
                         {{src.value}}<br/>{{/each}}
                       {{/if}}
                   </div>
@@ -199,9 +199,9 @@
                     @attributes.hp.temp : {{data.attributes.hp.temp}}<br/>
                     @attributes.hp.nonlethal : {{data.attributes.hp.nonlethal}}
 
-                    {{#if sourceDetails.data.attributes.hp.max.length}}
+                    {{#if sourceDetails.system.attributes.hp.max.length}}
                       <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                      {{#each sourceDetails.data.attributes.hp.max as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
+                      {{#each sourceDetails.system.attributes.hp.max as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
                     {{/if}}
                   </div>
                 </h4>
@@ -401,9 +401,9 @@
               <span>{{numberFormat data.attributes.bab.total decimals=0 sign=false}}</span>
               <span class="tooltipcontent">
                 @attributes.bab.total : {{data.attributes.bab.total}}
-                {{#if sourceDetails.data.attributes.bab.total.length}}
+                {{#if sourceDetails.system.attributes.bab.total.length}}
                   <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                  {{#each sourceDetails.data.attributes.bab.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
+                  {{#each sourceDetails.system.attributes.bab.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
                 {{/if}}
               </span>
             </div>
@@ -415,9 +415,9 @@
                     <span>{{data.attributes.cmb.total}}</span>
                     <span class="tooltipcontent">
           @attributes.cmb.total : {{data.attributes.cmb.total}}
-          {{#if sourceDetails.data.attributes.cmb.total.length}}
+          {{#if sourceDetails.system.attributes.cmb.total.length}}
             <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-            {{#each sourceDetails.data.attributes.cmb.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
+            {{#each sourceDetails.system.attributes.cmb.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
           {{/if}}
         </span>
                 </div>
@@ -431,9 +431,9 @@
                       <span>{{data.attributes.init.total}}</span>
                       <span class="tooltipcontent">
             @attributes.init.total : {{data.attributes.init.total}}
-            {{#if sourceDetails.data.attributes.init.total.length}}
+            {{#if sourceDetails.system.attributes.init.total.length}}
               <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-              {{#each sourceDetails.data.attributes.init.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
+              {{#each sourceDetails.system.attributes.init.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
             {{/if}}
           </span>
                   </div>
