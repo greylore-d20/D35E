@@ -1,6 +1,6 @@
 import { ItemPF } from "../entity.js";
 
-export class Weapon35E extends ItemPF {
+export class WeaponSheet35E extends ItemSheetPF {
     constructor(...args) {
         super(...args);
 
