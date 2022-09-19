@@ -249,18 +249,18 @@ export class ChangesSheetComponent extends ItemSheetComponent {
 
         // Add new change
         if (a.classList.contains("add-change")) {
-            //console.log('AAAAAITEM', this.item);
-            let _changes = duplicate(this.item.system.changes) || [];
-            return this.item.update({"data.changes": _changes.concat([["", "", "", "", 0]])});
+            //console.log('AAAAAITEM', this.sheet.item);
+            let _changes = duplicate(this.sheet.item.system.changes) || [];
+            return this.sheet.item.update({"data.changes": _changes.concat([["", "", "", "", 0]])});
         }
 
         // Remove a change
         if (a.classList.contains("delete-change")) {
             //await this._onSubmit(event);
             const li = a.closest(".change");
-            const changes = duplicate(this.item.system.changes);
+            const changes = duplicate(this.sheet.item.system.changes);
             changes.splice(Number(li.dataset.change), 1);
-            return this.item.update({"data.changes": changes});
+            return this.sheet.item.update({"data.changes": changes});
         }
     }
 }
