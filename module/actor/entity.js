@@ -18,6 +18,7 @@ import {ActorConditions} from "./actions/conditions.js"
 import {ActorUpdater} from "./update/actorUpdater.js"
 import {LogHelper} from "../helpers/LogHelper.js";
 import {ActorMinionsHelper} from "./helpers/actorMinionsHelper.js";
+import {ItemEnhancementHelper} from "../item/helpers/itemEnhancementHelper.js";
 
 
 /**
@@ -77,17 +78,17 @@ export class ActorPF extends Actor {
 
     get trackedBuffs() {
         if (this.items == null) return null;
-        return this.items.filter(o => o.data.type === "buff" && getProperty(o.system,"active") && getProperty(o.system,"timeline.enabled"));
+        return this.items.filter(o => o.system.type === "buff" && getProperty(o.system,"active") && getProperty(o.system,"timeline.enabled"));
     }
 
     get race() {
         if (this.items == null) return null;
-        return this.items.filter(o => o.data.type === "race")[0];
+        return this.items.filter(o => o.system.type === "race")[0];
     }
 
     get material() {
         if (this.items == null) return null;
-        return this.items.filter(o => o.data.type === "material")[0];
+        return this.items.filter(o => o.system.type === "material")[0];
     }
 
     get racialHD() {
@@ -189,51 +190,50 @@ export class ActorPF extends Actor {
         preparedData.damage = { nonlethal : {value: preparedData.attributes.hp.nonlethal || 0, max: preparedData.attributes.hp.max || 0}}
         actorData.items.filter(obj => {
             return obj.type === "class";
-        }).forEach(_cls => {
-            let cls = _cls.data
-            let tag = createTag(cls.data.customTag || cls.name);
+        }).forEach(cls => {
+            let tag = createTag(cls.system.customTag || cls.name);
             let nameTag = createTag(cls.name);
-            let originalNameTag = createTag(_cls.originalName);
+            let originalNameTag = createTag(cls.originalName);
 
-            cls.data.baseTag = tag;
-            cls.data.nameTag = nameTag;
+            cls.system.baseTag = tag;
+            cls.system.nameTag = nameTag;
 
             let count = 1;
             while (actorData.items.filter(obj => {
                 return obj.type === "class" && obj.data.tag === tag && obj !== cls;
             }).length > 0) {
                 count++;
-                tag = createTag(cls.data.customTag || cls.name) + count.toString();
+                tag = createTag(cls.system.customTag || cls.name) + count.toString();
                 nameTag = createTag(cls.name);
             }
-            cls.data.tag = tag;
-            preparedData.totalNonEclLevels += cls.data.classType !== "template" ? cls.data.levels : 0;
+            cls.system.tag = tag;
+            preparedData.totalNonEclLevels += cls.system.classType !== "template" ? cls.system.levels : 0;
             let healthConfig = game.settings.get("D35E", "healthConfig");
-            healthConfig = cls.data.classType === "racial" ? healthConfig.hitdice.Racial : this.hasPlayerOwner ? healthConfig.hitdice.PC : healthConfig.hitdice.NPC;
-            const classType = cls.data.classType || "base";
+            healthConfig = cls.system.classType === "racial" ? healthConfig.hitdice.Racial : this.hasPlayerOwner ? healthConfig.hitdice.PC : healthConfig.hitdice.NPC;
+            const classType = cls.system.classType || "base";
             preparedData.classes[tag] = {
-                level: cls.data.levels,
+                level: cls.system.levels,
                 _id: cls._id,
                 name: cls.name,
-                hd: cls.data.hd,
-                bab: cls.data.bab,
+                hd: cls.system.hd,
+                bab: cls.system.bab,
                 hp: healthConfig.auto,
-                maxLevel: cls.data.maxLevel,
-                skillsPerLevel: cls.data.skillsPerLevel,
-                isSpellcaster: cls.data.spellcastingType !== null && cls.data.spellcastingType !== "none",
-                isPsionSpellcaster: cls.data.spellcastingType !== null && cls.data.spellcastingType === "psionic",
-                hasSpecialSlot: cls.data.hasSpecialSlot,
-                isSpellcastingSpontaneus: cls.data.spellcastingSpontaneus === true,
-                isArcane: cls.data.spellcastingType !== null && cls.data.spellcastingType === "arcane",
-                spellcastingType: cls.data.spellcastingType,
-                spellcastingAbility: cls.data.spellcastingAbility,
-                spellslotAbility: cls.data.spellslotAbility,
-                allSpellsKnown: cls.data.allSpellsKnown,
-                halfCasterLevel: cls.data.halfCasterLevel,
-                deckHandSizeFormula: cls.data.deckHandSizeFormula,
-                knownCardsSizeFormula: cls.data.knownCardsSizeFormula,
-                deckPrestigeClass: cls.data.deckPrestigeClass,
-                hasSpellbook: cls.data.hasSpellbook,
+                maxLevel: cls.system.maxLevel,
+                skillsPerLevel: cls.system.skillsPerLevel,
+                isSpellcaster: cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none",
+                isPsionSpellcaster: cls.system.spellcastingType !== null && cls.system.spellcastingType === "psionic",
+                hasSpecialSlot: cls.system.hasSpecialSlot,
+                isSpellcastingSpontaneus: cls.system.spellcastingSpontaneus === true,
+                isArcane: cls.system.spellcastingType !== null && cls.system.spellcastingType === "arcane",
+                spellcastingType: cls.system.spellcastingType,
+                spellcastingAbility: cls.system.spellcastingAbility,
+                spellslotAbility: cls.system.spellslotAbility,
+                allSpellsKnown: cls.system.allSpellsKnown,
+                halfCasterLevel: cls.system.halfCasterLevel,
+                deckHandSizeFormula: cls.system.deckHandSizeFormula,
+                knownCardsSizeFormula: cls.system.knownCardsSizeFormula,
+                deckPrestigeClass: cls.system.deckPrestigeClass,
+                hasSpellbook: cls.system.hasSpellbook,
 
                 savingThrows: {
                     fort: 0,
@@ -241,27 +241,27 @@ export class ActorPF extends Actor {
                     will: 0,
                 },
                 fc: {
-                    hp: classType === "base" ? cls.data.fc.hp.value : 0,
-                    skill: classType === "base" ? cls.data.fc.skill.value : 0,
-                    alt: classType === "base" ? cls.data.fc.alt.value : 0,
+                    hp: classType === "base" ? cls.system.fc.hp.value : 0,
+                    skill: classType === "base" ? cls.system.fc.skill.value : 0,
+                    alt: classType === "base" ? cls.system.fc.alt.value : 0,
                 },
             };
             preparedData.classes[tag].spellsKnownPerLevel = []
             preparedData.classes[tag].powersKnown = []
             preparedData.classes[tag].powersMaxLevel = []
-            for (let _level = 1; _level < cls.data.maxLevel + 1; _level++) {
-                preparedData.classes[tag][`spellPerLevel${_level}`] = cls.data.spellcastingType !== null && cls.data.spellcastingType !== "none" ? cls.data.spellsPerLevel[_level - 1] : undefined
-                if (cls.data.spellcastingType !== null && cls.data.spellcastingType !== "none") preparedData.classes[tag].spellsKnownPerLevel.push(cls.data.spellsKnownPerLevel[_level - 1])
-                if (cls.data.spellcastingType !== null && cls.data.spellcastingType !== "none") preparedData.classes[tag].powersKnown.push(cls.data.powersKnown[_level - 1])
-                if (cls.data.spellcastingType !== null && cls.data.spellcastingType !== "none") preparedData.classes[tag].powersMaxLevel.push(cls.data.powersMaxLevel[_level - 1])
+            for (let _level = 1; _level < cls.system.maxLevel + 1; _level++) {
+                preparedData.classes[tag][`spellPerLevel${_level}`] = cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none" ? cls.system.spellsPerLevel[_level - 1] : undefined
+                if (cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none") preparedData.classes[tag].spellsKnownPerLevel.push(cls.system.spellsKnownPerLevel[_level - 1])
+                if (cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none") preparedData.classes[tag].powersKnown.push(cls.system.powersKnown[_level - 1])
+                if (cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none") preparedData.classes[tag].powersMaxLevel.push(cls.system.powersMaxLevel[_level - 1])
             }
             for (let k of Object.keys(preparedData.classes[tag].savingThrows)) {
-                let formula = CONFIG.D35E.classSavingThrowFormulas[classType][cls.data.savingThrows[k].value];
+                let formula = CONFIG.D35E.classSavingThrowFormulas[classType][cls.system.savingThrows[k].value];
                 if (formula == null) formula = "0";
-                preparedData.classes[tag].savingThrows[k] = new Roll35e(formula, { level: cls.data.levels }).roll().total;
+                preparedData.classes[tag].savingThrows[k] = new Roll35e(formula, { level: cls.system.levels }).roll().total;
             }
-            if (cls.data.classType !== "racial")
-                totalNonRacialLevels = Math.min(totalNonRacialLevels + cls.data.levels, 20)
+            if (cls.system.classType !== "racial")
+                totalNonRacialLevels = Math.min(totalNonRacialLevels + cls.system.levels, 20)
 
             if (nameTag !== tag)
                 preparedData.classes[nameTag] = preparedData.classes[tag];
@@ -270,7 +270,7 @@ export class ActorPF extends Actor {
 
             preparedData.classes[tag].spelllist = new Map()
             for (let a = 0; a < 10; a++) {
-                (cls.data?.spellbook[a]?.spells || []).forEach(spell => {
+                (cls.system?.spellbook[a]?.spells || []).forEach(spell => {
                     spell.level = a;
                     preparedData.classes[tag].spelllist.set(`${spell.pack}.${spell.id}`,spell)
                 })
@@ -765,7 +765,7 @@ export class ActorPF extends Actor {
         if (!this.testUserPermission(game.user, "OWNER")) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
         let spellsToAdd = []
         let itemData = null;
-        const pack = game.packs.find(p => p.collection === itemPack);
+        const pack = game.packs.find(p => p.metadata.id === itemPack);
         const packItem = await pack.getDocument(itemId);
         if (packItem != null) itemData = packItem.data;
         if (itemData) {
@@ -801,7 +801,7 @@ export class ActorPF extends Actor {
         for (let spell of Object.values(item.system.spellSpecialization.spells)) {
             let itemData = null;
             if (!spell.id) continue;
-            const pack = game.packs.find(p => p.collection === spell.pack);
+            const pack = game.packs.find(p => p.metadata.id === spell.pack);
             const packItem = await pack.getDocument(spell.id);
             if (packItem != null) itemData = packItem.data;
             if (itemData) {
@@ -823,7 +823,7 @@ export class ActorPF extends Actor {
             LogHelper.log(spellbookClass.spelllist)
             for (let spellData of spellbookClass.spelllist.values()) {
                 if (spellData.level !== parseInt(level)) continue;
-                const pack = game.packs.find(p => p.collection === spellData.pack);
+                const pack = game.packs.find(p => p.metadata.id === spellData.pack);
                 const packItem = await pack.getDocument(spellData.id);
                 let itemData = null;
                 if (packItem != null) itemData = packItem.data;
@@ -902,16 +902,17 @@ export class ActorPF extends Actor {
         // Add things from Enhancements
         if (identified) {
             _enhancements.forEach(i => {
-                if (i.data.properties !== null && i.data.properties.kee) {
+                let enhancementData = ItemEnhancementHelper.getEnhancementData(i)
+                if (enhancementData.properties !== null && enhancementData.properties.kee) {
                     isKeen = true;
                 }
-                if (i.data.properties !== null && i.data.properties.inc) {
+                if (enhancementData.properties !== null && enhancementData.properties.inc) {
                     isIncorporeal = true;
                 }
-                if (i.data.properties !== null && i.data.properties.spd) {
+                if (enhancementData.properties !== null && enhancementData.properties.spd) {
                     isSpeed = true;
                 }
-                if (i.data.properties !== null && i.data.properties.dis) {
+                if (enhancementData.properties !== null && enhancementData.properties.dis) {
                     isDistance = true;
                 }
             });
@@ -935,34 +936,34 @@ export class ActorPF extends Actor {
         }
         attackData["type"] = "attack";
         attackData["name"] = identified ? item.data.name : item.system.unidentified.name;
-        attackData["data.masterwork"] = item.system.masterwork;
-        attackData["data.attackType"] = "weapon";
-        attackData["data.description.value"] = identified ? item.system.description.value : item.system.description.unidentified;
-        attackData["data.enh"] = identified ? item.system.enh : 0;
-        attackData["data.ability.critRange"] = baseCrit;
-        attackData["data.ability.critMult"] = item.system.weaponData.critMult || 2;
-        attackData["data.actionType"] = ((item.system.weaponSubtype === "ranged" || item.system.properties.thr) ? "rwak" : "mwak");
-        attackData["data.activation.type"] = "attack";
-        attackData["data.duration.units"] = "inst";
-        attackData["data.finesseable"] = item.system.properties.fin || false;
-        attackData["data.incorporeal"] = isIncorporeal || false;
-        attackData["data.threatRangeExtended"] = isKeen;
-        attackData["data.baseWeaponType"] = item.system.unidentified?.name ? item.system.unidentified.name : item.name;
-        attackData["data.originalWeaponCreated"] = true;
-        attackData["data.originalWeaponId"] = item._id;
-        attackData["data.originalWeaponName"] = identified ? item.data.name : item.system.unidentified.name;
-        attackData["data.originalWeaponImg"] = item.img;
-        attackData["data.originalWeaponProperties"] = item.system.properties;
-        attackData["data.material"] = item.system.material;
-        attackData["data.alignment.good"] = item.system.weaponData.alignment?.good || false;
-        attackData["data.alignment.evil"] = item.system.weaponData.alignment?.evil || false;
-        attackData["data.alignment.chaotic"] = item.system.weaponData.alignment?.chaotic || false;
-        attackData["data.alignment.lawful"] = item.system.weaponData.alignment?.lawful || false;
+        attackData["system.masterwork"] = item.system.masterwork;
+        attackData["system.attackType"] = "weapon";
+        attackData["system.description.value"] = identified ? item.system.description.value : item.system.description.unidentified;
+        attackData["system.enh"] = identified ? item.system.enh : 0;
+        attackData["system.ability.critRange"] = baseCrit;
+        attackData["system.ability.critMult"] = item.system.weaponData.critMult || 2;
+        attackData["system.actionType"] = ((item.system.weaponSubtype === "ranged" || item.system.properties.thr) ? "rwak" : "mwak");
+        attackData["system.activation.type"] = "attack";
+        attackData["system.duration.units"] = "inst";
+        attackData["system.finesseable"] = item.system.properties.fin || false;
+        attackData["system.incorporeal"] = isIncorporeal || false;
+        attackData["system.threatRangeExtended"] = isKeen;
+        attackData["system.baseWeaponType"] = item.system.unidentified?.name ? item.system.unidentified.name : item.name;
+        attackData["system.originalWeaponCreated"] = true;
+        attackData["system.originalWeaponId"] = item._id;
+        attackData["system.originalWeaponName"] = identified ? item.data.name : item.system.unidentified.name;
+        attackData["system.originalWeaponImg"] = item.img;
+        attackData["system.originalWeaponProperties"] = item.system.properties;
+        attackData["system.material"] = item.system.material;
+        attackData["system.alignment.good"] = item.system.weaponData.alignment?.good || false;
+        attackData["system.alignment.evil"] = item.system.weaponData.alignment?.evil || false;
+        attackData["system.alignment.chaotic"] = item.system.weaponData.alignment?.chaotic || false;
+        attackData["system.alignment.lawful"] = item.system.weaponData.alignment?.lawful || false;
         attackData["img"] = item.data.img;
 
-        attackData["data.nonLethal"] = item.system.properties.nnl;
-        attackData["data.thrown"] = item.system.properties.thr;
-        attackData["data.returning"] = item.system.properties.ret;
+        attackData["system.nonLethal"] = item.system.properties.nnl;
+        attackData["system.thrown"] = item.system.properties.thr;
+        attackData["system.returning"] = item.system.properties.ret;
 
 
 
@@ -975,20 +976,20 @@ export class ActorPF extends Actor {
         if (isSpeed) {
             extraAttacks = extraAttacks.concat([[`0`, `${game.i18n.localize("D35E.Attack")} - Speed Enhancement`]])
         }
-        if (extraAttacks.length > 0) attackData["data.attackParts"] = extraAttacks;
+        if (extraAttacks.length > 0) attackData["system.attackParts"] = extraAttacks;
 
         // Add ability modifiers
         const isMelee = getProperty(item.system,"weaponSubtype") !== "ranged";
-        if (isMelee) attackData["data.ability.attack"] = "str";
-        else attackData["data.ability.attack"] = "dex";
+        if (isMelee) attackData["system.ability.attack"] = "str";
+        else attackData["system.ability.attack"] = "dex";
         if (isMelee || item.system.properties["thr"] === true) {
-            attackData["data.ability.damage"] = "str";
-            if (item.system.weaponSubtype === "2h" && isMelee) attackData["data.ability.damageMult"] = 1.5;
+            attackData["system.ability.damage"] = "str";
+            if (item.system.weaponSubtype === "2h" && isMelee) attackData["system.ability.damageMult"] = 1.5;
         }
         if (item.system.properties["thr"] === true) {
-            attackData["data.ability.attack"] = "dex";
+            attackData["system.ability.attack"] = "dex";
         }
-        attackData["data.weaponSubtype"] = item.system.weaponSubtype
+        attackData["system.weaponSubtype"] = item.system.weaponSubtype
         // Add damage formula
         if (item.system.weaponData.damageRoll) {
             const die = item.system.weaponData.damageRoll || "1d4";
@@ -1004,95 +1005,96 @@ export class ActorPF extends Actor {
             }
             const bonusFormula = getProperty(item.system,"weaponData.damageFormula");
             if (bonusFormula != null && bonusFormula.length) part = `${part} + ${bonusFormula}`;
-            attackData["data.damage.parts"] = [[part, item.system.weaponData.damageType || "", item.system.weaponData.damageTypeId || ""]];
+            attackData["system.damage.parts"] = [[part, item.system.weaponData.damageType || "", item.system.weaponData.damageTypeId || ""]];
         }
 
         // Add attack bonus formula
         {
             const bonusFormula = getProperty(item.system,"weaponData.attackFormula");
-            if (bonusFormula !== undefined && bonusFormula !== null && bonusFormula.length) attackData["data.attackBonus"] = bonusFormula;
+            if (bonusFormula !== undefined && bonusFormula !== null && bonusFormula.length) attackData["system.attackBonus"] = bonusFormula;
         }
 
         // Add things from Enhancements
         let conditionals = []
         if (identified) {
             _enhancements.forEach(i => {
-                if (i.data.enhancementType !== 'weapon') return;
+                let enhancementData = ItemEnhancementHelper.getEnhancementData(i)
+                if (enhancementData.enhancementType !== 'weapon') return;
                 let conditional = ItemPF.defaultConditional;
                 conditional.name = i.name;
                 conditional.default = false;
-                if (i.data.weaponData.damageRoll !== '') {
-                    if (i.data.weaponData.optionalDamage) {
+                if (enhancementData.weaponData.damageRoll !== '') {
+                    if (enhancementData.weaponData.optionalDamage) {
                         let damageModifier = ItemPF.defaultConditionalModifier;
-                        damageModifier.formula = i.data.weaponData.damageRoll;
-                        damageModifier.type = i.data.weaponData.damageTypeId;
+                        damageModifier.formula = enhancementData.weaponData.damageRoll;
+                        damageModifier.type = enhancementData.weaponData.damageTypeId;
                         damageModifier.target = "damage";
                         damageModifier.subTarget = "allDamage";
                         conditional.modifiers.push(damageModifier)
                     } else {
-                        if (i.data.weaponData.damageRoll !== undefined && i.data.weaponData.damageRoll !== null)
-                            attackData["data.damage.parts"].push([i.data.weaponData.damageRoll, i.data.weaponData.damageType, i.data.weaponData.damageTypeId || ""])
+                        if (enhancementData.weaponData.damageRoll !== undefined && enhancementData.weaponData.damageRoll !== null)
+                            attackData["system.damage.parts"].push([enhancementData.weaponData.damageRoll, enhancementData.weaponData.damageType, enhancementData.weaponData.damageTypeId || ""])
                     }
                 }
-                if (i.data.weaponData.attackRoll !== '') {
-                    if (i.data.weaponData.optionalDamage) {
+                if (enhancementData.weaponData.attackRoll !== '') {
+                    if (enhancementData.weaponData.optionalDamage) {
                         let attackModifier = ItemPF.defaultConditionalModifier;
-                        attackModifier.formula = i.data.weaponData.attackRoll;
+                        attackModifier.formula = enhancementData.weaponData.attackRoll;
                         attackModifier.target = "attack";
                         attackModifier.subTarget = "allAttack";
                         conditional.modifiers.push(attackModifier)
                     } else {
-                        if (i.data.weaponData.attackRoll !== undefined && i.data.weaponData.attackRoll !== null)
-                            attackData["data.attackBonus"] = attackData["data.attackBonus"] + " + " + i.data.weaponData.attackRoll
+                        if (enhancementData.weaponData.attackRoll !== undefined && enhancementData.weaponData.attackRoll !== null)
+                            attackData["system.attackBonus"] = attackData["system.attackBonus"] + " + " + enhancementData.weaponData.attackRoll
                     }
                 }
                 if (conditional.modifiers.length > 0) {
                     conditionals.push(conditional);
                 }
-                if (i.data.attackNotes !== '') {
-                    attackData["data.attackNotes"] += '\n' + i.data.attackNotes
-                    attackData["data.attackNotes"] = attackData["data.attackNotes"].trim();
+                if (enhancementData.attackNotes !== '') {
+                    attackData["system.attackNotes"] += '\n' + enhancementData.attackNotes
+                    attackData["system.attackNotes"] = attackData["system.attackNotes"].trim();
                 }
-                if (i.data.effectNotes !== '') {
-                    attackData["data.effectNotes"] += '\n' + i.data.effectNotes
-                    attackData["data.effectNotes"] = attackData["data.effectNotes"].trim();
+                if (enhancementData.effectNotes !== '') {
+                    attackData["system.effectNotes"] += '\n' + enhancementData.effectNotes
+                    attackData["system.effectNotes"] = attackData["system.effectNotes"].trim();
                 }
             });
             if (conditionals.length) {
-                attackData["data.conditionals"] = conditionals;
+                attackData["system.conditionals"] = conditionals;
             }
         }
 
         if (identified) {
             if (item.system.attackNotes !== '') {
-                attackData["data.attackNotes"] += '\n' + item.system.attackNotes
-                attackData["data.attackNotes"] = attackData["data.attackNotes"].trim();
+                attackData["system.attackNotes"] += '\n' + item.system.attackNotes
+                attackData["system.attackNotes"] = attackData["system.attackNotes"].trim();
             }
             if (item.system.effectNotes !== '') {
-                attackData["data.effectNotes"] += '\n' + item.system.effectNotes
-                attackData["data.effectNotes"] = attackData["data.effectNotes"].trim();
+                attackData["system.effectNotes"] += '\n' + item.system.effectNotes
+                attackData["system.effectNotes"] = attackData["system.effectNotes"].trim();
             }
         }
 
         // Add range
         if (!isMelee && getProperty(item.system,"weaponData.range") != null) {
-            attackData["data.range.units"] = "ft";
+            attackData["system.range.units"] = "ft";
             let range = getProperty(item.system,"weaponData.range");
             if (isDistance)
                 range = range * 2;
-            attackData["data.range.value"] = range.toString();
+            attackData["system.range.value"] = range.toString();
         }
 
-        if (hasProperty(attackData, "data.templates")) delete attackData["data.templates"];
+        if (hasProperty(attackData, "data.templates")) delete attackData["system.templates"];
 
         let attacks = []
         attacks.push(expandObject(attackData))
         if (item.system.properties.thr) {
 
             let meleeAttack = duplicate(attacks[0])
-            meleeAttack["data"]["actionType"] = "mwak";
-            meleeAttack["data"]["thrown"] = false;
-            meleeAttack["data"]["ability"]['attack'] = "str";
+            meleeAttack["system"]["actionType"] = "mwak";
+            meleeAttack["system"]["thrown"] = false;
+            meleeAttack["system"]["ability"]['attack'] = "str";
             attacks[0]['name'] = `${attacks[0]['name']} (Thrown)`
             attacks.push(meleeAttack)
         }
@@ -3074,7 +3076,7 @@ export class ActorPF extends Actor {
 
                 for (let data of obj.data.linkedItems) {
                     let itemData = null;
-                    const pack = game.packs.find(p => p.collection === data.packId);
+                    const pack = game.packs.find(p => p.metadata.id === data.packId);
                     const packItem = await pack.getDocument(data.itemId);
                     if (packItem != null) {
                         itemData = packItem.data.toObject(false);
@@ -3310,7 +3312,7 @@ export class ActorPF extends Actor {
      * @param entryId {String}        The ID of the compendium entry to import
      */
     importItemFromCollection(collection, entryId) {
-        const pack = game.packs.find(p => p.collection === collection);
+        const pack = game.packs.find(p => p.metadata.id === collection);
         if (pack.metadata.entity !== "Item") return;
 
         return pack.getDocument(entryId).then(ent => {
@@ -3334,7 +3336,7 @@ export class ActorPF extends Actor {
      */
     async importItemFromCollectionByName(collection, name, unique = false) {
 
-        const pack = game.packs.find(p => p.collection === collection);
+        const pack = game.packs.find(p => p.metadata.id === collection);
         if (!pack) {
             ui.notifications.error(game.i18n.localize("D35E.NoPackFound") + " " + collection);
             return;

@@ -78,7 +78,7 @@ export class ItemUse {
     }
 
 
-    async rollAttack(fullAttack, form, temporaryItem, actor, rollData) {
+    async rollAttack(fullAttack, form, temporaryItem, actor, rollData, skipChargeCheck) {
         let attackExtraParts = [],
             damageExtraParts = [],
             primaryAttack = true,
@@ -722,7 +722,7 @@ export class ItemUse {
         // Handle fast-forwarding
         if (skipDialog || (ev instanceof MouseEvent && (ev.shiftKey || ev.button === 2)) || getProperty(this.item.system,"actionType") === "special") return {
             wasRolled: true,
-            roll: this.rollAttack(true, null, temporaryItem, actor, rollData)
+            roll: this.rollAttack(true, null, temporaryItem, actor, rollData, skipChargeCheck)
         };
 
         // Render modal dialog
@@ -805,7 +805,7 @@ export class ItemUse {
                     label: game.i18n.localize("D35E.SingleAttack"),
                     callback: html => {
                         wasRolled = true;
-                        roll = this.rollAttack(false, html, temporaryItem, actor, rollData)
+                        roll = this.rollAttack(false, html, temporaryItem, actor, rollData, skipChargeCheck)
                         if (game.combats.active) {
                             let combatActor = this.item.getCombatActor(actor)
                             if (combatActor) {
@@ -820,7 +820,7 @@ export class ItemUse {
                     label: this.item.type === "spell" ? game.i18n.localize("D35E.Cast") : (game.i18n.localize("D35E.FullAttack") + " (" + (extraAttacksCount) + " attacks)"),
                     callback: html => {
                         wasRolled = true;
-                        roll = this.rollAttack( true, html, temporaryItem, actor, rollData)
+                        roll = this.rollAttack( true, html, temporaryItem, actor, rollData, skipChargeCheck)
 
 
                         if (game.combats.active) {
@@ -840,7 +840,7 @@ export class ItemUse {
                 label: this.item.type === "spell" ? game.i18n.localize("D35E.Cast") : game.i18n.localize("D35E.Use"),
                 callback: html => {
                     wasRolled = true;
-                    roll = this.rollAttack(false, html, temporaryItem, actor, rollData)
+                    roll = this.rollAttack(false, html, temporaryItem, actor, rollData, skipChargeCheck)
                     if (game.combats.active) {
                         let combatActor = this.item.getCombatActor(actor)
                         if (combatActor) {

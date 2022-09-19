@@ -15,12 +15,12 @@
       <div class="form-group flexrow" style="flex: 0 150px;">
         <label>{{ localize 'D35E.UseClassProgression' }}</label>
         <label class="checkbox"  style="flex: 0 16px; margin-right: 8px; position: relative">
-          <input type="checkbox" class="stylized level-up-progression" name="system.details.levelUpProgression"  data-dtype="Boolean" {{checked ../data.details.levelUpProgression}} />
+          <input type="checkbox" class="stylized level-up-progression" name="system.details.levelUpProgression"  data-dtype="Boolean" {{checked ../system.details.levelUpProgression}} />
           <span class="checkmark"></span>
         </label>
       </div>
     </div>
-      {{#if ../data.details.levelUpProgression}}
+      {{#if ../system.details.levelUpProgression}}
       <div class="flexrow level-up-boxes">
         <div class="flexrow level-up-boxes-overlay" >
 
@@ -54,14 +54,14 @@
         </div>
         <div class="flexrow">
 
-          {{#each ../data.details.levelUpData as |levelUpData i|}}
-            <a for="{{levelUpData.id}}" class="level-class-image configure-level-up-data active" {{#if levelUpData.classImage}}style="background-image: url({{levelUpData.classImage}}){{/if}}">
-              <span class="level">{{levelUpData.level}}</span>
-              {{#if levelUpData.hasFeat}}
+          {{#each ../system.details.levelUpData as |levelUpData i|}}
+            <a for="{{levelUpsystem.id}}" class="level-class-image configure-level-up-data active" {{#if levelUpsystem.classImage}}style="background-image: url({{levelUpsystem.classImage}}){{/if}}">
+              <span class="level">{{levelUpsystem.level}}</span>
+              {{#if levelUpsystem.hasFeat}}
                 <span class="feat"  title="{{ localize 'D35E.NewFeat' }}">
                 </span>
               {{/if}}
-              {{#if levelUpData.hasAbility}}
+              {{#if levelUpsystem.hasAbility}}
               <span class="ability" title="{{ localize 'D35E.AbilityIncrease' }}">
               </span>
               {{/if}}
@@ -73,7 +73,7 @@
           <li class="attribute high tooltip">
             <h4 class="attribute-name box-title"><span style="text-transform: capitalize;">{{ localize 'D35E.Level' }}</span></h4>
             <div class="attribute-value" style="font-size: 2rem">
-              <input style="font-size: 2rem; line-height: 30px; height: 50px;" type="text" name="system.details.level.available" value="{{../data.details.level.available}}" data-dtype="Number"/>
+              <input style="font-size: 2rem; line-height: 30px; height: 50px;" type="text" name="system.details.level.available" value="{{../system.details.level.available}}" data-dtype="Number"/>
             </div>
           </li>
         </ul>
@@ -144,8 +144,8 @@
             <div class="item-image" style="background-image: url('{{item.img}}')"></div>
             <h4>
               {{item.name}}
-              {{#if item.data.abilityType}}
-              (<span style="text-transform: capitalize;">{{item.data.abilityType}}</span>)
+              {{#if item.system.abilityType}}
+              (<span style="text-transform: capitalize;">{{item.system.abilityType}}</span>)
               {{/if}}
 
               {{#if item.unmetRequirements}}
@@ -159,10 +159,10 @@
                 </i>
               {{/if}}
 
-              {{#if item.data.linkImported}}
+              {{#if item.system.linkImported}}
               <i class="fas fa-link non-rollable" style="color: black; opacity: 0.7">
               </i>
-              <em style="color: black; opacity: 0.7" class="non-rollable">{{item.data.linkSourceName}}</em>
+              <em style="color: black; opacity: 0.7" class="non-rollable">{{item.system.linkSourceName}}</em>
               {{/if}}
             </h4>
 
@@ -175,9 +175,9 @@
                 {{item.name}}
               </h2>
               <div class="flexrow">
-                <span style="flex: none; margin-right: 10px"><strong>{{ localize 'D35E.HD' }}:</strong> {{item.data.hd}}</span>
-                <span style="flex: none; margin-right: 10px"><strong>{{ localize 'D35E.SkillPointsPerLevel' }}:</strong> {{item.data.skillsPerLevel}}</span>
-                <span style="flex: none; margin-right: 10px"><strong>{{ localize 'D35E.BABAbbr' }}:</strong> {{item.data.bab}}</span>
+                <span style="flex: none; margin-right: 10px"><strong>{{ localize 'D35E.HD' }}:</strong> {{item.system.hd}}</span>
+                <span style="flex: none; margin-right: 10px"><strong>{{ localize 'D35E.SkillPointsPerLevel' }}:</strong> {{item.system.skillsPerLevel}}</span>
+                <span style="flex: none; margin-right: 10px"><strong>{{ localize 'D35E.BABAbbr' }}:</strong> {{item.system.bab}}</span>
 
                 {{#if item.unmetRequirements}}
                 <span class="tooltip" style="flex: none; margin-right: 10px; color: darkred"><strong>{{ localize 'D35E.ClassHasUnmetRequirements' }}</strong>
@@ -207,52 +207,52 @@
           <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
             {{#if item.isCharged}}
                         {{#unless item.isRecharging}}
-                        {{#unless item.data.linkedChargeItem.id}}
-                        <input type="text" value="{{item.data.uses.value}}" data-dtype="Number" />
+                        {{#unless item.system.linkedChargeItem.id}}
+                        <input type="text" value="{{item.system.uses.value}}" data-dtype="Number" />
                         {{else}}
                         <input type="text" value="{{item.charges}}" disabled data-dtype="Number" />
                         {{/unless}}
                         <span class="sep"> of </span>
-                        {{#unless item.data.linkedChargeItem.id}}
+                        {{#unless item.system.linkedChargeItem.id}}
                         <input type="text" value="{{item.maxCharges}}" disabled data-dtype="Number" />
                         {{else}}
                         <input type="text" value="{{item.maxCharges}}" disabled data-dtype="Number" />
 
                         {{/unless}}
                         <span class="tooltipcontent">
-                            @resources.{{item.tag}}.value : {{item.data.uses.value}}<br>
-                            @resources.{{item.tag}}.max : {{item.data.uses.max}}
+                            @resources.{{item.tag}}.value : {{item.system.uses.value}}<br>
+                            @resources.{{item.tag}}.max : {{item.system.uses.max}}
                             {{#if item.hasTimedRecharge}}
                             <br><br>
-                            This item will recharge after use <br>after {{item.data.recharge.formula}} rounds.
+                            This item will recharge after use <br>after {{item.system.recharge.formula}} rounds.
                             {{/if}}
                         </span>
                         <i class="fas fa-history recharge-icon"></i>
                         {{else}}
-                        <span><i class="fas fa-history"></i> Ready in {{item.data.recharge.current}}</span>
+                        <span><i class="fas fa-history"></i> Ready in {{item.system.recharge.current}}</span>
                         {{/unless}}
                         {{/if}}
           </div>
           <div class="item-detail item-usage">
-            {{#if item.data.activation.type }}
+            {{#if item.system.activation.type }}
             <span>{{item.labels.activation}}</span>
             {{/if}}
           </div>
 
           {{#if section.isClassFeat}}
           <div class="item-detail item-usage">
-          {{#if item.data.source}}
-             <em style="opacity: 0.8">{{item.data.source}}</em>
+          {{#if item.system.source}}
+             <em style="opacity: 0.8">{{item.system.source}}</em>
           {{/if}}
           </div>
           {{/if}}
           {{#if section.isFeat}}
           <div class="item-detail item-usage">
-          {{#if item.data.source}}
-             <em style="opacity: 0.8">{{item.data.source}}</em>
+          {{#if item.system.source}}
+             <em style="opacity: 0.8">{{item.system.source}}</em>
           {{else}}
-              <select name="item.data.classSource" style="width: 100%" data-dtype="String" class="feat-group-selector">
-                  {{#select item.data.classSource}}
+              <select name="item.system.classSource" style="width: 100%" data-dtype="String" class="feat-group-selector">
+                  {{#select item.system.classSource}}
                   <option value="">{{ localize 'D35E.Base' }}</option>
                   {{#each ../../featCounters as |ftt a|}}
                   <option value="{{ftt.val}}" style="text-transform: capitalize">{{ftt.name}}</option>
@@ -266,16 +266,16 @@
           {{else if section.isClass}}
           <div class="flexcol item-feat-level class-level-box tooltip" style="text-align: center">
             <p style="font-size: 1.2rem;flex: 0; margin: 0">Level</p>
-            <p style="font-size: 2rem; ">{{item.data.levels}}</p>
-            <span class="tooltipcontent">@classes.{{item.data.tag}}.level : {{item.data.levels}}</span>
+            <p style="font-size: 2rem; ">{{item.system.levels}}</p>
+            <span class="tooltipcontent">@classes.{{item.system.tag}}.level : {{item.system.levels}}</span>
           </div>
           {{/if}}
 
           {{#if ../../owner}}
           <div class="item-controls">
             <a class="item-control item-edit" title="{{ localize 'D35E.EditItem' }}"><i class="fas fa-edit"></i></a>
-            {{#unless item.data.userNonRemovable}}
-            {{#unless item.data.linkImported}}
+            {{#unless item.system.userNonRemovable}}
+            {{#unless item.system.linkImported}}
               <a class="item-control item-delete" title="{{ localize 'D35E.DeleteItem' }}"><i class="fas fa-trash"></i></a>
               {{/unless}}
             {{/unless}}
@@ -294,8 +294,8 @@
                   <div class="item-image" style="background-image: url('{{iitem.img}}')"></div>
                   <h4>{{iitem.name}}
 
-                    {{#if iitem.data.abilityType}}
-                    (<span style="text-transform: capitalize;">{{iitem.data.abilityType}}</span>)
+                    {{#if iitem.system.abilityType}}
+                    (<span style="text-transform: capitalize;">{{iitem.system.abilityType}}</span>)
                     {{/if}}
 
                   </h4>
@@ -312,13 +312,13 @@
                 <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
                   {{#if iitem.isCharged}}
                   {{#unless iitem.isRecharging}}
-                  {{#unless iitem.data.linkedChargeItem.id}}
-                  <input type="text" value="{{iitem.data.uses.value}}" data-dtype="Number" />
+                  {{#unless iitem.system.linkedChargeItem.id}}
+                  <input type="text" value="{{iitem.system.uses.value}}" data-dtype="Number" />
                   {{else}}
                   <input type="text" value="{{iitem.charges}}" disabled data-dtype="Number" />
                   {{/unless}}
                   <span class="sep"> of </span>
-                  {{#unless iitem.data.linkedChargeItem.id}}
+                  {{#unless iitem.system.linkedChargeItem.id}}
                   <input type="text" value="{{iitem.maxCharges}}" disabled data-dtype="Number" />
                   {{else}}
                   <input type="text" value="{{iitem.maxCharges}}" disabled data-dtype="Number" />
@@ -326,20 +326,20 @@
                   {{/unless}}
                   {{/unless}}
                       <span class="tooltipcontent">
-                  @resources.{{iitem.tag}}.value : {{iitem.data.uses.value}}<br>
-                  @resources.{{iitem.tag}}.max : {{iitem.data.uses.max}}
+                  @resources.{{iitem.tag}}.value : {{iitem.system.uses.value}}<br>
+                  @resources.{{iitem.tag}}.max : {{iitem.system.uses.max}}
                 </span>
                       {{/if}}
                 </div>
                 <div class="item-detail item-usage">
-                  <em style="opacity: 0.8">{{iitem.data.source}}</em>
+                  <em style="opacity: 0.8">{{iitem.system.source}}</em>
                 </div>
 
                 {{#if ../../../owner}}
                 <div class="item-controls">
                   <a class="item-control item-edit" title="{{ localize 'D35E.EditItem' }}"><i class="fas fa-edit"></i></a>
-                  {{#unless iitem.data.userNonRemovable}}
-                  {{#unless iitem.data.linkImported}}
+                  {{#unless iitem.system.userNonRemovable}}
+                  {{#unless iitem.system.linkImported}}
                   <a class="item-control item-delete" title="{{ localize 'D35E.DeleteItem' }}"><i class="fas fa-trash"></i></a>
                   {{/unless}}
                   {{/unless}}

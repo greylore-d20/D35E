@@ -33,7 +33,7 @@ export class CompendiumBrowser extends Application {
       promise.then(() => {
         this._data.loaded = true;
         this._data.promise = null;
-        resolve(this._data.data);
+        resolve(this._system);
       });
     });
   }
@@ -41,7 +41,7 @@ export class CompendiumBrowser extends Application {
   async _gatherData() {
     await this._fetchMetadata();
 
-    this._data.data = {
+    this._system = {
       filters: this.filters,
       collection: this.items,
     };
@@ -124,7 +124,7 @@ export class CompendiumBrowser extends Application {
   }
 
   _filterItems(item) {
-    if (item.data.data.uniqueId) return false;
+    if (item.system.uniqueId) return false;
     if (this.type === "spells" && item.type !== "spell") return false;
     if (this.type === "items" && !["weapon", "equipment", "loot", "consumable"].includes(item.type)) return false;
     if (this.type === "feats" && item.type !== "feat") return false;
@@ -143,7 +143,7 @@ export class CompendiumBrowser extends Application {
         name: item.name,
         type: item.type,
         img: item.img,
-        data: item.data.data,
+        system: item.system,
         pack: pack.collection,
         isSpell: item.type === "spell"
       },
@@ -156,7 +156,7 @@ export class CompendiumBrowser extends Application {
         };
       }
 
-      result.item.allowedTypes = (getProperty(item.data, "data.allowedTypes") || []).reduce((cur, o) => {
+      result.item.allowedTypes = (getProperty(item.system, "allowedTypes") || []).reduce((cur, o) => {
         if (!this.extraFilters["allowedTypes"].includes(o[0])) this.extraFilters["allowedTypes"].push(o[0]);
         cur.push(o[0]);
         return cur;
@@ -174,7 +174,7 @@ export class CompendiumBrowser extends Application {
         };
       }
 
-      result.item.tags = (getProperty(item.data, "data.tags") || []).reduce((cur, o) => {
+      result.item.tags = (getProperty(item.system, "tags") || []).reduce((cur, o) => {
         if (!this.extraFilters["tags"].includes(o[0])) this.extraFilters["tags"].push(o[0]);
         cur.push(o[0]);
         return cur;
@@ -182,7 +182,7 @@ export class CompendiumBrowser extends Application {
 
 
       result.item.assocations = {
-        "class": (getProperty(item.data, "data.featType") === "classFeat" ? getProperty(item.data, "data.assocations.classes") || [] : []).reduce((cur, o) => {
+        "class": (getProperty(item.system, "featType") === "classFeat" ? getProperty(item.system, "assocations.classes") || [] : []).reduce((cur, o) => {
           if (!this.extraFilters["assocations.class"].includes(o[0])) this.extraFilters["assocations.class"].push(o[0]);
           cur.push(o[0]);
           return cur;
@@ -196,7 +196,7 @@ export class CompendiumBrowser extends Application {
         this.extraFilters = {};
       }
 
-      result.item.weaponProps = Object.entries(getProperty(item.data, "data.properties") || []).reduce((cur, o) => {
+      result.item.weaponProps = Object.entries(getProperty(item.system, "properties") || []).reduce((cur, o) => {
         if (o[1]) cur.push(o[0]);
         return cur;
       }, []);
@@ -220,54 +220,54 @@ export class CompendiumBrowser extends Application {
 
       // Add class/domain/etc filters
       result.item.learnedAt = {
-        "class": (getProperty(item.data, "data.learnedAt.class") || []).reduce((cur, o) => {
+        "class": (getProperty(item.system, "learnedAt.class") || []).reduce((cur, o) => {
           if (!this.extraFilters["learnedAt.class"].includes(o[0])) this.extraFilters["learnedAt.class"].push(o[0]);
           if (!result.item.allSpellLevels.includes(o[1])) result.item.allSpellLevels.push(o[1]);
           cur.push(o[0]);
           return cur;
         }, []),
-        "domain": (getProperty(item.data, "data.learnedAt.domain") || []).reduce((cur, o) => {
+        "domain": (getProperty(item.system, "learnedAt.domain") || []).reduce((cur, o) => {
           if (!this.extraFilters["learnedAt.domain"].includes(o[0])) this.extraFilters["learnedAt.domain"].push(o[0]);
           if (!result.item.allSpellLevels.includes(o[1])) result.item.allSpellLevels.push(o[1]);
           cur.push(o[0]);
           return cur;
         }, []),
-        "subDomain": (getProperty(item.data, "data.learnedAt.subDomain") || []).reduce((cur, o) => {
+        "subDomain": (getProperty(item.system, "learnedAt.subDomain") || []).reduce((cur, o) => {
           if (!this.extraFilters["learnedAt.subDomain"].includes(o[0])) this.extraFilters["learnedAt.subDomain"].push(o[0]);
           if (!result.item.allSpellLevels.includes(o[1])) result.item.allSpellLevels.push(o[1]);
           cur.push(o[0]);
           return cur;
         }, []),
-        "elementalSchool": (getProperty(item.data, "data.learnedAt.elementalSchool") || []).reduce((cur, o) => {
+        "elementalSchool": (getProperty(item.system, "learnedAt.elementalSchool") || []).reduce((cur, o) => {
           if (!this.extraFilters["learnedAt.elementalSchool"].includes(o[0])) this.extraFilters["learnedAt.elementalSchool"].push(o[0]);
           if (!result.item.allSpellLevels.includes(o[1])) result.item.allSpellLevels.push(o[1]);
           cur.push(o[0]);
           return cur;
         }, []),
-        "bloodline": (getProperty(item.data, "data.learnedAt.bloodline") || []).reduce((cur, o) => {
+        "bloodline": (getProperty(item.system, "learnedAt.bloodline") || []).reduce((cur, o) => {
           if (!this.extraFilters["learnedAt.bloodline"].includes(o[0])) this.extraFilters["learnedAt.bloodline"].push(o[0]);
           if (!result.item.allSpellLevels.includes(o[1])) result.item.allSpellLevels.push(o[1]);
           cur.push(o[0]);
           return cur;
         }, []),
         "spellLevel": {
-          "class": (getProperty(item.data, "data.learnedAt.class") || []).reduce((cur, o) => {
+          "class": (getProperty(item.system, "learnedAt.class") || []).reduce((cur, o) => {
             cur[o[0]] = o[1];
             return cur;
           }, {}),
-          "domain": (getProperty(item.data, "data.learnedAt.domain") || []).reduce((cur, o) => {
+          "domain": (getProperty(item.system, "learnedAt.domain") || []).reduce((cur, o) => {
             cur[o[0]] = o[1];
             return cur;
           }, {}),
-          "subDomain": (getProperty(item.data, "data.learnedAt.subDomain") || []).reduce((cur, o) => {
+          "subDomain": (getProperty(item.system, "learnedAt.subDomain") || []).reduce((cur, o) => {
             cur[o[0]] = o[1];
             return cur;
           }, {}),
-          "elementalSchool": (getProperty(item.data, "data.learnedAt.elementalSchool") || []).reduce((cur, o) => {
+          "elementalSchool": (getProperty(item.system, "learnedAt.elementalSchool") || []).reduce((cur, o) => {
             cur[o[0]] = o[1];
             return cur;
           }, {}),
-          "bloodline": (getProperty(item.data, "data.learnedAt.bloodline") || []).reduce((cur, o) => {
+          "bloodline": (getProperty(item.system, "learnedAt.bloodline") || []).reduce((cur, o) => {
             cur[o[0]] = o[1];
             return cur;
           }, {}),
@@ -276,12 +276,12 @@ export class CompendiumBrowser extends Application {
 
       // Add subschools
       {
-        const subschool = getProperty(item.data, "data.subschool");
+        const subschool = getProperty(item.system, "subschool");
         if (subschool && !this.extraFilters["data.subschool"].includes(subschool)) this.extraFilters["data.subschool"].push(subschool);
       }
       // Add spell types
       {
-        const spellTypes = getProperty(item.data, "data.types") ? getProperty(item.data, "data.types").split(CONFIG.D35E.re.traitSeparator) : []
+        const spellTypes = getProperty(item.system, "types") ? getProperty(item.system, "types").split(CONFIG.D35E.re.traitSeparator) : []
         result.item.spellTypes = spellTypes;
         for (let st of spellTypes) {
           if (!this.extraFilters["spellTypes"].includes(st)) this.extraFilters["spellTypes"].push(st);
@@ -299,7 +299,7 @@ export class CompendiumBrowser extends Application {
 
       // Add CR filters
       if (item.data.type === "npc") {
-        const cr = getProperty(item.data, "data.details.cr");
+        const cr = getProperty(item.system, "details.cr");
         if (cr && !this.extraFilters["data.details.cr"].includes(cr)) this.extraFilters["data.details.cr"].push(parseFloat(cr));
       }
     }
@@ -310,7 +310,7 @@ export class CompendiumBrowser extends Application {
   async getData() {
     if (!this._data.loaded) await this.loadData();
 
-    return this._data.data;
+    return this._system;
   }
 
   async refresh() {
@@ -653,7 +653,7 @@ export class CompendiumBrowser extends Application {
   _onDragStart(event) {
     const li = this,
           packName = li.getAttribute("data-collection"),
-          pack = game.packs.find(p => p.collection === packName);
+          pack = game.packs.find(p => p.metadata.id === packName);
 
     // Get the pack
     if (!pack) {

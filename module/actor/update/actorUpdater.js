@@ -1327,7 +1327,7 @@ export class ActorUpdater {
         linkData(source, updateData, "system.attributes.fortification.total", (data1.attributes.fortification?.value || 0));
         linkData(source, updateData, "system.attributes.concealment.total", (data1.attributes.concealment?.value || 0));
         items.filter(obj => {
-            return obj.type === "equipment" && obj.system.equipped && !obj.system.melded && !_obj.broken;
+            return obj.type === "equipment" && obj.system.equipped && !obj.system.melded && !obj.broken;
         }).forEach(obj => {
             let itemAcp = Math.abs(obj.system.armor.acp);
             if (obj.system.masterwork)
@@ -2186,7 +2186,7 @@ export class ActorUpdater {
 
         // Add armor bonuses from equipment
         source.items.filter(obj => {
-            return obj.type === "equipment" && obj.system.equipped && !obj.system.melded && !_obj.broken;
+            return obj.type === "equipment" && obj.system.equipped && !obj.system.melded && !obj.broken;
         }).forEach(item => {
             let armorTarget = "aac";
             if (item.system.equipmentType === "shield") armorTarget = "sac";

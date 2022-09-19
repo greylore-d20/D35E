@@ -227,7 +227,7 @@ export default class TreasureGenerator {
 					let _enhancementsItems =
 						_enhancements.items || []
 					for (let enhancement of enhancements) {
-						let enhancementData = await it.addEnhancementFromCompendium(
+						let enhancementData = await it.enhancements.addEnhancementFromCompendium(
 							'D35E.enhancements',
 							enhancement.id,
 							enhancement.enhancement

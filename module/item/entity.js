@@ -18,6 +18,7 @@ import {ItemEnhancementConverter} from "./converters/enchancement.js";
 import {ItemCombatChangesHelper} from "./helpers/itemCombatChangesHelper.js";
 import {ItemCombatChanges} from "./actions/combatChanges.js";
 import {ItemUse} from "./actions/use.js";
+import {ItemEnhancementHelper} from "./helpers/itemEnhancementHelper.js";
 
 /**
  * Override and extend the basic :class:`Item` implementation
@@ -844,11 +845,12 @@ export class ItemPF extends Item {
         }
 
         enhancements.forEach(function( obj ) {
-            if (obj.data.weaponData.alignment) {
-                alignment.good = obj.data.weaponData.alignment.good || alignment.good;
-                alignment.evil = obj.data.weaponData.alignment.evil || alignment.evil;
-                alignment.lawful = obj.data.weaponData.alignment.lawful || alignment.lawful;
-                alignment.chaotic = obj.data.weaponData.alignment.chaotic || alignment.chaotic;
+            let objEnhancement = ItemEnhancementHelper.getEnhancementData(obj)
+            if (objEnhancement.weaponData.alignment) {
+                alignment.good = objEnhancement.weaponData.alignment.good || alignment.good;
+                alignment.evil = objEnhancement.weaponData.alignment.evil || alignment.evil;
+                alignment.lawful = objEnhancement.weaponData.alignment.lawful || alignment.lawful;
+                alignment.chaotic = objEnhancement.weaponData.alignment.chaotic || alignment.chaotic;
             }
         });
         //console.log('Total enh',totalEnchancement, type)
@@ -866,12 +868,12 @@ export class ItemPF extends Item {
         }
         let totalEnchancement = 0;
         enhancements.forEach(function( obj ) {
-
-            if (!obj.data.enhIsLevel) {
-                if (obj.data.enhancementType === "weapon" && type === 'weapon')
-                    totalEnchancement += obj.data.enh
-                if (obj.data.enhancementType === "armor" && type === 'equipment')
-                    totalEnchancement += obj.data.enh
+            let objEnhancement = ItemEnhancementHelper.getEnhancementData(obj)
+            if (!objEnhancement.enhIsLevel) {
+                if (objEnhancement.enhancementType === "weapon" && type === 'weapon')
+                    totalEnchancement += objEnhancement.enh
+                if (objEnhancement.enhancementType === "armor" && type === 'equipment')
+                    totalEnchancement += objEnhancement.enh
             }
         });
         //console.log('Total enh',totalEnchancement, type)
@@ -1269,15 +1271,15 @@ export class ItemPF extends Item {
      * Updates the spell's description.
      */
     async _updateSpellDescription(updateData, srcData) {
-        const data = ItemSpellHelpers.generateSpellDescription(this,srcData);
+        const data = ItemSpellHelper.generateSpellDescription(this,srcData);
 
-        linkData(srcData, updatedata, "system.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
+        linkData(srcData, updateData, "system.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
     }
 
     async _updateCardDescription(updateData, srcData) {
-        const data = this._generateSpellDescription(srcData);
+        const data = ItemSpellHelper.generateSpellDescription(srcData);
 
-        linkData(srcData, updatedata, "system.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
+        linkData(srcData, updateData, "system.description.value", await renderTemplate("systems/D35E/templates/internal/spell-description.html", data));
     }
 
 
@@ -1706,44 +1708,7 @@ export class ItemPF extends Item {
         return spellbook.usePowerPoints;
     }
 
-    /***
-     * Adds item from compendium to this instance as enhancement
-     * @param packName name of compendium that enhancement is imported from
-     * @param packId id of enhancement to add to item
-     * @param enhValue value to set on enhancement
-     * @returns {Promise<void>} awaitable item promise
-     */
-    async addEnhancementFromCompendium(packName, packId, enhValue) {
-        let itemData = {}
-        const packItem = await game.packs.find(p => p.collection === packName).getDocument(packId);
-        if (packItem != null) {
-            itemData = packItem;
-            itemData.system.enh = enhValue;
-            ItemPF.setEnhItemPrice(itemData)
-            return await this.enhancements.getEnhancementFromData(itemData)
-        }
 
-    }
-
-    static setEnhItemPrice(item) {
-        {
-            let rollData = {};
-            if (this.actor != null) rollData = this.actor.getRollData();
-            rollData.enhancement = item.data.enh;
-            if (item.data.enhIncreaseFormula !== undefined && item.data.enhIncreaseFormula !== null && item.data.enhIncreaseFormula !== "") {
-                item.data.enhIncrease = new Roll35e(item.data.enhIncreaseFormula, rollData).roll().total;
-            }
-        }
-        {
-            let rollData = {};
-            if (this.actor != null) rollData = this.actor.getRollData();
-            rollData.enhancement = item.data.enh;
-            rollData.enhIncrease = item.data.enhIncrease;
-            if (item.data.priceFormula !== undefined && item.data.priceFormula !== null && item.data.priceFormula !== "") {
-                item.data.price = new Roll35e(item.data.priceFormula, rollData).roll().total;
-            }
-        }
-    }
 
     async addLinkedItemFromData(itemData) {
         return this.update(await this.getLinkDataFromData(itemData))
@@ -1762,31 +1727,7 @@ export class ItemPF extends Item {
         return updateData
     }
 
-    updateMagicItemName(updateData, _enhancements, force = false, useIdentifiedName = false) {
-        if ((getProperty(this.system,"enhancements") !== undefined && getProperty(this.system,"enhancements.automation") !== undefined && getProperty(this.system,"enhancements.automation") !== null) || force) {
-            if (getProperty(this.system,"enhancements.automation.updateName") || force) {
-                let baseName = useIdentifiedName && getProperty(this.system,"identifiedName") || getProperty(this.system,"unidentified.name") 
-                if (getProperty(this.system,"unidentified.name") === '') {
-                    updateData[`system.unidentified.name`] = this.name;
-                    baseName = this.name
-                }
-                updateData[`system.identifiedName`] = this.buildName(baseName, _enhancements)
-            }
-        }
-    }
 
-    updateMagicItemProperties(updateData, _enhancements, force = false) {
-        if ((getProperty(this.system,"enhancements") !== undefined && getProperty(this.system,"enhancements.automation") !== undefined && getProperty(this.system,"enhancements.automation") !== null) || force) {
-            if (getProperty(this.system,"enhancements.automation.updateName") || force) {
-                let basePrice = this.system.unidentified.price
-                if (!getProperty(this.system,"unidentified.price")) {
-                    updateData[`system.unidentified.price`] = getProperty(this.system,"price");
-                    basePrice = this.system.price
-                }
-                updateData[`system.price`] = this.buildPrice(basePrice, _enhancements)
-            }
-        }
-    }
 
     buildName(name, enhancements) {
         let prefixes = []

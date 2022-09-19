@@ -2,7 +2,7 @@
     <div class="flexrow"><h2 class="block-header" style="flex: 1">{{#if deck.orig.class}}{{ localize
         'D35E.CardDeckBookForClass' class=deck.orig.class }}{{/if}}</h2><a
             class="btn configure-deck point-buy-button blue-button"
-            for="data.attributes.cards.decks.{{deckIndex}}" onkeydown="e.preventDefault();">
+            for="system.attributes.cards.decks.{{deckIndex}}" onkeydown="e.preventDefault();">
         {{ localize 'D35E.Configure' }}
     </a></div>
 
@@ -16,7 +16,7 @@
     <!--        {{#select deck.orig.class}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
     <!--        <option value="_hd">{{localize "D35E.HitDie"}}</option>-->
-    <!--        {{#each data.classes as |cls a|}}-->
+    <!--        {{#each system.classes as |cls a|}}-->
     <!--        <option value="{{a}}">{{cls.name}}</option>-->
     <!--        {{/each}}-->
     <!--        {{/select}}-->
@@ -28,7 +28,7 @@
     <!--      <select name="system.attributes.spells.spellbooks.{{deckIndex}}.ability" data-dtype="String">-->
     <!--        {{#select deck.orig.ability}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
-    <!--        {{#each data.abilities as |abl a|}}-->
+    <!--        {{#each system.abilities as |abl a|}}-->
     <!--        <option value="{{a}}">{{abl.label}}</option>-->
     <!--        {{/each}}-->
     <!--        {{/select}}-->
@@ -103,11 +103,11 @@
                 <span>{{deck.orig.availablePrestigeCl}}</span>
                 <span class="sep">/</span>
                 <span>{{deck.orig.maxPrestigeCl}}</span>
-                {{#if deck.data.maxPrestigeClSources.length}}
+                {{#if deck.system.maxPrestigeClSources.length}}
                 <span class="tooltipcontent">
 
                 <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                {{#each deck.data.maxPrestigeClSources as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
+                {{#each deck.system.maxPrestigeClSources as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
             </span>
                 {{/if}}
             </footer>
@@ -199,7 +199,7 @@
                 <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                 <h4>{{item.name}}
                     {{#unless @root.hideShortDescriptions}}
-                    <em style="color: black; opacity: 0.7" class="non-rollable">{{item.data.snip}}</em>
+                    <em style="color: black; opacity: 0.7" class="non-rollable">{{item.system.snip}}</em>
                     {{/unless}}
                 </h4>
             </div>

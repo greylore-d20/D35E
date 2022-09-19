@@ -21,46 +21,46 @@ export class ItemSpellHelper {
         rollData.spellPenetration = rollData.cl + (rollData?.featSpellPenetrationBonus || 0);
     }
     
-    static generateSpellDescription(item, srcData) {
+    static generateSpellDescription(item, sourceItem) {
         const reSplit = CONFIG.D35E.re.traitSeparator;
 
         const label = {
-            school: (CONFIG.D35E.spellSchools[getProperty(srcData, "system.school")] || "").toLowerCase(),
-            subschool: (getProperty(srcData, "system.subschool") || ""),
+            school: (CONFIG.D35E.spellSchools[getProperty(sourceItem, "system.school")] || "").toLowerCase(),
+            subschool: (getProperty(sourceItem, "system.subschool") || ""),
             types: "",
         };
         const data = {
-            data: mergeObject(item.system, srcsystem, {inplace: false}),
+            data: mergeObject(item.system, sourceItem.system, {inplace: false}),
             label: label,
         };
 
         // Set subschool and types label
-        const types = getProperty(srcData, "system.types");
+        const types = getProperty(sourceItem, "system.types");
         if (typeof types === "string" && types.length > 0) {
             label.types = types.split(reSplit).join(", ");
         }
         // Set information about when the spell is learned
         data.learnedAt = {};
-        data.learnedAt.class = (getProperty(srcData, "system.learnedAt.class") || []).map(o => {
+        data.learnedAt.class = (getProperty(sourceItem, "system.learnedAt.class") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.domain = (getProperty(srcData, "system.learnedAt.domain") || []).map(o => {
+        data.learnedAt.domain = (getProperty(sourceItem, "system.learnedAt.domain") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.subDomain = (getProperty(srcData, "system.learnedAt.subDomain") || []).map(o => {
+        data.learnedAt.subDomain = (getProperty(sourceItem, "system.learnedAt.subDomain") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.elementalSchool = (getProperty(srcData, "system.learnedAt.elementalSchool") || []).map(o => {
+        data.learnedAt.elementalSchool = (getProperty(sourceItem, "system.learnedAt.elementalSchool") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
-        data.learnedAt.bloodline = (getProperty(srcData, "system.learnedAt.bloodline") || []).map(o => {
+        data.learnedAt.bloodline = (getProperty(sourceItem, "system.learnedAt.bloodline") || []).map(o => {
             return `${o[0]} ${o[1]}`;
         }).sort().join(", ");
 
         // Set casting time label
-        if (getProperty(srcData, "system.activation")) {
-            const activationCost = getProperty(srcData, "system.activation.cost");
-            const activationType = getProperty(srcData, "system.activation.type");
+        if (getProperty(sourceItem, "system.activation")) {
+            const activationCost = getProperty(sourceItem, "system.activation.cost");
+            const activationType = getProperty(sourceItem, "system.activation.type");
 
             if (activationType) {
                 if (CONFIG.D35E.abilityActivationTypesPlurals[activationType] != null) {
@@ -73,19 +73,19 @@ export class ItemSpellHelper {
         }
 
 
-        data.psionicPower = getProperty(srcData, "system.isPower");
+        data.psionicPower = getProperty(sourceItem, "system.isPower");
 
         // Set components label
         let components = [];
-        for (let [key, value] of Object.entries(getProperty(srcData, "system.components") || {})) {
+        for (let [key, value] of Object.entries(getProperty(sourceItem, "system.components") || {})) {
             if (key === "value" && value.length > 0) components.push(...value.split(reSplit));
             else if (key === "verbal" && value) components.push("V");
             else if (key === "somatic" && value) components.push("S");
             else if (key === "material" && value) components.push("M");
             else if (key === "focus" && value) components.push("F");
         }
-        if (getProperty(srcData, "system.components.divineFocus") === 1) components.push("DF");
-        const df = getProperty(srcData, "system.components.divineFocus");
+        if (getProperty(sourceItem, "system.components.divineFocus") === 1) components.push("DF");
+        const df = getProperty(sourceItem, "system.components.divineFocus");
         // Sort components
         const componentsOrder = ["V", "S", "M", "F", "DF"];
         components.sort((a, b) => {
@@ -98,11 +98,11 @@ export class ItemSpellHelper {
         components = components.map(o => {
             if (o === "M") {
                 if (df === 2) o = "M/DF";
-                if (getProperty(srcData, "system.materials.value")) o = `${o} (${getProperty(srcData, "system.materials.value")})`;
+                if (getProperty(sourceItem, "system.materials.value")) o = `${o} (${getProperty(sourceItem, "system.materials.value")})`;
             }
             if (o === "F") {
                 if (df === 3) o = "F/DF";
-                if (getProperty(srcData, "system.materials.focus")) o = `${o} (${getProperty(srcData, "system.materials.focus")})`;
+                if (getProperty(sourceItem, "system.materials.focus")) o = `${o} (${getProperty(sourceItem, "system.materials.focus")})`;
             }
             return o;
         });
@@ -110,8 +110,8 @@ export class ItemSpellHelper {
 
         // Set duration label
         {
-            const durationData = getProperty(srcData, "system.spellDurationData");
-            const duration = getProperty(srcData, "system.spellDuration");
+            const durationData = getProperty(sourceItem, "system.spellDurationData");
+            const duration = getProperty(sourceItem, "system.spellDuration");
             if (durationData) {
                 label.duration = ItemSpellHelper.getSpellDuration(durationData);
             } else if (duration) {
@@ -120,18 +120,18 @@ export class ItemSpellHelper {
         }
         // Set effect label
         {
-            const effect = getProperty(srcData, "system.spellEffect");
+            const effect = getProperty(sourceItem, "system.spellEffect");
             if (effect) label.effect = effect;
         }
         // Set targets label
         {
-            const targets = getProperty(srcData, "system.target.value");
+            const targets = getProperty(sourceItem, "system.target.value");
             if (targets) label.targets = targets;
         }
         // Set range label
         {
-            const rangeUnit = getProperty(srcData, "system.range.units");
-            const rangeValue = getProperty(srcData, "system.range.value");
+            const rangeUnit = getProperty(sourceItem, "system.range.units");
+            const rangeValue = getProperty(sourceItem, "system.range.value");
 
             if (rangeUnit != null && rangeUnit !== "none") {
                 label.range = (CONFIG.D35E.distanceUnits[rangeUnit] || "").toLowerCase();
@@ -146,7 +146,7 @@ export class ItemSpellHelper {
         }
         // Set area label
         {
-            const area = getProperty(srcData, "system.spellArea");
+            const area = getProperty(sourceItem, "system.spellArea");
 
             if (area) label.area = area;
         }
@@ -157,17 +157,17 @@ export class ItemSpellHelper {
             if (savingThrowDescription) label.savingThrow = savingThrowDescription;
             else label.savingThrow = "none";
 
-            const sr = getProperty(srcData, "system.sr");
+            const sr = getProperty(sourceItem, "system.sr");
             label.sr = (sr === true ? "yes" : "no");
-            const pr = getProperty(srcData, "system.pr");
+            const pr = getProperty(sourceItem, "system.pr");
             label.pr = (pr === true ? "yes" : "no");
 
-            if (getProperty(srcData, "system.range.units") !== "personal") data.useDCandSR = true;
+            if (getProperty(sourceItem, "system.range.units") !== "personal") data.useDCandSR = true;
         }
 
-        if (getProperty(srcData, "system.powerPointsCost") > 0)
-            label.powerPointsCost = getProperty(srcData, "system.powerPointsCost");
-        label.display = getProperty(srcData, "system.display");
+        if (getProperty(sourceItem, "system.powerPointsCost") > 0)
+            label.powerPointsCost = getProperty(sourceItem, "system.powerPointsCost");
+        label.display = getProperty(sourceItem, "system.display");
         return data;
     }
 

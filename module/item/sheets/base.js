@@ -7,6 +7,7 @@ import {DamageTypes} from "../../damage-types.js";
 import {createTag} from "../../lib.js";
 
 import {Roll35e} from "../../roll.js"
+import {ItemEnhancementHelper} from "../helpers/itemEnhancementHelper.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle D&D5E specific item types
@@ -213,7 +214,7 @@ export class ItemSheetPF extends ItemSheet {
             _enhancements.forEach(e => {
                 e.ephemeralId = e._id;
                 delete e._id;
-
+                let enhancementData = ItemEnhancementHelper.getEnhancementData(e)
                 let item = new ItemPF(foundry.utils.deepClone(e), {owner: this.item.isOwner})
                 this.ehnancementItemMap.set(e.ephemeralId, item);
                 e.hasAction = item.hasAction || item.isCharged;
@@ -1934,7 +1935,7 @@ export class ItemSheetPF extends ItemSheet {
             if (droppedData.pack) {
                 let updateData = {}
                 dataType = "compendium";
-                const pack = game.packs.find(p => p.collection === droppedData.pack);
+                const pack = game.packs.find(p => p.metadata.id === droppedData.pack);
                 const packItem = await pack.getDocument(droppedData.id);
                 if (packItem != null)
                 {
@@ -2003,7 +2004,7 @@ export class ItemSheetPF extends ItemSheet {
             if (droppedData.pack) {
                 let updateData = {}
                 dataType = "compendium";
-                const pack = game.packs.find(p => p.collection === droppedData.pack);
+                const pack = game.packs.find(p => p.metadata.id === droppedData.pack);
                 const packItem = await pack.getDocument(droppedData.id);
                 if (packItem != null) 
                 {
@@ -2069,7 +2070,7 @@ export class ItemSheetPF extends ItemSheet {
             if (droppedData.pack) {
                 let updateData = {}
                 dataType = "compendium";
-                const pack = game.packs.find(p => p.collection === droppedData.pack);
+                const pack = game.packs.find(p => p.metadata.id === droppedData.pack);
                 const packItem = await pack.getDocument(droppedData.id);
                 if (packItem != null) 
                 {
@@ -2105,7 +2106,7 @@ export class ItemSheetPF extends ItemSheet {
             if (droppedData.pack) {
                 let updateData = {}
                 dataType = "compendium";
-                const pack = game.packs.find(p => p.collection === droppedData.pack);
+                const pack = game.packs.find(p => p.metadata.id === droppedData.pack);
                 const packItem = await pack.getDocument(droppedData.id);
                 if (packItem != null && packItem.data.type === "buff")
                 {
@@ -2145,13 +2146,18 @@ export class ItemSheetPF extends ItemSheet {
         }
 
         let dataType = "";
+
+        if (game?.release?.generation >= 10 && droppedData.uuid && droppedData.type === "Item") {
+            droppedData = fromUuidSync(droppedData.uuid)
+            droppedData.type = "Item";
+        }
         if (droppedData.type === "Item") {
             let itemData = {};
             // Case 1 - Import from a Compendium pack
             if (droppedData.pack) {
                 dataType = "compendium";
-                const pack = game.packs.find(p => p.collection === droppedData.pack);
-                const packItem = await pack.getDocument(droppedData.id);
+                const pack = game.packs.find(p => p.metadata.id === droppedData.pack);
+                const packItem = await pack.getDocument(droppedData._id);
                 if (packItem != null) itemData = packItem.data;
             }
 
@@ -2164,7 +2170,7 @@ export class ItemSheetPF extends ItemSheet {
             // Case 3 - Import from World entity
             else {
                 dataType = "world";
-                itemData = game.items.get(droppedData.id).system;
+                itemData = fromUuidSync(data.uuid);
             }
             return this.importItem(itemData, dataType, importType);
         }
@@ -2273,16 +2279,7 @@ export class ItemSheetPF extends ItemSheet {
 
         const li = event.currentTarget.closest(".item");
         if (game.keyboard.isModifierActive("Shift")) {
-            const updateData = {};
-            let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-            _enhancements = _enhancements.filter(function (obj) {
-                return createTag(obj.name) !== li.dataset.itemId;
-            });
-
-            this.item.updateMagicItemName(updateData, _enhancements);
-            this.item.updateMagicItemProperties(updateData, _enhancements);
-            updateData[`data.enhancements.items`] = _enhancements;
-            this.item.update(updateData);
+            await this.item.enhancements.deleteEnhancement(li.dataset.itemId)
         } else {
             button.disabled = true;
 
@@ -2290,17 +2287,8 @@ export class ItemSheetPF extends ItemSheet {
             Dialog.confirm({
                 title: game.i18n.localize("D35E.DeleteItem"),
                 content: msg,
-                yes: () => {
-                    const updateData = {};
-                    let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-                    _enhancements = _enhancements.filter(function (obj) {
-                        return createTag(obj.name) !== li.dataset.itemId;
-                    });
-
-                    this.item.updateMagicItemName(updateData, _enhancements);
-                    this.item.updateMagicItemProperties(updateData, _enhancements);
-                    updateData[`data.enhancements.items`] = _enhancements;
-                    this.item.update(updateData);
+                yes: async () => {
+                    await this.item.enhancements.deleteEnhancement(li.dataset.itemId)
                     button.disabled = false;
                 },
                 no: () => button.disabled = false
@@ -2308,89 +2296,40 @@ export class ItemSheetPF extends ItemSheet {
         }
     }
 
-    _setEnhUses(event) {
+    async _setEnhUses(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const updateData = {};
-
         const value = Number(event.currentTarget.value);
-        let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-        _enhancements.filter(function (obj) {
-            return createTag(obj.name) === itemId
-        }).forEach(i => {
-            i.data.uses.value = value;
-        });
-        updateData[`data.enhancements.items`] = _enhancements;
-        this.item.update(updateData);
+        await this.item.enhancements.updateEnhancement(itemId,{uses: {value: value}})
     }
 
-    _setEnhMaxUses(event) {
+    async _setEnhMaxUses(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const updateData = {};
-
         const value = Number(event.currentTarget.value);
-        let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-        _enhancements.filter(function (obj) {
-            return createTag(obj.name) === itemId
-        }).forEach(i => {
-            i.data.uses.max = value;
-            i.data.uses.maxFormula = `${value}`;
-        });
-        updateData[`data.enhancements.items`] = _enhancements;
-        this.item.update(updateData);
+        await this.item.enhancements.updateEnhancement(itemId,{uses: {max: value, maxFormula: `${value}`}})
     }
 
-    _setEnhPerUse(event) {
+    async _setEnhPerUse(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const updateData = {};
-
         const value = Number(event.currentTarget.value);
-        let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-        _enhancements.filter(function (obj) {
-            return createTag(obj.name) === itemId
-        }).forEach(i => {
-            i.data.uses.chargesPerUse = value;
-        });
-        updateData[`data.enhancements.items`] = _enhancements;
-        this.item.update(updateData);
+        await this.item.enhancements.updateEnhancement(itemId,{uses: {chargesPerUse: value}})
     }
 
     async _setEnhCLValue(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const updateData = {};
-
         const value = Number(event.currentTarget.value);
-        let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-        _enhancements.filter(function (obj) {
-            return createTag(obj.name) === itemId
-        }).forEach(i => {
-            i.data.baseCl = value;
-        });
-        updateData[`data.enhancements.items`] = _enhancements;
-        await this.item.update(updateData);
+        await this.item.enhancements.updateEnhancement(itemId,{baseCl: value})
     }
 
 
     async _setEnhValue(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const updateData = {};
-
         const value = Number(event.currentTarget.value);
-        let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-        _enhancements.filter(function (obj) {
-            return createTag(obj.name) === itemId
-        }).forEach(i => {
-            i.data.enh = value;
-            ItemPF.setEnhItemPrice(i);
-        });
-        updateData[`data.enhancements.items`] = _enhancements;
-        this.item.updateMagicItemName(updateData, _enhancements);
-        this.item.updateMagicItemProperties(updateData, _enhancements);
-        await this.item.update(updateData);
+        await this.item.enhancements.updateEnhancement(itemId,{enh: value})
     }
 
 
@@ -2417,12 +2356,7 @@ export class ItemSheetPF extends ItemSheet {
 
     async _onEnhUpdateName(event) {
         event.preventDefault();
-        const updateData = {};
-        //console.log("updating name")
-        let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
-        this.item.updateMagicItemName(updateData, _enhancements, true);
-        this.item.updateMagicItemProperties(updateData, _enhancements, true);
-        await this.item.update(updateData);
+        await this.item.enhancements.updateBaseItemName();
     }
 
     async _quickItemActionControl(event) {

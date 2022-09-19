@@ -2,15 +2,15 @@
 <ul class="attributes armor-class flexrow" style="flex: none">
   <li>
     <h3 class="block-header">{{ localize 'D35E.ArmorClass' }}
-      <a title="{{ localize 'D35E.ACNotes' }}" class="note-editor small" for="data.attributes.acNotes"><i class="fas fa-edit"></i></a></h3>
+      <a title="{{ localize 'D35E.ACNotes' }}" class="note-editor small" for="system.attributes.acNotes"><i class="fas fa-edit"></i></a></h3>
   </li>
   <li>
     <h3 class="block-header">{{ localize 'D35E.SavingThrowPlural' }}
-      <a title="{{ localize 'D35E.SavingThrowsNotes' }}"  class="note-editor small" for="data.attributes.saveNotes"><i class="fas fa-edit"></i></a></h3>
+      <a title="{{ localize 'D35E.SavingThrowsNotes' }}"  class="note-editor small" for="system.attributes.saveNotes"><i class="fas fa-edit"></i></a></h3>
   </li>
 </ul>
 <ul class="attributes armor-class flexrow" style="flex: none">
-  {{#each data.attributes.ac as |ac id|}}
+  {{#each system.attributes.ac as |ac id|}}
   <li class="attribute armor-class tooltip" data-armorclass="{{id}}">
     <div class="tooltipcontent">
       @attributes.ac.{{id}}.total : {{ac.total}}
@@ -28,7 +28,7 @@
     </div>
   </li>
   {{/each}}
-  {{#each data.attributes.savingThrows as |savingThrow id|}}
+  {{#each system.attributes.savingThrows as |savingThrow id|}}
   <li class="attribute saving-throw tooltip" data-savingthrow="{{id}}">
     <div class="tooltipcontent">
       @attributes.savingThrows.{{id}}.total : {{savingThrow.total}}
@@ -59,9 +59,9 @@
 
         <h4 class="attribute-name box-title rollable">{{ localize 'D35E.Initiative' }}</h4>
         <div class="attribute-value tooltip">
-          <span>{{data.attributes.init.total}}</span>
+          <span>{{system.attributes.init.total}}</span>
           <span class="tooltipcontent">
-                @attributes.init.total : {{data.attributes.init.total}}
+                @attributes.init.total : {{system.attributes.init.total}}
                 {{#if sourceDetails.system.attributes.init.total.length}}
                   <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
                   {{#each sourceDetails.system.attributes.init.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
@@ -74,9 +74,9 @@
 
         <h4 class="attribute-name box-title rollable">{{ localize 'D35E.BAB' }}</h4>
         <div class="attribute-value tooltip">
-          <span>{{data.attributes.bab.total}}</span>
+          <span>{{system.attributes.bab.total}}</span>
           <span class="tooltipcontent">
-                @attributes.bab.total : {{data.attributes.bab.total}}
+                @attributes.bab.total : {{system.attributes.bab.total}}
                 {{#if sourceDetails.system.attributes.bab.total.length}}
                   <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
                   {{#each sourceDetails.system.attributes.bab.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
@@ -96,9 +96,9 @@
       <li class="attribute cmb" data-attribute="cmb">
         <h4 class="attribute-name box-title rollable">{{ localize 'D35E.CMBAbbr' }}</h4>
         <div class="attribute-value tooltip">
-          <span>{{data.attributes.cmb.total}}</span>
+          <span>{{system.attributes.cmb.total}}</span>
           <span class="tooltipcontent">
-                  @attributes.cmb.total : {{data.attributes.cmb.total}}
+                  @attributes.cmb.total : {{system.attributes.cmb.total}}
                   {{#if sourceDetails.system.attributes.cmb.total.length}}
                     <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
                     {{#each sourceDetails.system.attributes.cmb.total as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
@@ -113,17 +113,17 @@
           <span>{{attackBonuses.melee}}</span>
           <span class="tooltipcontent">
               {{ localize 'D35E.FromSources' }}:<br/>
-               {{ localize 'D35E.BAB' }}: {{data.attributes.bab.total}}<br/>
-               {{ localize 'D35E.AbilityStr' }}: {{data.abilities.str.mod}}<br/>
+               {{ localize 'D35E.BAB' }}: {{system.attributes.bab.total}}<br/>
+               {{ localize 'D35E.AbilityStr' }}: {{system.abilities.str.mod}}<br/>
                {{ localize 'D35E.Size' }}: {{attackBonuses.sizeMod}}<br/>
-            {{#if data.attributes.energyDrain}}
-              {{ localize 'D35E.LevelDrain' }}: -{{data.attributes.energyDrain}}<br/>
+            {{#if system.attributes.energyDrain}}
+              {{ localize 'D35E.LevelDrain' }}: -{{system.attributes.energyDrain}}<br/>
             {{/if}}
-            {{#if data.attributes.attack.general}}
-              {{localize "D35E.AttackBonuses"}}: {{data.attributes.attack.general}}<br/>
+            {{#if system.attributes.attack.general}}
+              {{localize "D35E.AttackBonuses"}}: {{system.attributes.attack.general}}<br/>
             {{/if}}
-            {{#if data.attributes.attack.melee}}
-              {{localize "D35E.Melee"}} {{localize "D35E.AttackBonuses"}}: {{data.attributes.attack.melee}}<br/>
+            {{#if system.attributes.attack.melee}}
+              {{localize "D35E.Melee"}} {{localize "D35E.AttackBonuses"}}: {{system.attributes.attack.melee}}<br/>
             {{/if}}
           </span>
         </div>
@@ -134,17 +134,17 @@
           <span>{{attackBonuses.ranged}}</span>
           <span class="tooltipcontent">
               {{ localize 'D35E.FromSources' }}:<br/>
-               {{ localize 'D35E.BAB' }}: {{data.attributes.bab.total}}<br/>
-               {{ localize 'D35E.AbilityDex' }}: {{data.abilities.dex.mod}}<br/>
+               {{ localize 'D35E.BAB' }}: {{system.attributes.bab.total}}<br/>
+               {{ localize 'D35E.AbilityDex' }}: {{system.abilities.dex.mod}}<br/>
                {{ localize 'D35E.Size' }}: {{attackBonuses.sizeMod}}<br/>
-              {{#if data.attributes.energyDrain}}
-                {{ localize 'D35E.LevelDrain' }}: -{{data.attributes.energyDrain}}<br/>
+              {{#if system.attributes.energyDrain}}
+                {{ localize 'D35E.LevelDrain' }}: -{{system.attributes.energyDrain}}<br/>
               {{/if}}
-            {{#if data.attributes.attack.general}}
-              {{localize "D35E.AttackBonuses"}}: {{data.attributes.attack.general}}<br/>
+            {{#if system.attributes.attack.general}}
+              {{localize "D35E.AttackBonuses"}}: {{system.attributes.attack.general}}<br/>
             {{/if}}
-            {{#if data.attributes.attack.ranged}}
-              {{localize "D35E.Ranged"}} {{localize "D35E.AttackBonuses"}}: {{data.attributes.attack.ranged}}<br/>
+            {{#if system.attributes.attack.ranged}}
+              {{localize "D35E.Ranged"}} {{localize "D35E.AttackBonuses"}}: {{system.attributes.attack.ranged}}<br/>
             {{/if}}
           </span>
         </div>
@@ -159,9 +159,9 @@
 <!--  <li class="attribute turnUndeadHdTotal high" data-attribute="turnUndeadHdTotal">-->
 <!--    <h4 class="attribute-name box-title rollable">{{ localize 'D35E.TurnUndead' }}</h4>-->
 <!--    <div class="attribute-value tooltip">-->
-<!--      <span>{{data.attributes.turnUndeadHdTotal}}</span>-->
+<!--      <span>{{system.attributes.turnUndeadHdTotal}}</span>-->
 <!--      <span class="tooltipcontent">-->
-<!--                @attributes.turnUndeadHdTotal: {{data.attributes.turnUndeadHdTotal}}-->
+<!--                @attributes.turnUndeadHdTotal: {{system.attributes.turnUndeadHdTotal}}-->
 <!--                {{#if sourceDetails.system.attributes.turnUndeadHdTotal.length}}-->
 <!--                  <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>-->
 <!--                  {{#each sourceDetails.system.attributes.turnUndeadHdTotal as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}-->
@@ -172,13 +172,13 @@
 <!--    <footer class="attribute-footer flexrow">-->
 <!--      <span>&nbsp;</span>-->
 <!--      <input type="text" name="system.attributes.turnUndeadUses"-->
-<!--             value="{{data.attributes.turnUndeadUses}}" placeholder="0" />-->
+<!--             value="{{system.attributes.turnUndeadUses}}" placeholder="0" />-->
 <!--      <span>/</span>-->
 <!--      <div class="tooltip">-->
 <!--        <input type="text" name="system.attributes.turnUndeadUsesTotal"-->
-<!--               value="{{data.attributes.turnUndeadUsesTotal}}" placeholder="0" disabled/>-->
+<!--               value="{{system.attributes.turnUndeadUsesTotal}}" placeholder="0" disabled/>-->
 <!--        <span class="tooltipcontent">-->
-<!--                @attributes.turnUndeadUsesTotal: {{data.attributes.turnUndeadUsesTotal}}-->
+<!--                @attributes.turnUndeadUsesTotal: {{system.attributes.turnUndeadUsesTotal}}-->
 <!--                {{#if sourceDetails.system.attributes.turnUndeadUsesTotal.length}}-->
 <!--                  <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>-->
 <!--                  {{#each sourceDetails.system.attributes.turnUndeadUsesTotal as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}-->
@@ -193,9 +193,9 @@
 <!--  <li class="attribute sneakAttackDiceTotal high" data-attribute="sneakAttackDiceTotal">-->
 <!--    <h4 class="attribute-name box-title">{{ localize 'D35E.SneakAttackDiceTotal' }}</h4>-->
 <!--    <div class="attribute-value tooltip">-->
-<!--      <span>{{data.attributes.sneakAttackDiceTotal}}d6</span>-->
+<!--      <span>{{system.attributes.sneakAttackDiceTotal}}d6</span>-->
 <!--      <span class="tooltipcontent">-->
-<!--                @attributes.sneakAttackDiceTotal: {{data.attributes.sneakAttackDiceTotal}}-->
+<!--                @attributes.sneakAttackDiceTotal: {{system.attributes.sneakAttackDiceTotal}}-->
 <!--                {{#if sourceDetails.system.attributes.sneakAttackDiceTotal.length}}-->
 <!--                  <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>-->
 <!--                  {{#each sourceDetails.system.attributes.sneakAttackDiceTotal as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}-->
@@ -242,18 +242,18 @@
       <ol class="item-list">
         {{#each section.items as |item iid|}}
         <li class="item flexrow" data-item-id="{{item._id}}">
-          <div class="item-name flexrow rollable {{#if item.data.melded}}melded{{/if}} {{#if item.disabled}}attack-disabled{{/if}}">
+          <div class="item-name flexrow rollable {{#if item.system.melded}}melded{{/if}} {{#if item.disabled}}attack-disabled{{/if}}">
             <div class="item-image rollable" style="background-image: url('{{item.img}}')">
-              {{#if item.data.melded}}<i class="fas fa-paw"></i>{{/if}} 
-              {{#if item.data.fromPolymorph}}<i class="fas fa-spider"></i>{{/if}} 
+              {{#if item.system.melded}}<i class="fas fa-paw"></i>{{/if}}
+              {{#if item.system.fromPolymorph}}<i class="fas fa-spider"></i>{{/if}}
               {{#if item.broken}} <i class="fas fa-heart-broken"></i> {{/if}}
           </div>
             <h4>
               {{item.name~}}
-              {{#if item.data.linkImported}}
+              {{#if item.system.linkImported}}
               <i class="fas fa-link non-rollable" style="color: black; opacity: 0.7">
               </i>
-              <em style="color: black; opacity: 0.7" class="non-rollable">{{item.data.linkSourceName}}</em>
+              <em style="color: black; opacity: 0.7" class="non-rollable">{{item.system.linkSourceName}}</em>
               {{/if}}
             </h4>
           </div>
@@ -272,14 +272,14 @@
 
           {{#if section.showTypes}}
           <div class="item-detail item-type" style="flex: 0 0 32px;">
-            <span>{{{lookup ../../config.attackTypesIcon item.data.attackType}}}</span>
+            <span>{{{lookup ../../config.attackTypesIcon item.system.attackType}}}</span>
           </div>
           {{/if}}
           
           <div class="item-detail item-actions">
             <div class="item-attack">
               {{#if item.hasAction}}
-              {{#unless item.data.melded}}
+              {{#unless item.system.melded}}
               {{#unless item.disabled}}
               {{#unless item.isRecharging}}
               <a class="item-control item-attack"><img class="icon" src="systems/D35E/icons/actions/gladius.svg"></a>
@@ -296,29 +296,29 @@
           <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
             {{#if item.isCharged}}
                         {{#unless item.isRecharging}}
-                        {{#unless item.data.linkedChargeItem.id}}
-                        <input type="text" value="{{item.data.uses.value}}" data-dtype="Number" />
+                        {{#unless item.system.linkedChargeItem.id}}
+                        <input type="text" value="{{item.system.uses.value}}" data-dtype="Number" />
                         {{else}}
                         <input type="text" value="{{item.charges}}" disabled data-dtype="Number" />
                         {{/unless}}
                         <span class="sep"> of </span>
-                        {{#unless item.data.linkedChargeItem.id}}
+                        {{#unless item.system.linkedChargeItem.id}}
                         <input type="text" value="{{item.maxCharges}}" disabled data-dtype="Number" />
                         {{else}}
                         <input type="text" value="{{item.maxCharges}}" disabled data-dtype="Number" />
 
                         {{/unless}}
                         <span class="tooltipcontent">
-                            @resources.{{item.tag}}.value : {{item.data.uses.value}}<br>
-                            @resources.{{item.tag}}.max : {{item.data.uses.max}}
+                            @resources.{{item.tag}}.value : {{item.system.uses.value}}<br>
+                            @resources.{{item.tag}}.max : {{item.system.uses.max}}
                             {{#if item.hasTimedRecharge}}
                             <br><br>
-                            This item will recharge after use <br>after {{item.data.recharge.formula}} rounds.
+                            This item will recharge after use <br>after {{item.system.recharge.formula}} rounds.
                             {{/if}}
                         </span>
                         <i class="fas fa-history recharge-icon"></i>
                         {{else}}
-                        <span><i class="fas fa-history"></i> Ready in {{item.data.recharge.current}}</span>
+                        <span><i class="fas fa-history"></i> Ready in {{item.system.recharge.current}}</span>
                         {{/unless}}
                         {{/if}}
           </div>
@@ -326,7 +326,7 @@
           {{#if ../../owner}}
           <div class="item-controls">
             <a class="item-control item-edit" title="{{ localize 'D35E.EditItem' }}"><i class="fas fa-edit"></i></a>
-            {{#unless item.data.linkImported}}
+            {{#unless item.system.linkImported}}
             <a class="item-control item-delete" title="{{ localize 'D35E.DeleteItem' }}"><i
                     class="fas fa-trash"></i></a>
             {{/unless}}
@@ -337,7 +337,7 @@
 
         {{#if item.isFullAttack}}
         <ol class="item-list item-list-class-{{iid}}" style="border-top: none; border-bottom: 1px solid #c9c7b8; padding-left: 11px; margin-left: 12px; border-left: 3px dotted #c9c7b8;">
-          {{#each item.data.attacks as |iitem level|}}
+          {{#each item.system.attacks as |iitem level|}}
           {{#if iitem.id}}
           <li class="item item-box  flexrow" data-item-id="{{iitem.id}}" data-pack="{{iitem.pack}}"
               data-item-level="{{iitem.level}}">
