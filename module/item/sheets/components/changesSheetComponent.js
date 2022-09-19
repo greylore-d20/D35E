@@ -27,7 +27,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             for (let [k, v] of Object.entries(CONFIG.D35E.buffTargets)) {
                 if (typeof v === "object") sheetData.changes.targets[k] = v._label;
             }
-            this.sheet.item.system.changes.forEach(item => {
+            sheetData.data.system.changes.forEach(item => {
                 item.subTargets = {};
                 // Add specific skills
                 if (item[1] === "skill") {

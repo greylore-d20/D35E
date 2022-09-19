@@ -19,7 +19,7 @@ export class NotesSheetComponent extends ItemSheetComponent {
             for (let [k, v] of Object.entries(CONFIG.D35E.contextNoteTargets)) {
                 if (typeof v === "object") sheetData.contextNotes.targets[k] = v._label;
             }
-            this.sheet.item.system.contextNotes.forEach(item => {
+            sheetData.data.system.contextNotes.forEach(item => {
                 item.subNotes = {};
                 // Add specific skills
                 if (item[1] === "skill") {
