@@ -7,17 +7,17 @@ import {ChatAttack} from "./chat/chatAttack.js";
 import {D35E} from "../config.js";
 import {CACHE} from "../cache.js";
 import {Roll35e} from "../roll.js"
-import {ItemCharges} from "./actions/charges.js";
-import {ItemRolls} from "./actions/rolls.js";
+import {ItemCharges} from "./extensions/charges.js";
+import {ItemRolls} from "./extensions/rolls.js";
 import {ItemChatData} from "./chat/chatData.js";
 import {ItemChatAction} from "./chat/chatAction.js";
 import {ItemSpellHelper} from "./helpers/itemSpellHelper.js";
-import {ItemEnhancements} from "./actions/enhancement.js";
+import {ItemEnhancements} from "./extensions/enhancement.js";
 import {ItemChargeUpdateHelper} from "./helpers/itemChargeUpdateHelper.js";
 import {ItemEnhancementConverter} from "./converters/enchancement.js";
 import {ItemCombatChangesHelper} from "./helpers/itemCombatChangesHelper.js";
-import {ItemCombatChanges} from "./actions/combatChanges.js";
-import {ItemUse} from "./actions/use.js";
+import {ItemCombatChanges} from "./extensions/combatChanges.js";
+import {ItemUse} from "./extensions/use.js";
 import {ItemEnhancementHelper} from "./helpers/itemEnhancementHelper.js";
 
 /**
@@ -32,13 +32,22 @@ export class ItemPF extends Item {
 
     constructor(...args) {
         super(...args);
-        this.enhancements = new ItemEnhancements(this);
+        this.extensionMap = new Map();
         this.rolls = new ItemRolls(this);
         this.charge = new ItemCharges(this);
         this.uses = new ItemUse(this);
         this.combatChanges = new ItemCombatChanges(this);
     }
 
+    getExtension(extension) {
+        if (!this.extensionMap.has(extension))
+            throw `This item does not support ${extension}`;
+        return this.extensionMap.get(extension);
+    }
+
+    get enhancements() {
+        return this.getExtension("enhancements");
+    }
 
     /**
      * Does the Item implement an attack roll as part of its usage

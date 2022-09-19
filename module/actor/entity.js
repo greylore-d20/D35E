@@ -9,7 +9,7 @@ import {Roll35e} from "../roll.js";
 import {  ActorRestDialog } from "../apps/actor-rest.js";
 import {VisionPermissionSheet} from "../apps/vision-permission.js"
 import {Propagator} from "../misc/propagator.js"
-import {ItemCharges} from "../item/actions/charges.js";
+import {ItemCharges} from "../item/extensions/charges.js";
 import {ItemConsumableConverter} from "../item/converters/consumable.js";
 import {ItemCombatChangesHelper} from "../item/helpers/itemCombatChangesHelper.js";
 import {ItemPrepareDataHelper} from "./helpers/itemPrepareDataHelper.js";

@@ -1,6 +1,6 @@
 import {ItemPF} from "../entity.js";
 import {Roll35e} from "../../roll.js"
-import {ItemRolls} from "../actions/rolls.js";
+import {ItemRolls} from "../extensions/rolls.js";
 
 export class ChatAttack {
     constructor(item, label = "", actor = null, rollData = null, ammoMaterial = null, ammoEnh = 0) {
