@@ -6,6 +6,7 @@ import {ActorPrepareSourceHelper} from "../helpers/actorPrepareSourceHelper.js";
 import {ActorChangesHelper} from "../helpers/actorChangesHelper.js";
 import {ActorWealthHelper} from "../helpers/actorWealthHelper.js";
 import {LogHelper} from "../../helpers/LogHelper.js";
+import {ItemEnhancementHelper} from "../../item/helpers/itemEnhancementHelper";
 
 export class ActorUpdater {
     
@@ -496,9 +497,10 @@ export class ActorUpdater {
             if (item.type === "weapon" || item.type === "equipment") {
                 if (item.system.enhancements !== undefined) {
                     for (const enhancementItem of item.system.enhancements.items) {
-                        for (const change of enhancementItem.data.changes) {
+                        let enhancementItemData = ItemEnhancementHelper.getEnhancementData(enhancementItem)
+                        for (const change of enhancementItemData.changes) {
                             if (!this.#isChangeAllowed(item, change, fullConditions)) continue;
-                            change[0] = change[0].replace(/@enhancement/gi, enhancementItem.data.enh)
+                            change[0] = change[0].replace(/@enhancement/gi, enhancementItemData.enh)
                             allChanges.push({
                                 raw: change,
                                 source: {
