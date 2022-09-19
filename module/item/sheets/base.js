@@ -8,6 +8,9 @@ import {createTag} from "../../lib.js";
 
 import {Roll35e} from "../../roll.js"
 import {ItemEnhancementHelper} from "../helpers/itemEnhancementHelper.js";
+import { ItemSheetComponent } from "./components/itemSheetComponent.js";
+import { ContextNotesSheetComponent } from "./components/changesSheetComponent.js";
+import { EnhancementSheetComponent } from "./components/enhancementSheetComponent.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle D&D5E specific item types
@@ -28,9 +31,11 @@ export class ItemSheetPF extends ItemSheet {
 
         this.items = [];
         this.childItemMap = new Map()
-        this.ehnancementItemMap = new Map()
         this.containerMap = new Map()
         this._altTabs = null;
+
+        this.sheetComponents = [];
+        this.sheetComponents.push(new ContextNotesSheetComponent(this));
     }
 
     /* -------------------------------------------- */
@@ -189,54 +194,6 @@ export class ItemSheetPF extends ItemSheet {
             })
         }
 
-
-        // Prepare weapon specific stuff
-        if (this.item.type === "weapon") {
-            sheetData.isRanged = (this.item.system.weaponSubtype === "ranged" || this.item.system.properties["thr"] === true);
-
-            // Prepare categories for weapons
-            sheetData.weaponCategories = {types: {}, subTypes: {}};
-            for (let [k, v] of Object.entries(CONFIG.D35E.weaponTypes)) {
-                if (typeof v === "object") sheetData.weaponCategories.types[k] = v._label;
-            }
-            const type = this.item.system.weaponType;
-            if (hasProperty(CONFIG.D35E.weaponTypes, type)) {
-                for (let [k, v] of Object.entries(CONFIG.D35E.weaponTypes[type])) {
-                    // Add static targets
-                    if (!k.startsWith("_")) sheetData.weaponCategories.subTypes[k] = v;
-                }
-            }
-            sheetData.enhancements = []
-            sheetData.enhancementsBase = []
-            sheetData.enhancementsFromSpell = []
-            sheetData.enhancementsFromBuff = []
-            let _enhancements = getProperty(this.item.system,`enhancements.items`) || [];
-            _enhancements.forEach(e => {
-                e.ephemeralId = e._id;
-                delete e._id;
-                let enhancementData = ItemEnhancementHelper.getEnhancementData(e)
-                let item = new ItemPF(foundry.utils.deepClone(e), {owner: this.item.isOwner})
-                this.ehnancementItemMap.set(e.ephemeralId, item);
-                e.hasAction = item.hasAction || item.isCharged;
-                e.incorrect = !((e.data.enhancementType === 'weapon' && this.item.type === 'weapon') || (e.data.enhancementType === 'armor' && this.item.type === 'equipment') || (e.data.enhancementType === 'misc'));
-                e.hasUses = e.data.uses && (e.data.uses.max > 0);
-                e.calcPrice = e.data.enhIncrease !== undefined && e.data.enhIncrease !== null && e.data.enhIncrease > 0 ? `+${e.data.enhIncrease}` : `${e.data.price}`
-                e.isCharged = ["day", "week", "charges", "encounter"].includes(getProperty(e, "data.uses.per"));
-                e.tag = item.tag;
-                sheetData.enhancements.push(e)
-                if (e.data.isFromSpell)
-                    sheetData.enhancementsFromSpell.push(e)
-                else if (e.data.isFromBuff)
-                    sheetData.enhancementsFromBuff.push(e)
-                else
-                    sheetData.enhancementsBase.push(e)
-            })
-            
-            sheetData.hasEnhancements = true;
-            sheetData.lightMagical = (this.item.system.enh || 0) > 0 && (this.item.system.enh || 0) < 6;
-            sheetData.veryMagical = (this.item.system.enh || 0) > 5;
-        }
-
         // Prepare enhancement specific stuff
         if (this.item.type === "enhancement") {
             sheetData.enhancementTypes = {types: {}, subTypes: {}};
@@ -274,29 +231,7 @@ export class ItemSheetPF extends ItemSheet {
 
             // Whether the current equipment type has multiple slots
             sheetData.hasMultipleSlots = Object.keys(sheetData.equipmentSlots).length > 1;
-            sheetData.enhancements = []
-            sheetData.enhancementsBase = []
-            sheetData.enhancementsFromSpell = []
-            sheetData.enhancementsFromBuff = []
-            let _enhancements = getProperty(this.item.system,`enhancements.items`) || [];
-            _enhancements.forEach(e => {
-                let item = new ItemPF(e, {owner: this.item.isOwner})
-                this.ehnancementItemMap.set(item.tag, item);
-                e.hasAction = item.hasAction || item.isCharged;
-                e.incorrect = !((e.data.enhancementType === 'weapon' && this.item.type === 'weapon') || (e.data.enhancementType === 'armor' && this.item.type === 'equipment') || (e.data.enhancementType === 'misc'));
-                e.hasUses = e.data.uses && (e.data.uses.max > 0);
-                e.calcPrice = e.data.enhIncrease !== undefined && e.data.enhIncrease !== null && e.data.enhIncrease > 0 ? `+${e.data.enhIncrease}` : `${e.data.price}`
-                e.isCharged = ["day", "week", "charges", "encounter"].includes(getProperty(e, "data.uses.per"));
-                e.tag = item.tag;
-                sheetData.enhancements.push(e)
-                if (e.data.isFromSpell)
-                    sheetData.enhancementsFromSpell.push(e)
-                else if (e.data.isFromBuff)
-                    sheetData.enhancementsFromBuff.push(e)
-                else
-                    sheetData.enhancementsBase.push(e)
-            })
-            sheetData.hasEnhancements = true;
+            
         }
 
         // Prepare attack specific stuff
@@ -670,62 +605,7 @@ export class ItemSheetPF extends ItemSheet {
             }
         }
 
-        // Prepare stuff for items with changes
-        let firstChange = true;
-        if (this.item.system.changes) {
-            sheetData.changes = {targets: {}, modifiers: CONFIG.D35E.bonusModifiers};
-            for (let [k, v] of Object.entries(CONFIG.D35E.buffTargets)) {
-                if (typeof v === "object") sheetData.changes.targets[k] = v._label;
-            }
-            this.item.system.changes.forEach(item => {
-                item.subTargets = {};
-                // Add specific skills
-                if (item[1] === "skill") {
-                    if (this.item.actor != null) {
-                        const actorSkills = this.item.actor.system.skills;
-                        for (let [s, skl] of Object.entries(actorSkills)) {
-                            if (!skl.subSkills) {
-                                if (skl.custom) item.subTargets[`skill.${s}`] = skl.name;
-                                else item.subTargets[`skill.${s}`] = CONFIG.D35E.skills[s];
-                            } else {
-                                for (let [s2, skl2] of Object.entries(skl.subSkills)) {
-                                    item.subTargets[`skill.${s}.subSkills.${s2}`] = `${CONFIG.D35E.skills[s]} (${skl2.name})`;
-                                }
-                            }
-                        }
-                    } else {
-                        for (let [s, skl] of Object.entries(CONFIG.D35E.skills)) {
-                            if (!skl.subSkills) {
-                                if (skl.custom) item.subTargets[`skill.${s}`] = skl.name;
-                                else item.subTargets[`skill.${s}`] = CONFIG.D35E.skills[s];
-                            } else {
-                                for (let [s2, skl2] of Object.entries(skl.subSkills)) {
-                                    item.subTargets[`skill.${s}.subSkills.${s2}`] = `${CONFIG.D35E.skills[s]} (${skl2.name})`;
-                                }
-                            }
-                        }
-                    }
-                } else if (item[1] === "spells") {
-                    //  "spells.spellbooks.primary.spells.spell1.bonus": "Level 1",
-                    for (let spellbook of ["primary", "secondary", "tetriary", "spelllike"]) {
-                        for (let level = 0; level < 10; level++)
-                            item.subTargets[`spells.spellbooks.${spellbook}.spells.spell${level}.bonus`] = game.i18n.localize("D35E.BuffSpellbookSpellsPreparedLevel").format(spellbook, level);
-                    }
-                }
-                // Add static targets
-                else if (item[1] != null && CONFIG.D35E.buffTargets.hasOwnProperty(item[1])) {
-                    for (let [k, v] of Object.entries(CONFIG.D35E.buffTargets[item[1]])) {
-                        if (!k.startsWith("_")) item.subTargets[k] = v;
-                    }
-                }
-                if (firstChange) {
-                    firstChange = false;
-                    sheetData.firstChangeName =  sheetData.changes.targets[item[1]];
-                    sheetData.firstItemSubtargets = item.subTargets;
-                    sheetData.selectedFirstChange = item[2] + ":" + sheetData.firstItemSubtargets[item[2]]
-                }
-            });
-        }
+        
 
         // Prepare stuff for attacks with conditionals
         if (this.item.system.conditionals) {
@@ -743,51 +623,11 @@ export class ItemSheetPF extends ItemSheet {
             }
         }
 
-
-        // Prepare stuff for items with context notes
-        if (this.item.system.contextNotes) {
-            sheetData.contextNotes = {targets: {}};
-            for (let [k, v] of Object.entries(CONFIG.D35E.contextNoteTargets)) {
-                if (typeof v === "object") sheetData.contextNotes.targets[k] = v._label;
-            }
-            this.item.system.contextNotes.forEach(item => {
-                item.subNotes = {};
-                // Add specific skills
-                if (item[1] === "skill") {
-                    if (this.item.actor != null) {
-                        const actorSkills = this.item.actor.system.skills;
-                        for (let [s, skl] of Object.entries(actorSkills)) {
-                            if (!skl.subSkills) {
-                                if (skl.custom) item.subNotes[`skill.${s}`] = skl.name;
-                                else item.subNotes[`skill.${s}`] = CONFIG.D35E.skills[s];
-                            } else {
-                                for (let [s2, skl2] of Object.entries(skl.subSkills)) {
-                                    item.subNotes[`skill.${s}.subSkills.${s2}`] = `${CONFIG.D35E.skills[s]} (${skl2.name})`;
-                                }
-                            }
-                        }
-                    } else {
-                        for (let [s, skl] of Object.entries(CONFIG.D35E.skills)) {
-                            if (!skl.subSkills) {
-                                if (skl.custom) item.subNotes[`skill.${s}`] = skl.name;
-                                else item.subNotes[`skill.${s}`] = CONFIG.D35E.skills[s];
-                            } else {
-                                for (let [s2, skl2] of Object.entries(skl.subSkills)) {
-                                    item.subNotes[`skill.${s}.subSkills.${s2}`] = `${CONFIG.D35E.skills[s]} (${skl2.name})`;
-                                }
-                            }
-                        }
-                    }
-                    
-                }
-                // Add static targets
-                else if (item[1] != null && CONFIG.D35E.contextNoteTargets.hasOwnProperty(item[1])) {
-                    for (let [k, v] of Object.entries(CONFIG.D35E.contextNoteTargets[item[1]])) {
-                        if (!k.startsWith("_")) item.subNotes[k] = v;
-                    }
-                }
-            });
-        }
+        this.registeredTabs = [];
+        this.sheetComponents.forEach(component => {
+            component.prepareSheetData(sheetData);
+            component.registerTab(sheetData);
+        })
 
         return sheetData;
     }
@@ -1173,7 +1013,6 @@ export class ItemSheetPF extends ItemSheet {
 
         // Item summaries
         html.find('.item .child-item h4').click(event => this._onChildItemSummary(event));
-        html.find('.item .enh-item h4').click(event => this._onEnhItemSummary(event));
         html.find('.item a.disable-ability').click(event => this._onDisableAbility(event));
         html.find('.item a.enable-ability').click(event => this._onEnableAbility(event));
         html.find('.item a.delete-ability').click(event => this._onDeleteAbility(event));
@@ -1200,17 +1039,6 @@ export class ItemSheetPF extends ItemSheet {
         html.find('.summons').on("drop", this._onDropSummomnRolltableLink.bind(this));
         html.find('.rolltable-link').on("drop", this._onDropRolltableLink.bind(this));
         html.find('.remove-rolltable-link').click(event => this._onRemoveRolltableLink(event));
-        html.find('div[data-tab="enhancements"]').on("drop", this._onDrop.bind(this,"enh"));
-
-        html.find('div[data-tab="enhancements"] .item-delete').click(this._onEnhItemDelete.bind(this));
-        html.find("div[data-tab='enhancements'] .item-detail.item-uses input.uses").off("change").change(this._setEnhUses.bind(this));
-        html.find("div[data-tab='enhancements'] .item-detail.item-uses input.maxuses").off("change").change(this._setEnhMaxUses.bind(this));
-        html.find("div[data-tab='enhancements'] .item-detail.item-per-use input[type='text']:not(:disabled)").off("change").change(this._setEnhPerUse.bind(this));
-        html.find("div[data-tab='enhancements'] .item-detail.item-enh input[type='text']:not(:disabled)").off("change").change(this._setEnhValue.bind(this));
-        html.find("div[data-tab='enhancements'] .item-detail.item-cl input[type='text']:not(:disabled)").off("change").change(this._setEnhCLValue.bind(this));
-
-        html.find('div[data-tab="enhancements"] .item-edit').click(this._onItemEdit.bind(this));
-        html.find('div[data-tab="enhancements"] .item .item-image').click(event => this._onEnhRoll(event));
 
 
         html.find('div[data-tab="linked-items"]').on("drop", this._onDrop.bind(this,"link"));
@@ -1221,7 +1049,6 @@ export class ItemSheetPF extends ItemSheet {
         html.find('div[data-tab="spellbook"] .item-add').click(this._addSpellListSpellToSpellbook.bind(this));
         
 
-        html.find("button[name='update-item-name']").click(event => this._onEnhUpdateName(event));
 
         // Quick Item Action control
         html.find(".item-actions a").mouseup(ev => this._quickItemActionControl(ev));
@@ -1238,6 +1065,9 @@ export class ItemSheetPF extends ItemSheet {
         html.find('div[data-tab="conditionals"]').on("drop", this._onConditionalDrop.bind(this));
 
 
+        this.sheetComponents.forEach(component => {
+            component.activateListeners(html);
+        })
     }
 
     /* -------------------------------------------- */
@@ -1794,27 +1624,6 @@ export class ItemSheetPF extends ItemSheet {
         item.sheet.render(true);
     }
 
-    _onEnhItemSummary(event) {
-        event.preventDefault();
-        let li = $(event.currentTarget).parents(".item-box"),
-            item = this.ehnancementItemMap.get(li.attr("data-item-id")),
-            chatData = item.getChatData({secrets: this.actor ? this.actor.isOwner : false});
-
-        // Toggle summary
-        if (li.hasClass("expanded")) {
-            let summary = li.children(".item-summary");
-            summary.slideUp(200, () => summary.remove());
-        } else {
-            let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
-            let props = $(`<div class="item-properties"></div>`);
-            chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
-            div.append(props);
-            li.append(div.hide());
-            div.slideDown(200);
-        }
-        li.toggleClass("expanded");
-    }
-
     _onDragStart(event) {
         // Get the Compendium pack
         const li = event.currentTarget;
@@ -2135,48 +1944,7 @@ export class ItemSheetPF extends ItemSheet {
 
     }
 
-    async _onDrop(importType,event) {
-        event.preventDefault();
-        let droppedData;
-        try {
-            droppedData = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
-            if (droppedData.type !== "Item") return;
-        } catch (err) {
-            return false;
-        }
-
-        let dataType = "";
-
-        if (game?.release?.generation >= 10 && droppedData.uuid && droppedData.type === "Item") {
-            droppedData = fromUuidSync(droppedData.uuid)
-            droppedData.type = "Item";
-        }
-        if (droppedData.type === "Item") {
-            let itemData = {};
-            // Case 1 - Import from a Compendium pack
-            if (droppedData.pack) {
-                dataType = "compendium";
-                const pack = game.packs.find(p => p.metadata.id === droppedData.pack);
-                const packItem = await pack.getDocument(droppedData._id);
-                if (packItem != null) itemData = packItem.data;
-            }
-
-            // Case 2 - Data explicitly provided
-            else if (droppedData.data) {
-                dataType = "data";
-                itemData = droppedData.data;
-            }
-
-            // Case 3 - Import from World entity
-            else {
-                dataType = "world";
-                itemData = fromUuidSync(data.uuid);
-            }
-            return this.importItem(itemData, dataType, importType);
-        }
-
-
-    }
+    
 
     async importItem(itemData, itemType, importType) {
         if (importType === "enh") {
@@ -2238,136 +2006,6 @@ export class ItemSheetPF extends ItemSheet {
                 },
                 no: () => button.disabled = false
             });
-        }
-    }
-
-    _createEnhancementSpellDialog(itemData) {
-        new Dialog({
-            title: game.i18n.localize("D35E.CreateEnhForSpell").format(itemData.name),
-            content: game.i18n.localize("D35E.CreateEnhForSpellD").format(itemData.name),
-            buttons: {
-                potion: {
-                    icon: '<i class="fas fa-prescription-bottle"></i>',
-                    label: "50 Charges",
-                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "charges"),
-                },
-                scroll: {
-                    icon: '<i class="fas fa-scroll"></i>',
-                    label: "Per Day (Command Word)",
-                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "command"),
-                },
-                wand: {
-                    icon: '<i class="fas fa-magic"></i>',
-                    label: "Per Day (Use)",
-                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "use"),
-                },
-            },
-            default: "command",
-        }).render(true);
-    }
-
-    /**
-     * Handle deleting an existing Enhancement item
-     * @param {Event} event   The originating click event
-     * @private
-     */
-    async _onEnhItemDelete(event) {
-        event.preventDefault();
-
-        const button = event.currentTarget;
-        if (button.disabled) return;
-
-        const li = event.currentTarget.closest(".item");
-        if (game.keyboard.isModifierActive("Shift")) {
-            await this.item.enhancements.deleteEnhancement(li.dataset.itemId)
-        } else {
-            button.disabled = true;
-
-            const msg = `<p>${game.i18n.localize("D35E.DeleteItemConfirmation")}</p>`;
-            Dialog.confirm({
-                title: game.i18n.localize("D35E.DeleteItem"),
-                content: msg,
-                yes: async () => {
-                    await this.item.enhancements.deleteEnhancement(li.dataset.itemId)
-                    button.disabled = false;
-                },
-                no: () => button.disabled = false
-            });
-        }
-    }
-
-    async _setEnhUses(event) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{uses: {value: value}})
-    }
-
-    async _setEnhMaxUses(event) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{uses: {max: value, maxFormula: `${value}`}})
-    }
-
-    async _setEnhPerUse(event) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{uses: {chargesPerUse: value}})
-    }
-
-    async _setEnhCLValue(event) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{baseCl: value})
-    }
-
-
-    async _setEnhValue(event) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{enh: value})
-    }
-
-
-
-
-    _onItemEdit(event) {
-        event.preventDefault();
-        const li = event.currentTarget.closest(".item");
-        const item = this.ehnancementItemMap.get(li.dataset.itemId);
-        item.sheet.render(true);
-    }
-
-    /**
-     * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
-     * @private
-     */
-    async _onEnhRoll(event) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        //const item = this.actor.getOwnedItem(itemId);
-        let item = await this.item.getEnhancementItem(itemId);
-        return item.roll({}, this.item.actor);
-    }
-
-    async _onEnhUpdateName(event) {
-        event.preventDefault();
-        await this.item.enhancements.updateBaseItemName();
-    }
-
-    async _quickItemActionControl(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        //const item = this.actor.getOwnedItem(itemId);
-        let item = await this.item.getEnhancementItem(itemId);
-        // Quick Attack
-        if (a.classList.contains("item-attack")) {
-            await this.item.useEnhancementItem(item)
         }
     }
 
