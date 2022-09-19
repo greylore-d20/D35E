@@ -6,7 +6,7 @@ import {ActorPrepareSourceHelper} from "../helpers/actorPrepareSourceHelper.js";
 import {ActorChangesHelper} from "../helpers/actorChangesHelper.js";
 import {ActorWealthHelper} from "../helpers/actorWealthHelper.js";
 import {LogHelper} from "../../helpers/LogHelper.js";
-import {ItemEnhancementHelper} from "../../item/helpers/itemEnhancementHelper";
+import {ItemEnhancementHelper} from "../../item/helpers/itemEnhancementHelper.js";
 
 export class ActorUpdater {
     
