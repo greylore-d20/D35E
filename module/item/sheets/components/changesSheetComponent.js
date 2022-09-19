@@ -11,12 +11,12 @@ export class ChangesSheetComponent extends ItemSheetComponent {
 
     activateListeners(html) {
         // Modify buff changes
-        html.find(".change-control").click(this._onChangeControl.bind(this));
-        html.find(".combat-change-control").click(this._onCombatChangeControl.bind(this));
-        html.find(".requirement-control").click(this._onRequirementsControl.bind(this));
-        html.find(".creation-changes-control").click(this._onCreationChangesControl.bind(this));
-        html.find(".resistance-control").click(this._onResistanceControl.bind(this));
-        html.find(".dr-control").click(this._onDRControl.bind(this));
+        html.find(".change-control").click(this.#onChangeControl.bind(this));
+        html.find(".combat-change-control").click(this.#onCombatChangeControl.bind(this));
+        html.find(".requirement-control").click(this.#onRequirementsControl.bind(this));
+        html.find(".creation-changes-control").click(this.#onCreationChangesControl.bind(this));
+        html.find(".resistance-control").click(this.#onResistanceControl.bind(this));
+        html.find(".dr-control").click(this.#onDRControl.bind(this));
     }
 
     prepareSheetData(sheetData) {
@@ -133,7 +133,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
     }
 
 
-    async _onCombatChangeControl(event) {
+    async #onCombatChangeControl(event) {
         event.preventDefault();
         const a = event.currentTarget;
 
@@ -155,7 +155,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
         }
     }
 
-    async _onCreationChangesControl(event) {
+    async #onCreationChangesControl(event) {
         event.preventDefault();
         const a = event.currentTarget;
 
@@ -177,7 +177,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
         }
     }
 
-    async _onRequirementsControl(event) {
+    async #onRequirementsControl(event) {
         event.preventDefault();
         const a = event.currentTarget;
 
@@ -199,7 +199,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
         }
     }
 
-    async _onResistanceControl(event) {
+    async #onResistanceControl(event) {
         event.preventDefault();
         const a = event.currentTarget;
 
@@ -221,7 +221,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
         }
     }
 
-    async _onDRControl(event) {
+    async #onDRControl(event) {
         event.preventDefault();
         const a = event.currentTarget;
 
@@ -243,7 +243,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
         }
     }
 
-    async _onChangeControl(event) {
+    async #onChangeControl(event) {
         event.preventDefault();
         const a = event.currentTarget;
 
