@@ -1,24 +1,38 @@
-import { ItemSheetComponent } from "./itemSheetComponent";
+import { ItemSheetComponent } from "./itemSheetComponent.js";
 
 /***
  * Provides support for Changes Tab on an item
  */
 export class ChangesSheetComponent extends ItemSheetComponent {
-    
+
+    registerTab(sheetData) {
+        sheetData.registeredTabs.push({id:'changes',name:"Changes",sheet:'systems/D35E/templates/items/parts/item-changes.html'})
+    }
+
+    activateListeners(html) {
+        // Modify buff changes
+        html.find(".change-control").click(this._onChangeControl.bind(this));
+        html.find(".combat-change-control").click(this._onCombatChangeControl.bind(this));
+        html.find(".requirement-control").click(this._onRequirementsControl.bind(this));
+        html.find(".creation-changes-control").click(this._onCreationChangesControl.bind(this));
+        html.find(".resistance-control").click(this._onResistanceControl.bind(this));
+        html.find(".dr-control").click(this._onDRControl.bind(this));
+    }
+
     prepareSheetData(sheetData) {
         // Prepare stuff for items with changes
         let firstChange = true;
-        if (this.item.system.changes) {
+        if (this.sheet.item.system.changes) {
             sheetData.changes = {targets: {}, modifiers: CONFIG.D35E.bonusModifiers};
             for (let [k, v] of Object.entries(CONFIG.D35E.buffTargets)) {
                 if (typeof v === "object") sheetData.changes.targets[k] = v._label;
             }
-            this.item.system.changes.forEach(item => {
+            this.sheet.item.system.changes.forEach(item => {
                 item.subTargets = {};
                 // Add specific skills
                 if (item[1] === "skill") {
-                    if (this.item.actor != null) {
-                        const actorSkills = this.item.actor.system.skills;
+                    if (this.sheet.item.actor != null) {
+                        const actorSkills = this.sheet.item.actor.system.skills;
                         for (let [s, skl] of Object.entries(actorSkills)) {
                             if (!skl.subSkills) {
                                 if (skl.custom) item.subTargets[`skill.${s}`] = skl.name;
@@ -62,49 +76,191 @@ export class ChangesSheetComponent extends ItemSheetComponent {
                 }
             });
         }
+    }
 
-        if (this.item.system.contextNotes) {
-            sheetData.contextNotes = {targets: {}};
-            for (let [k, v] of Object.entries(CONFIG.D35E.contextNoteTargets)) {
-                if (typeof v === "object") sheetData.contextNotes.targets[k] = v._label;
-            }
-            this.item.system.contextNotes.forEach(item => {
-                item.subNotes = {};
-                // Add specific skills
-                if (item[1] === "skill") {
-                    if (this.item.actor != null) {
-                        const actorSkills = this.item.actor.system.skills;
-                        for (let [s, skl] of Object.entries(actorSkills)) {
-                            if (!skl.subSkills) {
-                                if (skl.custom) item.subNotes[`skill.${s}`] = skl.name;
-                                else item.subNotes[`skill.${s}`] = CONFIG.D35E.skills[s];
-                            } else {
-                                for (let [s2, skl2] of Object.entries(skl.subSkills)) {
-                                    item.subNotes[`skill.${s}.subSkills.${s2}`] = `${CONFIG.D35E.skills[s]} (${skl2.name})`;
-                                }
-                            }
-                        }
-                    } else {
-                        for (let [s, skl] of Object.entries(CONFIG.D35E.skills)) {
-                            if (!skl.subSkills) {
-                                if (skl.custom) item.subNotes[`skill.${s}`] = skl.name;
-                                else item.subNotes[`skill.${s}`] = CONFIG.D35E.skills[s];
-                            } else {
-                                for (let [s2, skl2] of Object.entries(skl.subSkills)) {
-                                    item.subNotes[`skill.${s}.subSkills.${s2}`] = `${CONFIG.D35E.skills[s]} (${skl2.name})`;
-                                }
-                            }
-                        }
-                    }
-                    
-                }
-                // Add static targets
-                else if (item[1] != null && CONFIG.D35E.contextNoteTargets.hasOwnProperty(item[1])) {
-                    for (let [k, v] of Object.entries(CONFIG.D35E.contextNoteTargets[item[1]])) {
-                        if (!k.startsWith("_")) item.subNotes[k] = v;
-                    }
-                }
-            });
+    updateForm(formData) {
+        // Handle change array
+        let change = Object.entries(formData).filter(e => e[0].startsWith("system.changes"));
+        formData["system.changes"] = change.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = [];
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
+        let changes = Object.entries(formData).filter(e => e[0].startsWith("system.combatChanges"));
+        formData["system.combatChanges"] = changes.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = [];
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
+
+        let requirements = Object.entries(formData).filter(e => e[0].startsWith("system.requirements"));
+        formData["system.requirements"] = requirements.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = [];
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
+
+        let creationChanges = Object.entries(formData).filter(e => e[0].startsWith("system.creationChanges"));
+        formData["system.creationChanges"] = creationChanges.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = [];
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
+        let resistances = Object.entries(formData).filter(e => e[0].startsWith("system.resistances"));
+        formData["system.resistances"] = resistances.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = [];
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
+        let damageReduction = Object.entries(formData).filter(e => e[0].startsWith("system.damageReduction"));
+        formData["system.damageReduction"] = damageReduction.reduce((arr, entry) => {
+            let [i, j] = entry[0].split(".").slice(2);
+            if (!arr[i]) arr[i] = [];
+            arr[i][j] = entry[1];
+            return arr;
+        }, []);
+
+    }
+
+
+    async _onCombatChangeControl(event) {
+        event.preventDefault();
+        const a = event.currentTarget;
+
+        // Add new change
+        if (a.classList.contains("add-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const changes =this.sheet.item.system.combatChanges || [];
+            // Combat Changes are
+            await this.sheet.item.update({"data.combatChanges": changes.concat([["", "", "", "", "", ""]])});
+        }
+
+        // Remove a change
+        if (a.classList.contains("delete-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const li = a.closest(".change");
+            const changes = duplicate(this.sheet.item.system.combatChanges);
+            changes.splice(Number(li.dataset.change), 1);
+            await this.sheet.item.update({"data.combatChanges": changes});
+        }
+    }
+
+    async _onCreationChangesControl(event) {
+        event.preventDefault();
+        const a = event.currentTarget;
+
+        // Add new change
+        if (a.classList.contains("add-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const changes = duplicate(this.sheet.item.system.creationChanges) || [];
+            // Combat Changes are
+            return this.sheet.item.update({"data.creationChanges": changes.concat([["", ""]])});
+        }
+
+        // Remove a change
+        if (a.classList.contains("delete-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const li = a.closest(".change");
+            const changes = duplicate(this.sheet.item.system.creationChanges);
+            changes.splice(Number(li.dataset.change), 1);
+            return this.sheet.item.update({"data.creationChanges": changes});
+        }
+    }
+
+    async _onRequirementsControl(event) {
+        event.preventDefault();
+        const a = event.currentTarget;
+
+        // Add new change
+        if (a.classList.contains("add-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const changes = duplicate(this.sheet.item.system.requirements) || [];
+            // Combat Changes are
+            return this.sheet.item.update({"data.requirements": changes.concat([["", "", ""]])});
+        }
+
+        // Remove a change
+        if (a.classList.contains("delete-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const li = a.closest(".change");
+            const changes = duplicate(this.sheet.item.system.requirements);
+            changes.splice(Number(li.dataset.change), 1);
+            return this.sheet.item.update({"data.requirements": changes});
+        }
+    }
+
+    async _onResistanceControl(event) {
+        event.preventDefault();
+        const a = event.currentTarget;
+
+        // Add new change
+        if (a.classList.contains("add-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const changes = duplicate(this.sheet.item.system.resistances) || [];
+            // Combat Changes are
+            return this.sheet.item.update({"data.resistances": changes.concat([["", "", false, false, false]])});
+        }
+
+        // Remove a change
+        if (a.classList.contains("delete-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const li = a.closest(".change");
+            const changes = duplicate(this.sheet.item.system.resistances);
+            changes.splice(Number(li.dataset.change), 1);
+            return this.sheet.item.update({"data.resistances": changes});
+        }
+    }
+
+    async _onDRControl(event) {
+        event.preventDefault();
+        const a = event.currentTarget;
+
+        // Add new change
+        if (a.classList.contains("add-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const changes = duplicate(this.sheet.item.system.damageReduction) || [];
+            // Combat Changes are
+            return this.sheet.item.update({"data.damageReduction": changes.concat([["", "", false]])});
+        }
+
+        // Remove a change
+        if (a.classList.contains("delete-change")) {
+            //await this._onSubmit(event);  // Submit any unsaved changes
+            const li = a.closest(".change");
+            const changes = duplicate(this.sheet.item.system.damageReduction);
+            changes.splice(Number(li.dataset.change), 1);
+            return this.sheet.item.update({"data.damageReduction": changes});
+        }
+    }
+
+    async _onChangeControl(event) {
+        event.preventDefault();
+        const a = event.currentTarget;
+
+        // Add new change
+        if (a.classList.contains("add-change")) {
+            //console.log('AAAAAITEM', this.item);
+            let _changes = duplicate(this.item.system.changes) || [];
+            return this.item.update({"data.changes": _changes.concat([["", "", "", "", 0]])});
+        }
+
+        // Remove a change
+        if (a.classList.contains("delete-change")) {
+            //await this._onSubmit(event);
+            const li = a.closest(".change");
+            const changes = duplicate(this.item.system.changes);
+            changes.splice(Number(li.dataset.change), 1);
+            return this.item.update({"data.changes": changes});
         }
     }
 }

@@ -15,7 +15,7 @@ import { ActorSheetPFNPC } from "./module/actor/sheets/npc.js";
 import { ActorSheetPFNPCLite } from "./module/actor/sheets/npc-lite.js";
 import { ActorSheetPFNPCLoot } from "./module/actor/sheets/npc-loot.js";
 import { ActorSheetPFNPCMonster } from "./module/actor/sheets/npc-monster.js";
-import { ItemPF } from "./module/item/entity.js";
+import { Item35E } from "./module/item/entity.js";
 import { ItemSheetPF } from "./module/item/sheets/base.js";
 import { CompendiumDirectoryPF } from "./module/sidebar/compendium.js";
 import { TokenPF } from "./module/token/token.js";
@@ -63,6 +63,12 @@ import {
   DetectionModeInvisibilityD35E,
   DetectionModeTremorD35E
 } from "./module/canvas/detection-modes.js";
+import {EquipmentSheet35E} from "./module/item/sheets/equipment.js";
+import {WeaponSheet35E} from "./module/item/sheets/weapon.js";
+import {FeatSheet35E} from "./module/item/sheets/feat.js";
+import {Weapon35E} from "./module/item/weapon.js";
+import {Equipment35E} from "./module/item/equipment.js";
+import {ItemBase35E} from "./module/item/base.js";
 
 // Add String.format
 if (!String.prototype.format) {
@@ -91,7 +97,7 @@ Hooks.once("init", async function() {
   game.D35E = {
     ActorPF,
     DicePF,
-    ItemPF,
+    Item35E,
     migrations,
     rollItemMacro,
     rollDefenses,
@@ -114,7 +120,7 @@ Hooks.once("init", async function() {
           return this.id;
         }
     });
-    Object.defineProperty(ItemPF.prototype, "_id", {
+    Object.defineProperty(Item35E.prototype, "_id", {
         get: function _id() {
           console.warn("Using old mapper for _id.")
           return this.id;
@@ -126,7 +132,12 @@ Hooks.once("init", async function() {
   CONFIG.D35E = D35E;
   CONFIG.debug.hooks = true;
   CONFIG.Actor.documentClass = ActorPF;
-  CONFIG.Item.documentClass = ItemPF;
+  CONFIG.Item.documentClass = ItemBase35E;
+  CONFIG.Item.documentClasses = {
+    default: Item35E,
+    weapon: Weapon35E,
+    equipment: Equipment35E
+  };
   CONFIG.ActiveEffect.documentClass = ActiveEffectD35E;
   CONFIG.MeasuredTemplate.objectClass = MeasuredTemplatePF;
   CONFIG.ui.compendium = CompendiumDirectoryPF;
@@ -164,7 +175,10 @@ Hooks.once("init", async function() {
   Actors.registerSheet("D35E", ActorSheetObject, { types: ["object"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFNPCObject")  });
   Items.unregisterSheet("core", ItemSheet);
   Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("D35E", ItemSheetPF, { types: ["class", "feat", "spell", "consumable","equipment", "loot", "weapon", "buff", "aura", "attack", "race", "enhancement","damage-type","material","full-attack","card", "valuable"], makeDefault: true });
+  Items.registerSheet("D35E", ItemSheetPF, { types: ["class", "spell", "consumable","enhancement", "loot", "buff", "aura", "attack", "race","damage-type","material","full-attack","card", "valuable"], makeDefault: true });
+  Items.registerSheet("D35E", EquipmentSheet35E, { types: ["equipment"], makeDefault: true });
+  Items.registerSheet("D35E", WeaponSheet35E, { types: ["weapon"], makeDefault: true });
+  Items.registerSheet("D35E", FeatSheet35E, { types: ["feat"], makeDefault: true });
 
 
   // Register System Settings

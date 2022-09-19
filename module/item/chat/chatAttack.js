@@ -1,4 +1,4 @@
-import {ItemPF} from "../entity.js";
+import {Item35E} from "../entity.js";
 import {Roll35e} from "../../roll.js"
 import {ItemRolls} from "../extensions/rolls.js";
 
@@ -68,7 +68,7 @@ export class ChatAttack {
 
     /**
      * Sets the attack's item reference.
-     * @param {ItemPF} item - The item to reference.
+     * @param {Item35E} item - The item to reference.
      * @param actor
      */
     setItem(item, actor = null, rollData = null) {

@@ -1,4 +1,4 @@
-import {ItemPF} from "../../item/entity.js";
+import {Item35E} from "../../item/entity.js";
 import {Roll35e} from "../../roll.js";
 import {Propagator} from "../../misc/propagator.js";
 
@@ -36,7 +36,7 @@ export class ActorChatActions {
         const action = button.dataset.action;
 
         // Get the Actor
-        const actor = ItemPF._getChatCardActor(card);
+        const actor = Item35E._getChatCardActor(card);
 
 
         button.disabled = true;

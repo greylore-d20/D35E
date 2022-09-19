@@ -11,7 +11,7 @@ import {ItemCombatChangesHelper} from "../helpers/itemCombatChangesHelper.js";
 
 export class ItemUse {
     /**
-     * @param {ItemPF} item Item
+     * @param {Item35E} item Item
      */
     constructor(item) {
         this.item = item;
@@ -581,7 +581,7 @@ export class ItemUse {
 
                 for (let note of noteObj.notes) {
 
-                    attackNotes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(`<span class="tag">${ItemPF._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
+                    attackNotes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
                 }
             }
             if (typeof this.itemData.attackNotes === "string" && this.itemData.attackNotes.length) {
@@ -1137,7 +1137,7 @@ export class ItemUse {
 
     /**
      * Cast a Spell, consuming a spell slot of a certain level
-     * @param {ItemPF} item   The spell being cast by the actor
+     * @param {Item35E} item   The spell being cast by the actor
      * @param {MouseEvent} ev The click event
      */
     async useSpell(ev, { skipDialog = false, replacement = false, replacementItem = null, rollModeOverride = null } = {}, actor = null) {

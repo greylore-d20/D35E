@@ -1,4 +1,4 @@
-import { ItemPF } from '../item/entity.js'
+import { Item35E } from '../item/entity.js'
 import { Roll35e } from '../roll.js'
 import {
 	TreasureTable,
@@ -177,7 +177,7 @@ export default class TreasureGenerator {
 			try {
 				// //console.log("fetchin " + item.id);
 				let _it = await getItem(item.id)
-				let it = new ItemPF(_it.data, {temporary: true})
+				let it = new Item35E(_it.data, {temporary: true})
 				delete it._id
 				// //console.log(it);
 				if (item.consumableType) {
@@ -191,7 +191,7 @@ export default class TreasureGenerator {
 						it.data,
 						item.consumableType
 					)
-					consumableItem = new ItemPF(consumableItem, {temporary: true})
+					consumableItem = new Item35E(consumableItem, {temporary: true})
 					delete consumableItem._id
 					if (consumableItem.data._id) {
 						delete consumableItem.data._id

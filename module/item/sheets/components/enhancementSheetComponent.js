@@ -1,22 +1,23 @@
 import { ItemEnhancementHelper } from "../../helpers/itemEnhancementHelper.js";
 import { ItemSheetComponent } from "./itemSheetComponent.js";
+import {Item35E} from "../../entity.js";
 
 export class EnhancementSheetComponent extends ItemSheetComponent {
 
     constructor(sheet) {
         super(sheet);
-        this.ehnancementItemMap = new Map()
+        this.sheet.ehnancementItemMap = new Map()
     }
 
     prepareSheetData(sheetData) {
-        if (this.item.type === "equipment" || this.item.type === "weapon") {
+        if (this.sheet.item.type === "equipment" || this.sheet.item.type === "weapon") {
             sheetData.enhancements = []
             sheetData.enhancementsBase = []
             sheetData.enhancementsFromSpell = []
             sheetData.enhancementsFromBuff = []
             let _enhancements = getProperty(this.sheet.item.system,`enhancements.items`) || [];
             _enhancements.forEach(e => {
-                let item = new ItemPF(e, {owner: this.sheet.item.isOwner})
+                let item = new Item35E(duplicate(e), {owner: this.sheet.item.isOwner})
                 this.sheet.ehnancementItemMap.set(item.tag, item);
                 e.data = ItemEnhancementHelper.getEnhancementData(e);
                 e.hasAction = item.hasAction || item.isCharged;
@@ -35,13 +36,13 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
             })
             sheetData.hasEnhancements = true;
 
-            sheetData.lightMagical = (this.item.system.enh || 0) > 0 && (this.item.system.enh || 0) < 6;
-            sheetData.veryMagical = (this.item.system.enh || 0) > 5;
+            sheetData.lightMagical = (this.sheet.item.system.enh || 0) > 0 && (this.sheet.item.system.enh || 0) < 6;
+            sheetData.veryMagical = (this.sheet.item.system.enh || 0) > 5;
         }
     }
 
     registerTab(sheetData) {
-        sheetData.registeredTabs.push({id:'enhancements',name:"Enhancements",part:'templates/items/parts/item-enhancement.html'})
+        sheetData.registeredTabs.push({id:'enhancements',name:"Enhancements",sheet:'systems/D35E/templates/items/parts/item-enhancement.html'})
     }
 
     activateListeners(html) {
@@ -95,10 +96,21 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
                 dataType = "world";
                 itemData = fromUuidSync(data.uuid);
             }
-            return this.importItem(itemData, dataType, importType);
+            return this.#importItem(itemData, dataType, importType);
         }
 
 
+    }
+    async #importItem(itemData) {
+            if (itemData.type === 'enhancement') {
+                await this.sheet.item.enhancements.addEnhancementFromData(itemData)// update(updateData);
+            }
+            if (itemData.type === 'spell') {
+                this.#createEnhancementSpellDialog(itemData)
+            }
+            if (itemData.type === 'buff') {
+                await this.sheet.item.enhancements.createEnhancementBuff(itemData)
+            }
     }
 
 
@@ -111,17 +123,17 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
                 potion: {
                     icon: '<i class="fas fa-prescription-bottle"></i>',
                     label: "50 Charges",
-                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "charges"),
+                    callback: () => this.sheet.item.enhancements.createEnhancementSpell(itemData, "charges"),
                 },
                 scroll: {
                     icon: '<i class="fas fa-scroll"></i>',
                     label: "Per Day (Command Word)",
-                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "command"),
+                    callback: () => this.sheet.item.enhancements.createEnhancementSpell(itemData, "command"),
                 },
                 wand: {
                     icon: '<i class="fas fa-magic"></i>',
                     label: "Per Day (Use)",
-                    callback: () => this.item.enhancements.createEnhancementSpell(itemData, "use"),
+                    callback: () => this.sheet.item.enhancements.createEnhancementSpell(itemData, "use"),
                 },
             },
             default: "command",
@@ -141,7 +153,7 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
 
         const li = event.currentTarget.closest(".item");
         if (game.keyboard.isModifierActive("Shift")) {
-            await this.item.enhancements.deleteEnhancement(li.dataset.itemId)
+            await this.sheet.item.enhancements.deleteEnhancement(li.dataset.itemId)
         } else {
             button.disabled = true;
 
@@ -150,7 +162,7 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
                 title: game.i18n.localize("D35E.DeleteItem"),
                 content: msg,
                 yes: async () => {
-                    await this.item.enhancements.deleteEnhancement(li.dataset.itemId)
+                    await this.sheet.item.enhancements.deleteEnhancement(li.dataset.itemId)
                     button.disabled = false;
                 },
                 no: () => button.disabled = false
@@ -162,28 +174,28 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{uses: {value: value}})
+        await this.sheet.item.enhancements.updateEnhancement(itemId,{uses: {value: value}})
     }
 
     async #setEnhMaxUses(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{uses: {max: value, maxFormula: `${value}`}})
+        await this.sheet.item.enhancements.updateEnhancement(itemId,{uses: {max: value, maxFormula: `${value}`}})
     }
 
     async #setEnhPerUse(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{uses: {chargesPerUse: value}})
+        await this.sheet.item.enhancements.updateEnhancement(itemId,{uses: {chargesPerUse: value}})
     }
 
     async #setEnhCLValue(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{baseCl: value})
+        await this.sheet.item.enhancements.updateEnhancement(itemId,{baseCl: value})
     }
 
 
@@ -191,16 +203,13 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const value = Number(event.currentTarget.value);
-        await this.item.enhancements.updateEnhancement(itemId,{enh: value})
+        await this.sheet.item.enhancements.updateEnhancement(itemId,{enh: value})
     }
-
-
-
 
     #onEnhancementItemEdit(event) {
         event.preventDefault();
         const li = event.currentTarget.closest(".item");
-        const item = this.ehnancementItemMap.get(li.dataset.itemId);
+        const item = this.sheet.ehnancementItemMap.get(li.dataset.itemId);
         item.sheet.render(true);
     }
 
@@ -211,25 +220,25 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
     async #onEnhRoll(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        //const item = this.actor.getOwnedItem(itemId);
-        let item = await this.item.getEnhancementItem(itemId);
-        return item.roll({}, this.item.actor);
+        //const item = this.sheet.actor.getOwnedItem(itemId);
+        let item = await this.sheet.item.enhancements.getEnhancementItem(itemId);
+        return item.roll({}, this.sheet.item.actor);
     }
 
     async #onEnhUpdateName(event) {
         event.preventDefault();
-        await this.item.enhancements.updateBaseItemName();
+        await this.sheet.item.enhancements.updateBaseItemName();
     }
 
     async #quickItemActionControl(event) {
         event.preventDefault();
         const a = event.currentTarget;
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        //const item = this.actor.getOwnedItem(itemId);
-        let item = await this.item.getEnhancementItem(itemId);
+        //const item = this.sheet.actor.getOwnedItem(itemId);
+        let item = await this.sheet.item.enhancements.getEnhancementItem(itemId);
         // Quick Attack
         if (a.classList.contains("item-attack")) {
-            await this.item.useEnhancementItem(item)
+            await this.sheet.item.enhancements.useEnhancementItem(item)
         }
     }
 
@@ -238,8 +247,8 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
     #onEnhItemSummary(event) {
         event.preventDefault();
         let li = $(event.currentTarget).parents(".item-box"),
-            item = this.ehnancementItemMap.get(li.attr("data-item-id")),
-            chatData = item.getChatData({secrets: this.actor ? this.actor.isOwner : false});
+            item = this.sheet.ehnancementItemMap.get(li.attr("data-item-id")),
+            chatData = item.getChatData({secrets: this.sheet.actor ? this.sheet.actor.isOwner : false});
 
         // Toggle summary
         if (li.hasClass("expanded")) {

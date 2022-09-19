@@ -1,7 +1,7 @@
 import {Roll35e} from "../../roll.js";
 import {alterRoll} from "../../lib.js";
 import {CACHE} from "../../cache.js";
-import {ItemPF} from "../entity.js";
+import {Item35E} from "../entity.js";
 import {createCustomChatMessage} from "../../chat.js";
 import {ItemSpellHelper as ItemSpellHelper} from "../helpers/itemSpellHelper.js";
 
@@ -11,7 +11,7 @@ import {ItemSpellHelper as ItemSpellHelper} from "../helpers/itemSpellHelper.js"
  */
 export class ItemRolls {
     /**
-     * @param {ItemPF} item Item
+     * @param {Item35E} item Item
      */
     constructor( item) {
         this.item = item;
@@ -216,10 +216,10 @@ export class ItemRolls {
             if (noteObj.item != null) rollData.item = mergeObject(duplicate(noteObj.item.system), noteObj.item.getRollData(), {inplace: false})
 
             for (let note of noteObj.notes) {
-                notes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(`<span class="tag">${ItemPF._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
+                notes.push(...note.split(/[\n\r]+/).map(o => TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
             }
         }
-        notes.push(...(itemData.effectNotes || "").split(/[\n\r]+/).filter(o => o.length > 0).map(o => TextEditor.enrichHTML(`<span class="tag">${ItemPF._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
+        notes.push(...(itemData.effectNotes || "").split(/[\n\r]+/).filter(o => o.length > 0).map(o => TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {rollData: rollData})));
 
         const inner = notes.join('')
         if (notes.length > 0) {

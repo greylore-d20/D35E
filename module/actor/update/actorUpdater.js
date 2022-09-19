@@ -1,5 +1,5 @@
 import {createTag, linkData} from "../../lib.js";
-import {ItemPF} from "../../item/entity.js";
+import {Item35E} from "../../item/entity.js";
 import {Roll35e} from "../../roll.js";
 import {CACHE} from "../../cache.js";
 import {ActorPrepareSourceHelper} from "../helpers/actorPrepareSourceHelper.js";
@@ -507,7 +507,7 @@ export class ActorUpdater {
                                     subtype: this.#getChangeItemSubtype(item),
                                     name: item.name,
                                     item: item.system,
-                                    itemRollData: new ItemPF(item.data, {temporary: true}).getRollData()
+                                    itemRollData: new Item35E(item.data, {temporary: true}).getRollData()
                                 }
                             });
                         }
@@ -1700,7 +1700,7 @@ export class ActorUpdater {
                         if (canAdd) {
                             if (!existingAbilities.has(uniqueId)) {
                                 let eItem = e.toObject()
-                                ItemPF.setMaxUses(eItem, this.actor.getRollData());
+                                Item35E.setMaxUses(eItem, this.actor.getRollData());
                                 delete eItem._id;
                                 eItem.system.uniqueId = uniqueId;
                                 eItem.system.source = `${raceObject.name}`
@@ -1719,7 +1719,7 @@ export class ActorUpdater {
                                             subtype: this.#getChangeItemSubtype(eItem),
                                             name: eItem.name,
                                             item: eItem,
-                                            itemRollData: new ItemPF(eItem, { owner: this.actor.isOwner }).getRollData()
+                                            itemRollData: new Item35E(eItem, { owner: this.actor.isOwner }).getRollData()
                                         }
                                     });
                                 });
@@ -1744,7 +1744,7 @@ export class ActorUpdater {
                         if (canAdd) {
                             if (!existingAbilities.has(uniqueId)) {
                                 let eItem = e.toObject();
-                                ItemPF.setMaxUses(eItem, this.actor.getRollData());
+                                Item35E.setMaxUses(eItem, this.actor.getRollData());
                                 eItem.system.uniqueId = uniqueId;
                                 eItem.system.source = `${raceObject.name}`
                                 eItem.system.userNonRemovable = true;
@@ -1762,7 +1762,7 @@ export class ActorUpdater {
                                             subtype: this.#getChangeItemSubtype(eItem),
                                             name: eItem.name,
                                             item: eItem,
-                                            itemRollData: new ItemPF(eItem, { owner: this.actor.isOwner }).getRollData()
+                                            itemRollData: new Item35E(eItem, { owner: this.actor.isOwner }).getRollData()
                                         }
                                     });
                                 });
@@ -1803,7 +1803,7 @@ export class ActorUpdater {
             if (level <= classInfo[1]) {
                 if (!existingAbilities.has(uniqueId)) {
                     let eItem = e.toObject()
-                    ItemPF.setMaxUses(eItem, this.actor.getRollData());
+                    Item35E.setMaxUses(eItem, this.actor.getRollData());
                     eItem.system.uniqueId = uniqueId;
                     delete eItem._id;
                     eItem.system.source = `${classInfo[0]} ${level}`

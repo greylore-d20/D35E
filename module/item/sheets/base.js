@@ -1,6 +1,6 @@
 import {createTabs, uuidv4} from "../../lib.js";
 import {EntrySelector} from "../../apps/entry-selector.js";
-import {ItemPF} from "../entity.js";
+import {Item35E} from "../entity.js";
 import {CACHE} from "../../cache.js";
 import {isMinimumCoreVersion} from "../../lib.js";
 import {DamageTypes} from "../../damage-types.js";
@@ -9,8 +9,9 @@ import {createTag} from "../../lib.js";
 import {Roll35e} from "../../roll.js"
 import {ItemEnhancementHelper} from "../helpers/itemEnhancementHelper.js";
 import { ItemSheetComponent } from "./components/itemSheetComponent.js";
-import { ContextNotesSheetComponent } from "./components/changesSheetComponent.js";
+import { ChangesSheetComponent } from "./components/changesSheetComponent.js";
 import { EnhancementSheetComponent } from "./components/enhancementSheetComponent.js";
+import {NotesSheetComponent} from "./components/notesSheetComponent.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle D&D5E specific item types
@@ -35,7 +36,8 @@ export class ItemSheetPF extends ItemSheet {
         this._altTabs = null;
 
         this.sheetComponents = [];
-        this.sheetComponents.push(new ContextNotesSheetComponent(this));
+        this.sheetComponents.push(new ChangesSheetComponent(this));
+        this.sheetComponents.push(new NotesSheetComponent(this));
     }
 
     /* -------------------------------------------- */
@@ -156,23 +158,6 @@ export class ItemSheetPF extends ItemSheet {
         sheetData.maxCharges = this.item.maxCharges
         sheetData.unmetRequirements = this.item.hasUnmetRequirements()
 
-        // Prepare feat specific stuff
-        if (this.item.type === "feat") {
-            sheetData.isClassFeature = true; //Any feat can be a class feature
-            if (this.item.system.featType === 'spellSpecialization')
-                sheetData.isSpellSpecialization = true;
-
-            
-        }
-        
-        if ((getProperty(this.item.system,`linkedItems`) || []) !== []) {
-            sheetData.linkedItems = []
-            let _likedItems = getProperty(this.item.system,`linkedItems`) || [];
-            _likedItems.forEach(e => {
-                //e.incorrect === 
-                sheetData.linkedItems.push(e)
-            })
-        }
 
         sheetData.is07Xup = isMinimumCoreVersion("0.7.2");
 
@@ -207,32 +192,6 @@ export class ItemSheetPF extends ItemSheet {
 
         }
 
-        // Prepare equipment specific stuff
-        if (this.item.type === "equipment") {
-            sheetData.hasCombatChanges = true;
-            // Prepare categories for equipment
-            sheetData.equipmentCategories = {types: {}, subTypes: {}};
-            for (let [k, v] of Object.entries(CONFIG.D35E.equipmentTypes)) {
-                if (typeof v === "object") sheetData.equipmentCategories.types[k] = v._label;
-            }
-            const type = this.item.system.equipmentType;
-            if (hasProperty(CONFIG.D35E.equipmentTypes, type)) {
-                for (let [k, v] of Object.entries(CONFIG.D35E.equipmentTypes[type])) {
-                    // Add static targets
-                    if (!k.startsWith("_")) sheetData.equipmentCategories.subTypes[k] = v;
-                }
-            }
-
-            // Prepare slots for equipment
-            sheetData.equipmentSlots = CONFIG.D35E.equipmentSlots[type];
-
-            // Whether the equipment should show armor data
-            sheetData.showArmorData = ["armor", "shield"].includes(type);
-
-            // Whether the current equipment type has multiple slots
-            sheetData.hasMultipleSlots = Object.keys(sheetData.equipmentSlots).length > 1;
-            
-        }
 
         // Prepare attack specific stuff
         if (this.item.type === "attack") {
@@ -380,18 +339,6 @@ export class ItemSheetPF extends ItemSheet {
         }
         if (this.item.type === "aura") {
             sheetData.hasCombatChanges = true;
-        }
-        if (this.item.type === "feat") {
-            sheetData.isFeat = this.item.system.featType === "feat"
-            sheetData.hasCombatChanges = true;
-            sheetData.hasRequirements = true;
-            sheetData.featCounters = []
-            if (this.item.actor) {
-                for (let [a, s] of Object.entries(this.item.actor.system.counters.feat || [])) {
-                    if (a === "base") continue;
-                    sheetData.featCounters.push({name: a.charAt(0).toUpperCase() + a.substr(1).toLowerCase(), val: a})
-                }
-            }
         }
 
         sheetData.itemType = this.item.type;
@@ -623,7 +570,7 @@ export class ItemSheetPF extends ItemSheet {
             }
         }
 
-        this.registeredTabs = [];
+        sheetData.registeredTabs = [];
         this.sheetComponents.forEach(component => {
             component.prepareSheetData(sheetData);
             component.registerTab(sheetData);
@@ -754,10 +701,10 @@ export class ItemSheetPF extends ItemSheet {
         let conditionals = Object.entries(formData).filter((e) => e[0].startsWith("system.conditionals"));
         formData["system.conditionals"] = conditionals.reduce((arr, entry) => {
             let [i, j, k] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = ItemPF.defaultConditional;
+            if (!arr[i]) arr[i] = Item35E.defaultConditional;
             if (k) {
                 const target = formData[`system.conditionals.${i}.${j}.target`];
-                if (!arr[i].modifiers[j]) arr[i].modifiers[j] = ItemPF.defaultConditionalModifier;
+                if (!arr[i].modifiers[j]) arr[i].modifiers[j] = Item35E.defaultConditionalModifier;
                 arr[i].modifiers[j][k] = entry[1];
                 // Target dependent keys
                 if (["subTarget", "critical", "type"].includes(k)) {
@@ -787,57 +734,7 @@ export class ItemSheetPF extends ItemSheet {
         }, []);
 
 
-        // Handle change array
-        let change = Object.entries(formData).filter(e => e[0].startsWith("system.changes"));
-        formData["system.changes"] = change.reduce((arr, entry) => {
-            let [i, j] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = [];
-            arr[i][j] = entry[1];
-            return arr;
-        }, []);
-
-        let changes = Object.entries(formData).filter(e => e[0].startsWith("system.combatChanges"));
-        formData["system.combatChanges"] = changes.reduce((arr, entry) => {
-            let [i, j] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = [];
-            arr[i][j] = entry[1];
-            return arr;
-        }, []);
-
-
-        let requirements = Object.entries(formData).filter(e => e[0].startsWith("system.requirements"));
-        formData["system.requirements"] = requirements.reduce((arr, entry) => {
-            let [i, j] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = [];
-            arr[i][j] = entry[1];
-            return arr;
-        }, []);
-
-
-        let creationChanges = Object.entries(formData).filter(e => e[0].startsWith("system.creationChanges"));
-        formData["system.creationChanges"] = creationChanges.reduce((arr, entry) => {
-            let [i, j] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = [];
-            arr[i][j] = entry[1];
-            return arr;
-        }, []);
-
-        let resistances = Object.entries(formData).filter(e => e[0].startsWith("system.resistances"));
-        formData["system.resistances"] = resistances.reduce((arr, entry) => {
-            let [i, j] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = [];
-            arr[i][j] = entry[1];
-            return arr;
-        }, []);
-
-        let damageReduction = Object.entries(formData).filter(e => e[0].startsWith("system.damageReduction"));
-        formData["system.damageReduction"] = damageReduction.reduce((arr, entry) => {
-            let [i, j] = entry[0].split(".").slice(2);
-            if (!arr[i]) arr[i] = [];
-            arr[i][j] = entry[1];
-            return arr;
-        }, []);
-
+        
         // Handle notes array
         let note = Object.entries(formData).filter(e => e[0].startsWith("system.contextNotes"));
         formData["system.contextNotes"] = note.reduce((arr, entry) => {
@@ -903,6 +800,11 @@ export class ItemSheetPF extends ItemSheet {
             formData['system.containerWeightless'] = false
         }
 
+
+        this.sheetComponents.forEach(component => {
+            component.updateForm(formData);
+        })
+        
         //console.log("IM IN _UPDATE OBJECT FIXING THINGS", formData)
         return super._updateObject(event, formData);
     }
@@ -973,14 +875,6 @@ export class ItemSheetPF extends ItemSheet {
         html.find(".damage-control").click(this._onDamageControl.bind(this));
         html.find(".damage-alt-control").click(this._onAltDamageControl.bind(this));
 
-        // Modify buff changes
-        html.find(".change-control").click(this._onChangeControl.bind(this));
-        html.find(".combat-change-control").click(this._onCombatChangeControl.bind(this));
-        html.find(".requirement-control").click(this._onRequirementsControl.bind(this));
-        html.find(".creation-changes-control").click(this._onCreationChangesControl.bind(this));
-        html.find(".resistance-control").click(this._onResistanceControl.bind(this));
-        html.find(".dr-control").click(this._onDRControl.bind(this));
-
         // Modify summons
 
         html.find(".summons-control").click(this._onSummonControl.bind(this));
@@ -1041,9 +935,6 @@ export class ItemSheetPF extends ItemSheet {
         html.find('.remove-rolltable-link').click(event => this._onRemoveRolltableLink(event));
 
 
-        html.find('div[data-tab="linked-items"]').on("drop", this._onDrop.bind(this,"link"));
-        html.find('div[data-tab="linked-items"] .item-delete').click(this._onLinkedItemDelete.bind(this));
-
         html.find('.spellbook').on("drop", this._onDropSpellListSpell.bind(this));
         html.find('div[data-tab="spellbook"] .item-delete').click(this._onSpellListSpellDelete.bind(this));
         html.find('div[data-tab="spellbook"] .item-add').click(this._addSpellListSpellToSpellbook.bind(this));
@@ -1093,14 +984,14 @@ export class ItemSheetPF extends ItemSheet {
 
         // Add new damage component
         if (a.classList.contains("add-damage")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const damage = this.item.system.damage;
             return this.item.update({"data.damage.parts": damage.parts.concat([["", ""]])});
         }
 
         // Remove a damage component
         if (a.classList.contains("delete-damage")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".damage-part");
             const damage = duplicate(this.item.system.damage);
             damage.parts.splice(Number(li.dataset.damagePart), 1);
@@ -1120,14 +1011,14 @@ export class ItemSheetPF extends ItemSheet {
 
         // Add new damage component
         if (a.classList.contains("add-alt-damage")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const damage = this.item.system.damage;
             return this.item.update({"data.damage.alternativeParts": (damage.alternativeParts || []).concat([["", ""]])});
         }
 
         // Remove a damage component
         if (a.classList.contains("delete-alt-damage")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".damage-part");
             const damage = duplicate(this.item.system.damage);
             damage.alternativeParts.splice(Number(li.dataset.damagePart), 1);
@@ -1145,7 +1036,7 @@ export class ItemSheetPF extends ItemSheet {
 
         // Add new attack component
         if (a.classList.contains("add")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             let _customAttributes = duplicate(this.item.system.customAttributes || {});
             let newAttribute = {id: this.generateId(),name:'',value:''};
             _customAttributes[newAttribute.id] = newAttribute;
@@ -1155,7 +1046,7 @@ export class ItemSheetPF extends ItemSheet {
 
         // Remove an attack component
         if (a.classList.contains("delete")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".custom-field");
             //console.log(`D35E | Removing custom attribute | ${li.dataset.customField}`, this.item.system.customAttributes)
             const updateData = {};
@@ -1170,14 +1061,14 @@ export class ItemSheetPF extends ItemSheet {
 
         // Add new attack component
         if (a.classList.contains("add-attack")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const attackParts = this.item.system.attackParts;
             return this.item.update({"data.attackParts": attackParts.concat([["", ""]])});
         }
 
         // Remove an attack component
         if (a.classList.contains("delete-attack")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".attack-part");
             const attackParts = duplicate(this.item.system.attackParts);
             attackParts.splice(Number(li.dataset.attackPart), 1);
@@ -1191,7 +1082,7 @@ export class ItemSheetPF extends ItemSheet {
 
         // Remove an attack component
         if (a.classList.contains("delete-summons")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".summons-part");
             const summons = duplicate(this.item.system.summon);
             summons.splice(Number(li.dataset.summons), 1);
@@ -1204,7 +1095,7 @@ export class ItemSheetPF extends ItemSheet {
         const a = event.currentTarget;
         // Add new attack component
         if (a.classList.contains("add-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             let specialActions = this.item.system.specialActions;
             if (specialActions === undefined)
                 specialActions = []
@@ -1221,7 +1112,7 @@ export class ItemSheetPF extends ItemSheet {
 
         // Remove an attack component
         if (a.classList.contains("delete-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".special-part");
             const specialActions = duplicate(this.item.system.specialActions);
             specialActions.splice(Number(li.dataset.specialActions), 1);
@@ -1234,7 +1125,7 @@ export class ItemSheetPF extends ItemSheet {
         const a = event.currentTarget;
         // Add new attack component
         if (a.classList.contains("add-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             let activateActions = this.item.system.activateActions;
             if (activateActions === undefined)
                 activateActions = []
@@ -1251,7 +1142,7 @@ export class ItemSheetPF extends ItemSheet {
 
         // Remove an attack component
         if (a.classList.contains("delete-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".special-part");
             const activateActions = duplicate(this.item.system.activateActions);
             activateActions.splice(Number(li.dataset.activateActions), 1);
@@ -1269,7 +1160,7 @@ export class ItemSheetPF extends ItemSheet {
         const a = event.currentTarget;
         // Add new attack component
         if (a.classList.contains("add-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             let perRoundActions = this.item.system.perRoundActions;
             if (perRoundActions === undefined)
                 perRoundActions = []
@@ -1286,7 +1177,7 @@ export class ItemSheetPF extends ItemSheet {
 
         // Remove an attack component
         if (a.classList.contains("delete-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".special-part");
             const perRoundActions = duplicate(this.item.system.perRoundActions);
             perRoundActions.splice(Number(li.dataset.perRoundActions), 1);
@@ -1299,7 +1190,7 @@ export class ItemSheetPF extends ItemSheet {
         const a = event.currentTarget;
         // Add new attack component
         if (a.classList.contains("add-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             let deactivateActions = this.item.system.deactivateActions;
             if (deactivateActions === undefined)
                 deactivateActions = []
@@ -1316,7 +1207,7 @@ export class ItemSheetPF extends ItemSheet {
 
         // Remove an attack component
         if (a.classList.contains("delete-special")) {
-            await this._onSubmit(event);  // Submit any unsaved changes
+            await this._onSubmit(event);  
             const li = a.closest(".special-part");
             const deactivateActions = duplicate(this.item.system.deactivateActions);
             deactivateActions.splice(Number(li.dataset.deactivateActions), 1);
@@ -1324,137 +1215,9 @@ export class ItemSheetPF extends ItemSheet {
         }
     }
 
-    async _onChangeControl(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-
-        // Add new change
-        if (a.classList.contains("add-change")) {
-            //console.log('AAAAAITEM', this.item);
-            let _changes = duplicate(this.item.system.changes) || [];
-            return this.item.update({"data.changes": _changes.concat([["", "", "", "", 0]])});
-        }
-
-        // Remove a change
-        if (a.classList.contains("delete-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const li = a.closest(".change");
-            const changes = duplicate(this.item.system.changes);
-            changes.splice(Number(li.dataset.change), 1);
-            return this.item.update({"data.changes": changes});
-        }
-    }
-
-    async _onCombatChangeControl(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-
-        // Add new change
-        if (a.classList.contains("add-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const changes =this.item.system.combatChanges || [];
-            // Combat Changes are
-            await this.item.update({"data.combatChanges": changes.concat([["", "", "", "", "", ""]])});
-        }
-
-        // Remove a change
-        if (a.classList.contains("delete-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const li = a.closest(".change");
-            const changes = duplicate(this.item.system.combatChanges);
-            changes.splice(Number(li.dataset.change), 1);
-            await this.item.update({"data.combatChanges": changes});
-        }
-    }
 
 
-    async _onCreationChangesControl(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-
-        // Add new change
-        if (a.classList.contains("add-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const changes = duplicate(this.item.system.creationChanges) || [];
-            // Combat Changes are
-            return this.item.update({"data.creationChanges": changes.concat([["", ""]])});
-        }
-
-        // Remove a change
-        if (a.classList.contains("delete-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const li = a.closest(".change");
-            const changes = duplicate(this.item.system.creationChanges);
-            changes.splice(Number(li.dataset.change), 1);
-            return this.item.update({"data.creationChanges": changes});
-        }
-    }
-
-    async _onRequirementsControl(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-
-        // Add new change
-        if (a.classList.contains("add-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const changes = duplicate(this.item.system.requirements) || [];
-            // Combat Changes are
-            return this.item.update({"data.requirements": changes.concat([["", "", ""]])});
-        }
-
-        // Remove a change
-        if (a.classList.contains("delete-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const li = a.closest(".change");
-            const changes = duplicate(this.item.system.requirements);
-            changes.splice(Number(li.dataset.change), 1);
-            return this.item.update({"data.requirements": changes});
-        }
-    }
-
-    async _onResistanceControl(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-
-        // Add new change
-        if (a.classList.contains("add-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const changes = duplicate(this.item.system.resistances) || [];
-            // Combat Changes are
-            return this.item.update({"data.resistances": changes.concat([["", "", false, false, false]])});
-        }
-
-        // Remove a change
-        if (a.classList.contains("delete-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const li = a.closest(".change");
-            const changes = duplicate(this.item.system.resistances);
-            changes.splice(Number(li.dataset.change), 1);
-            return this.item.update({"data.resistances": changes});
-        }
-    }
-
-    async _onDRControl(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-
-        // Add new change
-        if (a.classList.contains("add-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const changes = duplicate(this.item.system.damageReduction) || [];
-            // Combat Changes are
-            return this.item.update({"data.damageReduction": changes.concat([["", "", false]])});
-        }
-
-        // Remove a change
-        if (a.classList.contains("delete-change")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
-            const li = a.closest(".change");
-            const changes = duplicate(this.item.system.damageReduction);
-            changes.splice(Number(li.dataset.change), 1);
-            return this.item.update({"data.damageReduction": changes});
-        }
-    }
+    
 
     async _onNoteControl(event) {
         event.preventDefault();
@@ -1462,14 +1225,14 @@ export class ItemSheetPF extends ItemSheet {
 
         // Add new note
         if (a.classList.contains("add-note")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
+            //await this._onSubmit(event);  
             const contextNotes = duplicate(this.item.system.contextNotes) || [];
             return this.item.update({"data.contextNotes": contextNotes.concat([["", "", "", 0]])});
         }
 
         // Remove a note
         if (a.classList.contains("delete-note")) {
-            //await this._onSubmit(event);  // Submit any unsaved changes
+            //await this._onSubmit(event);  
             const li = a.closest(".context-note");
             const contextNotes = duplicate(this.item.system.contextNotes);
             contextNotes.splice(Number(li.dataset.note), 1);
@@ -1944,70 +1707,10 @@ export class ItemSheetPF extends ItemSheet {
 
     }
 
-    
-
-    async importItem(itemData, itemType, importType) {
-        if (importType === "enh") {
-            if (itemData.type === 'enhancement') {
-                await this.item.enhancements.addEnhancementFromData(itemData)// update(updateData);
-            }
-            if (itemData.type === 'spell') {
-                this._createEnhancementSpellDialog(itemData)
-            }
-            if (itemData.type === 'buff') {
-                await this.item.enhancements.createEnhancementBuff(itemData)
-            }
-        } else {
-            if (itemType !== "compendium") {
-                return ui.notifications.warn(game.i18n.localize("D35E.ResourceNeedDropFromCompendium"));
-            }
-            await this.item.addLinkedItemFromData(itemData)
-        }
-    }
 
 
     
-    /**
-     * Handle deleting an existing Enhancement item
-     * @param {Event} event   The originating click event
-     * @private
-     */
-     async _onLinkedItemDelete(event) {
-        event.preventDefault();
 
-        const button = event.currentTarget;
-        if (button.disabled) return;
-
-        const li = event.currentTarget.closest(".item");
-        if (game.keyboard.isModifierActive("Shift")) {
-            const updateData = {};
-            let _linkedItems = duplicate(getProperty(this.item.system,`linkedItems`) || []);
-            _linkedItems = _linkedItems.filter(function (obj) {
-                return obj.itemId !== li.dataset.itemId || obj.packId !== li.dataset.packId;
-            });
-            updateData[`data.linkedItems`] = _linkedItems;
-            this.item.update(updateData);
-        } else {
-            button.disabled = true;
-
-            const msg = `<p>${game.i18n.localize("D35E.DeleteItemConfirmation")}</p>`;
-            Dialog.confirm({
-                title: game.i18n.localize("D35E.DeleteItem"),
-                content: msg,
-                yes: () => {
-                    const updateData = {};
-                    let _linkedItems = duplicate(getProperty(this.item.system,`linkedItems`) || []);
-                    _linkedItems = _linkedItems.filter(function (obj) {
-                        return obj.itemId !== li.dataset.itemId || obj.packId !== li.dataset.packId;
-                    });
-                    updateData[`data.linkedItems`] = _linkedItems;
-                    this.item.update(updateData);
-                    button.disabled = false;
-                },
-                no: () => button.disabled = false
-            });
-        }
-    }
 
     _onDragConditionalStart(event) {
         const elem = event.currentTarget;
@@ -2057,14 +1760,14 @@ export class ItemSheetPF extends ItemSheet {
 
         // Add new conditional
         if (a.classList.contains("add-conditional")) {
-            await this._onSubmit(event); // Submit any unsaved changes
+            await this._onSubmit(event); 
             const conditionals = this.item.system.conditionals || [];
-            return this.item.update({ "data.conditionals": conditionals.concat([ItemPF.defaultConditional]) });
+            return this.item.update({ "data.conditionals": conditionals.concat([Item35E.defaultConditional]) });
         }
 
         // Remove a conditional
         if (a.classList.contains("delete-conditional")) {
-            await this._onSubmit(event); // Submit any unsaved changes
+            await this._onSubmit(event); 
             const li = a.closest(".conditional");
             const conditionals = duplicate(this.item.system.conditionals);
             conditionals.splice(Number(li.dataset.conditional), 1);
@@ -2076,7 +1779,7 @@ export class ItemSheetPF extends ItemSheet {
             await this._onSubmit(event);
             const li = a.closest(".conditional");
             const conditionals = this.item.system.conditionals;
-            conditionals[Number(li.dataset.conditional)].modifiers.push(ItemPF.defaultConditionalModifier);
+            conditionals[Number(li.dataset.conditional)].modifiers.push(Item35E.defaultConditionalModifier);
             // duplicate object to ensure update
             return this.item.update({ "data.conditionals": duplicate(conditionals) });
         }

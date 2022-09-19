@@ -1,15 +1,19 @@
-import {createTag} from "../../lib.js";
+import {createTag, linkData} from "../../lib.js";
 import {Roll35e} from "../../roll.js";
 import {ItemEnhancementConverter} from "../converters/enchancement.js";
-import {ItemPF} from "../entity.js";
+import {Item35E} from "../entity.js";
 import {ItemEnhancementHelper} from "../helpers/itemEnhancementHelper.js";
+import {ItemExtension} from "./itemExtension.js";
 
-export class ItemEnhancements {
-    /**
-     * @param {ItemPF} item Item
-     */
-    constructor(item) {
-        this.item = item;
+export class ItemEnhancements extends ItemExtension {
+
+
+    prepareUpdateData(updateData, srcData, rollData) {
+        this.#updateCalculateEnhancementData(rollData, updateData);
+        this.#updateCalculatePriceData(updateData,  rollData);
+        let _enhancements = duplicate(getProperty(srcData, `system.enhancements.items`) || []);
+        this.#updateBaseEnhancement(updateData, _enhancements, this.item.type, srcData);
+        this.#updateAlignmentEnhancement(updateData, _enhancements, this.item.type, srcData);
     }
 
     async getEnhancementItem(tag) {
@@ -19,7 +23,7 @@ export class ItemEnhancements {
             let data = duplicate(itemData);
             data._id = foundry.utils.randomID();
             data.actor = this.item.actor;
-            return new ItemPF(data, {owner: this.item.isOwner});
+            return new Item35E(data, {owner: this.item.isOwner});
         }
         else
             return itemData;
@@ -56,7 +60,7 @@ export class ItemEnhancements {
                 updateData[`system.uses.max`] = getProperty(this.item.system,"enhancements.uses.max");
                 await this.item.update(updateData);
             } else {
-                await this.item.addEnhancementCharges(item, -1*chargeCost)
+                await this.item.enhancements.addEnhancementCharges(item, -1*chargeCost)
             }
         }
     }
@@ -122,7 +126,7 @@ export class ItemEnhancements {
 
     hasEnhancement(name) {
         const tag = createTag(name)
-        return (getProperty(this.system,`enhancements.items`) || []).some(i => createTag(i.name) === tag);
+        return (getProperty(this.item.system,`enhancements.items`) || []).some(i => createTag(i.name) === tag);
     }
 
     async updateBaseItemName() {
@@ -156,7 +160,7 @@ export class ItemEnhancements {
         const updateData = {};
         let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
         _enhancements.filter(function (obj) {
-            return createTag(obj.name) === itemId
+            return createTag(obj.name) === enhancementId
         }).forEach(i => {
             i.system = mergeObject(ItemEnhancementHelper.getEnhancementData(i),enhancementUpdateData);
             this.#setEnhancementPrice(i);
@@ -206,27 +210,185 @@ export class ItemEnhancements {
     }
 
     #preUpdateMagicItemName(updateData, _enhancements, force = false, useIdentifiedName = false) {
-        if ((getProperty(this.system,"enhancements") !== undefined && getProperty(this.system,"enhancements.automation") !== undefined && getProperty(this.system,"enhancements.automation") !== null) || force) {
-            if (getProperty(this.system,"enhancements.automation.updateName") || force) {
-                let baseName = useIdentifiedName && getProperty(this.system,"identifiedName") || getProperty(this.system,"unidentified.name")
-                if (getProperty(this.system,"unidentified.name") === '') {
+        if ((getProperty(this.item.system,"enhancements") !== undefined && getProperty(this.item.system,"enhancements.automation") !== undefined && getProperty(this.item.system,"enhancements.automation") !== null) || force) {
+            if (getProperty(this.item.system,"enhancements.automation.updateName") || force) {
+                let baseName = useIdentifiedName && getProperty(this.item.system,"identifiedName") || getProperty(this.item.system,"unidentified.name")
+                if (getProperty(this.item.system,"unidentified.name") === '') {
                     updateData[`system.unidentified.name`] = this.name;
                     baseName = this.name
                 }
-                updateData[`system.identifiedName`] = this.buildName(baseName, _enhancements)
+                updateData[`system.identifiedName`] = this.#buildName(baseName, _enhancements)
             }
         }
     }
 
     #preUpdateMagicItemProperties(updateData, _enhancements, force = false) {
-        if ((getProperty(this.system,"enhancements") !== undefined && getProperty(this.system,"enhancements.automation") !== undefined && getProperty(this.system,"enhancements.automation") !== null) || force) {
-            if (getProperty(this.system,"enhancements.automation.updateName") || force) {
-                let basePrice = this.system.unidentified.price
-                if (!getProperty(this.system,"unidentified.price")) {
-                    updateData[`system.unidentified.price`] = getProperty(this.system,"price");
-                    basePrice = this.system.price
+        if ((getProperty(this.item.system,"enhancements") !== undefined && getProperty(this.item.system,"enhancements.automation") !== undefined && getProperty(this.item.system,"enhancements.automation") !== null) || force) {
+            if (getProperty(this.item.system,"enhancements.automation.updateName") || force) {
+                let basePrice = this.item.system.unidentified.price
+                if (!getProperty(this.item.system,"unidentified.price")) {
+                    updateData[`system.unidentified.price`] = getProperty(this.item.system,"price");
+                    basePrice = this.item.system.price
                 }
-                updateData[`system.price`] = this.buildPrice(basePrice, _enhancements)
+                updateData[`system.price`] = this.#buildPrice(basePrice, _enhancements)
+            }
+        }
+    }
+
+    #buildName(name, enhancements) {
+        let prefixes = []
+        let suffixes = []
+        let totalEnchancement = 0;
+        for (const obj of enhancements) {
+            if (obj.data.nameExtension !== undefined && obj.data.nameExtension !== null) {
+                if (obj.data.nameExtension.prefix !== null && obj.data.nameExtension.prefix.trim() !== "") prefixes.push(obj.data.nameExtension.prefix.trim())
+                if (obj.data.nameExtension.suffix !== null && obj.data.nameExtension.suffix.trim() !== "") suffixes.push(obj.data.nameExtension.suffix.trim())
+            }
+
+            if (obj.data.enhancementType === "weapon" && this.item.type === 'weapon')
+                if (!obj.data.enhIsLevel)
+                    totalEnchancement += obj.data.enh
+            if (obj.data.enhancementType === "armor" && this.item.type === 'equipment')
+                if (!obj.data.enhIsLevel)
+                    totalEnchancement += obj.data.enh
+        }
+        let enhSuffix = ''
+        let ofSuffix = ''
+        if (totalEnchancement > 0)
+            enhSuffix = ` +${totalEnchancement}`
+        if (suffixes.length > 0) {
+            ofSuffix = ` of ${suffixes.join(' and ').trim()}`
+        }
+        return `${prefixes.join(' ')} ${name}${ofSuffix}`.trim() + `${enhSuffix}`
+    }
+
+    #buildPrice(basePrice, enhancements) {
+        let totalPrice = basePrice;
+        let totalEnchancementIncrease = 0;
+        let totalEnchancement = 0;
+        let maxSingleEnhancementIncrease = 0;
+        let flatPrice = 0;
+        for (const obj of enhancements) {
+            if (obj.data.enhancementType === "weapon" && this.item.type === 'weapon') {
+                totalEnchancementIncrease += obj.data.enhIncrease
+                if (!obj.data.enhIsLevel)
+                    totalEnchancement += obj.data.enh
+                flatPrice += obj.data.price
+                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
+            }
+            if (obj.data.enhancementType === "armor" && this.item.type === 'equipment') {
+                totalEnchancementIncrease += obj.data.enhIncrease
+                if (!obj.data.enhIsLevel)
+                    totalEnchancement += obj.data.enh
+                flatPrice += obj.data.price
+                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
+            }
+            if (obj.data.enhancementType === "misc") {
+                totalEnchancementIncrease += obj.data.enhIncrease
+                flatPrice += obj.data.price
+                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
+            }
+        }
+        let useEpicPricing = false
+        if (maxSingleEnhancementIncrease > 5 || totalEnchancement > 5)
+            useEpicPricing = true
+        // Base price for weapon
+        if (this.type === 'weapon') {
+            if (totalEnchancementIncrease > 0)
+                totalPrice += 300
+            if (!useEpicPricing)
+                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 2000 + flatPrice
+            else
+                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 2000 * 10 + 10 * flatPrice
+        } else if (this.type === 'equipment') {
+            if (totalEnchancementIncrease > 0)
+                totalPrice += 150
+            if (!useEpicPricing)
+                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 1000 + flatPrice
+            else
+                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 1000 * 10 + 10 * flatPrice
+        }
+
+        return totalPrice;
+    }
+
+    #updateCalculateEnhancementData(rollData, data) {
+        rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.item.system,"enh");
+        let rollFormula = getProperty(this.item.system,"enhIncreaseFormula");
+        if (data["system.enhIncreaseFormula"] != null && data["system.enhIncreaseFormula"] !== getProperty(this.item.system,"enhIncreaseFormula"))
+            rollFormula = data["system.enhIncreaseFormula"];
+        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
+            data["system.enhIncrease"] = new Roll35e(rollFormula, rollData).roll().total;
+        }
+        rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.item.system,"enh");
+        rollData.enhIncrease = data["system.enhIncrease"] !== undefined ? data["system.enhIncrease"] : getProperty(this.item.system,"enhIncrease");
+
+    }
+    
+    #updateCalculatePriceData(data, rollData) {
+        let rollFormula = getProperty(this.item.system,"priceFormula");
+        if (data["system.priceFormula"] != null && data["system.priceFormula"] !== getProperty(this.item.system,"priceFormula"))
+            rollFormula = data["system.priceFormula"];
+        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
+            data["system.price"] = new Roll35e(rollFormula, rollData).roll().total;
+        }
+    }
+
+    #updateAlignmentEnhancement(data, enhancements, type, srcData) {
+        let doLinkData = true;
+        if (srcData == null) {
+            srcData = this.item.toObject();
+            doLinkData = false;
+        }
+
+        let alignment = {
+            "good": false,
+            "evil": false,
+            "lawful": false,
+            "chaotic": false
+        }
+
+        enhancements.forEach(function( obj ) {
+            let objEnhancement = ItemEnhancementHelper.getEnhancementData(obj)
+            if (objEnhancement.weaponData.alignment) {
+                alignment.good = objEnhancement.weaponData.alignment.good || alignment.good;
+                alignment.evil = objEnhancement.weaponData.alignment.evil || alignment.evil;
+                alignment.lawful = objEnhancement.weaponData.alignment.lawful || alignment.lawful;
+                alignment.chaotic = objEnhancement.weaponData.alignment.chaotic || alignment.chaotic;
+            }
+        });
+        //console.log('Total enh',totalEnchancement, type)
+        if (type === 'weapon' && enhancements.length) {
+            if (doLinkData) linkData(srcData, data, "system.weaponData.alignment", alignment);
+            else data['data.weaponData.alignment'] = alignment
+        }
+    }
+
+    #updateBaseEnhancement(data, enhancements, type, srcData) {
+        let doLinkData = true;
+        if (srcData == null) {
+            srcData = this.item.toObject();
+            doLinkData = false;
+        }
+        let totalEnchancement = 0;
+        enhancements.forEach(function( obj ) {
+            let objEnhancement = ItemEnhancementHelper.getEnhancementData(obj)
+            if (!objEnhancement.enhIsLevel) {
+                if (objEnhancement.enhancementType === "weapon" && type === 'weapon')
+                    totalEnchancement += objEnhancement.enh
+                if (objEnhancement.enhancementType === "armor" && type === 'equipment')
+                    totalEnchancement += objEnhancement.enh
+            }
+        });
+        //console.log('Total enh',totalEnchancement, type)
+        if (totalEnchancement > 0) {
+            if (type === 'weapon') {
+                if (doLinkData) linkData(srcData, data, "system.enh", totalEnchancement);
+                else data['data.enh'] = totalEnchancement
+            }
+            else if (type === 'equipment') {
+                if (doLinkData) linkData(srcData, data, "system.armor.enh", totalEnchancement);
+                else data['data.armor.enh'] = totalEnchancement
             }
         }
     }

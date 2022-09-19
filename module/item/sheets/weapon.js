@@ -1,4 +1,6 @@
-import { ItemPF } from "../entity.js";
+import { Item35E } from "../entity.js";
+import {EnhancementSheetComponent} from "./components/enhancementSheetComponent.js";
+import {ItemSheetPF} from "./base.js";
 
 export class WeaponSheet35E extends ItemSheetPF {
     constructor(...args) {
@@ -8,7 +10,7 @@ export class WeaponSheet35E extends ItemSheetPF {
     }
 
     async getData() {
-        sheetData = await super.getData();
+        let sheetData = await super.getData();
         sheetData.isRanged = (this.item.system.weaponSubtype === "ranged" || this.item.system.properties["thr"] === true);
 
         sheetData.weaponCategories = {types: {}, subTypes: {}};

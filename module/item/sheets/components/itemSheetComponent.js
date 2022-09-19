@@ -13,4 +13,8 @@ export class ItemSheetComponent {
     activateListeners(html) {
 
     }
+
+    updateForm(formData) {
+
+    }
 }

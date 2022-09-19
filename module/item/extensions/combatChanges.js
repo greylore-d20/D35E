@@ -2,7 +2,7 @@ import {Roll35e} from "../../roll.js";
 
 export class ItemCombatChanges {
     /**
-     * @param {ItemPF} item Item
+     * @param {Item35E} item Item
      */
     constructor(item) {
         this.item = item;

@@ -10,7 +10,7 @@ import {SpellbookEditor} from "../../apps/spellbook-editor.js";
 import {DeckEditor} from "../../apps/deck-editor.js";
 import {D35E} from "../../config.js";
 import {PointBuyCalculator} from "../../apps/point-buy-calculator.js";
-import {ItemPF} from "../../item/entity.js";
+import {Item35E} from "../../item/entity.js";
 import {CompendiumDirectoryPF} from "../../sidebar/compendium.js";
 import {DamageTypes} from "../../damage-types.js";
 import {Roll35e} from "../../roll.js"
@@ -724,6 +724,11 @@ export class ActorSheetPF extends ActorSheet {
     html.find(".configure-level-up-data").click(this._onLevelDataUp.bind(this));
 
     html.find(".group-inventory").click(this._onGroupInventory.bind(this));
+
+
+    html.find(".spellcasting-concentration .rollable").click(this._onRollConcentration.bind(this));
+
+    html.find(".spellcasting-cl .rollable").click(this._onRollCL.bind(this));
     /* -------------------------------------------- */
     /*  Inventory
     /* -------------------------------------------- */
@@ -794,9 +799,6 @@ export class ActorSheetPF extends ActorSheet {
     html.find(".item-list .spell-uses input[type='text'][data-type='amount']").off("change").change(this._setSpellUses.bind(this));
     html.find(".item-list .spell-uses input[type='text'][data-type='max']").off("change").change(this._setMaxSpellUses.bind(this));
 
-    html.find(".spellcasting-concentration .rollable").click(this._onRollConcentration.bind(this));
-
-    html.find(".spellcasting-cl .rollable").click(this._onRollCL.bind(this));
 
     /* -------------------------------------------- */
     /*  Buffs
@@ -1268,7 +1270,7 @@ export class ActorSheetPF extends ActorSheet {
           (getProperty(item.system, `enhancements.items`) || []).forEach(__enh => {
             const _enh = duplicate(__enh)
             delete _enh._id;
-            let enh = new ItemPF(_enh, {owner: this.isOwner})
+            let enh = new Item35E(_enh, {owner: this.isOwner})
             if (enh.hasAction || enh.isCharged) {
               let enhString = `<li class="item enh-item item-box flexrow" data-item-id="${item._id}" data-enh-id="${enh.tag}">
                     <div class="item-name  flexrow">
@@ -1335,7 +1337,7 @@ export class ActorSheetPF extends ActorSheet {
 
     // Quick Attack
     if (a.classList.contains("item-enh-attack")) {
-      await item.useEnhancementItem(await item.getEnhancementItem(enhId));
+      await item.enhancements.useEnhancementItem(await item.enhancements.getEnhancementItem(enhId));
     }
   }
 
@@ -1345,7 +1347,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".enh-item").attr("data-item-id");
     const enhId = $(event.currentTarget).parents(".enh-item").attr("data-enh-id");
     const item = this.actor.getOwnedItem(itemId);
-    let enh = await item.getEnhancementItem(enhId);
+    let enh = await item.enhancements.getEnhancementItem(enhId);
     return enh.roll({}, this.actor);
   }
 
@@ -1823,7 +1825,7 @@ export class ActorSheetPF extends ActorSheet {
         }
       }
 
-      newSpell.data.description.value = await renderTemplate("systems/D35E/templates/internal/spell-description.html", new ItemPF(newSpell)._generateSpellDescription(newSpell))
+      newSpell.data.description.value = await renderTemplate("systems/D35E/templates/internal/spell-description.html", new Item35E(newSpell)._generateSpellDescription(newSpell))
 
 
       let x = await this.actor.createEmbeddedEntity("Item", newSpell, {ignoreSpellbookAndLevel: true})

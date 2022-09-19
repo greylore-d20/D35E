@@ -1,6 +1,7 @@
 import {DamageTypes} from "../../damage-types.js";
 import {Roll35e} from "../../roll.js";
 import {isEqual} from "../../lib.js";
+import {ItemEnhancementHelper} from "../../item/helpers/itemEnhancementHelper.js";
 
 export class ItemPrepareDataHelper {
 
@@ -72,8 +73,9 @@ export class ItemPrepareDataHelper {
                 actorPrepareData.shieldType = item.system?.equipmentSubtype;
             if (item.system.enhancements !== undefined) {
                 item.system.enhancements.items.forEach(enhancementItem => {
-                    erDrRollData.item = enhancementItem.data;
-                    (enhancementItem.data?.resistances || []).forEach(resistance => {
+                    let enhancementItemData = ItemEnhancementHelper.getEnhancementData(enhancementItem)
+                    erDrRollData.item = enhancementItemData;
+                    (enhancementItemData?.resistances || []).forEach(resistance => {
                         if (!resistance[1])
                             return;
                         let _resistance = actorPrepareData.combinedResistances.find(res => res.uid === resistance[1]);
@@ -83,9 +85,9 @@ export class ItemPrepareDataHelper {
                             actorPrepareData.combinedResistances.push(_resistance);
                         }
                         let _oldResistance = duplicate(_resistance);
-                        erDrRollData.level = enhancementItem.data.levels || 0;
-                        erDrRollData.levels = enhancementItem.data.levels || 0;
-                        erDrRollData.enh = enhancementItem.data.enh || 0;
+                        erDrRollData.level = enhancementItemData.levels || 0;
+                        erDrRollData.levels = enhancementItemData.levels || 0;
+                        erDrRollData.enh = enhancementItemData.enh || 0;
                         _resistance.value = Math.max(_resistance.value, new Roll35e(resistance[0] || "0", erDrRollData).roll().total);
                         _resistance.immunity = _resistance.immunity || resistance[2];
                         _resistance.vulnerable = _resistance.vulnerable || resistance[3];
@@ -98,8 +100,8 @@ export class ItemPrepareDataHelper {
                             _resistance.items.push(item.name);
                         }
                     });
-                    if (enhancementItem.data.damageReduction) {
-                        (enhancementItem.data?.damageReduction || []).forEach(dr => {
+                    if (enhancementItemData.damageReduction) {
+                        (enhancementItemData?.damageReduction || []).forEach(dr => {
                             if (!dr[1] || !dr[0])
                                 return;
                             if (dr[1] !== 'any') {
@@ -113,9 +115,9 @@ export class ItemPrepareDataHelper {
                                     actorPrepareData.combinedDR.types.push(_dr);
                                 }
                                 let _oldDr = duplicate(dr);
-                                erDrRollData.level = enhancementItem.data.levels || 0;
-                                erDrRollData.levels = enhancementItem.data.levels || 0;
-                                erDrRollData.enh = enhancementItem.data.enh || 0;
+                                erDrRollData.level = enhancementItemData.levels || 0;
+                                erDrRollData.levels = enhancementItemData.levels || 0;
+                                erDrRollData.enh = enhancementItemData.enh || 0;
                                 _dr.value = Math.max(_dr.value, new Roll35e(dr[0] || "0", erDrRollData).roll().total);
                                 _dr.immunity = _dr.immunity || dr[2];
                                 if (!isEqual(_oldDr,_dr)) {
@@ -126,7 +128,7 @@ export class ItemPrepareDataHelper {
                                     _dr.items.push(item.name);
                                 }
                             } else {
-                                actorPrepareData.combinedDR.any = Math.max(actorPrepareData.combinedDR.any || 0, new Roll35e(dr[0] || "0", enhancementItem.data).roll().total);
+                                actorPrepareData.combinedDR.any = Math.max(actorPrepareData.combinedDR.any || 0, new Roll35e(dr[0] || "0", enhancementItemData).roll().total);
                             }
                         });
                     }

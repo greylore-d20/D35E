@@ -73,9 +73,7 @@
     <a class="item active" data-tab="description">{{ localize "D35E.Description" }}</a>
     <a class="item" data-tab="details">{{ localize "D35E.Details" }}</a>
     {{#unless showUnidentifiedData}}
-    <a class="item" data-tab="changes">{{ localize "D35E.Changes" }}</a>
-    <a class="item" data-tab="enhancements">{{ localize "D35E.Enhancements" }}</a>
-    <a class="item" data-tab="linked-items">{{localize "D35E.Links"}}</a>
+    <a class="item" data-tab="configuration" style="flex: 0 150px;">{{ localize "D35E.Configuration" }}</a>
     {{/unless}}
   </nav>
 
@@ -291,17 +289,26 @@
     </div>
 
     {{!-- Changes Tab --}}
+    {{!-- Changes Tab --}}
     {{#unless showUnidentifiedData}}
-    <div class="tab flexcol" data-group="primary" data-tab="changes">
-      {{> "systems/D35E/templates/items/parts/item-changes.html"}}
 
-      {{> "systems/D35E/templates/items/parts/item-notes.html"}}
-    </div>
-    <div class="tab flexcol" data-group="primary" data-tab="enhancements">
-      {{> "systems/D35E/templates/items/parts/item-enhancement.html"}}
-    </div>
-    <div class="tab flexcol" data-tab="linked-items">
-      {{> "systems/D35E/templates/items/parts/item-links.html"}}
+    <div class="tab flexcol active" data-group="primary" data-tab="configuration">
+      <nav class="sheet-navigation tabs subtabs configuration" data-group="configuration">
+        {{#each registeredTabs as |tab|}}
+        <a class="item" data-tab="{{tab.id}}">{{tab.name}}</a>
+        {{/each}}
+      </nav>
+
+
+      <div class="flexrow configuration-container" style="overflow: hidden; height: 100%">
+        <section class="configuration-body" style="display: block; height: 100%">
+          {{#each registeredTabs as |tab|}}
+          <div class="tab configuration-group flexcol" data-group="configuration" data-tab="{{tab.id}}">
+            {{> (lookup tab 'sheet') ..}}
+          </div>
+          {{/each}}
+        </section>
+      </div>
     </div>
     {{/unless}}
   </section>

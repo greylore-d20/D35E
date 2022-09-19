@@ -3,7 +3,7 @@ import {ItemCombatChangesHelper} from "../helpers/itemCombatChangesHelper.js";
 
 export class ItemChatData {
     /**
-     * @param {ItemPF} item Item
+     * @param {Item35E} item Item
      */
     constructor(item) {
         this.item = item;

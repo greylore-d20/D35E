@@ -19,11 +19,12 @@ import {ItemCombatChangesHelper} from "./helpers/itemCombatChangesHelper.js";
 import {ItemCombatChanges} from "./extensions/combatChanges.js";
 import {ItemUse} from "./extensions/use.js";
 import {ItemEnhancementHelper} from "./helpers/itemEnhancementHelper.js";
+import {ItemBase35E} from "./base.js";
 
 /**
  * Override and extend the basic :class:`Item` implementation
  */
-export class ItemPF extends Item {
+export class Item35E extends ItemBase35E {
     //static LOG_V10_COMPATIBILITY_WARNINGS = false;
     /* -------------------------------------------- */
     /*  Item Properties                             */
@@ -45,8 +46,12 @@ export class ItemPF extends Item {
         return this.extensionMap.get(extension);
     }
 
+    hasExtension(extension) {
+        return this.extensionMap.has(extension);
+    }
+
     get enhancements() {
-        return this.getExtension("enhancements");
+        return this.getExtension("enhancement");
     }
 
     /**
@@ -458,14 +463,14 @@ export class ItemPF extends Item {
         return new Function("return `"+templateString +"`;").call(templateVars);
     }
 
-    async update(data, options = {}) {
+    async update(updated, options = {}) {
         if (options['recursive'] !== undefined && options['recursive'] === false) {
             //console.log('D35E | Skipping update logic since it is not recursive')
-            await super.update(data, options);
+            await super.update(updated, options);
             return
         }
-        console.log('Is true/false', data, getProperty(this.system,"active"))
-        let expandedData = expandObject(data);
+        console.log('Is true/false', updated, getProperty(this.system,"active"))
+        let expandedData = expandObject(updated);
         const srcData = mergeObject(this.toObject(), expandedData);
 
         let needsUpdate = false; // if we do not have changes we often do not need to update actor
@@ -476,32 +481,32 @@ export class ItemPF extends Item {
             srcData.system?.requirements?.length > 0 ||
             srcData.system.uses?.isResource ||
             srcData.system.uses?.canBeLinked ||
-            data['system.quantity'] !== undefined ||
-            data['system.equipped'] !== undefined ||
-            data['system.carried'] !== undefined)
+            updated['system.quantity'] !== undefined ||
+            updated['system.equipped'] !== undefined ||
+            updated['system.carried'] !== undefined)
             needsUpdate = true
 
         
 
-        console.log('Should be true/false, is true true', data, getProperty(this.system,"active"))
+        console.log('Should be true/false, is true true', updated, getProperty(this.system,"active"))
 
         for (var key in expandedData?.data?.customAttributes) {
-            if (data[`system.customAttributes.${key}`] === null) continue;
+            if (updated[`system.customAttributes.${key}`] === null) continue;
             if (expandedData.data.customAttributes.hasOwnProperty(key)) {
                 let customAttribute = expandedData.data.customAttributes[key];
                 let addedAttributes = new Set()
                 if (customAttribute.selectList !== undefined) {
                     if (customAttribute.selectList) {
-                        data[`system.customAttributes.${key}.selectListArray`] = {}
+                        updated[`system.customAttributes.${key}.selectListArray`] = {}
                         for (let selectAttribute of customAttribute.selectList.split("|")) {
                             if (selectAttribute.indexOf(":") !== -1) {
                                 if (!selectAttribute.split(":")[1]) continue;
                                 addedAttributes.add(selectAttribute.split(":")[1])
-                                data[`system.customAttributes.${key}.selectListArray`][selectAttribute.split(":")[1]] = selectAttribute.split(":")[0];
+                                updated[`system.customAttributes.${key}.selectListArray`][selectAttribute.split(":")[1]] = selectAttribute.split(":")[0];
                             } else {
                                 if (!selectAttribute) continue;
                                 addedAttributes.add(selectAttribute)
-                                data[`system.customAttributes.${key}.selectListArray`][selectAttribute] = selectAttribute;
+                                updated[`system.customAttributes.${key}.selectListArray`][selectAttribute] = selectAttribute;
                             }
                             
                         }
@@ -509,129 +514,126 @@ export class ItemPF extends Item {
                     let existingCustomAttribute = this.system.customAttributes[key];
                     for (var _key in existingCustomAttribute.selectListArray) {
                         if (!addedAttributes.has(_key))
-                            data[`system.customAttributes.${key}.selectListArray.-=${_key}`] = null;
+                            updated[`system.customAttributes.${key}.selectListArray.-=${_key}`] = null;
                     }
                 }
             }
         }
 
         //const srcDataWithRolls = srcsystem;
-        if (data["firstChangeTarget"]) {
-            data["system.changes.0.2"] = data["firstChangeTarget"].split(":")[0];
-            data["system.changes"][0][2] = data["firstChangeTarget"].split(":")[0];
-            srcData.firstChangeTargetName = data["firstChangeTarget"].split(":")[1];
-            delete data["firstChangeTarget"];
+        if (updated["firstChangeTarget"]) {
+            updated["system.changes.0.2"] = updated["firstChangeTarget"].split(":")[0];
+            updated["system.changes"][0][2] = updated["firstChangeTarget"].split(":")[0];
+            srcData.firstChangeTargetName = updated["firstChangeTarget"].split(":")[1];
+            delete updated["firstChangeTarget"];
         }
-        if (data['data.nameFromFormula'] || getProperty(this.system,"nameFromFormula")) {
+        if (updated['data.nameFromFormula'] || getProperty(this.system,"nameFromFormula")) {
             const srcDataWithRolls = this.getRollData(srcData);
             srcDataWithRolls.firstChangeTargetName = srcData.firstChangeTargetName;
-            data["name"] = ItemPF._fillTemplate(data['data.nameFormula'] || getProperty(this.system,"nameFormula"), srcDataWithRolls) || data["name"]
+            updated["name"] = Item35E._fillTemplate(updated['data.nameFormula'] || getProperty(this.system,"nameFormula"), srcDataWithRolls) || updated["name"]
         }
         // Update name
-        if (data["system.identifiedName"]) data["name"] = data["system.identifiedName"];
-        else if (data["name"]) data["system.identifiedName"] = data["name"];
+        if (updated["system.identifiedName"]) updated["name"] = updated["system.identifiedName"];
+        else if (updated["name"]) updated["system.identifiedName"] = updated["name"];
 
 
-        let activateBuff = data["system.active"] && data["system.active"] !== getProperty(this.system,"active");
-        let deactivateBuff = getProperty(this.system,"active") && (data["system.active"] !== undefined && !data["system.active"]);
+        let activateBuff = updated["system.active"] && updated["system.active"] !== getProperty(this.system,"active");
+        let deactivateBuff = getProperty(this.system,"active") && (updated["system.active"] !== undefined && !updated["system.active"]);
         // Update description
-        if (this.type === "spell") await this._updateSpellDescription(data, srcData);
-        if (this.type === "card") await this._updateCardDescription(data, srcData);
+        if (this.type === "spell") await this._updateSpellDescription(updated, srcData);
+        if (this.type === "card") await this._updateCardDescription(updated, srcData);
 
         // Set weapon subtype
-        if (data["system.weaponType"] != null && data["system.weaponType"] !== getProperty(this.system,"weaponType")) {
-            const type = data["system.weaponType"];
-            const subtype = data["system.weaponSubtype"] || getProperty(this.system,"weaponSubtype") || "";
+        if (updated["system.weaponType"] != null && updated["system.weaponType"] !== getProperty(this.system,"weaponType")) {
+            const type = updated["system.weaponType"];
+            const subtype = updated["system.weaponSubtype"] || getProperty(this.system,"weaponSubtype") || "";
             const keys = Object.keys(CONFIG.D35E.weaponTypes[type])
                 .filter(o => !o.startsWith("_"));
             if (!subtype || !keys.includes(subtype)) {
-                data["system.weaponSubtype"] = keys[0];
+                updated["system.weaponSubtype"] = keys[0];
             }
         }
 
-        if (data["system.hasSpellbook"] != null && data["system.hasSpellbook"] !== getProperty(this.system,"hasSpellbook")) {
+        if (updated["system.hasSpellbook"] != null && updated["system.hasSpellbook"] !== getProperty(this.system,"hasSpellbook")) {
             const curValue = getProperty(this.system, "spellbook");
             if (curValue == null || curValue.length === 0) {
                 let spellbook = []
                 for (let a = 0; a < 10; a++) {
                     spellbook.push({level: a, spells: []})
                 }
-                data["system.spellbook"] = spellbook;
+                updated["system.spellbook"] = spellbook;
             }
         }
 
         if (this.pack && this.pack.startsWith("D35E")) {
-            data["system.originVersion"] = getProperty(this.system,"originVersion") + 1;
+            updated["system.originVersion"] = getProperty(this.system,"originVersion") + 1;
         }
 
-        if (data["system.weaponData.size"] && data["system.weaponData.size"] !== getProperty(this.system,"weaponData.size")) {
-            let newSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(data["system.weaponData.size"] || "");
+        if (updated["system.weaponData.size"] && updated["system.weaponData.size"] !== getProperty(this.system,"weaponData.size")) {
+            let newSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(updated["system.weaponData.size"] || "");
             let oldSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(getProperty(this.system,"weaponData.size") || "");
             let weightChange = Math.pow(2,newSize-oldSize);
-            data["system.weight"] = getProperty(this.system,"weight") * weightChange;
+            updated["system.weight"] = getProperty(this.system,"weight") * weightChange;
         }
 
         //console.log("D35E Item Update", data)
-        if (data["system.convertedWeight"] !== undefined && data["system.convertedWeight"] !== null ) {
+        if (updated["system.convertedWeight"] !== undefined && updated["system.convertedWeight"] !== null ) {
             const conversion = game.settings.get("D35E", "units") === "metric" ? 2 : 1;
-            data["system.weight"] = data["system.convertedWeight"] * conversion;
+            updated["system.weight"] = updated["system.convertedWeight"] * conversion;
         }
 
-        if (data["system.classType"] !== undefined && data["system.classType"] === 'template') {
-            data["system.hp"] = 0;
+        if (updated["system.classType"] !== undefined && updated["system.classType"] === 'template') {
+            updated["system.hp"] = 0;
         }
 
-        this._updateCalculateAutoDC(data);
+        this._updateCalculateAutoDC(updated);
 
-        if (data["system.convertedCapacity"] !== undefined && data["system.convertedCapacity"] !== null) {
+        if (updated["system.convertedCapacity"] !== undefined && updated["system.convertedCapacity"] !== null) {
             const conversion = game.settings.get("D35E", "units") === "metric" ? 2 : 1;
-            data["system.capacity"] = data["system.convertedCapacity"] * conversion;
+            updated["system.capacity"] = updated["system.convertedCapacity"] * conversion;
         }
 
-        if (data["system.selectedMaterial"] && data["system.selectedMaterial"] !== "none") {
-            data["system.material"] = duplicate(CACHE.Materials.get(data["system.selectedMaterial"]));
-        } else if (data["system.selectedMaterial"]  && data["system.selectedMaterial"] === "none") {
-            data["system.-=material"] = null;
+        if (updated["system.selectedMaterial"] && updated["system.selectedMaterial"] !== "none") {
+            updated["system.material"] = duplicate(CACHE.Materials.get(updated["system.selectedMaterial"]));
+        } else if (updated["system.selectedMaterial"]  && updated["system.selectedMaterial"] === "none") {
+            updated["system.-=material"] = null;
         }
 
         {
             let rollData = {};
             if (this.actor != null) rollData = this.actor.getRollData();
-            this._updateCalculateTimelineData(data,  rollData);
-            this._updateCalculateDamagePoolData(data,  rollData);
-            this._updateCalculateEnhancementData(rollData, data);
-            this._updateCalculatePriceData(data,  rollData);
-            this._updateCalculateMaxDamageDice(data, rollData);
+            this._updateCalculateTimelineData(updated,  rollData);
+            this._updateCalculateDamagePoolData(updated,  rollData);
+            this._updateCalculateMaxDamageDice(updated, rollData);
+            for (let extension of this.extensionMap.values()) {
+                extension.prepareUpdateData(updated, srcData, rollData)
+            }
         }
 
         // Set equipment subtype and slot
-        if (data["system.equipmentType"] != null && data["system.equipmentType"] !== getProperty(this.system,"equipmentType")) {
+        if (updated["system.equipmentType"] != null && updated["system.equipmentType"] !== getProperty(this.system,"equipmentType")) {
             // Set subtype
-            const type = data["system.equipmentType"];
-            const subtype = data["system.equipmentSubtype"] || getProperty(this.system,"equipmentSubtype") || "";
+            const type = updated["system.equipmentType"];
+            const subtype = updated["system.equipmentSubtype"] || getProperty(this.system,"equipmentSubtype") || "";
             let keys = Object.keys(CONFIG.D35E.equipmentTypes[type])
                 .filter(o => !o.startsWith("_"));
             if (!subtype || !keys.includes(subtype)) {
-                data["system.equipmentSubtype"] = keys[0];
+                updated["system.equipmentSubtype"] = keys[0];
             }
 
             // Set slot
-            const slot = data["system.slot"] || getProperty(this.system,"slot") || "";
+            const slot = updated["system.slot"] || getProperty(this.system,"slot") || "";
             keys = Object.keys(CONFIG.D35E.equipmentSlots[type]);
             if (!slot || !keys.includes(slot)) {
-                data["system.slot"] = keys[0];
+                updated["system.slot"] = keys[0];
             }
         }
 
-        // Update enh from Enhancements
-        let _enhancements = duplicate(getProperty(srcData, `system.enhancements.items`) || []);
-        this._updateBaseEnhancement(data, _enhancements, this.type, srcData);
-        this._updateAlignmentEnhancement(data, _enhancements, this.type, srcData);
 
 
 
 
-        this._updateMaxUses(data, {srcData: srcData});
+        this._updateMaxUses(updated, {srcData: srcData});
 
         let updatedItem = null;
         // if (Object.keys(diff).length) {
@@ -639,15 +641,15 @@ export class ItemPF extends Item {
         // }
 
         if (activateBuff) {
-            data["system.timeline.elapsed"] = 0;
-            data["system.damagePool.current"] = data["system.damagePool.total"] || getProperty(this.system,"damagePool.total");
+            updated["system.timeline.elapsed"] = 0;
+            updated["system.damagePool.current"] = updated["system.damagePool.total"] || getProperty(this.system,"damagePool.total");
         }
-        let updateData = await super.update(data, options);
+        let updateData = await super.update(updated, options);
         if (this.actor !== null && !options.massUpdate) {
 
             if (activateBuff) {
                 //Buff or item was activated
-                data["system.timeline.elapsed"] = 0
+                updated["system.timeline.elapsed"] = 0
                 let actionValue = (getProperty(this.system,"activateActions") || []).map(a => a.action).join(";")
                 if (!actionValue) await this.actor.refresh(options); 
                 else {
@@ -728,7 +730,7 @@ export class ItemPF extends Item {
     
             } else {
 
-                if ((data["system.range"] || data["system.auraTarget"]) && this.type === "aura") {
+                if ((updated["system.range"] || updated["system.auraTarget"]) && this.type === "aura") {
                     await this.actor.refresh({reloadAuras: true})
                 } else {
                     if (needsUpdate)
@@ -774,15 +776,6 @@ export class ItemPF extends Item {
         }
     }
 
-    _updateCalculatePriceData(data, rollData) {
-        let rollFormula = getProperty(this.system,"priceFormula");
-        if (data["system.priceFormula"] != null && data["system.priceFormula"] !== getProperty(this.system,"priceFormula"))
-            rollFormula = data["system.priceFormula"];
-        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
-            data["system.price"] = new Roll35e(rollFormula, rollData).roll().total;
-        }
-    }
-
     _updateCalculateMaxDamageDice(data, rollData) {
         if (data["system.maxDamageDiceFormula"] != null && data["system.maxDamageDiceFormula"] !== getProperty(this.system,"maxDamageDiceFormula")) {
             let roll = new Roll35e(data["system.maxDamageDiceFormula"], rollData).roll();
@@ -790,18 +783,7 @@ export class ItemPF extends Item {
         }
     }
 
-    _updateCalculateEnhancementData(rollData, data) {
-        rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.system,"enh");
-        let rollFormula = getProperty(this.system,"enhIncreaseFormula");
-        if (data["system.enhIncreaseFormula"] != null && data["system.enhIncreaseFormula"] !== getProperty(this.system,"enhIncreaseFormula"))
-            rollFormula = data["system.enhIncreaseFormula"];
-        if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
-            data["system.enhIncrease"] = new Roll35e(rollFormula, rollData).roll().total;
-        }
-        rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.system,"enh");
-        rollData.enhIncrease = data["system.enhIncrease"] !== undefined ? data["system.enhIncrease"] : getProperty(this.system,"enhIncrease");
-        
-    }
+
 
     _updateCalculateDamagePoolData(data, rollData) {
         let rollFormula = getProperty(this.system,"damagePool.formula");
@@ -839,64 +821,7 @@ export class ItemPF extends Item {
         }
     }
 
-    _updateAlignmentEnhancement(data, enhancements, type, srcData) {
-        let doLinkData = true;
-        if (srcData == null) {
-            srcData = this.toObject();
-            doLinkData = false;
-        }
 
-        let alignment = {
-            "good": false,
-                "evil": false,
-                "lawful": false,
-                "chaotic": false
-        }
-
-        enhancements.forEach(function( obj ) {
-            let objEnhancement = ItemEnhancementHelper.getEnhancementData(obj)
-            if (objEnhancement.weaponData.alignment) {
-                alignment.good = objEnhancement.weaponData.alignment.good || alignment.good;
-                alignment.evil = objEnhancement.weaponData.alignment.evil || alignment.evil;
-                alignment.lawful = objEnhancement.weaponData.alignment.lawful || alignment.lawful;
-                alignment.chaotic = objEnhancement.weaponData.alignment.chaotic || alignment.chaotic;
-            }
-        });
-        //console.log('Total enh',totalEnchancement, type)
-        if (type === 'weapon' && enhancements.length) {
-            if (doLinkData) linkData(srcData, data, "system.weaponData.alignment", alignment);
-            else data['data.weaponData.alignment'] = alignment
-        }
-    }
-
-    _updateBaseEnhancement(data, enhancements, type, srcData) {
-        let doLinkData = true;
-        if (srcData == null) {
-            srcData = this.toObject();
-            doLinkData = false;
-        }
-        let totalEnchancement = 0;
-        enhancements.forEach(function( obj ) {
-            let objEnhancement = ItemEnhancementHelper.getEnhancementData(obj)
-            if (!objEnhancement.enhIsLevel) {
-                if (objEnhancement.enhancementType === "weapon" && type === 'weapon')
-                    totalEnchancement += objEnhancement.enh
-                if (objEnhancement.enhancementType === "armor" && type === 'equipment')
-                    totalEnchancement += objEnhancement.enh
-            }
-        });
-        //console.log('Total enh',totalEnchancement, type)
-        if (totalEnchancement > 0) {
-            if (type === 'weapon') {
-                if (doLinkData) linkData(srcData, data, "system.enh", totalEnchancement);
-                else data['data.enh'] = totalEnchancement
-            }
-            else if (type === 'equipment') {
-                if (doLinkData) linkData(srcData, data, "system.armor.enh", totalEnchancement);
-                else data['data.armor.enh'] = totalEnchancement
-            }
-        }
-    }
 
     _updateMaxUses(data, {srcData = null, actorData = null, actorRollData = null} = {}) {
         ItemChargeUpdateHelper.updateMaxUses(this, data, {srcData: srcData, actorData: actorData, actorRollData: actorRollData})
@@ -923,9 +848,9 @@ export class ItemPF extends Item {
     _addCombatChangesToRollData(allCombatChanges, rollData) {
         allCombatChanges.forEach(change => {
             if (change[3].indexOf('$') !== -1) {
-                setProperty(rollData, change[3].substr(1), ItemPF._fillTemplate(change[4], rollData))
+                setProperty(rollData, change[3].substr(1), Item35E._fillTemplate(change[4], rollData))
             } else if (change[3].indexOf('&') !== -1) {
-                setProperty(rollData, change[3].substr(1), (getProperty(rollData, change[3].substr(1)) || "0") + " + " + ItemPF._fillTemplate(change[4], rollData))
+                setProperty(rollData, change[3].substr(1), (getProperty(rollData, change[3].substr(1)) || "0") + " + " + Item35E._fillTemplate(change[4], rollData))
             } else {
                 setProperty(rollData, change[3], (getProperty(rollData, change[3]) || 0) + (change[4] || 0))
             }
@@ -1582,25 +1507,12 @@ export class ItemPF extends Item {
         return data;
     }
 
-
-    async getEnhancementItem(tag) {
-        return this.enhancements.getEnhancementItem(tag)
-    }
-
-    async useEnhancementItem(item) {
-        await this.enhancements.useEnhancementItem(item)
-    }
-
-    async addEnhancementCharges(item, charges) {
-        await this.enhancements.addEnhancementCharges(item,charges)
-    }
-
     /*
     ---- Conditional modifiers support
      */
     /**
      * Generates a list of targets this modifier can have.
-     * @param {ItemPF} item - The item for which the modifier is to be created.
+     * @param {Item35E} item - The item for which the modifier is to be created.
      * @returns {Object.<string, string>} A list of targets
      */
     getConditionalTargets() {
@@ -1738,82 +1650,7 @@ export class ItemPF extends Item {
 
 
 
-    buildName(name, enhancements) {
-        let prefixes = []
-        let suffixes = []
-        let totalEnchancement = 0;
-        for (const obj of enhancements) {
-            if (obj.data.nameExtension !== undefined && obj.data.nameExtension !== null) {
-                if (obj.data.nameExtension.prefix !== null && obj.data.nameExtension.prefix.trim() !== "") prefixes.push(obj.data.nameExtension.prefix.trim())
-                if (obj.data.nameExtension.suffix !== null && obj.data.nameExtension.suffix.trim() !== "") suffixes.push(obj.data.nameExtension.suffix.trim())
-            }
 
-            if (obj.data.enhancementType === "weapon" && this.type === 'weapon')
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
-            if (obj.data.enhancementType === "armor" && this.type === 'equipment')
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
-        }
-        let enhSuffix = ''
-        let ofSuffix = ''
-        if (totalEnchancement > 0)
-            enhSuffix = ` +${totalEnchancement}`
-        if (suffixes.length > 0) {
-            ofSuffix = ` of ${suffixes.join(' and ').trim()}`
-        }
-        return `${prefixes.join(' ')} ${name}${ofSuffix}`.trim() + `${enhSuffix}`
-    }
-
-    buildPrice(basePrice, enhancements) {
-        let totalPrice = basePrice;
-        let totalEnchancementIncrease = 0;
-        let totalEnchancement = 0;
-        let maxSingleEnhancementIncrease = 0;
-        let flatPrice = 0;
-        for (const obj of enhancements) {
-            if (obj.data.enhancementType === "weapon" && this.type === 'weapon') {
-                totalEnchancementIncrease += obj.data.enhIncrease
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
-                flatPrice += obj.data.price
-                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
-            }
-            if (obj.data.enhancementType === "armor" && this.type === 'equipment') {
-                totalEnchancementIncrease += obj.data.enhIncrease
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
-                flatPrice += obj.data.price
-                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
-            }
-            if (obj.data.enhancementType === "misc") {
-                totalEnchancementIncrease += obj.data.enhIncrease
-                flatPrice += obj.data.price
-                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
-            }
-        }
-        let useEpicPricing = false
-        if (maxSingleEnhancementIncrease > 5 || totalEnchancement > 5)
-            useEpicPricing = true
-        // Base price for weapon
-        if (this.type === 'weapon') {
-            if (totalEnchancementIncrease > 0)
-                totalPrice += 300
-            if (!useEpicPricing)
-                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 2000 + flatPrice
-            else
-                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 2000 * 10 + 10 * flatPrice
-        } else if (this.type === 'equipment') {
-            if (totalEnchancementIncrease > 0)
-                totalPrice += 150
-            if (!useEpicPricing)
-                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 1000 + flatPrice
-            else
-                totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 1000 * 10 + 10 * flatPrice
-        }
-
-        return totalPrice;
-    }
 
  
 

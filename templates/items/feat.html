@@ -94,16 +94,14 @@
         </section>
     </div>
     {{else}}
-
     {{> "systems/D35E/templates/items/parts/item-description.html"}}
-
     {{/if}}
-
     <div class="tab flexcol active" data-group="primary" data-tab="configuration">
       <nav class="sheet-navigation tabs subtabs configuration" data-group="configuration">
         <a class="item active" data-tab="details">{{ localize "D35E.Details" }}</a>
-        <a class="item" data-tab="changes">{{localize "D35E.Changes"}}</a>
-        <a class="item" data-tab="linked-items">{{localize "D35E.Links"}}</a>
+        {{#each registeredTabs as |tab|}}
+        <a class="item" data-tab="{{tab.id}}">{{tab.name}}</a>
+        {{/each}}
       </nav>
 
       <div class="flexrow configuration-container" style="overflow: hidden; height: 100%">
@@ -245,17 +243,11 @@
             {{/if}}
             </div>
 
-
-          <div class="tab configuration-group flexcol" data-group="configuration" data-tab="changes">
-            {{> "systems/D35E/templates/items/parts/item-changes.html"}}
-
-            {{> "systems/D35E/templates/items/parts/item-notes.html"}}
+          {{#each registeredTabs as |tab|}}
+          <div class="tab configuration-group flexcol" data-group="configuration" data-tab="{{tab.id}}">
+            {{> (lookup tab 'sheet') ..}}
           </div>
-
-
-          <div class="tab configuration-group flexcol" data-group="configuration" data-tab="linked-items">
-            {{> "systems/D35E/templates/items/parts/item-links.html"}}
-          </div>
+          {{/each}}
         </section>
       </div>
     </div>
