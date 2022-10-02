@@ -55,13 +55,13 @@
         <div class="flexrow">
 
           {{#each ../system.details.levelUpData as |levelUpData i|}}
-            <a for="{{levelUpsystem.id}}" class="level-class-image configure-level-up-data active" {{#if levelUpsystem.classImage}}style="background-image: url({{levelUpsystem.classImage}}){{/if}}">
-              <span class="level">{{levelUpsystem.level}}</span>
-              {{#if levelUpsystem.hasFeat}}
+            <a for="{{levelUpData.id}}" class="level-class-image configure-level-up-data active" {{#if levelUpData.classImage}}style="background-image: url({{levelUpData.classImage}}){{/if}}">
+              <span class="level">{{levelUpData.level}}</span>
+              {{#if levelUpData.hasFeat}}
                 <span class="feat"  title="{{ localize 'D35E.NewFeat' }}">
                 </span>
               {{/if}}
-              {{#if levelUpsystem.hasAbility}}
+              {{#if levelUpData.hasAbility}}
               <span class="ability" title="{{ localize 'D35E.AbilityIncrease' }}">
               </span>
               {{/if}}

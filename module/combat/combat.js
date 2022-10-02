@@ -1,180 +1,78 @@
 import { ActorPF } from "../actor/entity.js";
 import { D35E } from "../config.js";
-import { isMinimumCoreVersion } from "../lib.js";
-import {Roll35e} from "../roll.js"
-import {ActorSheetPFNPCCombat} from "../actor/sheets/npc-combat.js";
-
-/* -------------------------------------------- */
-
-/**
- * This function is used to hook into the Chat Log context menu to add additional options to each message
- * These options make it easy to conveniently apply damage to controlled tokens based on the value of a Roll
- *
- * @param {HTMLElement} html    The Chat Message being rendered
- * @param {Array} options       The Array of Context Menu options
- * @returns {Array}              The extended options Array including new context choices
- */
-export const addChatMessageContextOptions = function (html, options) {
-  const canApply = (li) => canvas.tokens.controlled.length && li.find(".damage-roll .dice-total")?.length;
-  const canApplyCritical = (li) => canvas.tokens.controlled.length && li.find(".crit-damage-roll .dice-total")?.length;
-  options.push(
-    {
-      name: game.i18n.localize("D35E.ApplyDamage"),
-      icon: '<i class="fas fa-user-minus"></i>',
-      condition: canApply,
-      callback: (li) => ActorPF.applyDamage(li, 1),
-    },
-    {
-      name: game.i18n.localize("D35E.ApplyHealing"),
-      icon: '<i class="fas fa-user-plus"></i>',
-      condition: canApply,
-      callback: (li) => ActorPF.applyDamage(li, -1),
-    },
-    {
-      name: game.i18n.localize("D35E.ApplyCriticalDamage"),
-      icon: '<i class="fas fa-user-minus"></i>',
-      condition: canApplyCritical,
-      callback: (li) => ActorPF.applyDamage(li, 1, true),
-    },
-    {
-      name: game.i18n.localize("D35E.ApplyCriticalHealing"),
-      icon: '<i class="fas fa-user-minus"></i>',
-      condition: canApplyCritical,
-      callback: (li) => ActorPF.applyDamage(li, -1, true),
-    }
-  );
-  return options;
-};
-
-const duplicateCombatantInitiativeDialog = function (combats, combatantId) {
-  const combat = combats.find((c) => c.combatants.filter((o) => o.id === combatantId).length > 0);
-  if (!combat) {
-    ui.notifications.warn(game.i18n.localize("D35E.WarningNoCombatantFound"));
-    return;
-  }
-  const combatant = combat.combatants.filter((o) => o.id === combatantId)[0];
-  if (!combatant) {
-    ui.notifications.warn(game.i18n.localize("D35E.WarningNoCombatantFound"));
-    return;
-  }
-
-  new Dialog(
-    {
-      title: `${game.i18n.localize("D35E.DuplicateInitiative")}: ${combatant.actor.name}`,
-      content: `<div class="flexrow form-group">
-      <label>${game.i18n.localize("D35E.InitiativeOffset")}</label>
-      <input type="number" name="initiativeOffset" value="0"/>
-    </div>`,
-      buttons: {
-        confirm: {
-          label: game.i18n.localize("D35E.Confirm"),
-          callback: (html) => {
-            const offset = parseFloat(html.find('input[name="initiativeOffset"]').val());
-            const prevInitiative = combatant.initiative != null ? combatant.initiative : 0;
-            const newInitiative = prevInitiative + offset;
-            duplicateCombatantInitiative(combat, combatant, newInitiative);
-          },
-        },
-        cancel: {
-          label: game.i18n.localize("Cancel"),
-        },
-      },
-      default: "confirm",
-    },
-    {
-      classes: ["dialog", "D35E", "duplicate-initiative"],
-    }
-  ).render(true);
-};
-
-export const duplicateCombatantInitiative = function (combat, combatant, initiative) {
-  console.debug("Duplicating combatant:", combatant);
-  combat.createEmbeddedDocuments("Combatant", [
-    mergeObject(combatant.toObject(), { initiative: initiative }, { inplace: false }),
-  ]);
-};
-
-export const addCombatTrackerContextOptions = function (result) {
-  result.push({
-    name: "D35E.DuplicateInitiative",
-    icon: '<i class="fas fa-dice-d20"></i>',
-    callback: (li) => duplicateCombatantInitiativeDialog.call(this, this.combats, li.data("combatant-id")),
-  });
-};
+import { Roll35e } from "../roll.js";
+import { ActorSheetPFNPCCombat } from "../actor/sheets/npc-combat.js";
 
 export class CombatantD35E extends Combatant {
-    constructor(...args) {
-        super(...args);
+  constructor(...args) {
+    super(...args);
+  }
+
+  resetPerRoundCounters() {
+    if (this.actor) {
+      this.setFlag("D35E", "aaoCount", 1);
+      this.setFlag("D35E", "usedAaoCount", 0);
+      this.setFlag("D35E", "usedAttackAction", false);
+      this.setFlag("D35E", "usedMoveAction", false);
+      this.setFlag("D35E", "usedSwiftAction", false);
     }
+  }
 
-    resetPerRoundCounters() {
-        if (this.actor) {
-            this.setFlag('D35E', 'aaoCount', 1);
-            this.setFlag('D35E', 'usedAaoCount', 0);
-            this.setFlag('D35E', 'usedAttackAction', false);
-            this.setFlag('D35E', 'usedMoveAction', false);
-            this.setFlag('D35E', 'usedSwiftAction', false);
-        }
+  useAttackAction() {
+    let isMyTurn = game.combats?.active?.current.combatantId === this.id;
+    if (isMyTurn) {
+      this.setFlag("D35E", "usedAttackAction", true);
+    } else {
+      const usedAao = this.getFlag("D35E", "usedAaoCount") ?? 0;
+      this.setFlag("D35E", "usedAaoCount", usedAao + 1);
     }
+  }
 
-    useAttackAction() {
-        let isMyTurn = game.combats?.active?.current.combatantId === this.id;
-        if (isMyTurn) {
-            this.setFlag('D35E', 'usedAttackAction', true);
-        }
-        else {
-            const usedAao = this.getFlag('D35E', 'usedAaoCount') ?? 0;
-            this.setFlag('D35E', 'usedAaoCount', usedAao+1);
-        }
+  useAction(activationCost) {
+    if (activationCost.type === "attack" || activationCost.type === "standard") {
+      this.useAttackAction();
+    } else if (activationCost.type === "swift") {
+      this.setFlag("D35E", "usedASwiftAction", true);
     }
+  }
 
-    useAction(activationCost) {
-        if (activationCost.type === "attack" || activationCost.type === "standard") {
-            this.useAttackAction()
-        } else if (activationCost.type === "swift") {
-            this.setFlag('D35E', 'usedASwiftAction', true);
+  useFullAttackAction() {
+    this.setFlag("D35E", "usedAttackAction", true);
+    this.setFlag("D35E", "usedMoveAction", true);
+    this.update({});
+  }
 
-        }
-    }
+  get usedAttackAction() {
+    /* our turn is over this round if we have ended item
+     * or have been marked defeated */
+    return this.getFlag("D35E", "usedAttackAction") ?? false;
+  }
 
+  get usedMoveAction() {
+    /* our turn is over this round if we have ended item
+     * or have been marked defeated */
+    return this.getFlag("D35E", "usedMoveAction") ?? false;
+  }
 
-    useFullAttackAction() {
-        this.setFlag('D35E', 'usedAttackAction', true);
-        this.setFlag('D35E', 'usedMoveAction', true);
-        this.update({})
-    }
+  get usedSwiftAction() {
+    /* our turn is over this round if we have ended item
+     * or have been marked defeated */
+    return this.getFlag("D35E", "usedSwiftAction") ?? false;
+  }
 
-    get usedAttackAction() {
-        /* our turn is over this round if we have ended item
-         * or have been marked defeated */
-        return this.getFlag('D35E', 'usedAttackAction') ?? false;
-    }
-
-    get usedMoveAction() {
-        /* our turn is over this round if we have ended item
-         * or have been marked defeated */
-        return this.getFlag('D35E', 'usedMoveAction') ?? false;
-    }
-
-    get usedSwiftAction() {
-        /* our turn is over this round if we have ended item
-         * or have been marked defeated */
-        return this.getFlag('D35E', 'usedSwiftAction') ?? false;
-    }
-
-    get usedAllAao() {
-        /* our turn is over this round if we have ended item
-         * or have been marked defeated */
-        return this.getFlag('D35E', 'usedAaoCount') === this.getFlag('D35E', 'aaoCount') ?? false;
-    }
+  get usedAllAao() {
+    /* our turn is over this round if we have ended item
+     * or have been marked defeated */
+    return this.getFlag("D35E", "usedAaoCount") === this.getFlag("D35E", "aaoCount") ?? false;
+  }
 }
 
 export class CombatD35E extends Combat {
-    constructor(...args) {
-        super(...args);
-        this.buffs = new Map();
-        this.npcSheet = null;
-      }
+  constructor(...args) {
+    super(...args);
+    this.buffs = new Map();
+    this.npcSheet = null;
+  }
 
   /**
    * Override the default Initiative formula to customize special behaviors of the game system.
@@ -213,7 +111,7 @@ export class CombatD35E extends Combat {
     if (stop) return this;
 
     // Iterate over Combatants, performing an initiative roll for each
-    const [updates, messages] = await ids.reduce(
+    const [updates, messages] = ids.reduce(
       async (results, id, i) => {
         const result = await results;
         const [updates, messages] = result;
@@ -282,7 +180,6 @@ export class CombatD35E extends Combat {
         if (i > 0) chatData.sound = null; // Only play 1 sound for the whole set
         messages.push(chatData);
 
-
         // Return the Roll and the chat data
         return results;
       },
@@ -295,13 +192,13 @@ export class CombatD35E extends Combat {
 
     // Add enabled, existing buffs to combat tracker
     for (let id of ids) {
-        const c = this.combatants.get(id);
-        if (!c) continue;
-        if (c.actor) {
-            for (let buff of c.actor.trackedBuffs) {
-                await this.addBuffToCombat(buff, c.actor)
-            }
+      const c = this.combatants.get(id);
+      if (!c) continue;
+      if (c.actor) {
+        for (let buff of c.actor.trackedBuffs) {
+          await this.addBuffToCombat(buff, c.actor);
         }
+      }
     }
 
     // Ensure the turn order remains with the same combatant
@@ -365,20 +262,20 @@ export class CombatD35E extends Combat {
    */
   async _processCurrentCombatant() {
     try {
-        const actor = this.combatant.actor;
-        const buffId = this.combatant?.flags?.D35E?.buffId;
-        if (actor != null) {
-            await actor.progressRound();
-        } else if (buffId) {
-            let actor;
-            if (this.combatant?.flags?.D35E?.isToken) {
-                actor = canvas.scene.tokens.get(this.combatant?.flags?.D35E?.tokenId).actor;
-            } else {
-                actor = game.actors.get(this.combatant?.flags?.D35E?.actor);
-            }
-            await actor.progressBuff(buffId,1);
-            await this.nextTurn();
+      const actor = this.combatant.actor;
+      const buffId = this.combatant?.flags?.D35E?.buffId;
+      if (actor != null) {
+        await actor.progressRound();
+      } else if (buffId) {
+        let actor;
+        if (this.combatant?.flags?.D35E?.isToken) {
+          actor = canvas.scene.tokens.get(this.combatant?.flags?.D35E?.tokenId).actor;
+        } else {
+          actor = game.actors.get(this.combatant?.flags?.D35E?.actor);
         }
+        await actor.progressBuff(buffId, 1);
+        await this.nextTurn();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -390,26 +287,26 @@ export class CombatD35E extends Combat {
    */
   async nextRound() {
     const combat = await super.nextRound();
-    await this._resetPerRoundCounter()
+    await this._resetPerRoundCounter();
     // TODO: Process skipped turns.
     await this._processCurrentCombatant();
     return combat;
   }
 
-    updateCombatCharacterSheet() {
-        if (game.settings.get("D35E", "useCombatCharacterSheet")) {
-            if (this.combatant.actor) {
-                if (this.npcSheet == null) {
-                    this.npcSheet = new ActorSheetPFNPCCombat(this.combatant.actor);
-                } else {
-                    this.npcSheet.object = this.combatant.actor;
-                }
-                this.npcSheet.render(true)
-            }
+  updateCombatCharacterSheet() {
+    if (game.settings.get("D35E", "useCombatCharacterSheet")) {
+      if (this.combatant.actor) {
+        if (this.npcSheet == null) {
+          this.npcSheet = new ActorSheetPFNPCCombat(this.combatant.actor);
+        } else {
+          this.npcSheet.object = this.combatant.actor;
         }
+        this.npcSheet.render(true);
+      }
     }
+  }
 
-    /**
+  /**
    * @override
    * @returns {Promise<Combat>}
    */
@@ -421,35 +318,51 @@ export class CombatD35E extends Combat {
 
   async addBuffToCombat(buff, actor) {
     for (let combatant of this.combatants) {
-        if (this.combatant?.flags?.D35E?.buffId === buff.id) {
-            await combatant.update({initiative:(this.combatant.initiaitve+0.01)});
-            return;
-        }
+      if (this.combatant?.flags?.D35E?.buffId === buff.id) {
+        await combatant.update({ initiative: this.combatant.initiaitve + 0.01 });
+        return;
+      }
     }
     let buffDelta = 0.01;
-    if (buff.system.timeline.tickOnEnd)
-        buffDelta = -0.01
-    let buffCombatant = (await this.createEmbeddedDocuments("Combatant",[{name:buff.name,img:buff.img,initiative:(this.combatant.initiative+buffDelta), flags: {D35E: {buffId: buff.id, actor: actor.id, isToken: actor.isToken, tokenId: actor?.token?.id, actorImg: actor.img, actorName: actor.name}}}]))[0]
-    
+    if (buff.system.timeline.tickOnEnd) buffDelta = -0.01;
+    let buffCombatant = (
+      await this.createEmbeddedDocuments("Combatant", [
+        {
+          name: buff.name,
+          img: buff.img,
+          initiative: this.combatant.initiative + buffDelta,
+          flags: {
+            D35E: {
+              buffId: buff.id,
+              actor: actor.id,
+              isToken: actor.isToken,
+              tokenId: actor?.token?.id,
+              actorImg: actor.img,
+              actorName: actor.name,
+            },
+          },
+        },
+      ])
+    )[0];
   }
 
   async removeBuffFromCombat(buff) {
     try {
-        let combatantsToDelete = [];
-        for (let combatant of this.combatants) {
-            if (combatant?.flags?.D35E?.buffId === buff.id) {
-                combatantsToDelete.push(combatant.id);
-            }
+      let combatantsToDelete = [];
+      for (let combatant of this.combatants) {
+        if (combatant?.flags?.D35E?.buffId === buff.id) {
+          combatantsToDelete.push(combatant.id);
         }
-        this.deleteEmbeddedDocuments("Combatant",combatantsToDelete)
-    } catch (error) {
-        console.error(error);
       }
+      await this.deleteEmbeddedDocuments("Combatant", combatantsToDelete);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-    async _resetPerRoundCounter() {
-        for (let combatant of this.combatants) {
-            combatant.resetPerRoundCounters()
-        }
+  async _resetPerRoundCounter() {
+    for (let combatant of this.combatants) {
+      combatant.resetPerRoundCounters();
     }
+  }
 }

@@ -22,7 +22,7 @@ import { TokenPF } from "./module/token/token.js";
 import { addLowLightVisionToLightConfig } from "./module/canvas/low-light-vision.js";
 import { PatchCore } from "./module/patch-core.js";
 import { DicePF } from "./module/dice.js";
-import {CombatantD35E, CombatD35E, duplicateCombatantInitiative} from "./module/combat/combat.js";
+import {CombatantD35E, CombatD35E} from "./module/combat/combat.js";
 import { createCustomChatMessage } from "./module/chat.js";
 import { } from "./module/canvas/low-light-vision.js";
 import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
