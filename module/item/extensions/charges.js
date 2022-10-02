@@ -49,7 +49,7 @@ export class ItemCharges {
 
     if (getProperty(this.item.system, "requiresPsionicFocus")) {
       if (this.item.actor) {
-        await this.item.actor.update({ "data.attributes.psionicFocus": false });
+        await this.item.actor.update({ "system.attributes.psionicFocus": false });
       }
     }
 
@@ -62,9 +62,9 @@ export class ItemCharges {
     let prevValue = this.item.isSingleUse
       ? getProperty(chargeItem.system, "quantity")
       : getProperty(chargeItem.system, "uses.value");
-    if (data != null && this.item.isSingleUse && data["data.quantity"] != null) prevValue = data["data.quantity"];
-    else if (data != null && !this.item.isSingleUse && data["data.uses.value"] != null)
-      prevValue = data["data.uses.value"];
+    if (data != null && this.item.isSingleUse && data["system.quantity"] != null) prevValue = data["system.quantity"];
+    else if (data != null && !this.item.isSingleUse && data["system.uses.value"] != null)
+      prevValue = data["system.uses.value"];
 
     let newUses = prevValue + value;
     let rechargeTime = 0;
@@ -81,16 +81,16 @@ export class ItemCharges {
     console.log("D35E | Recharge and uses", data, newUses, rechargeFormula, rechargeTime);
     if (data != null && !isChargeLinked) {
       if (this.item.isSingleUse) {
-        data["data.quantity"] = newUses;
+        data["system.quantity"] = newUses;
       } else {
-        data["data.uses.value"] = newUses;
-        data["data.recharge.current"] = rechargeTime;
+        data["system.uses.value"] = newUses;
+        data["system.recharge.current"] = rechargeTime;
       }
     } else {
-      if (this.item.isSingleUse) await chargeItem.update({ "data.quantity": newUses }, { stopUpdates: true });
+      if (this.item.isSingleUse) await chargeItem.update({ "system.quantity": newUses }, { stopUpdates: true });
       else
         await chargeItem.update(
-          { "data.uses.value": newUses, "data.recharge.current": rechargeTime },
+          { "system.uses.value": newUses, "system.recharge.current": rechargeTime },
           { stopUpdates: true }
         );
     }
@@ -118,7 +118,7 @@ export class ItemCharges {
     let newState = "deck";
     if (value < 0) newState = "discarded";
     if (value >= 0) newState = "hand";
-    const key = "data.state";
+    const key = "system.state";
     if (data == null) {
       data = {};
       data[key] = newState;
@@ -149,7 +149,7 @@ export class ItemCharges {
       : Math.max(0, (getProperty(this.item.system, "preparation.preparedAmount") || 0) + value);
 
     if (!isSpontaneous && !usePowerPoints) {
-      const key = "data.preparation.preparedAmount";
+      const key = "system.preparation.preparedAmount";
       if (data == null) {
         data = {};
         data[key] = newCharges;
@@ -158,14 +158,14 @@ export class ItemCharges {
         data[key] = newCharges;
       }
     } else if (usePowerPoints) {
-      const key = `data.attributes.spells.spellbooks.${spellbookKey}.powerPoints`;
+      const key = `system.attributes.spells.spellbooks.${spellbookKey}.powerPoints`;
       const actorUpdateData = {};
       if (getProperty(this.item.system, "requiresPsionicFocus"))
-        actorUpdateData["data.attributes.psionicFocus"] = false;
+        actorUpdateData["system.attributes.psionicFocus"] = false;
       actorUpdateData[key] = newCharges;
       return this.item.actor.update(actorUpdateData);
     } else {
-      const key = `data.attributes.spells.spellbooks.${spellbookKey}.spells.spell${spellLevel}.value`;
+      const key = `system.attributes.spells.spellbooks.${spellbookKey}.spells.spell${spellLevel}.value`;
       const actorUpdateData = {};
       actorUpdateData[key] = newCharges;
       return this.item.actor.update(actorUpdateData);
