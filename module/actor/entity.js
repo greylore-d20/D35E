@@ -3682,7 +3682,7 @@ export class ActorPF extends Actor {
       ui.notifications.error(game.i18n.localize("D35E.NoPackFound") + " " + collection);
       return;
     }
-    if (pack.metadata.entity !== "Item") return;
+    if (pack.metadata.type !== "Item") return;
     await pack.getIndex();
     const entry = pack.index.find((e) => getOriginalNameIfExists(e) === name);
     if (!entry) {
@@ -3696,7 +3696,7 @@ export class ActorPF extends Actor {
       }
       //LogHelper.log(`${vtt} | Importing Item ${ent.name} from ${collection}`);
 
-      let data = ent.data.toObject();
+      let data = ent.toObject();
       delete data._id;
       return data;
     });
@@ -3825,7 +3825,7 @@ export class ActorPF extends Actor {
           if (items.length > 0) {
             const item = items[0];
             if (item.type === "buff" || item.type === "aura") {
-              await item.update({ "data.active": true });
+              await item.update({ "system.active": true });
             } else {
               await item.use({ skipDialog: true });
             }
@@ -3837,7 +3837,7 @@ export class ActorPF extends Actor {
           if (items.length > 0) {
             const item = items[0];
             if (item.type === "buff" || item.type === "aura") {
-              await item.update({ "data.active": true });
+              await item.update({ "system.active": true });
             } else {
               await item.use({ skipDialog: true });
             }
@@ -3857,7 +3857,7 @@ export class ActorPF extends Actor {
           if (items.length > 0) {
             const item = items[0];
             if (item.type === "buff" || item.type === "aura") {
-              await item.update({ "data.active": false });
+              await item.update({ "system.active": false });
             }
           }
         } else if (action.parameters.length === 2) {
@@ -3867,7 +3867,7 @@ export class ActorPF extends Actor {
           if (items.length > 0) {
             const item = items[0];
             if (item.type === "buff" || item.type === "aura") {
-              await item.update({ "data.active": false });
+              await item.update({ "system.active": false });
             }
           }
         } else

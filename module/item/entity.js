@@ -1140,30 +1140,6 @@ export class Item35E extends ItemBase35E {
     return actions;
   }
 
-  /**
-   * Get the Actor which is the author of a chat card
-   * @param {HTMLElement} card    The chat card being used
-   * @return {Actor|null}         The Actor entity or null
-   * @private
-   */
-  static _getChatCardActor(card) {
-    // Case 1 - a synthetic actor from a Token
-    const tokenKey = card.dataset.tokenId;
-    if (tokenKey) {
-      const [sceneId, tokenId] = tokenKey.split(".");
-      const scene = game.scenes.get(sceneId);
-      if (!scene) return null;
-      const tokenData = scene.getEmbeddedDocument("Token", tokenId);
-      if (!tokenData) return null;
-      const token = new Token(tokenData);
-      return token.actor;
-    }
-
-    // Case 2 - use Actor ID directory
-    const actorId = card.dataset.actorId;
-    return game.actors.get(actorId) || null;
-  }
-
   resetPerEncounterUses() {
     if (
       getProperty(this.system, "uses") != null &&
@@ -1306,21 +1282,6 @@ export class Item35E extends ItemBase35E {
   }
 
   /* -------------------------------------------- */
-
-  /**
-   * Get the Actor which is the author of a chat card
-   * @param {HTMLElement} card    The chat card being used
-   * @return {Array.<Actor>}      The Actor entity or null
-   * @private
-   */
-  static _getChatCardTargets(card) {
-    const character = game.user.character;
-    const controlled = canvas.tokens.controlled;
-    const targets = controlled.reduce((arr, t) => (t.actor ? arr.concat([t.actor]) : arr), []);
-    if (character && controlled.length === 0) targets.push(character);
-    if (!targets.length) throw new Error(`You must designate a specific Token as the roll target`);
-    return targets;
-  }
 
   static async toPolymorphBuff(origData, type) {
     let data = duplicate(game.system.template.Item.buff);

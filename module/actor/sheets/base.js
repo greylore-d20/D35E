@@ -2903,7 +2903,7 @@ export class ActorSheetPF extends ActorSheet {
 
     for (const data of updates) {
       const item = this.actor.items.filter((o) => {
-        return o._id === data._id;
+        return o._id === data.id;
       })[0];
       if (item == null) continue;
 

@@ -2103,7 +2103,7 @@ export class ActorUpdater {
         if (!addedAbilities.has(abilityUid)) {
           //LogHelper.log(`D35E | Removing existing ability ${abilityUid}`, changes)
           changes.splice(
-            changes.findIndex((change) => change.source.item.system.uniqueId === abilityUid),
+            changes.findIndex((change) => change.source.item.uniqueId === abilityUid),
             1
           );
           itemsToRemove.push(abilityUid);
