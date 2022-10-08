@@ -95,7 +95,7 @@ export class CombatD35E extends Combat {
   async rollInitiative(ids, { formula = null, updateTurn = true, messageOptions = {} } = {}) {
     // Structure input data
     ids = typeof ids === "string" ? [ids] : ids;
-    const currentId = this.combatant.id;
+    const currentId = this.combatant?.id;
     if (!formula) formula = this._getInitiativeFormula(this.combatant.actor);
 
     let overrideRollMode = null,
@@ -109,82 +109,76 @@ export class CombatD35E extends Combat {
     }
 
     if (stop) return this;
-
+    let updates = [];
+    let messages = [];
     // Iterate over Combatants, performing an initiative roll for each
-    const [updates, messages] = ids.reduce(
-      async (results, id, i) => {
-        const result = await results;
-        const [updates, messages] = result;
+    let i = 0;
+    for (let id of ids) {
+      // Get Combatant data
+      const c = this.combatants.get(id);
+      if (!c) return results;
+      const actorData = c.actor ? c.actor.system : {};
+      formula = formula || this._getInitiativeFormula(c.actor ? c.actor : null);
 
-        // Get Combatant data
-        const c = this.combatants.get(id);
-        if (!c) return results;
-        const actorData = c.actor ? c.actor.system : {};
-        formula = formula || this._getInitiativeFormula(c.actor ? c.actor : null);
+      actorData.bonus = bonus;
+      // Add bonus
+      if (bonus.length > 0 && i === 0) {
+        formula += " + @bonus";
+      }
 
-        actorData.bonus = bonus;
-        // Add bonus
-        if (bonus.length > 0 && i === 0) {
-          formula += " + @bonus";
-        }
+      // Roll initiative
+      const rollMode =
+        overrideRollMode != null
+          ? overrideRollMode
+          : messageOptions.rollMode || c.token.hidden || c.hidden
+          ? "gmroll"
+          : "roll";
+      const roll = Roll35e.safeRoll(formula, actorData);
+      if (roll.err) ui.notifications.warn(roll.err.message);
+      updates.push({ _id: id, initiative: roll.total });
 
-        // Roll initiative
-        const rollMode =
-          overrideRollMode != null
-            ? overrideRollMode
-            : messageOptions.rollMode || c.token.hidden || c.hidden
-            ? "gmroll"
-            : "roll";
-        const roll = Roll35e.safeRoll(formula, actorData);
-        if (roll.err) ui.notifications.warn(roll.err.message);
-        updates.push({ _id: id, initiative: roll.total });
+      const [notes, notesHTML] = c.actor.getInitiativeContextNotes();
 
-        const [notes, notesHTML] = c.actor.getInitiativeContextNotes();
+      // Create roll template data
+      const rollData = mergeObject(
+        {
+          user: game.user.id,
+          formula: roll.formula,
+          tooltip: await roll.getTooltip(),
+          total: roll.total,
+        },
+        notes.length > 0 ? { hasExtraText: true, extraText: notesHTML } : {}
+      );
 
-        // Create roll template data
-        const rollData = mergeObject(
-          {
-            user: game.user.id,
-            formula: roll.formula,
-            tooltip: await roll.getTooltip(),
-            total: roll.total,
+      // Create chat data
+      const chatData = mergeObject(
+        {
+          user: game.user.id,
+          type: CONST.CHAT_MESSAGE_TYPES.CHAT,
+          rollMode: rollMode,
+          sound: CONFIG.sounds.dice,
+          speaker: {
+            scene: canvas.scene.id,
+            actor: c.actor ? c.actor.id : null,
+            token: c.token.id,
+            alias: c.token.name,
           },
-          notes.length > 0 ? { hasExtraText: true, extraText: notesHTML } : {}
-        );
 
-        // Create chat data
-        const chatData = mergeObject(
-          {
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.CHAT,
-            rollMode: rollMode,
-            sound: CONFIG.sounds.dice,
-            speaker: {
-              scene: canvas.scene.id,
-              actor: c.actor ? c.actor.id : null,
-              token: c.token.id,
-              alias: c.token.name,
-            },
+          flavor: game.i18n.localize("D35E.RollsForInitiative").format(c.token.name),
+          roll: roll,
+          content: await renderTemplate("systems/D35E/templates/chat/roll-ext.html", rollData),
+        },
+        messageOptions
+      );
+      setProperty(chatData, "flags.D35E.subject.core", "init");
 
-            flavor: game.i18n.localize("D35E.RollsForInitiative").format(c.token.name),
-            roll: roll,
-            content: await renderTemplate("systems/D35E/templates/chat/roll-ext.html", rollData),
-          },
-          messageOptions
-        );
-        setProperty(chatData, "flags.D35E.subject.core", "init");
+      // Handle different roll modes
+      ChatMessage.applyRollMode(chatData, chatData.rollMode);
 
-        // Handle different roll modes
-        ChatMessage.applyRollMode(chatData, chatData.rollMode);
-
-        if (i > 0) chatData.sound = null; // Only play 1 sound for the whole set
-        messages.push(chatData);
-
-        // Return the Roll and the chat data
-        return results;
-      },
-      [[], []]
-    );
+      if (i > 0) chatData.sound = null; // Only play 1 sound for the whole set
+      messages.push(chatData);
+      i++;
+    }
     if (!updates.length) return this;
 
     // Update multiple combatants
