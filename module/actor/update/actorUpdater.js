@@ -7,6 +7,7 @@ import { ActorChangesHelper } from "../helpers/actorChangesHelper.js";
 import { ActorWealthHelper } from "../helpers/actorWealthHelper.js";
 import { LogHelper } from "../../helpers/LogHelper.js";
 import { ItemEnhancementHelper } from "../../item/helpers/itemEnhancementHelper.js";
+import { ActorPF } from "../entity.js";
 
 export class ActorUpdater {
   /**

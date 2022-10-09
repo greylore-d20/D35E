@@ -65,6 +65,11 @@ export class CombatantD35E extends Combatant {
      * or have been marked defeated */
     return this.getFlag("D35E", "usedAaoCount") === this.getFlag("D35E", "aaoCount") ?? false;
   }
+
+  get isNPC() {
+    if (!this.actor) return false;
+    return this.actor.type !== "character";
+  }
 }
 
 export class CombatD35E extends Combat {
@@ -96,7 +101,7 @@ export class CombatD35E extends Combat {
     // Structure input data
     ids = typeof ids === "string" ? [ids] : ids;
     const currentId = this.combatant?.id;
-    if (!formula) formula = this._getInitiativeFormula(this.combatant.actor);
+    if (!formula) formula = this._getInitiativeFormula(this.combatant?.actor);
 
     let overrideRollMode = null,
       bonus = "",
