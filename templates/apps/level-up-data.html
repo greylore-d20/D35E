@@ -68,7 +68,8 @@
                 <a class="item-control" title="Remove Skill Point" onclick="addRemoveSkill('skills.{{s}}.points',-1,{{skill.cs}})">
                     <i class="fas fa-minus remove-skill"></i>
                 </a>
-                <input type="text" class="skill-value" name="skills.{{s}}.points" style="border: none" value="{{skill.points}}" readonly placeholder="0"/>
+                <input type="text" class="skill-value" name="skills.{{s}}.points.temp" style="border: none" value="{{skill.points}}" readonly placeholder="0"/>
+                <input type="hidden" class="skill-value" name="skills.{{s}}.points" style="border: none" value="{{skill.points}}" placeholder="0"/>
                 <input type="hidden" class="skill-class" data-class-skillid="{{s}}" value="{{skill.cs}}" readonly placeholder="0"/>
                 <a class="item-control" title="Add Skill Point" onclick="addRemoveSkill('skills.{{s}}.points',1,{{skill.cs}})">
                     <i class="fas fa-plus add-skill"></i>
@@ -95,7 +96,7 @@
             $('#spl-base').val(skills)
             $('#hd').val(hd)
             let classId = $('option:selected', select).val();
-            let intSkills = {{actor.data.abilities.int.mod}};
+            let intSkills = {{actor.system.abilities.int.mod}};
             let bonusSkillPoints = '{{bonusSkillPoints}}';
             skills += intSkills
             skills += parseInt(bonusSkillPoints)
@@ -152,7 +153,7 @@
             } else {
                 $('#skill-used').css('color','black')
             }
-            let intSkills = '{{actor.data.abilities.int.mod}}';
+            let intSkills = '{{actor.system.abilities.int.mod}}';
             let bonusSkillPoints = '{{bonusSkillPoints}}';
             let level = {{level}};
             if (level === 1) {
@@ -172,6 +173,7 @@
             if (usedSkillpoints + value < 0) return;
             if (parseInt($(`input[name='${id}']`).val() || 0) + value < 0) return;
             $(`input[name='${id}']`).val(parseInt($(`input[name='${id}']`).val() || 0) + value)
+            $(`input[name='${id}.temp']`).val(parseInt($(`input[name='${id}']`).val() || 0))
             usedSkillpoints+=value;
             $('#usedSkillpoints').val(usedSkillpoints)
             updateFormData();

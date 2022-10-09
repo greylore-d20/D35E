@@ -70,7 +70,7 @@ export class LevelUpDataDialog extends FormApplication {
       });
     });
     let classes = this.actor.items
-      .filter((o) => o.type === "class" && getProperty(o.data.data, "classType") !== "racial")
+      .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
       .sort((a, b) => {
         return a.sort - b.sort;
       });
@@ -79,7 +79,7 @@ export class LevelUpDataDialog extends FormApplication {
       classes: classes,
       classesJson: JSON.stringify(
         classes.map((_c) => {
-          return { id: _c._id, classSkills: _c.data.data.classSkills };
+          return { id: _c._id, classSkills: _c.system.classSkills };
         })
       ),
       level: this.actor.system.details.levelUpData.findIndex((a) => a.id === this.levelUpId) + 1,
@@ -110,8 +110,8 @@ export class LevelUpDataDialog extends FormApplication {
     //console.log('formData',formData)
     if (classId !== "") {
       let _class = this.actor.items.find((cls) => cls._id === classId);
-      let data = duplicate(this.actor.system.details.levelUpData);
-      data.forEach((a) => {
+      let levelUpData = duplicate(this.actor.system.details.levelUpData);
+      levelUpData.forEach((a) => {
         if (a.id === this.levelUpId) {
           a.class = _class.name;
           a.classImage = _class.img;
@@ -121,9 +121,9 @@ export class LevelUpDataDialog extends FormApplication {
             let key = s.split(".");
             if (key[0] === "skills" && key.length === 3) {
               if (a.skills[key[1]] === undefined) {
-                a.skills[key[1]] = { rank: 0, cls: _class.data.data.classSkills[key[1]] };
+                a.skills[key[1]] = { rank: 0, cls: _class.system.classSkills[key[1]] };
               }
-              a.skills[key[1]].cls = _class.data.data.classSkills[key[1]];
+              a.skills[key[1]].cls = _class.system.classSkills[key[1]];
               a.skills[key[1]].points = parseInt(formData[s]);
             }
             if (key[0] === "skills" && key.length === 5) {
@@ -131,19 +131,19 @@ export class LevelUpDataDialog extends FormApplication {
                 a.skills[key[1]] = { subskills: {} };
               }
               if (a.skills[key[1]].subskills[key[3]] === undefined) {
-                a.skills[key[1]].subskills[key[3]] = { rank: 0, cls: _class.data.data.classSkills[key[1]] };
+                a.skills[key[1]].subskills[key[3]] = { rank: 0, cls: _class.system.classSkills[key[1]] };
               }
-              a.skills[key[1]].subskills[key[3]].cls = _class.data.data.classSkills[key[1]];
+              a.skills[key[1]].subskills[key[3]].cls = _class.system.classSkills[key[1]];
               a.skills[key[1]].subskills[key[3]].points = parseInt(formData[s]);
             }
           });
         }
       });
       //console.log(`D35E | Updating Level Data | ${classId} | ${this.levelUpId}`)
-      updateData[`data.details.levelUpData`] = data;
+      updateData[`system.details.levelUpData`] = levelUpData;
 
       const classes = this.actor.items
-        .filter((o) => o.type === "class" && getProperty(o.data.data, "classType") !== "racial")
+        .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
         .sort((a, b) => {
           return a.sort - b.sort;
         });
@@ -151,7 +151,7 @@ export class LevelUpDataDialog extends FormApplication {
       let classLevels = new Map();
       let classHP = new Map();
       // Iterate over all levl ups
-      data.forEach((lud) => {
+      levelUpData.forEach((lud) => {
         if (lud.classId === null || lud.classId === "") return;
         let _class = this.actor.items.find((cls) => cls._id === lud.classId);
         if (_class === undefined) return;
@@ -161,27 +161,27 @@ export class LevelUpDataDialog extends FormApplication {
         classHP.set(_class._id, classHP.get(_class._id) + (lud.hp || 0));
         Object.keys(lud.skills).forEach((s) => {
           if (lud.skills[s])
-            updateData[`data.skills.${s}.points`] =
+            updateData[`system.skills.${s}.points`] =
               (lud.skills[s].points || 0) * (lud.skills[s].cls ? 1 : 0.5) +
-              (updateData[`data.skills.${s}.points`] || 0);
+              (updateData[`system.skills.${s}.points`] || 0);
           if (lud.skills[s].subskills) {
             Object.keys(lud.skills[s].subskills).forEach((sb) => {
               if (lud.skills[s].subskills && lud.skills[s].subskills[sb])
-                updateData[`data.skills.${s}.subSkills.${sb}.points`] =
+                updateData[`system.skills.${s}.subSkills.${sb}.points`] =
                   lud.skills[s].subskills[sb].points * (lud.skills[s].subskills[sb].cls ? 1 : 0.5) +
-                  (updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0);
+                  (updateData[`system.skills.${s}.subSkills.${sb}.points`] || 0);
             });
           }
         });
       });
-      Object.keys(data[0].skills).forEach((s) => {
-        if (this.object.data.data.skills[s])
-          updateData[`data.skills.${s}.points`] = Math.floor(updateData[`data.skills.${s}.points`] || 0);
-        if (data[0].skills[s].subskills) {
-          Object.keys(data[0].skills[s].subskills).forEach((sb) => {
-            if (this.object.data.data.skills[s].subskills && this.object.data.data.skills[s].subskills[sb])
-              updateData[`data.skills.${s}.subSkills.${sb}.points`] = Math.floor(
-                updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0
+      Object.keys(levelUpData[0].skills).forEach((s) => {
+        if (this.object.system.skills[s])
+          updateData[`system.skills.${s}.points`] = Math.floor(updateData[`system.skills.${s}.points`] || 0);
+        if (levelUpData[0].skills[s].subskills) {
+          Object.keys(levelUpData[0].skills[s].subskills).forEach((sb) => {
+            if (this.object.system.skills[s].subskills && this.object.system.skills[s].subskills[sb])
+              updateData[`system.skills.${s}.subSkills.${sb}.points`] = Math.floor(
+                updateData[`system.skills.${s}.subSkills.${sb}.points`] || 0
               );
           });
         }
@@ -190,8 +190,8 @@ export class LevelUpDataDialog extends FormApplication {
         if (__class.data.classType === "racial") continue;
         let itemUpdateData = {};
         itemUpdateData["_id"] = __class._id;
-        itemUpdateData["data.levels"] = classLevels.get(__class._id) || 0;
-        itemUpdateData["data.hp"] = classHP.get(__class._id) || 0;
+        itemUpdateData["system.levels"] = classLevels.get(__class._id) || 0;
+        itemUpdateData["system.hp"] = classHP.get(__class._id) || 0;
         await this.object.updateOwnedItem(itemUpdateData, { stopUpdates: true });
       }
     }
