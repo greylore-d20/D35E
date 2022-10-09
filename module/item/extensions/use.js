@@ -398,15 +398,15 @@ export class ItemUse {
 
     if (rollData.featDamageBonus) {
       if (rollData.featDamageBonus !== 0)
-        damageExtraParts.push(["@critMult*(${this.item.featDamageBonus})", "Feats", "base"]);
+        damageExtraParts.push(["@critMult*(${this.featDamageBonus})", "Feats", "base"]);
     }
     if (rollData.featDamagePrecision) {
-      damageExtraParts.push(["(${this.item.featDamagePrecision})", "Precision"]);
+      damageExtraParts.push(["(${this.featDamagePrecision})", "Precision"]);
     }
     if (rollData.featDamage) {
       for (let dmg of Object.keys(rollData.featDamage)) {
         // //console.log('Bonus damage!', dmg, rollData.featDamage[dmg])
-        damageExtraParts.push(["(${this.item.featDamage." + dmg + "})", dmg]);
+        damageExtraParts.push(["(${this.featDamage." + dmg + "})", dmg]);
       }
     }
 
@@ -712,13 +712,11 @@ export class ItemUse {
 
         for (let note of noteObj.notes) {
           attackNotes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) =>
-                TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {
-                  rollData: rollData,
-                })
-              )
+            ...note.split(/[\n\r]+/).map((o) =>
+              TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {
+                rollData: rollData,
+              })
+            )
           );
         }
       }

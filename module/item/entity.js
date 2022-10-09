@@ -1094,7 +1094,7 @@ export class Item35E extends ItemBase35E {
   getRollData(customData = null) {
     let _base = this.toObject(false).system;
     let result = {};
-    if (customData) result = mergeObject(_base, customsystem);
+    if (customData) result = mergeObject(_base, customData.system);
     else result = _base;
 
     if (this.type === "buff") result.level = result.level;
