@@ -2,7 +2,7 @@
     <div class="flexrow"><h2 class="block-header" style="flex: 1">{{#if deck.orig.class}}{{ localize
         'D35E.CardDeckBookForClass' class=deck.orig.class }}{{/if}}</h2><a
             class="btn configure-deck point-buy-button blue-button"
-            for="data.attributes.cards.decks.{{deckIndex}}" onkeydown="e.preventDefault();">
+            for="system.attributes.cards.decks.{{deckIndex}}" onkeydown="e.preventDefault();">
         {{ localize 'D35E.Configure' }}
     </a></div>
 
@@ -12,11 +12,11 @@
     <!--    <div class="form-group spellcasting-class tooltip flexrow" style="padding: 0 0 0 0.5rem; flex: 1;">-->
     <!--      <span class="tooltipcontent">@cl : {{deck.orig.cl.total}}</span>-->
     <!--      <label><h3>{{localize "D35E.SpellcastingClass"}}</h3></label>-->
-    <!--      <select name="data.attributes.spells.spellbooks.{{deckIndex}}.class" data-dtype="String">-->
+    <!--      <select name="system.attributes.spells.spellbooks.{{deckIndex}}.class" data-dtype="String">-->
     <!--        {{#select deck.orig.class}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
     <!--        <option value="_hd">{{localize "D35E.HitDie"}}</option>-->
-    <!--        {{#each data.classes as |cls a|}}-->
+    <!--        {{#each system.classes as |cls a|}}-->
     <!--        <option value="{{a}}">{{cls.name}}</option>-->
     <!--        {{/each}}-->
     <!--        {{/select}}-->
@@ -25,10 +25,10 @@
 
     <!--    <div class="form-group spellcasting-ability flexrow" style="padding: 0 0.5rem 0 0.5rem; flex: 1;">-->
     <!--      <label><h3>{{localize "D35E.SpellcastingAbility"}}</h3></label>-->
-    <!--      <select name="data.attributes.spells.spellbooks.{{deckIndex}}.ability" data-dtype="String">-->
+    <!--      <select name="system.attributes.spells.spellbooks.{{deckIndex}}.ability" data-dtype="String">-->
     <!--        {{#select deck.orig.ability}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
-    <!--        {{#each data.abilities as |abl a|}}-->
+    <!--        {{#each system.abilities as |abl a|}}-->
     <!--        <option value="{{a}}">{{abl.label}}</option>-->
     <!--        {{/each}}-->
     <!--        {{/select}}-->
@@ -43,7 +43,7 @@
             </div>
             <footer class="attribute-footer">
                 <input type="text" style="width: calc(100% - 60px);"
-                       name="data.attributes.cards.decks.{{deckIndex}}.cl.formula"
+                       name="system.attributes.cards.decks.{{deckIndex}}.cl.formula"
                        value="{{deck.orig.cl.formula}}"
                        placeholder="{{ localize 'D35E.CasterLevelBonusFormula' }}"/>
             </footer>
@@ -58,7 +58,7 @@
             </div>
             <footer class="attribute-footer">
                 <input type="text" style="width: calc(100%);"
-                       name="data.attributes.cards.decks.{{deckIndex}}.handSize.formula"
+                       name="system.attributes.cards.decks.{{deckIndex}}.handSize.formula"
                        value="{{deck.orig.handSize.formula}}"
                        placeholder="{{ localize 'D35E.Bonus' }}{{ localize 'D35E.HandSizeFormula' }}"/>
             </footer>
@@ -74,7 +74,7 @@
             </div>
             <footer class="attribute-footer">
                 <input type="text" style="width: calc(100%);"
-                       name="data.attributes.cards.decks.{{deckIndex}}.deckSize.formula"
+                       name="system.attributes.cards.decks.{{deckIndex}}.deckSize.formula"
                        value="{{deck.orig.deckSize.formula}}"
                        placeholder="{{ localize 'D35E.Bonus' }} {{ localize 'D35E.DeckSizeFormula' }}"/>
             </footer>
@@ -89,7 +89,7 @@
                 {{else}}
                 <a class="remove-prestige-cl-disabled"><i class="fas fa-minus"></i></a>
                 {{/if}}
-                <input type="text" name="data.attributes.cards.decks.{{deckIndex}}.bonusPrestigeCl"
+                <input type="text" name="system.attributes.cards.decks.{{deckIndex}}.bonusPrestigeCl"
                        value="{{deck.orig.bonusPrestigeCl}}" placeholder="{{ localize 'D35E.PowerPoints' }}"
                        data-dtype="Number"/>
 
@@ -103,11 +103,11 @@
                 <span>{{deck.orig.availablePrestigeCl}}</span>
                 <span class="sep">/</span>
                 <span>{{deck.orig.maxPrestigeCl}}</span>
-                {{#if deck.data.maxPrestigeClSources.length}}
+                {{#if deck.system.maxPrestigeClSources.length}}
                 <span class="tooltipcontent">
 
                 <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                {{#each deck.data.maxPrestigeClSources as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
+                {{#each deck.system.maxPrestigeClSources as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
             </span>
                 {{/if}}
             </footer>
@@ -119,7 +119,7 @@
     <!--    <div class="flexcol">-->
     <!--      <div class="flexrow formulas">-->
     <!--        <label><h3>{{localize "D35E.BaseDCFormula"}}</h3></label>-->
-    <!--        <input type="text" name="data.attributes.spells.spellbooks.{{deckIndex}}.baseDCFormula"-->
+    <!--        <input type="text" name="system.attributes.spells.spellbooks.{{deckIndex}}.baseDCFormula"-->
     <!--        value="{{deck.orig.baseDCFormula}}" placeholder="{{localize "D35E.BaseDCFormula"}}" />-->
     <!--      </div>-->
 
@@ -128,22 +128,22 @@
     <!--    -->
     <!--    <div class="flexcol">-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{deckIndex}}.autoSpellLevels"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{deckIndex}}.autoSpellLevels"-->
     <!--        {{checked deck.orig.autoSpellLevels}}/> {{localize "D35E.AutomaticSpellSlots"}}-->
     <!--      </label>-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{deckIndex}}.spontaneous"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{deckIndex}}.spontaneous"-->
     <!--        {{checked deck.orig.spontaneous}}/> {{localize "D35E.SpellPrepSpontaneous"}}-->
     <!--      </label>-->
     <!--    </div>-->
     <!--    <div class="flexcol">-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{deckIndex}}.arcaneSpellFailure"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{deckIndex}}.arcaneSpellFailure"-->
     <!--        {{checked deck.orig.arcaneSpellFailure}}/> {{localize "D35E.ArcaneSpellFailure"}}-->
     <!--      </label>-->
 
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{deckIndex}}.usePowerPoints"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{deckIndex}}.usePowerPoints"-->
     <!--               {{checked deck.orig.usePowerPoints}}/> {{localize "D35E.UsePowerPoints"}}-->
     <!--      </label>-->
     <!--    </div>-->
@@ -199,7 +199,7 @@
                 <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                 <h4>{{item.name}}
                     {{#unless @root.hideShortDescriptions}}
-                    <em style="color: black; opacity: 0.7" class="non-rollable">{{item.data.snip}}</em>
+                    <em style="color: black; opacity: 0.7" class="non-rollable">{{item.system.snip}}</em>
                     {{/unless}}
                 </h4>
             </div>

@@ -95,7 +95,7 @@ const _TokenHUD_getStatusEffectChoices = TokenHUD.prototype._getStatusEffectChoi
 TokenHUD.prototype._getStatusEffectChoices = function () {
   let core = _TokenHUD_getStatusEffectChoices.call(this),
       buffs = {};
-  Object.entries(this.object.actor._calcBuffTextures()).forEach((obj) => {
+  Object.entries(this.object.actor.buffs.calcBuffTextures()).forEach((obj) => {
     let [idx, buff] = obj;
     if (buffs[buff.icon] && buff.label) buffs[buff.icon].title = buff.label;
     else {

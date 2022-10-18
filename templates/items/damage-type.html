@@ -42,7 +42,7 @@
 
             {{!-- Description Tab --}}
             <div class="tab flexcol active" data-group="primary" data-tab="description">
-                {{editor content=data.description.value target="data.description.value" button=true owner=owner
+                {{editor content=data.description.value target="system.description.value" button=true owner=owner
                 editable=editable}}
             </div>
 
@@ -58,8 +58,8 @@
                     {{!-- Attack Type --}}
                     <div class="form-group">
                         <label>{{localize "D35E.DamageType"}}</label>
-                        <select name="data.damageType">
-                            {{#select data.data.damageType}}
+                        <select name="system.damageType">
+                            {{#select data.system.damageType}}
                             {{#each config.damageTypes as |name type|}}
                             <option value="{{type}}">{{name}}</option>
                             {{/each}}
@@ -73,20 +73,20 @@
                     <div class="flexrow">
                         <div class="form-group" style="flex: 1">
                             <div class="toggle" style="width: 165px">
-                                <input id="{{randomUuid}}-data.slashing" type="checkbox" name="data.isSlashing" {{checked data.data.isSlashing}}/>
-                                <label style="width: 165px" for="{{randomUuid}}-data.slashing">{{#if data.data.isSlashing}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.DRSlashing"}}</label>
+                                <input id="{{randomUuid}}-data.slashing" type="checkbox" name="system.isSlashing" {{checked data.system.isSlashing}}/>
+                                <label style="width: 165px" for="{{randomUuid}}-data.slashing">{{#if data.system.isSlashing}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.DRSlashing"}}</label>
                             </div>
                         </div>
                         <div class="form-group" style="flex: 1">
                             <div class="toggle" style="width: 165px">
-                                <input id="{{randomUuid}}-data.bludgeoning" type="checkbox" name="data.isBludgeoning" {{checked data.data.isBludgeoning}}/>
-                                <label style="width: 165px" for="{{randomUuid}}-data.bludgeoning">{{#if data.data.isBludgeoning}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.DRBludgeoning"}}</label>
+                                <input id="{{randomUuid}}-data.bludgeoning" type="checkbox" name="system.isBludgeoning" {{checked data.system.isBludgeoning}}/>
+                                <label style="width: 165px" for="{{randomUuid}}-data.bludgeoning">{{#if data.system.isBludgeoning}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.DRBludgeoning"}}</label>
                             </div>
                         </div>
                         <div class="form-group" style="flex: 1">
                             <div class="toggle" style="width: 165px">
-                                <input id="{{randomUuid}}-data.piercing" type="checkbox" name="data.isPiercing" {{checked data.data.isPiercing}}/>
-                                <label style="width: 165px" for="{{randomUuid}}-data.piercing">{{#if data.data.isPiercing}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.DRPiercing"}}</label>
+                                <input id="{{randomUuid}}-data.piercing" type="checkbox" name="system.isPiercing" {{checked data.system.isPiercing}}/>
+                                <label style="width: 165px" for="{{randomUuid}}-data.piercing">{{#if data.system.isPiercing}}<i class="far fa-check-square"></i>{{else}}<i class="far fa-square"></i>{{/if}}{{localize "D35E.DRPiercing"}}</label>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                     <h3 class="form-header">System Properties</h3>
                     <div class="form-group">
                         <label>UID</label>
-                        <input type="text" name="data.uniqueId" value="{{data.data.uniqueId}}" data-dtype="String"/>
+                        <input type="text" name="system.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
                     </div>
                     {{/if}}
                 </div>

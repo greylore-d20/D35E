@@ -12,15 +12,15 @@ export const addClassAbilitiesFromPackToCache = async function(itemPack) {
     const entities = await itemPack.getDocuments();
     for (let e of entities) {
         //e.pack = packName;
-        if (e.data.data.associations !== undefined && e.data.data.associations.classes !== undefined) {
-            e.data.data.associations.classes.forEach(cl => {
+        if (e.system.associations !== undefined && e.system.associations.classes !== undefined) {
+            e.system.associations.classes.forEach(cl => {
                 if (!CACHE.ClassFeatures.has(cl[0]))
                     CACHE.ClassFeatures.set(cl[0], [])
                 CACHE.ClassFeatures.get(cl[0]).push(e)
             })
         }
-        if (e.data.data.uniqueId) {
-            CACHE.AllAbilities.set(e.data.data.uniqueId, e)
+        if (e.system.uniqueId) {
+            CACHE.AllAbilities.set(e.system.uniqueId, e)
             CACHE.AllClassFeatures.push(e);
         }
     }
@@ -31,15 +31,15 @@ export const addRacialAbilitiedFromPackToCache = async function (itemPack) {
     const entities = await itemPack.getDocuments();
     for (let e of entities) {
         //e.pack = packName;
-        if (e.data.data.tags !== undefined) {
-            e.data.data.tags.forEach(cl => {
+        if (e.system.tags !== undefined) {
+            e.system.tags.forEach(cl => {
                 if (!CACHE.RacialFeatures.has(cl[0]))
                     CACHE.RacialFeatures.set(cl[0], [])
                 CACHE.RacialFeatures.get(cl[0]).push(e)
             })
         }
-        if (e.data.data.uniqueId) {
-            CACHE.AllAbilities.set(e.data.data.uniqueId, e)
+        if (e.system.uniqueId) {
+            CACHE.AllAbilities.set(e.system.uniqueId, e)
             CACHE.AllRacialFeatures.push(e);
         }
     }
@@ -80,15 +80,15 @@ export const buildCache = async function() {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
-                if (e.data.data.tags !== undefined) {
-                    e.data.data.tags.forEach(cl => {
+                if (e.system.tags !== undefined) {
+                    e.system.tags.forEach(cl => {
                         if (!CACHE.RacialFeatures.has(cl[0]))
                             CACHE.RacialFeatures.set(cl[0], [])
                         CACHE.RacialFeatures.get(cl[0]).push(e)
                     })
                 }
-                if (e.data.data.uniqueId) {
-                    CACHE.AllAbilities.set(e.data.data.uniqueId, e)
+                if (e.system.uniqueId) {
+                    CACHE.AllAbilities.set(e.system.uniqueId, e)
                     CACHE.AllRacialFeatures.push(e);
                 }
             }
@@ -99,8 +99,8 @@ export const buildCache = async function() {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
-                if (e.data.data.uniqueId) {
-                    CACHE.Materials.set(e.data.data.uniqueId, e)
+                if (e.system.uniqueId) {
+                    CACHE.Materials.set(e.system.uniqueId, e)
                 }
             }
             continue;
@@ -110,8 +110,8 @@ export const buildCache = async function() {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
-                if (e.data.data.uniqueId) {
-                    CACHE.DamageTypes.set(e.data.data.uniqueId, e)
+                if (e.system.uniqueId) {
+                    CACHE.DamageTypes.set(e.system.uniqueId, e)
                 }
             }
             continue;

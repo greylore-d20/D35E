@@ -1033,7 +1033,7 @@ D35E.conditions = {
   "stable": "D35E.Stable",
   "unconscious": "D35E.Unconscious",
   "staggered": "D35E.Staggered",
-  "invisibility": "D35E.Invisibility",
+  "invisible": "D35E.Invisible",
   "banished": "D35E.Banished",
 };
 

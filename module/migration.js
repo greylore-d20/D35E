@@ -52,7 +52,7 @@ export const migrateWorld = async function() {
   for (const s of game.scenes.contents) {
     try {
       const updateData = migrateSceneData(s.data);
-      if (!foundry.utils.isObjectEmpty(updateData)) {
+      if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Scene document ${s.name}`);
         await s.update(updateData, { enforceTypes: false });
         // If we do not do this, then synthetic token actors remain in cache
@@ -151,7 +151,7 @@ export const migrateActorData = async function(actor, itemsToAdd) {
     const itemUpdate = migrateItemData(itemData);
 
     // Update the Owned Item
-    if (!isObjectEmpty(itemUpdate)) {
+    if (!isEmpty(itemUpdate)) {
       itemUpdate._id = itemData._id;
       arr.push(expandObject(itemUpdate));
     }
@@ -551,8 +551,11 @@ const _migrateActorBaseStats = function(ent, updateData) {
   if (getProperty(ent.data, "data.attributes.conditions.unconscious") == null) {
     updateData["data.attributes.conditions.unconscious"] = false;
   }
-  if (getProperty(ent.data, "data.attributes.conditions.invisibility") == null) {
-    updateData["data.attributes.conditions.invisibility"] = false;
+  if (getProperty(ent.data, "data.attributes.conditions.invisibility")) {
+    updateData["data.attributes.conditions.invisibility"] = null;
+  }
+  if (getProperty(ent.data, "data.attributes.conditions.invisible") == null) {
+    updateData["data.attributes.conditions.invisible"] = false;
   }
   if (getProperty(ent.data, "data.attributes.conditions.banished") == null) {
     updateData["data.attributes.conditions.banished"] = false;

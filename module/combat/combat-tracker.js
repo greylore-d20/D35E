@@ -35,7 +35,7 @@ export class D35ECombatTracker extends CombatTracker {
             turn.effects = new Set();
             if ( combatant.token ) {
                 combatant.token.actor.effects.forEach(e => turn.effects.add(e));
-                if ( combatant.token.data.overlayEffect ) turn.effects.add(combatant.token.data.overlayEffect);
+                if ( combatant.token.overlayEffect ) turn.effects.add(combatant.token.overlayEffect);
             }
 
             turn.ended = combatant?.turnEnded ?? true;
@@ -50,15 +50,15 @@ export class D35ECombatTracker extends CombatTracker {
                 turn.usedAllAao = combatant.usedAllAao;
                 if (turn.active)
                     activeActorTurnId = turn.id;
-                turn.zeroHp = combatant.actor.data.data.attributes.hp.value === 0 ? true : false;
+                turn.zeroHp = combatant.actor.system.attributes.hp.value === 0 ? true : false;
                 acc["actor"].push(turn);
             }
             else {
                 turn.previousActorTurn = previousActorTurn
-                turn.actorImage = combatant.data?.flags?.D35E?.actorImg
-                turn.actorName = combatant.data?.flags?.D35E?.actorName
-                if (combatant.data?.flags?.D35E?.actor) {
-                    if (game.actors.get(combatant.data?.flags?.D35E?.actor).testUserPermission(game.user, "OWNER"))
+                turn.actorImage = combatant?.flags?.D35E?.actorImg
+                turn.actorName = combatant?.flags?.D35E?.actorName
+                if (combatant?.flags?.D35E?.actor) {
+                    if (game.actors.get(combatant?.flags?.D35E?.actor).testUserPermission(game.user, "OWNER"))
                         acc["buff"].push(turn);
                 }
             }

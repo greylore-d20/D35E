@@ -5,10 +5,10 @@
     <a class="context-note-control add-note" style="font-size: 15px; line-height: 15px;"><i class="fas fa-plus"></i></a>
   </h3>
   <ol class="context-notes form-group">
-    {{#each data.data.contextNotes as |note a|}}
+    {{#each data.system.contextNotes as |note a|}}
     <li class="context-note flexrow" data-note="{{a}}">
-      <textarea name="data.contextNotes.{{a}}.0" placeholder="{{localize "D35E.Notes"}}">{{lookup this "0"}}</textarea>
-      <select name="data.contextNotes.{{a}}.1">
+      <textarea name="system.contextNotes.{{a}}.0" placeholder="{{localize "D35E.Notes"}}">{{lookup this "0"}}</textarea>
+      <select name="system.contextNotes.{{a}}.1">
         {{#select (lookup this "1") }}
         <option value="">{{localize "D35E.None"}}</option>
         {{#each ../contextNotes.targets as |target type|}}
@@ -16,7 +16,7 @@
         {{/each}}
         {{/select}}
       </select>
-      <select name="data.contextNotes.{{a}}.2">
+      <select name="system.contextNotes.{{a}}.2">
         {{#select (lookup this "2") }}
         {{#each subNotes as |target type|}}
         <option value="{{type}}">{{target}}</option>

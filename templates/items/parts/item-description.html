@@ -8,28 +8,28 @@
     {{#if showIdentifyDescription}}
     <section class="description-body">
       <div class="tab description-group flexcol" data-group="description" data-tab="identified">
-        {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
+        {{editor content=data.system.description.value target="system.description.value" button=true owner=owner
         editable=editable}}
       </div>
 
       <div class="tab description-group flexcol" data-group="description" data-tab="unidentified">
-        {{editor content=data.data.description.unidentified target="data.description.unidentified" button=true
+        {{editor content=data.system.description.unidentified target="system.description.unidentified" button=true
         owner=owner editable=editable}}
       </div>
     </section>
     {{else}}
     {{#if showUnidentifiedData}}
-    {{editor content=data.data.description.unidentified target="data.description.unidentified" button=true
+    {{editor content=data.system.description.unidentified target="system.description.unidentified" button=true
     owner=owner editable=editable}}
     {{else}}
-    {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
+    {{editor content=data.system.description.value target="system.description.value" button=true owner=owner
     editable=editable}}
     {{/if}}
     {{/if}}
     {{#if 
-        data.data.changeFlags.firstChangeTargetSelectableOnDescription}}
+        data.system.changeFlags.firstChangeTargetSelectableOnDescription}}
     <div class="detailsbox" style="flex: 0">
-        {{#if data.data.changes}}
+        {{#if data.system.changes}}
         <div class="item-properties flexrow" style="display: flex; flex-wrap: wrap;">
             <div class="form-group" style="flex: 1">
                 <label>{{firstChangeName}}</label>
@@ -44,7 +44,7 @@
             </div>
         </div>
         {{/if}}
-        {{#unless data.data.changes}}
+        {{#unless data.system.changes}}
         <li class="change flexrow">
         <div style="width: 100%; opacity: 0.7; text-align: center">{{localize "D35E.ThereAreNo"}} {{localize "D35E.Changes"}}.</div>
         </li>
@@ -53,17 +53,17 @@
     {{/if}}
 
     {{#if 
-        data.data.customAttributes}}
+        data.system.customAttributes}}
     <div class="detailsbox" style="flex: 0">
-        {{#if data.data.customAttributes}}
-        {{#each data.data.customAttributes as |part a|}}
+        {{#if data.system.customAttributes}}
+        {{#each data.system.customAttributes as |part a|}}
             {{#if part.showOnDetails}}
                 <div class="item-properties flexrow" style="display: flex; flex-wrap: wrap;">
                     <div class="form-group" style="flex: 1">
                         <label>{{part.name}}</label>
                         
                         {{#if part.selectList}}
-                            <select name="data.customAttributes.{{a}}.value">
+                            <select name="system.customAttributes.{{a}}.value">
                             {{#select part.value }}
                                 {{#each part.selectListArray as |target type|}}
                                 <option value="{{type}}">{{target}}</option>
@@ -71,7 +71,7 @@
                             {{/select}}
                             </select>
                         {{else}}
-                            <input style="flex: 0 160px" type="text" name="data.customAttributes.{{a}}.value" placeholder="{{localize "D35E.Value"}}" value="{{part.value}}"/>
+                            <input style="flex: 0 160px" type="text" name="system.customAttributes.{{a}}.value" placeholder="{{localize "D35E.Value"}}" value="{{part.value}}"/>
                         {{/if}}
                     </div>
                 </div>
@@ -89,13 +89,13 @@
             {{!-- Quantity --}}
             <div class="form-group">
                 <label>{{localize "D35E.Quantity"}}</label>
-                <input type="text" name="data.quantity" value="{{data.data.quantity}}" data-dtype="Number"/>
+                <input type="text" name="system.quantity" value="{{data.system.quantity}}" data-dtype="Number"/>
             </div>
 
             {{!-- Weight --}}
             <div class="form-group">
                 <label>{{localize "D35E.Weight"}}</label>
-                <input type="text" name="data.convertedWeight" value="{{convertedWeight}}" data-dtype="Number"/>
+                <input type="text" name="system.convertedWeight" value="{{convertedWeight}}" data-dtype="Number"/>
                 {{#if usesImperialSystem}}
                 <label class="unit" style="flex: 0">{{ localize 'D35E.Lbs' }}</label>
                 {{else}}
@@ -107,25 +107,25 @@
             {{#if showIdentifyDescription}}
             <div class="form-group">
                 <label>{{localize "D35E.Price"}}</label>
-                <input type="text" name="data.price" value="{{data.data.price}}" data-dtype="Number"/>
+                <input type="text" name="system.price" value="{{data.system.price}}" data-dtype="Number"/>
             </div>
 
             <div class="form-group">
                 <label>{{localize "D35E.UnidentifiedPriceShort"}}</label>
-                <input type="text" name="data.unidentified.price" value="{{data.data.unidentified.price}}"
+                <input type="text" name="system.unidentified.price" value="{{data.system.unidentified.price}}"
                        data-dtype="Number"/>
             </div>
             {{else}}
             {{#if showUnidentifiedData}}
             <div class="form-group">
                 <label>{{localize "D35E.Price"}}</label>
-                <input type="text" name="data.unidentified.price" value="{{data.data.unidentified.price}}"
+                <input type="text" name="system.unidentified.price" value="{{data.system.unidentified.price}}"
                        data-dtype="Number"/>
             </div>
             {{else}}
             <div class="form-group">
                 <label>{{localize "D35E.Price"}}</label>
-                <input type="text" name="data.price" value="{{data.data.price}}" data-dtype="Number"/>
+                <input type="text" name="system.price" value="{{data.system.price}}" data-dtype="Number"/>
             </div>
             {{/if}}
             {{/if}}
@@ -133,24 +133,24 @@
             {{!-- Hit Points --}}
             <div class="form-group">
                 <label>{{localize "D35E.HPShort"}}</label>
-                <input type="text" name="data.hp.value" value="{{data.data.hp.value}}" data-dtype="Number"
+                <input type="text" name="system.hp.value" value="{{data.system.hp.value}}" data-dtype="Number"
                        style="flex: 0 0 32px"/>
                 <span>/</span>
-                <input type="text" name="data.hp.max" value="{{data.data.hp.max}}" data-dtype="Number"
+                <input type="text" name="system.hp.max" value="{{data.system.hp.max}}" data-dtype="Number"
                        style="flex: 0 0 32px"/>
             </div>
 
             {{!-- Hardness --}}
             <div class="form-group">
                 <label>{{localize "D35E.Hardness"}}</label>
-                <input type="text" name="data.hardness" value="{{data.data.hardness}}" data-dtype="Number"/>
+                <input type="text" name="system.hardness" value="{{data.system.hardness}}" data-dtype="Number"/>
             </div>
 
             <div class="form-group">
                 <label>{{localize "D35E.Container"}}</label>
 
-                <select name="data.containerId">
-                    {{#select data.data.containerId}}
+                <select name="system.containerId">
+                    {{#select data.system.containerId}}
                     {{#each availableContainers as |name id|}}
                     <option value="{{id}}">{{name}}</option>
                     {{/each}}
@@ -164,8 +164,8 @@
             {{#if isFeat}}
             <div class="form-group">
                 <label>{{localize "D35E.FeatPool"}}</label>
-                <select name="data.classSource" data-dtype="String">
-                    {{#select data.data.classSource}}
+                <select name="system.classSource" data-dtype="String">
+                    {{#select data.system.classSource}}
                     <option value="">{{localize "D35E.Base"}}</option>
                     {{#each featCounters as |ftt a|}}
                     <option value="{{ftt.val}}" style="text-transform: capitalize">{{ftt.name}}</option>
@@ -179,8 +179,8 @@
                 <label>{{localize "D35E.EquippedWeightless"}}</label>
 
                 <label class="checkbox" style="position: relative; flex: 0 20px">
-                    <input type="checkbox" class="stylized" name="data.equippedWeightless" {{checked
-                           data.data.equippedWeightless}}/>
+                    <input type="checkbox" class="stylized" name="system.equippedWeightless" {{checked
+                           data.system.equippedWeightless}}/>
                     <span class="checkmark"></span>
                 </label>
             </div>
@@ -189,7 +189,7 @@
             <div class="form-group">
                 <label>{{localize "D35E.Carried"}}</label>
                 <label class="checkbox" style="position: relative; flex: 0 20px">
-                    <input type="checkbox" class="stylized" name="data.carried" {{checked data.data.carried}}/>
+                    <input type="checkbox" class="stylized" name="system.carried" {{checked data.system.carried}}/>
                     <span class="checkmark"></span>
                 </label>
             </div>
@@ -198,7 +198,7 @@
                 <label>{{localize "D35E.Melded"}}</label>
 
                 <label class="checkbox" style="position: relative; flex: 0 20px">
-                    <input type="checkbox" class="stylized" name="data.melded" {{checked data.data.melded}}/>
+                    <input type="checkbox" class="stylized" name="system.melded" {{checked data.system.melded}}/>
                     <span class="checkmark"></span>
                 </label>
             </div>
@@ -214,19 +214,19 @@
 
             <div class="form-group gm">
                 <label><i class="fas fa-low-vision tooltip"></i> {{localize "D35E.ResalePrice"}}</label>
-                <input type="text" name="data.resalePrice" value="{{data.data.resalePrice}}" data-dtype="Number"/>
+                <input type="text" name="system.resalePrice" value="{{data.system.resalePrice}}" data-dtype="Number"/>
             </div>
             <div class="form-group gm">
                 <label><i class="fas fa-low-vision tooltip"></i> {{localize "D35E.Broken"}} {{localize "D35E.ResalePrice"}}</label>
-                <input type="text" name="data.brokenResalePrice" value="{{data.data.brokenResalePrice}}" data-dtype="Number"/>
+                <input type="text" name="system.brokenResalePrice" value="{{data.system.brokenResalePrice}}" data-dtype="Number"/>
             </div>
 
             <div class="form-group gm">
                 <label><i class="fas fa-low-vision tooltip"></i> {{localize "D35E.FullResalePrice"}}</label>
-                {{#unless data.data.resalePrice}}
+                {{#unless data.system.resalePrice}}
                 <label class="checkbox" style="position: relative; flex: 0 20px">
-                    <input type="checkbox" class="stylized" name="data.fullResalePrice" {{checked
-                           data.data.fullResalePrice}}/>
+                    <input type="checkbox" class="stylized" name="system.fullResalePrice" {{checked
+                           data.system.fullResalePrice}}/>
                     <span class="checkmark"></span>
                 </label>
                 {{else}}
@@ -240,22 +240,22 @@
 
             <div class="form-group gm">
                 <label><i class="fas fa-low-vision tooltip"></i> UID</label>
-                <input type="text" name="data.uniqueId" value="{{data.data.uniqueId}}" data-dtype="String"/>
+                <input type="text" name="system.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
             </div>
 
             <div class="form-group gm">
                 <label><i class="fas fa-low-vision tooltip"></i> Non Removable</label>
                 <label class="checkbox" style="position: relative; flex: 0 20px">
-                    <input type="checkbox" class="stylized" name="data.userNonRemovable" {{checked
-                           data.data.userNonRemovable}}/>
+                    <input type="checkbox" class="stylized" name="system.userNonRemovable" {{checked
+                           data.system.userNonRemovable}}/>
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="form-group gm">
                 <label><i class="fas fa-low-vision tooltip"></i> Const. weight</label>
                 <label class="checkbox" style="position: relative; flex: 0 20px">
-                    <input type="checkbox" class="stylized" name="data.constantWeight" {{checked
-                           data.data.constantWeight}}/>
+                    <input type="checkbox" class="stylized" name="system.constantWeight" {{checked
+                           data.system.constantWeight}}/>
                     <span class="checkmark"></span>
                 </label>
             </div>

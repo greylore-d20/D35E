@@ -42,7 +42,7 @@
 
             {{!-- Description Tab --}}
             <div class="tab flexcol active" data-group="primary" data-tab="description">
-                {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
+                {{editor content=data.system.description.value target="system.description.value" button=true owner=owner
                 editable=editable}}
             </div>
 
@@ -51,17 +51,17 @@
 
                 <div class="form-group">
                     <label>{{localize "D35E.Hardness"}}</label>
-                    <input type="text" name="data.hardness" value="{{data.data.hardness}}" data-dtype="String"/>
+                    <input type="text" name="system.hardness" value="{{data.system.hardness}}" data-dtype="String"/>
                 </div>
                 <div class="form-group">
                     <label>{{localize "D35E.HpPerInch"}}</label>
-                    <input type="text" name="data.hpPerInch" value="{{data.data.hpPerInch}}" data-dtype="String"/>
+                    <input type="text" name="system.hpPerInch" value="{{data.system.hpPerInch}}" data-dtype="String"/>
                 </div>
 
                 <h3 class="form-header">{{localize "D35E.MagicEquivalent"}}</h3>
                 <div class="form-group">
                     <label>{{localize "D35E.MagicEquivalent"}}</label>
-                    <input type="text" name="data.baseWeaponType" value="{{data.data.baseWeaponType}}" data-dtype="String"/>
+                    <input type="text" name="system.baseWeaponType" value="{{data.system.baseWeaponType}}" data-dtype="String"/>
                 </div>
                 <span><em>{{localize "D35E.MagicEquivalentDescription"}}</em></span>
 
@@ -69,21 +69,21 @@
                 <div class="form-group">
                     <label>{{localize "D35E.MaterialAlchemicalSilverEquivalent"}}</label>
                     <label class="checkbox" style="position: relative; flex: 0 20px">
-                        <input type="checkbox" class="stylized" name="data.isAlchemicalSilverEquivalent" {{checked data.data.isAlchemicalSilverEquivalent}}/>
+                        <input type="checkbox" class="stylized" name="system.isAlchemicalSilverEquivalent" {{checked data.system.isAlchemicalSilverEquivalent}}/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div class="form-group">
                     <label>{{localize "D35E.MaterialAdamantineEquivalent"}}</label>
                     <label class="checkbox" style="position: relative; flex: 0 20px">
-                        <input type="checkbox" class="stylized" name="data.isAdamantineEquivalent" {{checked data.data.isAdamantineEquivalent}}/>
+                        <input type="checkbox" class="stylized" name="system.isAdamantineEquivalent" {{checked data.system.isAdamantineEquivalent}}/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div class="form-group">
                     <label>{{localize "D35E.MaterialColdIronEquivalent"}}</label>
                     <label class="checkbox" style="position: relative; flex: 0 20px">
-                        <input type="checkbox" class="stylized" name="data.isColdIronEquivalent" {{checked data.data.isColdIronEquivalent}}/>
+                        <input type="checkbox" class="stylized" name="system.isColdIronEquivalent" {{checked data.system.isColdIronEquivalent}}/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -93,7 +93,7 @@
                     <h3 class="form-header">System Properties</h3>
                     <div class="form-group">
                         <label>UID</label>
-                        <input type="text" name="data.uniqueId" value="{{data.data.uniqueId}}" data-dtype="String"/>
+                        <input type="text" name="system.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
                     </div>
                     {{/if}}
                 </div>

@@ -12,8 +12,8 @@ function getAuraShape(source, radius) {
 }
 
 function getActor(source) {
-    if (source.document.data.actorLink) {
-        return game.actors.get(source.document.data.actorId) || {auras: [] }
+    if (source.document.actorLink) {
+        return game.actors.get(source.document.actorId) || {auras: [] }
     } else {
         return source.actor || {auras: [] }
     }
@@ -22,9 +22,9 @@ function getActor(source) {
 function isCorrectAlliance(source, target, auraTarget) {
     switch (auraTarget) {
         case "enemy":
-            return source.data.disposition !== target.data.disposition;
+            return source.disposition !== target.disposition;
         case "ally":
-            return source.data.disposition === target.data.disposition;
+            return source.disposition === target.disposition;
         default:
             return true;
     }

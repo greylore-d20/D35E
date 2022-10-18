@@ -14,12 +14,12 @@
       </h3>
 
       <h3 class="charname">
-        <input name="data.unidentified.name" type="text" value="{{data.data.unidentified.name}}" placeholder="{{localize "D35E.UnidentifiedName"}}"/>
+        <input name="system.unidentified.name" type="text" value="{{data.system.unidentified.name}}" placeholder="{{localize "D35E.UnidentifiedName"}}"/>
       </h3>
       {{else}}
       {{#if showUnidentifiedData}}
       <h1 class="charname">
-        <input name="data.unidentified.name" type="text" value="{{itemName}}" placeholder="{{localize "D35E.ItemName"}}"/>
+        <input name="system.unidentified.name" type="text" value="{{itemName}}" placeholder="{{localize "D35E.ItemName"}}"/>
       </h1>
       {{else}}
       <h1 class="charname">
@@ -62,8 +62,8 @@
       {{!-- Loot Type --}}
       <div class="form-group">
         <label>Item Type</label>
-        <select name="data.subType">
-          {{#select data.data.subType}}
+        <select name="system.subType">
+          {{#select data.system.subType}}
           {{#each config.lootTypes as |name type|}}
           <option value="{{type}}">{{name}}</option>
           {{/each}}
@@ -75,13 +75,13 @@
       <div class="form-group">
         <label>{{localize "D35E.BagOfHoldingLike"}}</label>
         <label class="checkbox">
-          <input type="checkbox" name="data.bagOfHoldingLike" {{checked data.data.bagOfHoldingLike}}/>
+          <input type="checkbox" name="system.bagOfHoldingLike" {{checked data.system.bagOfHoldingLike}}/>
         </label>
       </div>
 
       <div class="form-group">
         <label>{{localize "D35E.WeightCapacity"}}</label>
-        <input type="text" name="data.convertedCapacity" value="{{convertedCapacity}}" data-dtype="Number"/>
+        <input type="text" name="system.convertedCapacity" value="{{convertedCapacity}}" data-dtype="Number"/>
         {{#if usesImperialSystem}}
         <label class="unit" style="flex: 0">{{ localize 'D35E.Lbs' }}</label>
         {{else}}
@@ -93,27 +93,27 @@
       {{#if isAmmo}}
       <div class="form-group ammo-formula">
         <label>{{localize "D35E.BonusAmmoDamage"}}</label>
-        <input type="text" name="data.bonusAmmoDamage" value="{{data.data.bonusAmmoDamage}}" placeholder="{{localize "D35E.BonusAmmoDamageFormula"}}"/>
+        <input type="text" name="system.bonusAmmoDamage" value="{{data.system.bonusAmmoDamage}}" placeholder="{{localize "D35E.BonusAmmoDamageFormula"}}"/>
       </div>
       <div class="form-group ammo-formula">
         <label>{{localize "D35E.BonusAmmoDamageType"}}</label>
-        <input type="text" name="data.bonusAmmoDamageType" value="{{data.data.bonusAmmoDamageType}}" placeholder="{{localize "D35E.BonusAmmoDamageTypePlaceholder"}}"/>
+        <input type="text" name="system.bonusAmmoDamageType" value="{{data.system.bonusAmmoDamageType}}" placeholder="{{localize "D35E.BonusAmmoDamageTypePlaceholder"}}"/>
       </div>
       <div class="form-group ammo-formula">
         <label>{{localize "D35E.BonusAmmoAttack"}}</label>
-        <input type="text" name="data.bonusAmmoAttack" value="{{data.data.bonusAmmoAttack}}" placeholder="{{localize "D35E.BonusAmmoAttackPlaceholder"}}"/>
+        <input type="text" name="system.bonusAmmoAttack" value="{{data.system.bonusAmmoAttack}}" placeholder="{{localize "D35E.BonusAmmoAttackPlaceholder"}}"/>
       </div>
 
       <div class="form-group stacked">
         <label>{{localize "D35E.AttackNotes"}}</label>
-        <textarea type="text" name="data.bonusAmmoAttackNote">{{data.databonusAmmoAttackNote}}</textarea>
+        <textarea type="text" name="system.bonusAmmoAttackNote">{{data.systembonusAmmoAttackNote}}</textarea>
       </div>
 
       <div class="form-group">
 
         <label>{{localize "D35E.ShowInQuickbar"}}</label>
         <label class="checkbox" style="position: relative; flex: 0 20px">
-          <input type="checkbox" class="stylized" name="data.showInQuickbar" {{checked data.data.showInQuickbar}}/>
+          <input type="checkbox" class="stylized" name="system.showInQuickbar" {{checked data.system.showInQuickbar}}/>
           <span class="checkmark"></span>
         </label>
       </div>
@@ -121,7 +121,7 @@
 
       {{#if isGM}}
       <label class="checkbox">
-        <input type="checkbox" name="data.identified" {{checked data.data.identified}}/> {{localize "D35E.Identified"}}
+        <input type="checkbox" name="system.identified" {{checked data.system.identified}}/> {{localize "D35E.Identified"}}
       </label>
       {{/if}}
 
@@ -132,10 +132,10 @@
           <a class="creation-changes-control add-change" style="font-size: 15px; line-height: 15px;"><i class="fas fa-plus"></i></a>
         </h3>
         <ol class="changes form-group">
-          {{#each data.data.creationChanges as |change a|}}
+          {{#each data.system.creationChanges as |change a|}}
           <li class="change flexrow" data-change="{{a}}">
       
-            <select name="data.creationChanges.{{a}}.0">
+            <select name="system.creationChanges.{{a}}.0">
               {{#select (lookup this "0") }}
               <option value="">{{localize "D35E.None"}}</option>
               {{#each ../fieldList as |field|}}
@@ -143,12 +143,12 @@
               {{/each}}
               {{/select}}
             </select>
-            <input type="text" name="data.creationChanges.{{a}}.1" value="{{lookup this "1"}}"
+            <input type="text" name="system.creationChanges.{{a}}.1" value="{{lookup this "1"}}"
             placeholder="{{localize "D35E.Formula"}}" />
             <a class="creation-changes-control delete-change"><i class="fas fa-minus"></i></a>
           </li>
           {{/each}}
-          {{#unless data.data.creationChanges}}
+          {{#unless data.system.creationChanges}}
           <li class="change flexrow">
             <div style="width: 100%; opacity: 0.7; text-align: center">{{localize "D35E.ThereAreNo"}} {{localize "D35E.CreationChanges"}}. {{{localize "D35E.UsePlusToAdd"}}}</div>
           </li>

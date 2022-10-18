@@ -1,5 +1,6 @@
-import {ItemPF} from "../item/entity.js";
-import {Roll35e} from "../roll.js"
+import {Item35E} from "../entity.js";
+import {Roll35e} from "../../roll.js"
+import {ItemRolls} from "../extensions/rolls.js";
 
 export class ChatAttack {
     constructor(item, label = "", actor = null, rollData = null, ammoMaterial = null, ammoEnh = 0) {
@@ -67,7 +68,7 @@ export class ChatAttack {
 
     /**
      * Sets the attack's item reference.
-     * @param {ItemPF} item - The item to reference.
+     * @param {Item35E} item - The item to reference.
      * @param actor
      */
     setItem(item, actor = null, rollData = null) {
@@ -82,7 +83,7 @@ export class ChatAttack {
             this.rollData = duplicate(rollData);
         else {
             this.rollData = item.actor != null ? item.actor.getRollData() : actor != null ? actor.getRollData() : {};
-            this.rollData.item = duplicate(this.item.data.data);
+            this.rollData.item = duplicate(this.item.system);
         }
     }
 
@@ -94,7 +95,7 @@ export class ChatAttack {
         if (critical === true) data = this.critConfirm;
 
         // Roll attack
-        let roll = this.item.rollAttack({
+        let roll = new ItemRolls(this.item).rollAttack({
             data: this.rollData,
             bonus: bonus || 0,
             extraParts: extraParts,
@@ -202,7 +203,7 @@ export class ChatAttack {
         }
         if (critical === true) data = this.critDamage;
 
-        const rolls = this.item.rollDamage({
+        const rolls = new ItemRolls(this.item).rollDamage({
             data: this.rollData,
             extraParts: extraParts,
             primaryAttack: primaryAttack,
@@ -276,7 +277,7 @@ export class ChatAttack {
 
         let data = this.altDamage;
 
-        const rolls = this.item.rollAlternativeDamage({
+        const rolls = new ItemRolls(this.item).rollAlternativeDamage({
             data: this.rollData
         });
         if (!rolls || rolls.length === 0) {
@@ -351,15 +352,15 @@ export class ChatAttack {
             label: label,
             value: Math.max(totalDamage, 1),
             data: JSON.stringify(rolls),
-            alignment: JSON.stringify(this.item.data.data.alignment),
-            material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
-            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item?.data?.data?.enh || 0),
+            alignment: JSON.stringify(this.item.system.alignment),
+            material: this.ammoMaterial || JSON.stringify(this.item.system.material),
+            enh: this.item.system.epic ? 10 : this.item.system.magic ? 1 : Math.max(this.ammoEnh, this.item?.system?.enh || 0),
             action: "applyDamage",
             natural20: this.natural20,
             fumble: this.fumble,
             natural20Crit: this.natural20Crit,
             fumbleCrit: this.fumbleCrit,
-            incorporeal: this.item.data.data.incorporeal || this.item.actor.data.data.traits.incorporeal
+            incorporeal: this.item.system.incorporeal || this.item.actor.system.traits.incorporeal
         };
     }
 
@@ -368,21 +369,21 @@ export class ChatAttack {
             label: label,
             value: Math.max(totalDamage, 1),
             data: JSON.stringify(rolls),
-            alignment: JSON.stringify(this.item.data.data.alignment),
-            material: this.ammoMaterial || JSON.stringify(this.item.data.data.material),
-            enh: this.item.data.data.epic ? 10 : this.item.data.data.magic ? 1 : Math.max(this.ammoEnh, this.item?.data?.data?.enh || 0),
+            alignment: JSON.stringify(this.item.system.alignment),
+            material: this.ammoMaterial || JSON.stringify(this.item.system.material),
+            enh: this.item.system.epic ? 10 : this.item.system.magic ? 1 : Math.max(this.ammoEnh, this.item?.system?.enh || 0),
             action: "applyDamage",
             natural20: this.natural20,
             fumble: this.fumble,
             natural20Crit: this.natural20Crit,
             fumbleCrit: this.fumbleCrit,
-            incorporeal: this.item.data.data.incorporeal || this.item?.actor?.data?.data?.traits?.incorporeal
+            incorporeal: this.item.system.incorporeal || this.item?.actor?.system?.traits?.incorporeal
         };
     }
 
     async addEffect({primaryAttack = true, actor = null, useAmount = 1, cl = null, spellPenetration = null} = {}) {
         if (!this.item) return;
-        this.effectNotes = this.item.rollEffect({primaryAttack: primaryAttack}, actor, this.rollData);
+        this.effectNotes = new ItemRolls(this.item).rollEffect({primaryAttack: primaryAttack}, actor, this.rollData);
         this.spellPenetration = spellPenetration;
         this.isSpell = !!cl;
         await this.addSpecial(actor, useAmount, cl, spellPenetration);
@@ -393,17 +394,17 @@ export class ChatAttack {
         if (actor != null)
             _actor = actor
         if (!this.item) return;
-        if (this.item.data.data.specialActions === undefined || this.item.data.data.specialActions === null)
+        if (this.item.system.specialActions === undefined || this.item.system.specialActions === null)
             return;
         
         this.isSpell = !!cl;
         this.spellPenetration = spellPenetration;
-        for (let action of this.item.data.data.specialActions) {
+        for (let action of this.item.system.specialActions) {
             if (cl === null) {
                 if (this.item.data.type === "spell") {
-                    const spellbookIndex = this.item.data.data.spellbook;
-                    const spellbook = _actor.data.data.attributes.spells.spellbooks[spellbookIndex];
-                    cl = spellbook.cl.total + (this.item.data.data.clOffset || 0);
+                    const spellbookIndex = this.item.system.spellbook;
+                    const spellbook = _actor.system.attributes.spells.spellbooks[spellbookIndex];
+                    cl = spellbook.cl.total + (this.item.system.clOffset || 0);
                 }
             }
 
@@ -441,9 +442,9 @@ export class ChatAttack {
 
         if (cl === null) {
             if (this.item.data.type === "spell") {
-                const spellbookIndex = this.item.data.data.spellbook;
-                const spellbook = _actor.data.data.attributes.spells.spellbooks[spellbookIndex];
-                cl = spellbook.cl.total + (this.item.data.data.clOffset || 0);
+                const spellbookIndex = this.item.system.spellbook;
+                const spellbook = _actor.system.attributes.spells.spellbooks[spellbookIndex];
+                cl = spellbook.cl.total + (this.item.system.clOffset || 0);
             }
         }
 

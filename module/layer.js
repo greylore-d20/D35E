@@ -31,7 +31,7 @@ export default class D35ELayer extends CanvasLayer {
         //console.log(toRelease)
         toRelease.forEach(obj => obj.release(releaseOptions));
         // Control new objects
-        if ( isObjectEmpty(controlOptions) ) controlOptions.releaseOthers = false;
+        if ( isEmpty(controlOptions) ) controlOptions.releaseOthers = false;
         const toControl = newSet.filter(obj => !oldSet.includes(obj));
         toControl.forEach(obj => obj.control(controlOptions));
         // Return a boolean for whether the control set was changed

@@ -67,8 +67,8 @@ export const createCustomChatMessage = async function(chatTemplate, chatTemplate
 };
 
 export const hideRollInfo = function(app, html, data) {
-  const whisper = app.data.whisper || [];
-  const isBlind = whisper.length && app.data.blind;
+  const whisper = app.whisper || [];
+  const isBlind = whisper.length && app.blind;
   const isVisible = whisper.length ? (whisper.includes(game.user.id) || (app.isAuthor && !isBlind)) : true;
   if (!isVisible) {
     html.find(".dice-formula").text("???");
@@ -82,7 +82,7 @@ export const hideRollInfo = function(app, html, data) {
 export const hideGMSensitiveInfo = function(app, html, data) {
   if (game.user.isGM) return;
 
-  let speaker = app.data.speaker,
+  let speaker = app.speaker,
     actor = speaker != null ? (speaker.actor ? game.actors.get(speaker.actor) : game.actors.tokens[speaker.token]) : null;
   //console.log('D35E | Message | Cleaning ', actor, app, html)
   if (!actor || (actor && actor.testUserPermission(game.user, "LIMITED"))) return;

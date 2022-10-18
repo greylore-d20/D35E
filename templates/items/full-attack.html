@@ -35,7 +35,7 @@
           <div class="flexcol">
             <h3 class="form-header">{{localize "D35E.FullAttackDescription"}}</h3>
             <div style="height:178px">
-              {{editor content=data.description.value target="data.description.value" button=true owner=owner
+              {{editor content=data.description.value target="system.description.value" button=true owner=owner
               editable=editable}}
             </div>
               <h3 class="form-header">{{localize "D35E.FullAttackAttacks"}}</h3>
@@ -48,7 +48,7 @@
                     </div>
                   </li>
                   <ol class="item-list" data-pack="D35E.class-abilities">
-                    {{#each data.data.attacks as |item level|}}
+                    {{#each data.system.attacks as |item level|}}
                     <li class="item item-box  flexrow" data-item-id="{{item.id}}" data-pack="{{item.pack}}"
                         data-item-level="{{item.level}}">
                       <div class="item-name child-item flexrow non-rollable">
@@ -89,13 +89,13 @@
 
               <div class="form-group stacked">
                 <label class="checkbox">
-                  <input type="checkbox" name="data.showInQuickbar" {{checked data.data.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
+                  <input type="checkbox" name="system.showInQuickbar" {{checked data.system.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
                 </label>
               </div>
 
               <h3 class="form-header">{{localize "D35E.FullAttackAttacks"}}</h3>
               <section>
-                {{#each data.data.attacks as |attack level|}}
+                {{#each data.system.attacks as |attack level|}}
                 <div class="full-attack flexcol" data-attack="{{level}}">
                   <h4>{{localize "D35E.Attack"}} {{attack._id}}  <a style="float: right;" class="full-attack-control full-attack-delete" title="{{ localize 'D35E.DeleteItem' }}"><i
                     class="fas fa-trash"></i></a></h4>
@@ -106,14 +106,14 @@
 
                     <div class="form-group flexrow" style="    flex: 0 180px;">
                       <label>{{localize "D35E.FullAttackAttackCount"}}</label>
-                      <input type="text" name="data.attacks.{{level}}.count" value="{{attack.count}}" data-dtype="Number"/>
-                      <input type="hidden" name="data.attacks.{{level}}.id" value="{{attack.id}}" data-dtype="String"/>
+                      <input type="text" name="system.attacks.{{level}}.count" value="{{attack.count}}" data-dtype="Number"/>
+                      <input type="hidden" name="system.attacks.{{level}}.id" value="{{attack.id}}" data-dtype="String"/>
                     </div>
                   </div>
                   {{#if attack.isWeapon}}
                   <div class="form-group">
                     <label style="margin-left: 0">{{localize "D35E.WeaponFightingMode"}}</label>
-                    <select name="data.attacks.{{level}}.attackMode" value="{{attack.attackMode}}">
+                    <select name="system.attacks.{{level}}.attackMode" value="{{attack.attackMode}}">
                       {{#select attack.attackMode}}
                         {{#each ../config.twoWeaponAttackType as |label mode|}}
                           <option value="{{mode}}">{{localize label}}</option>

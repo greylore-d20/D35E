@@ -230,7 +230,6 @@ export class DicePF {
         let chatData = {
           user: game.user.id,
           type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-          rollMode: game.settings.get("core", "rollMode"),
           sound: CONFIG.sounds.dice,
           speaker: speaker,
           flavor: flavor,

@@ -23,10 +23,10 @@
             {{#if isTemplate}}
             <li></li>
             <li class="attribute high tooltip" data-attribute="levels">
-                <span class="tooltipcontent">@classes.{{item.data.tag}}.level : {{data.datalevels}}</span>
+                <span class="tooltipcontent">@classes.{{item.data.tag}}.level : {{data.systemlevels}}</span>
                 <h4 class="attribute-name box-title">{{localize "D35E.BaseHD"}}</h4>
                 <div class="attribute-value">
-                    <input type="text" name="data.levels" value="{{data.data.levels}}" placeholder="{{localize " D35E.Level"}}"
+                    <input type="text" name="data.levels" value="{{data.system.levels}}" placeholder="{{localize " D35E.Level"}}"
                     data-dtype="Number"/>
                 </div>
                 <footer class="attribute-footer">
@@ -35,10 +35,10 @@
             </li>
             {{else}}
             <li class="attribute high tooltip" data-attribute="levels">
-                <span class="tooltipcontent">@classes.{{item.data.tag}}.level : {{data.datalevels}}</span>
+                <span class="tooltipcontent">@classes.{{item.data.tag}}.level : {{data.systemlevels}}</span>
                 <h4 class="attribute-name box-title">{{localize "D35E.Level"}}</h4>
                 <div class="attribute-value">
-                    <input type="text" name="data.levels" value="{{data.data.levels}}" placeholder="{{localize " D35E.Level"}}"
+                    <input type="text" name="data.levels" value="{{data.system.levels}}" placeholder="{{localize " D35E.Level"}}"
                     data-dtype="Number"/>
                 </div>
                 <footer class="attribute-footer">
@@ -47,14 +47,14 @@
             </li>
 
             <li class="attribute high tooltip" data-attribute="hp">
-                <span class="tooltipcontent">@classes.{{item.data.tag}}.hp : {{data.datahp}}</span>
+                <span class="tooltipcontent">@classes.{{item.data.tag}}.hp : {{data.systemhp}}</span>
                 <h4 class="attribute-name box-title">{{localize "D35E.HitPoints"}} {{#if healthConfig.auto}}(Auto){{/if}}</h4>
                 <div class="attribute-value">
                     {{!-- Hit Points --}}
                     {{#unless healthConfig.auto}}
-                        <input type="text" name="data.hp" value="{{data.data.hp}}" data-dtype="Number"/>
+                        <input type="text" name="data.hp" value="{{data.system.hp}}" data-dtype="Number"/>
                     {{else}}
-                        <input type="text" name="data.hp" disabled value="{{data.data.hp}}" data-dtype="Number"/>
+                        <input type="text" name="data.hp" disabled value="{{data.system.hp}}" data-dtype="Number"/>
                     {{/unless}}
                 </div>
                 <footer class="attribute-footer">
@@ -89,7 +89,7 @@
                     {{#if isPsionSpellcaster}}
                     <a class="item" data-tab="sub-psionics">{{ localize "D35E.ProgressionPsionics" }}</a>
                     {{/if}}
-                    {{#if data.data.hasSpellbook}}
+                    {{#if data.system.hasSpellbook}}
                     <a class="item" data-tab="spellbook">{{localize "D35E.Spelllist"}}</a>
                     {{/if}}
                 </nav>
@@ -97,7 +97,7 @@
                     <section class="description-body" style="display: block; height: 100%">
                         <div class="tab description-group flexcol" data-group="description"
                              data-tab="sub-description">
-                            {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
+                            {{editor content=data.system.description.value target="data.description.value" button=true owner=owner
                             editable=editable}}
                         </div>
                         <div class="tab description-group flexcol" data-group="description" data-tab="sub-progression">
@@ -182,9 +182,9 @@
                         {{#if isNonPsionSpellcaster}}
                         <div class="tab description-group flexcol" data-group="description" data-tab="sub-spellcasting">
 
-                            {{{data.dataspellcastingDescription}}}
+                            {{{data.systemspellcastingDescription}}}
 
-                            <h2>{{data.dataspellcastingSpellname}} Progression Table</h2>
+                            <h2>{{data.systemspellcastingSpellname}} Progression Table</h2>
                             <div class="inventory-group flexcol">
                                 <ol class="inventory-list sub-scroll" style="padding: 0">
                                     <li class="flexrow inventory-header spellbook-header">
@@ -227,7 +227,7 @@
                             </div>
 
                             {{#if hasKnownSpells}}
-                            <h2>{{data.dataspellcastingSpellnamePl}} Known</h2>
+                            <h2>{{data.systemspellcastingSpellnamePl}} Known</h2>
                             <div class="inventory-group flexcol">
                                 <ol class="inventory-list sub-scroll" style="padding: 0">
                                     <li class="flexrow inventory-header spellbook-header">
@@ -274,9 +274,9 @@
                         {{#if isPsionSpellcaster}}
                         <div class="tab description-group flexcol" data-group="description" data-tab="sub-psionics">
 
-                            {{{data.dataspellcastingDescription}}}
+                            {{{data.systemspellcastingDescription}}}
 
-                            <h2>{{data.dataspellcastingSpellname}} Progression Table</h2>
+                            <h2>{{data.systemspellcastingSpellname}} Progression Table</h2>
                             <div class="inventory-group flexcol">
                                 <ol class="inventory-list sub-scroll" style="padding: 0">
                                     <li class="flexrow inventory-header spellbook-header">
@@ -307,7 +307,7 @@
                         </div>
                         {{/if}}
 
-                        {{#if data.data.hasSpellbook}}
+                        {{#if data.system.hasSpellbook}}
                         <div class="tab configuration-group flexcol" style="padding: 0" data-group="description" data-tab="spellbook">
                             {{> "systems/D35E/templates/items/parts/item-spellbook-list.html"}}
                         </div>
@@ -319,7 +319,7 @@
 
             <div class="tab flexcol active" data-group="primary" data-tab="description">
         <section class="description-body flexcol" style="height: 385px">
-                {{editor content=data.data.description.value target="data.description.value" button=true owner=owner
+                {{editor content=data.system.description.value target="data.description.value" button=true owner=owner
                 editable=editable}}
         </section>
         </div>
@@ -332,7 +332,7 @@
                 <a class="item active" data-tab="details">{{ localize "D35E.Details" }}</a>
                 <a class="item" data-tab="children">{{ localize "D35E.Children" }}</a>
                 <a class="item" data-tab="changes">{{localize "D35E.Changes"}}</a>
-                {{#if data.data.hasSpellbook}}
+                {{#if data.system.hasSpellbook}}
                 <a class="item" data-tab="spellbook">{{localize "D35E.Spelllist"}}</a>
                 {{/if}}
             </nav>
@@ -346,7 +346,7 @@
                         <div class="form-group">
                             <label>{{localize "D35E.ClassType"}}</label>
                             <select name="data.classType">
-                                {{#select data.data.classType}}
+                                {{#select data.system.classType}}
                                 {{#each config.classTypes as |name type|}}
                                 <option value="{{type}}">{{name}}</option>
                                 {{/each}}
@@ -359,7 +359,7 @@
                         <div class="form-group">
                             <label>{{localize "D35E.CreatureType"}}</label>
                             <select name="data.creatureType">
-                                {{#select data.data.creatureType}}
+                                {{#select data.system.creatureType}}
                                 {{#each config.creatureTypes as |name type|}}
                                 <option value="{{type}}">{{name}}</option>
                                 {{/each}}
@@ -372,13 +372,13 @@
                         {{#if isTemplate}}
                         <div class="form-group">
                             <label>{{localize "D35E.LA"}}</label>
-                            <input type="text" name="data.la" value="{{data.data.la}}" data-dtype="Number" />
+                            <input type="text" name="data.la" value="{{data.system.la}}" data-dtype="Number" />
                         </div>
                         {{!-- Racial Type --}}
                         <div class="form-group">
                             <label>{{localize "D35E.CreatureType"}}</label>
                             <select name="data.creatureType">
-                                {{#select data.data.creatureType}}
+                                {{#select data.system.creatureType}}
                                 <option value="">{{localize "D35E.NoChange"}}</option>
                                 {{#each config.creatureTypes as |name type|}}
                                 <option value="{{type}}">{{name}}</option>
@@ -390,7 +390,7 @@
                         {{!-- HD --}}
                         <div class="form-group">
                             <label>{{localize "D35E.HitDie"}}</label>
-                            <input type="text" name="data.hd" value="{{data.data.hd}}" data-dtype="Number"/>
+                            <input type="text" name="data.hd" value="{{data.system.hd}}" data-dtype="Number"/>
                         </div>
 
 
@@ -399,7 +399,7 @@
                         <div class="form-group">
                             <label>{{localize "D35E.BABAbbr"}}</label>
                             <select name="data.bab">
-                                {{#select data.data.bab}}
+                                {{#select data.system.bab}}
                                 <option value="">{{localize "D35E.None"}}</option>
                                 {{#each config.classBAB as |name value|}}
                                 <option value="{{value}}">{{name}}</option>
@@ -411,23 +411,23 @@
                         {{!-- Skills/Level --}}
                         <div class="form-group">
                             <label>{{localize "D35E.SkillsPerLevel"}}</label>
-                            <input type="text" name="data.skillsPerLevel" value="{{data.data.skillsPerLevel}}" data-dtype="Number"/>
+                            <input type="text" name="data.skillsPerLevel" value="{{data.system.skillsPerLevel}}" data-dtype="Number"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.CRPerHD"}}</label>
-                            <input type="text" name="data.crPerHD" value="{{data.data.crPerHD}}" data-dtype="Number"/>
+                            <input type="text" name="data.crPerHD" value="{{data.system.crPerHD}}" data-dtype="Number"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.MaxLevel"}}</label>
-                            <input type="text" name="data.maxLevel" value="{{data.data.maxLevel}}" data-dtype="Number"/>
+                            <input type="text" name="data.maxLevel" value="{{data.system.maxLevel}}" data-dtype="Number"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.AutomaticFeatures"}}</label>
                             <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
-                                <input type="checkbox" class="stylized auto-save" name="data.automaticFeatures" {{#if data.data.automaticFeatures}}checked{{/if}}/>
+                                <input type="checkbox" class="stylized auto-save" name="data.automaticFeatures" {{#if data.system.automaticFeatures}}checked{{/if}}/>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
@@ -436,7 +436,7 @@
                         <h4 class="form-header">{{localize "D35E.SavingThrowPlural"}}</h4>
 
                         {{!-- Saving Throws --}}
-                        {{#each data.data.savingThrows as |savingThrow id|}}
+                        {{#each data.system.savingThrows as |savingThrow id|}}
                         <div class="form-group">
                             <label>{{savingThrow.label}}</label>
                             <select name="data.savingThrows.{{id}}.value">
@@ -454,53 +454,53 @@
                         <h4 class="form-header">{{localize "D35E.AdditionalClassFeatures"}}</h4>
                         <div class="form-group">
                             <label>{{localize "D35E.TurnUndeadFormula"}}</label>
-                            <input type="text" name="data.turnUndeadLevelFormula" value="{{data.data.turnUndeadLevelFormula}}"
+                            <input type="text" name="data.turnUndeadLevelFormula" value="{{data.system.turnUndeadLevelFormula}}"
                                    data-dtype="String"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.SneakAttackGroup"}}</label>
-                            <input type="text" name="data.sneakAttackGroup" value="{{data.data.sneakAttackGroup}}" data-dtype="String"/>
+                            <input type="text" name="data.sneakAttackGroup" value="{{data.system.sneakAttackGroup}}" data-dtype="String"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.SneakAttackFormula"}}</label>
-                            <input type="text" name="data.sneakAttackFormula" value="{{data.data.sneakAttackFormula}}"
+                            <input type="text" name="data.sneakAttackFormula" value="{{data.system.sneakAttackFormula}}"
                                    data-dtype="String"/>
                         </div>
                         <div class="form-group">
                             <label>{{localize "D35E.MinionGroup"}}</label>
-                            <input type="text" name="data.minionGroup" value="{{data.data.minionGroup}}" data-dtype="String"/>
+                            <input type="text" name="data.minionGroup" value="{{data.system.minionGroup}}" data-dtype="String"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.MinionLevelFormula"}}</label>
-                            <input type="text" name="data.minionLevelFormula" value="{{data.data.minionLevelFormula}}"
+                            <input type="text" name="data.minionLevelFormula" value="{{data.system.minionLevelFormula}}"
                                    data-dtype="String"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.HandSizeFormula"}}</label>
-                            <input type="text" name="data.deckHandSizeFormula" value="{{data.data.deckHandSizeFormula}}" data-dtype="String"/>
+                            <input type="text" name="data.deckHandSizeFormula" value="{{data.system.deckHandSizeFormula}}" data-dtype="String"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.KnownCardsFormula"}}</label>
-                            <input type="text" name="data.knownCardsSizeFormula" value="{{data.data.knownCardsSizeFormula}}" data-dtype="String"/>
+                            <input type="text" name="data.knownCardsSizeFormula" value="{{data.system.knownCardsSizeFormula}}" data-dtype="String"/>
                         </div>
 
 
                         <div class="form-group">
                             <label class="checkbox skill-cs">
                                 <label>{{localize "D35E.DeckPrestigeClass"}}</label>
-                                <input type="checkbox" name="data.deckPrestigeClass" {{checked data.data.deckPrestigeClass}}/>
+                                <input type="checkbox" name="data.deckPrestigeClass" {{checked data.system.deckPrestigeClass}}/>
                             </label>
                             </div>
                         {{#if false}}
                         <h4 class="form-header">{{localize "D35E.FavouredClassBonuses"}}</h4>
 
                         {{!-- Favoured Class Bonuses --}}
-                        {{#each data.data.fc as |fc id|}}
+                        {{#each data.system.fc as |fc id|}}
                         <div class="form-group">
                             <label>{{fc.label}}</label>
                             <input type="text" name="data.fc.{{id}}.value" value="{{fc.value}}" data-dtype="Number"/>
@@ -537,7 +537,7 @@
                         <div class="form-group">
                             <label>{{localize "D35E.SpellcastingType"}}</label>
                             <select name="data.spellcastingType">
-                                {{#select data.data.spellcastingType}}
+                                {{#select data.system.spellcastingType}}
                                 {{#each config.spellcastingType as |name type|}}
                                 <option value="{{type}}">{{localize name}}</option>
                                 {{/each}}
@@ -550,7 +550,7 @@
                         <div class="form-group spellcasting-ability flexrow">
                             <label><span>{{localize "D35E.SpellcastingAbility"}}</span></label>
                             <select name="data.spellcastingAbility" data-dtype="String">
-                                {{#select data.data.spellcastingAbility}}
+                                {{#select data.system.spellcastingAbility}}
                                 <option value="">{{localize "D35E.None"}}</option>
                                 {{#each config.abilities as |abl a|}}
                                 <option value="{{a}}">{{abl}}</option>
@@ -561,7 +561,7 @@
                         <div class="form-group spellcasting-ability flexrow">
                             <label><span>{{localize "D35E.SpellslotAbility"}}</span></label>
                             <select name="data.spellslotAbility" data-dtype="String">
-                                {{#select data.data.spellslotAbility}}
+                                {{#select data.system.spellslotAbility}}
                                 <option value="">{{localize "D35E.SpellcastingAbility"}}</option>
                                 {{#each config.abilities as |abl a|}}
                                 <option value="{{a}}">{{abl}}</option>
@@ -593,31 +593,31 @@
 
                         <div class="form-group">
                             <label>{{localize "D35E.SpellcastingSpellname"}}</label>
-                            <input type="text" name="data.spellcastingSpellname" value="{{data.data.spellcastingSpellname}}" data-dtype="String"/>
+                            <input type="text" name="data.spellcastingSpellname" value="{{data.system.spellcastingSpellname}}" data-dtype="String"/>
                         </div>
                         <div class="form-group">
                             <label>{{localize "D35E.SpellcastingSpellnamePl"}}</label>
-                            <input type="text" name="data.spellcastingSpellnamePl" value="{{data.data.spellcastingSpellnamePl}}" data-dtype="String"/>
+                            <input type="text" name="data.spellcastingSpellnamePl" value="{{data.system.spellcastingSpellnamePl}}" data-dtype="String"/>
                         </div>
 
                         <div class="form-group">
                             <label>{{localize "D35E.SpellPrepSpontaneous"}}</label>
                             <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
-                                <input type="checkbox" class="stylized auto-save" name="data.spellcastingSpontaneus" {{#if data.data.spellcastingSpontaneus}}checked{{/if}}/>
+                                <input type="checkbox" class="stylized auto-save" name="data.spellcastingSpontaneus" {{#if data.system.spellcastingSpontaneus}}checked{{/if}}/>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="form-group">
                             <label>{{localize "D35E.HasSpecialSpellSlot"}}</label>
                             <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
-                                <input type="checkbox" class="stylized auto-save" name="data.hasSpecialSlot" {{#if data.data.hasSpecialSlot}}checked{{/if}}/>
+                                <input type="checkbox" class="stylized auto-save" name="data.hasSpecialSlot" {{#if data.system.hasSpecialSlot}}checked{{/if}}/>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="form-group">
                             <label>{{localize "D35E.UseSpellList"}}</label>
                             <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
-                                <input type="checkbox" class="stylized auto-save" name="data.hasSpellbook" {{#if data.data.hasSpellbook}}checked{{/if}}/>
+                                <input type="checkbox" class="stylized auto-save" name="data.hasSpellbook" {{#if data.system.hasSpellbook}}checked{{/if}}/>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
@@ -625,19 +625,19 @@
                         <div class="form-group">
                             <label>{{localize "D35E.KnowsAllSpells"}}</label>
                             <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
-                                <input type="checkbox" class="stylized auto-save" name="data.allSpellsKnown" {{#if data.data.allSpellsKnown}}checked{{/if}}/>
+                                <input type="checkbox" class="stylized auto-save" name="data.allSpellsKnown" {{#if data.system.allSpellsKnown}}checked{{/if}}/>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="form-group">
                             <label>{{localize "D35E.HalfCasterLevel"}}</label>
                             <label class="checkbox" style="flex: 0 16px; margin-right: 8px; position: relative">
-                                <input type="checkbox" class="stylized auto-save" name="data.halfCasterLevel" {{#if data.data.halfCasterLevel}}checked{{/if}}/>
+                                <input type="checkbox" class="stylized auto-save" name="data.halfCasterLevel" {{#if data.system.halfCasterLevel}}checked{{/if}}/>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <label>{{localize "D35E.SpellcastingDescription"}}</label>
-                        {{editor content=data.data.spellcastingDescription target="data.spellcastingDescription" button=true owner=owner
+                        {{editor content=data.system.spellcastingDescription target="data.spellcastingDescription" button=true owner=owner
                         editable=editable}}
 
 
@@ -694,7 +694,7 @@
 
                         {{> "systems/D35E/templates/items/parts/item-notes.html"}}
                     </div>
-                    {{#if data.data.hasSpellbook}}
+                    {{#if data.system.hasSpellbook}}
                     <div class="tab configuration-group flexcol" style="padding: 0" data-group="configuration" data-tab="spellbook">
                         {{> "systems/D35E/templates/items/parts/item-spellbook.html"}}
                     </div>

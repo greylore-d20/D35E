@@ -2,7 +2,7 @@
     <div class="flexrow"><h2 class="block-header" style="flex: 1">{{#if spellbook.orig.class}}{{ localize
         'D35E.SpellBookForClass' class=spellbook.orig.class }}{{/if}}</h2><a
             class="btn configure-spellbook point-buy-button blue-button"
-            for="data.attributes.spells.spellbooks.{{spellbookIndex}}" onkeydown="e.preventDefault();">
+            for="system.attributes.spells.spellbooks.{{spellbookIndex}}" onkeydown="e.preventDefault();">
         {{ localize 'D35E.Configure' }}
     </a></div>
 
@@ -12,11 +12,11 @@
     <!--    <div class="form-group spellcasting-class tooltip flexrow" style="padding: 0 0 0 0.5rem; flex: 1;">-->
     <!--      <span class="tooltipcontent">@cl : {{spellbook.orig.cl.total}}</span>-->
     <!--      <label><h3>{{localize "D35E.SpellcastingClass"}}</h3></label>-->
-    <!--      <select name="data.attributes.spells.spellbooks.{{spellbookIndex}}.class" data-dtype="String">-->
+    <!--      <select name="system.attributes.spells.spellbooks.{{spellbookIndex}}.class" data-dtype="String">-->
     <!--        {{#select spellbook.orig.class}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
     <!--        <option value="_hd">{{localize "D35E.HitDie"}}</option>-->
-    <!--        {{#each data.classes as |cls a|}}-->
+    <!--        {{#each system.classes as |cls a|}}-->
     <!--        <option value="{{a}}">{{cls.name}}</option>-->
     <!--        {{/each}}-->
     <!--        {{/select}}-->
@@ -25,10 +25,10 @@
 
     <!--    <div class="form-group spellcasting-ability flexrow" style="padding: 0 0.5rem 0 0.5rem; flex: 1;">-->
     <!--      <label><h3>{{localize "D35E.SpellcastingAbility"}}</h3></label>-->
-    <!--      <select name="data.attributes.spells.spellbooks.{{spellbookIndex}}.ability" data-dtype="String">-->
+    <!--      <select name="system.attributes.spells.spellbooks.{{spellbookIndex}}.ability" data-dtype="String">-->
     <!--        {{#select spellbook.orig.ability}}-->
     <!--        <option value="">{{localize "D35E.None"}}</option>-->
-    <!--        {{#each data.abilities as |abl a|}}-->
+    <!--        {{#each system.abilities as |abl a|}}-->
     <!--        <option value="{{a}}">{{abl.label}}</option>-->
     <!--        {{/each}}-->
     <!--        {{/select}}-->
@@ -44,12 +44,12 @@
             <footer class="attribute-footer">
 
                 <div class="data-selector" style="float: right; width: 60px; line-height: 24px;">
-                    <a class="note-editor" for="data.attributes.spells.spellbooks.{{spellbookIndex}}.clNotes"><i
+                    <a class="note-editor" for="system.attributes.spells.spellbooks.{{spellbookIndex}}.clNotes"><i
                             class="fas fa-edit"></i></a>
-                    <label for="data.learnedAt.domain">Notes</label>
+                    <label for="system.learnedAt.domain">Notes</label>
                 </div>
                 <input type="text" style="width: calc(100% - 60px);"
-                       name="data.attributes.spells.spellbooks.{{spellbookIndex}}.cl.formula"
+                       name="system.attributes.spells.spellbooks.{{spellbookIndex}}.cl.formula"
                        value="{{spellbook.orig.cl.formula}}"
                        placeholder="{{ localize 'D35E.CasterLevelBonusFormula' }}"/>
             </footer>
@@ -66,12 +66,12 @@
 
                 <div class="data-selector" style="float: right; width: 60px; line-height: 24px;">
                     <a class="note-editor"
-                       for="data.attributes.spells.spellbooks.{{spellbookIndex}}.concentrationNotes"><i
+                       for="system.attributes.spells.spellbooks.{{spellbookIndex}}.concentrationNotes"><i
                             class="fas fa-edit"></i></a>
-                    <label for="data.learnedAt.domain">Notes</label>
+                    <label for="system.learnedAt.domain">Notes</label>
                 </div>
                 <input type="text" style="width: calc(100% - 60px);"
-                       name="data.attributes.spells.spellbooks.{{spellbookIndex}}.concentrationFormula"
+                       name="system.attributes.spells.spellbooks.{{spellbookIndex}}.concentrationFormula"
                        value="{{spellbook.orig.concentrationFormula}}"
                        placeholder="{{ localize 'D35E.ConcentrationBonusFormula' }}"/>
             </footer>
@@ -92,16 +92,16 @@
             <h4 class="attribute-name box-title">{{ localize 'D35E.PowerPoints' }}</h4>
             <div class="attribute-value flexrow" style="padding: 0 20px">
 
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.powerPoints"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.powerPoints"
                        value="{{spellbook.orig.powerPoints}}" placeholder="{{ localize 'D35E.PowerPoints' }}"
                        data-dtype="Number"/>
                 <span style="flex: 0 12px;  line-height: 24px;">/</span>
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.powerPointsTotal"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.powerPointsTotal"
                        value="{{spellbook.orig.powerPointsTotal}}" disabled placeholder="{{ localize 'D35E.PowerPoints' }}"
                        data-dtype="Number"/>
             </div>
             <footer class="attribute-footer">
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.dailyPowerPointsFormula"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.dailyPowerPointsFormula"
                        value="{{spellbook.orig.dailyPowerPointsFormula}}"
                        placeholder="{{ localize 'D35E.DailyPowerPointsFormula' }}"/>
             </footer>
@@ -132,7 +132,7 @@
                 {{else}}
                 <a class="remove-prestige-cl-disabled"><i class="fas fa-minus"></i></a>
                 {{/if}}
-                <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.bonusPrestigeCl"
+                <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.bonusPrestigeCl"
                        value="{{spellbook.orig.bonusPrestigeCl}}" placeholder="{{ localize 'D35E.PowerPoints' }}"
                        data-dtype="Number"/>
 
@@ -146,11 +146,11 @@
                 <span>{{spellbook.orig.availablePrestigeCl}}</span>
                 <span class="sep">/</span>
                 <span>{{spellbook.orig.maxPrestigeCl}}</span>
-                {{#if spellbook.data.maxPrestigeClSources.length}}
+                {{#if spellbook.system.maxPrestigeClSources.length}}
                 <span class="tooltipcontent">
 
                 <br/><br/>{{ localize 'D35E.FromSources' }}:<br/>
-                {{#each spellbook.data.maxPrestigeClSources as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
+                {{#each spellbook.system.maxPrestigeClSources as |src|}}{{src.name}}: {{src.value}}<br/>{{/each}}
             </span>
                 {{/if}}
             </footer>
@@ -162,7 +162,7 @@
     <!--    <div class="flexcol">-->
     <!--      <div class="flexrow formulas">-->
     <!--        <label><h3>{{localize "D35E.BaseDCFormula"}}</h3></label>-->
-    <!--        <input type="text" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.baseDCFormula"-->
+    <!--        <input type="text" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.baseDCFormula"-->
     <!--        value="{{spellbook.orig.baseDCFormula}}" placeholder="{{localize "D35E.BaseDCFormula"}}" />-->
     <!--      </div>-->
 
@@ -171,22 +171,22 @@
     <!--    -->
     <!--    <div class="flexcol">-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.autoSpellLevels"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.autoSpellLevels"-->
     <!--        {{checked spellbook.orig.autoSpellLevels}}/> {{localize "D35E.AutomaticSpellSlots"}}-->
     <!--      </label>-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.spontaneous"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.spontaneous"-->
     <!--        {{checked spellbook.orig.spontaneous}}/> {{localize "D35E.SpellPrepSpontaneous"}}-->
     <!--      </label>-->
     <!--    </div>-->
     <!--    <div class="flexcol">-->
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.arcaneSpellFailure"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.arcaneSpellFailure"-->
     <!--        {{checked spellbook.orig.arcaneSpellFailure}}/> {{localize "D35E.ArcaneSpellFailure"}}-->
     <!--      </label>-->
 
     <!--      <label class="checkbox">-->
-    <!--        <input type="checkbox" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.usePowerPoints"-->
+    <!--        <input type="checkbox" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.usePowerPoints"-->
     <!--               {{checked spellbook.orig.usePowerPoints}}/> {{localize "D35E.UsePowerPoints"}}-->
     <!--      </label>-->
     <!--    </div>-->
@@ -197,7 +197,7 @@
             <label>{{localize "D35E.OnlyPrepared"}}</label>
 
             <label class="checkbox" style="position: relative; flex: 0 20px">
-                <input type="checkbox" class="stylized" name="data.attributes.spells.spellbooks.{{spellbookIndex}}.showOnlyPrepared"
+                <input type="checkbox" class="stylized" name="system.attributes.spells.spellbooks.{{spellbookIndex}}.showOnlyPrepared"
                        {{checked spellbook.orig.showOnlyPrepared}}/>
                 <span class="checkmark"></span>
             </label>
@@ -252,7 +252,7 @@
             {{#unless ../spellbook.orig.spontaneous}}
             {{#unless ../spellbook.orig.autoSpellLevels}}
             <input class="base" type="text"
-                   name="data.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
+                   name="system.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
                    value="{{section.baseSlots}}" placeholder="Base"/>
             {{/unless}}
             <span>Slots</span><input type="text" disabled value="{{section.slots}}" placeholder="0"
@@ -260,11 +260,11 @@
             {{ else }}
             {{#unless ../spellbook.orig.autoSpellLevels}}
             <input class="base" type="text"
-                   name="data.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
+                   name="system.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.base"
                    value="{{section.baseSlots}}" placeholder="Base"/>
             {{/unless}}
             <input type="text" value="{{section.uses}}"
-                   name="data.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.value"
+                   name="system.attributes.spells.spellbooks.{{../spellbookIndex}}.spells.spell{{section.level}}.value"
                    placeholder="0" data-dtype="Number"/>
             <span class="sep"> / </span>
             <input type="text" value="{{section.slots}}" disabled placeholder="0" data-dtype="Number"/>
@@ -304,12 +304,12 @@
                     {{#if item.epic}}
                     (level {{item.epicLevel}})
                     {{/if}}
-                    {{#if item.data.specialPrepared}}
+                    {{#if item.system.specialPrepared}}
                     <i class="fas fa-hand-sparkles tooltip">
                         <span class="tooltipcontent" style="z-index: 999">{{localize "D35E.SpecialSlotPrepared"}}</span>
                     </i>
                     {{/if}}
-                    {{#if item.data.isSpellSpontaneousReplacement}}
+                    {{#if item.system.isSpellSpontaneousReplacement}}
                     <i class="fas fa-heart tooltip">
                         <span class="tooltipcontent" style="z-index: 999">{{localize "D35E.SpellReplacement"}}</span>
                     </i>
@@ -328,14 +328,14 @@
                     {{/if}}
 
 
-                    {{#if item.data.linkImported}}
+                    {{#if item.system.linkImported}}
                     <i class="fas fa-link non-rollable tooltip" style="color: black; opacity: 0.7">
-                        <span class="tooltipcontent" style="z-index: 999">{{localize "D35E.LinkAddedBy"}} {{item.data.linkSourceName}}</span>
+                        <span class="tooltipcontent" style="z-index: 999">{{localize "D35E.LinkAddedBy"}} {{item.system.linkSourceName}}</span>
                     </i>
                     {{/if}}
 
                     {{#unless @root.hideShortDescriptions}}
-                    <em style="color: black; opacity: 0.7" class="non-rollable">{{item.data.snip}}</em>
+                    <em style="color: black; opacity: 0.7" class="non-rollable">{{item.system.snip}}</em>
                     {{/unless}}
                 </h4>
             </div>
@@ -358,22 +358,22 @@
 
             <div class="spell-uses flexrow">
 
-                {{#if item.data.atWill}}
+                {{#if item.system.atWill}}
                 <em style="opacity: 0.7">{{localize "D35E.SpellPrepAtWill"}}</em>
                 {{else}}
                 {{#if section.usePowerPoints}}
-                <input type="text" value="{{item.data.powerPointsCost}}" disabled data-type="max" data-dtype="Number"/>
+                <input type="text" value="{{item.system.powerPointsCost}}" disabled data-type="max" data-dtype="Number"/>
                 {{ else }}
                 {{#unless section.spontaneous}}
-                <input type="text" value="{{item.data.preparation.preparedAmount}}" data-type="amount"
+                <input type="text" value="{{item.system.preparation.preparedAmount}}" data-type="amount"
                        data-dtype="Number"/>
                 <span class="sep"> / </span>
-                <input type="text" value="{{item.data.preparation.maxAmount}}" data-type="max" data-dtype="Number"/>
+                <input type="text" value="{{item.system.preparation.maxAmount}}" data-type="max" data-dtype="Number"/>
 
                 <a class="item-control spell-add-uses" title="{{ localize 'D35E.PrepareSpell' }}">
 
-                    {{#if item.data.specialPrepared}}
-                    {{#unless item.data.preparation.maxAmount}}
+                    {{#if item.system.specialPrepared}}
+                    {{#unless item.system.preparation.maxAmount}}
                     <i class="fas fa-plus"></i>
                     {{/unless}}
                     {{else}}
@@ -392,7 +392,7 @@
 
 
                 {{#if ../../spellbook.orig.hasSpecialSlot}}
-                {{#unless item.data.specialPrepared}}
+                {{#unless item.system.specialPrepared}}
 
                 {{#if section.slots}}
                 {{#if item.isSpecialized}}
@@ -440,7 +440,7 @@
             {{#if ../../owner}}
             <div class="item-controls">
                 <a class="item-control item-edit" title="{{ localize 'D35E.EditItem' }}"><i class="fas fa-edit"></i></a>
-                {{#unless item.data.linkImported}}
+                {{#unless item.system.linkImported}}
                 <a class="item-control item-delete" title="{{ localize 'D35E.DeleteItem' }}"><i
                         class="fas fa-trash"></i></a>
                 {{/unless}}

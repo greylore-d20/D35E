@@ -566,7 +566,7 @@ export class CompendiumBrowser extends Application {
   _onDragStart(event) {
     const li = this,
           packName = li.getAttribute("data-collection"),
-          pack = game.packs.find(p => p.collection === packName);
+          pack = game.packs.find(p => p.metadata.id === packName);
 
     // Get the pack
     if (!pack) {

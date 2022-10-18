@@ -1,6 +1,6 @@
 {{!-- Spellbook Navigation --}}
 <nav class="sheet-navigation tabs subtabs spellbooks" data-group="spellbooks">
-  {{#each data.attributes.spells.spellbooks as |spellbook a|}}
+  {{#each system.attributes.spells.spellbooks as |spellbook a|}}
   <a class="item" data-tab="{{a}}">{{spellbook.name}}</a>
   {{/each}}
 </nav>

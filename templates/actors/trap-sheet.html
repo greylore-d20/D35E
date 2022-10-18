@@ -9,24 +9,24 @@
       </h1>
       <div class="hd" style="flex: 0 0 148px;">
         <Label>{{ localize 'D35E.FindDC' }}</label>
-        <input name="data.details.findDC" type="text" value="{{data.details.findDC}}" placeholder="1"
+        <input name="system.details.findDC" type="text" value="{{system.details.findDC}}" placeholder="1"
                data-dtype="Number"/>
       </div>
       <div class="hd" style="flex: 0 0 168px;">
         <Label>{{ localize 'D35E.DisarmDC' }}</label>
-        <input name="data.details.disarmDC" type="text" value="{{data.details.disarmDC}}" placeholder="1"
+        <input name="system.details.disarmDC" type="text" value="{{system.details.disarmDC}}" placeholder="1"
                data-dtype="Number"/>
       </div>
       <div class="charlevel" style="flex: 0 0 80px;">
         <div class="level">
-          <label>{{ localize 'D35E.CR' }} {{data.details.totalCr}}</label>
+          <label>{{ localize 'D35E.CR' }} {{system.details.totalCr}}</label>
         </div>
         <div class="level" style="line-height: 14px">
           <label style="font-size: 14px;">{{ localize 'D35E.BaseCR' }}</label>
-          <input name="data.details.cr" style="font-size: 14px; height: 16px" type="text" value="{{labels.cr}}" placeholder="1"/>
+          <input name="system.details.cr" style="font-size: 14px; height: 16px" type="text" value="{{labels.cr}}" placeholder="1"/>
         </div>
         <div class="experience">
-          <span>{{data.details.xp.value}} {{ localize 'D35E.XP' }}</span>
+          <span>{{system.details.xp.value}} {{ localize 'D35E.XP' }}</span>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
 
       <div class="profile npc">
         <img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/>
-        <img src="{{actor.data.tokenImg}}" class="token-image" data-edit="data.tokenImg">
+        <img src="{{actor.system.tokenImg}}" class="token-image" data-edit="system.tokenImg">
       </div>
       <div class="header-details flexcol" style='font-family: "Signika", "Palatino Linotype", serif;'>
 
@@ -64,23 +64,23 @@
               <ol class="item-list">
                 {{#each attacks.all.items as |item iid|}}
                 <li class="item flexrow" data-item-id="{{item._id}}">
-                  <div class="item-name flexrow rollable {{#if item.data.melded}}melded{{/if}} {{#if item.disabled}}attack-disabled{{/if}}">
+                  <div class="item-name flexrow rollable {{#if item.system.melded}}melded{{/if}} {{#if item.disabled}}attack-disabled{{/if}}">
                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                     <h4 style="font-size: 13px">
-                      {{item.name~}} {{#if item.data.melded}}<i class="fas fa-leaf"></i>{{/if}}
+                      {{item.name~}} {{#if item.system.melded}}<i class="fas fa-leaf"></i>{{/if}}
                     </h4>
                   </div>
 
                   {{#if attacks.misc.showTypes}}
                   <div class="item-detail item-type">
-                    <span>{{lookup ../config.attackTypes item.data.attackType}}</span>
+                    <span>{{lookup ../config.attackTypes item.system.attackType}}</span>
                   </div>
                   {{/if}}
 
                   <div class="item-detail item-actions">
                     <div class="item-attack">
                       {{#if item.hasAction}}
-                      {{#unless item.data.melded}}
+                      {{#unless item.system.melded}}
                       {{#unless item.disabled}}
                       <a class="item-control item-attack"><img class="icon" src="systems/D35E/icons/actions/gladius.svg"></a>
                       {{/unless}}
@@ -94,12 +94,12 @@
 
                   <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
                     {{#if item.isCharged}}
-                    <input type="text" value="{{item.data.uses.value}}" data-dtype="Number"/>
+                    <input type="text" value="{{item.system.uses.value}}" data-dtype="Number"/>
                     <span class="sep"> of </span>
-                    <input type="text" value="{{item.data.uses.max}}" disabled data-dtype="Number"/>
+                    <input type="text" value="{{item.system.uses.max}}" disabled data-dtype="Number"/>
                     <span class="tooltipcontent">
-              @resources.{{item.tag}}.value : {{item.data.uses.value}}<br>
-              @resources.{{item.tag}}.max : {{item.data.uses.max}}
+              @resources.{{item.tag}}.value : {{item.system.uses.value}}<br>
+              @resources.{{item.tag}}.max : {{item.system.uses.max}}
             </span>
                     {{/if}}
                   </div>
@@ -125,7 +125,7 @@
   </nav>
   <section class="primary-body">
 
-    {{editor content=data.details.notes.value target="data.details.notes.value" button=true owner=owner
+    {{editor content=system.details.notes.value target="system.details.notes.value" button=true owner=owner
     editable=editable}}
   </section>
 

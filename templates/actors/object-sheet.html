@@ -10,25 +10,25 @@
       <div class="hd flexcol" style="flex: 0 0 100px;">
         <div class="flexrow" style=" line-height: 32px;">
           <label style="line-height: 34px; margin-right: 4px">{{ localize 'D35E.HP' }}</label>
-          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{data.attributes.hp.value}}" placeholder="0"
+          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{system.attributes.hp.value}}" placeholder="0"
                  data-dtype="Number"/>
         </div>
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseHP' }}</label>
-          <input name="data.staticBonus.hp" style="font-size: 14px; height: 16px" type="Number" value="{{data.staticBonus.hp}}" placeholder="0"/>
+          <input name="system.staticBonus.hp" style="font-size: 14px; height: 16px" type="Number" value="{{system.staticBonus.hp}}" placeholder="0"/>
         </div>
       </div>
       <div class="hd flexcol" style="flex: 0 0 110px;">
         <div class="flexrow" style=" line-height: 32px;">
           <label style="line-height: 34px; margin-right: 4px">{{ localize 'D35E.AC' }}</label>
-          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{data.attributes.ac.normal.total}}" placeholder="1"
+          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{system.attributes.ac.normal.total}}" placeholder="1"
                  data-dtype="Number"/>
         </div>
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseACBonus' }}</label>
-          <input name="data.staticBonus.ac" style="font-size: 14px; height: 16px" type="Number" value="{{data.staticBonus.ac}}" placeholder="0"/>
+          <input name="system.staticBonus.ac" style="font-size: 14px; height: 16px" type="Number" value="{{system.staticBonus.ac}}" placeholder="0"/>
         </div>
       </div>
     </div>
@@ -38,25 +38,25 @@
       <div class="hd flexcol" style="flex: 0 0 168px;">
         <div class="flexrow" style=" line-height: 32px;">
           <label style="line-height: 34px; margin-right: 4px">{{ localize 'D35E.BreakDC' }}</label>
-          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{data.details.breakDC.total}}" placeholder="1"
+          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{system.details.breakDC.total}}" placeholder="1"
                  data-dtype="Number"/>
         </div>
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseBreakDC' }}</label>
-          <input name="data.details.breakDC.base" style="font-size: 14px; height: 16px" type="text" value="{{data.details.breakDC.base}}" placeholder="0"/>
+          <input name="system.details.breakDC.base" style="font-size: 14px; height: 16px" type="text" value="{{system.details.breakDC.base}}" placeholder="0"/>
         </div>
       </div>
       <div class="hd flexcol" style="flex: 0 0 168px;">
         <div class="flexrow" style=" line-height: 32px;">
           <label style="line-height: 34px; margin-right: 4px">{{ localize 'D35E.Hardness' }}</label>
-          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{data.attributes.hardness.total}}" placeholder="1"
+          <input style="height: 32px; line-height: 32px; font-size: 24px" type="text" disabled value="{{system.attributes.hardness.total}}" placeholder="1"
                  data-dtype="Number"/>
         </div>
 
         <div class="flexrow" style="line-height: 14px">
           <label style="font-size: 14px;margin-right: 4px">{{ localize 'D35E.BaseHardness' }}</label>
-          <input name="data.attributes.hardness.formula" style="font-size: 14px; height: 16px" type="text" value="{{data.attributes.hardness.formula}}" placeholder="0"/>
+          <input name="system.attributes.hardness.formula" style="font-size: 14px; height: 16px" type="text" value="{{system.attributes.hardness.formula}}" placeholder="0"/>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
 
       <div class="profile npc">
         <img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/>
-        <img src="{{actor.data.tokenImg}}" class="token-image" data-edit="data.tokenImg">
+        <img src="{{actor.system.tokenImg}}" class="token-image" data-edit="system.tokenImg">
       </div>
       <div class="header-details flexcol" style='font-family: "Signika", "Palatino Linotype", serif;'>
         <section class="material-section">
@@ -76,7 +76,7 @@
               </div>
 
               {{#if material}}
-              <span>{{material.name}}  ({{material.data.data.hardness}} {{localize 'D35E.Hardness'}})</span>
+              <span>{{material.name}}  ({{material.system.hardness}} {{localize 'D35E.Hardness'}})</span>
               {{/if}}
               <div class="item-controls flexrow" style="flex: 0 40px;">
                 {{#if owner}}
@@ -115,23 +115,23 @@
               <ol class="item-list">
                 {{#each attackFeatures as |item iid|}}
                 <li class="item flexrow" data-item-id="{{item._id}}">
-                  <div class="item-name flexrow rollable {{#if item.data.melded}}melded{{/if}} {{#if item.disabled}}attack-disabled{{/if}}">
+                  <div class="item-name flexrow rollable {{#if item.system.melded}}melded{{/if}} {{#if item.disabled}}attack-disabled{{/if}}">
                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                     <h4 style="font-size: 13px">
-                      {{item.name~}} {{#if item.data.melded}}<i class="fas fa-leaf"></i>{{/if}}
+                      {{item.name~}} {{#if item.system.melded}}<i class="fas fa-leaf"></i>{{/if}}
                     </h4>
                   </div>
 
                   {{#if attacks.misc.showTypes}}
                   <div class="item-detail item-type">
-                    <span>{{lookup ../config.attackTypes item.data.attackType}}</span>
+                    <span>{{lookup ../config.attackTypes item.system.attackType}}</span>
                   </div>
                   {{/if}}
 
                   <div class="item-detail item-actions">
                     <div class="item-attack">
                       {{#if item.hasAction}}
-                      {{#unless item.data.melded}}
+                      {{#unless item.system.melded}}
                       {{#unless item.disabled}}
                       <a class="item-control item-attack"><img class="icon" src="systems/D35E/icons/actions/gladius.svg"></a>
                       {{/unless}}
@@ -145,12 +145,12 @@
 
                   <div class="item-detail item-uses flexrow {{#if item.isCharged}}tooltip{{/if}}">
                     {{#if item.isCharged}}
-                    <input type="text" value="{{item.data.uses.value}}" data-dtype="Number"/>
+                    <input type="text" value="{{item.system.uses.value}}" data-dtype="Number"/>
                     <span class="sep"> of </span>
-                    <input type="text" value="{{item.data.uses.max}}" disabled data-dtype="Number"/>
+                    <input type="text" value="{{item.system.uses.max}}" disabled data-dtype="Number"/>
                     <span class="tooltipcontent">
-              @resources.{{item.tag}}.value : {{item.data.uses.value}}<br>
-              @resources.{{item.tag}}.max : {{item.data.uses.max}}
+              @resources.{{item.tag}}.value : {{item.system.uses.value}}<br>
+              @resources.{{item.tag}}.max : {{item.system.uses.max}}
             </span>
                     {{/if}}
                   </div>
@@ -176,7 +176,7 @@
   </nav>
   <section class="primary-body">
 
-    {{editor content=data.details.notes.value target="data.details.notes.value" button=true owner=owner
+    {{editor content=system.details.notes.value target="system.details.notes.value" button=true owner=owner
     editable=editable}}
   </section>
 

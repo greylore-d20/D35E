@@ -39,7 +39,7 @@ export class DamageTypes {
 
     static getDRForActor(actor, base = false) {
         let damageTypes = duplicate(this.getDRDamageTypes());
-        let actorData = actor.data.data;
+        let actorData = actor.system;
         let actorDR = base ? actorData.damageReduction : actorData.combinedDR
         DamageTypes.getDamageTypeForUID(damageTypes,'any').value = actorDR?.any || 0;
         (actorDR?.types || []).forEach(t => {
@@ -176,10 +176,10 @@ export class DamageTypes {
     static getERDamageTypes() {
         let energyTypes = [];
         for(let damageType of CACHE.DamageTypes.values()) {
-            if (damageType.data.data.damageType === "energy") {
+            if (damageType.system.damageType === "energy") {
                 let energyType = {
-                        uid: damageType.data.data.uniqueId,
-                        name: damageType.data.name,
+                        uid: damageType.system.uniqueId,
+                        name: damageType.name,
                         value: 0,
                         vulnerable: false,
                         immunity: false,
@@ -193,7 +193,7 @@ export class DamageTypes {
 
     static getERForActor(actor, base = false) {
         let damageTypes = duplicate(this.getERDamageTypes());
-        let actorData = actor.data.data;
+        let actorData = actor.system;
         ((base ? actorData.energyResistance : actorData.combinedResistances) || []).forEach(t => {
             if (t.uid === null) return ;
             let type = DamageTypes.getDamageTypeForUID(damageTypes,t.uid);
@@ -263,9 +263,10 @@ export class DamageTypes {
     static calculateDamageToActor(actor,damage,material,alignment,enh,nonLethal,noPrecision,incorporeal,applyHalf) {
         let er = DamageTypes.getERForActor(actor).filter(d => d.value > 0 || d.vulnerable || d.immunity || d.lethal);
         let dr = DamageTypes.getDRForActor(actor).filter(d => d.value > 0 || d.lethal || d.immunity);
-        let hasRegeneration = !!actor.data.data.traits.regen;
+        let hasRegeneration = !!actor.system.traits.regen;
         let nonLethalDamage = 0;
         let bypassedDr = new Set()
+        let materialData = material?.system || material?.data
         if (enh > 0)
             bypassedDr.add("magic");
         if (enh > 5)
@@ -280,11 +281,11 @@ export class DamageTypes {
             bypassedDr.add("chaotic");
         if (incorporeal)
             bypassedDr.add("incorporeal");
-        if (material?.data?.isAdamantineEquivalent)
+        if (materialData?.isAdamantineEquivalent)
             bypassedDr.add("adamantine");
-        if (material?.data?.isAlchemicalSilverEquivalent)
+        if (materialData?.isAlchemicalSilverEquivalent)
             bypassedDr.add("silver");
-        if (material?.data?.isColdIronEquivalent)
+        if (materialData?.isColdIronEquivalent)
             bypassedDr.add("coldiron");
         let damageBeforeDr = 0;
 
@@ -294,14 +295,14 @@ export class DamageTypes {
         damage.forEach(d => {
             if (d.damageTypeUid) {
                 let _damage = CACHE.DamageTypes.get(d.damageTypeUid)
-                if (_damage.data.data.damageType === "type") {
+                if (_damage.system.damageType === "type") {
                     if (noPrecision && d.damageTypeUid === "damage-precision")
                         return; // We drop out if we do not apply precision damage
-                    if (_damage.data.data.isPiercing)
+                    if (_damage.system.isPiercing)
                         bypassedDr.add("piercing");
-                    if (_damage.data.data.isSlashing)
+                    if (_damage.system.isSlashing)
                         bypassedDr.add("slashing");
-                    if (_damage.data.data.isBludgeoning)
+                    if (_damage.system.isBludgeoning)
                         bypassedDr.add("bludgeoning");
                     damageBeforeDr += d.roll.total;
                     hasAnyTypeDamage = true;
@@ -350,16 +351,16 @@ export class DamageTypes {
         damage.forEach(d => {
             if (d.damageTypeUid) {
                 let _damage = CACHE.DamageTypes.get(d.damageTypeUid)
-                if (_damage.data.data.damageType === "energy") {
+                if (_damage.system.damageType === "energy") {
                     let erValue = DamageTypes.getDamageTypeForUID(er,d.damageTypeUid)
                     let realDamage = (applyHalf ? Math.floor(d.roll.total/2.0) : d.roll.total);
                     let damageAfterEr = Math.max(realDamage - (erValue?.value || 0),0)
 
                     if (d.damageTypeUid === 'damage-healing')
                         damageAfterEr =- damageAfterEr;
-                    else if (actor.data.data.attributes?.creatureType === "undead" && d.damageTypeUid === "energy-negative")
+                    else if (actor.system.attributes?.creatureType === "undead" && d.damageTypeUid === "energy-negative")
                         damageAfterEr =- damageAfterEr;
-                    else if (actor.data.data.attributes?.creatureType !== "undead" && d.damageTypeUid === "energy-positive")
+                    else if (actor.system.attributes?.creatureType !== "undead" && d.damageTypeUid === "energy-positive")
                         damageAfterEr =- damageAfterEr;
                     
                     let value = erValue?.value
@@ -384,7 +385,7 @@ export class DamageTypes {
                         value = game.i18n.localize("D35E.NoER")
                     }
                     let damageDifference = realDamage-damageAfterEr;
-                    energyDamage.push({nonLethal: hasRegeneration && !erValue?.lethal,name:_damage.data.name,uid:_damage.data.data.uniqueId,before:d.roll.total,after:damageAfterEr,value:value || 0,lower:damageAfterEr<d.roll.total,higher:damageAfterEr>d.roll.total,equal:d.roll.total===damageAfterEr});
+                    energyDamage.push({nonLethal: hasRegeneration && !erValue?.lethal,name:_damage.name,uid:_damage.system.uniqueId,before:d.roll.total,after:damageAfterEr,value:value || 0,lower:damageAfterEr<d.roll.total,higher:damageAfterEr>d.roll.total,equal:d.roll.total===damageAfterEr});
                     energyDamageAfterEr += damageAfterEr;
                     energyDamageBeforeEr += d.roll.total;
                     if (damageDifference && erValue?.providedBy && erValue?.isPool)
@@ -404,7 +405,7 @@ export class DamageTypes {
         let incorporealMiss = false;
         let incorporealRoll = Math.random();
         let incorporealRolled = false;
-        if (actor.data.data.traits.incorporeal && !incorporeal) {
+        if (actor.system.traits.incorporeal && !incorporeal) {
             incorporealRolled = true;
             if (incorporealRoll < 0.5 || enh < 1){
                 afterDamage = 0;
@@ -438,9 +439,9 @@ export class DamageTypes {
 
     static mapDamageType(type) {
         for (let damageType of CACHE.DamageTypes.values()) {
-            let identifiers = damageType.data.data.identifiers;
+            let identifiers = damageType.system.identifiers;
             if (identifiers.some(i => i[0].toLowerCase() === type.toLowerCase()))
-                return damageType.data.data.uniqueId;
+                return damageType.system.uniqueId;
         }
         return type;
     }

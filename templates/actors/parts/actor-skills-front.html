@@ -1,11 +1,11 @@
 {{!-- Skill Rank Info --}}
-{{#unless data.details.levelUpProgression}}
+{{#unless system.details.levelUpProgression}}
   {{#unless useBGSkills}}
   <div class="flexcol skill-rank">
     <ol class="form-group">
       <li class="flexrow skill-rank-formula">
         <label>{{ localize 'D35E.SkillBonusRankFormula' }}</label>
-        <input type="text" name="data.details.bonusSkillRankFormula" value="{{data.details.bonusSkillRankFormula}}" placeholder="{{ localize 'D35E.Formula' }}"/>
+        <input type="text" name="system.details.bonusSkillRankFormula" value="{{system.details.bonusSkillRankFormula}}" placeholder="{{ localize 'D35E.Formula' }}"/>
       </li>
     </ol>
     <ol class="form-group">
@@ -31,7 +31,7 @@
     <ol class="form-group">
       <li class="flexrow skill-rank-formula">
         <label>{{ localize 'D35E.SkillBonusRankFormula' }}</label>
-        <input type="text" name="data.details.bonusSkillRankFormula" value="{{data.details.bonusSkillRankFormula}}" placeholder="{{ localize 'D35E.Formula' }}"/>
+        <input type="text" name="system.details.bonusSkillRankFormula" value="{{system.details.bonusSkillRankFormula}}" placeholder="{{ localize 'D35E.Formula' }}"/>
       </li>
     </ol>
     <ol class="form-group">
