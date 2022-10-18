@@ -8,7 +8,7 @@ export const addLowLightVisionToLightConfig = function (app, html) {
   const obj = app.object;
 
   // Create checkbox HTML element
-  let checkboxStr = `<div class="form-group"><label>${game.i18n.localize("D35E.DisableLightLowLightVision")}</label>`;
+  let checkboxStr = `<div class="form-group"><label>${game.i18n.localize("PF1.DisableLightLowLightVision")}</label>`;
   checkboxStr += '<input type="checkbox" name="flags.D35E.disableLowLight" data-dtype="Boolean"';
   if (getProperty(obj, "flags.D35E.disableLowLight")) checkboxStr += " checked";
   checkboxStr += "/></div>";
@@ -16,6 +16,26 @@ export const addLowLightVisionToLightConfig = function (app, html) {
 
   // Insert new checkbox
   html.find('div.tab[data-tab="basic"]').append(checkbox);
+};
+
+/**
+ * Add a checkbox to enable/disable low-light vision to a token's configuration
+ *
+ * @param {FormApplication} app - The TokenConfig app
+ * @param {jQuery} html - The jQuery of the inner html
+ */
+export const addLowLightVisionToTokenConfig = function (app, html) {
+  const obj = app.object;
+
+  // Create checkbox HTML element
+  let checkboxStr = `<div class="form-group"><label>${game.i18n.localize("D35E.DisableLightLowLightVision")}</label>`;
+  checkboxStr += '<input type="checkbox" name="flags.D35E.disableLowLight" data-dtype="Boolean"';
+  if (getProperty(obj, "flags.D35E.disableLowLight")) checkboxStr += " checked";
+  checkboxStr += "/></div>";
+  const checkbox = $(checkboxStr);
+
+  // Insert new checkbox
+  html.find('.tab[data-group="light"][data-tab="basic"]').append(checkbox);
 };
 
 export const patchCoreForLowLightVision = function () {
@@ -42,7 +62,7 @@ export const patchCoreForLowLightVision = function () {
     // Compute the source polygon
     this.los = this._createPolygon();
     this._flags.renderSoftEdges =
-        canvas.performance.lightSoftEdges && (!!this.los.rays?.length || this.data.angle < 360);
+      canvas.performance.lightSoftEdges && (!!this.los.rays?.length || this.data.angle < 360);
 
     // Initialize or update meshes with the los points array
     this._initializeMeshes(this.los);

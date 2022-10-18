@@ -1,4 +1,3 @@
-
 import "./apps/vision-permission.js";
 import { _preProcessDiceFormula } from "./dice.js";
 import { ActorPF } from "./actor/entity.js";
@@ -8,9 +7,9 @@ const FormApplication_close = FormApplication.prototype.close;
 export async function PatchCore() {
   // Patch getTemplate to prevent unwanted indentation in things things like <textarea> elements.
   async function D35E_getTemplate(path) {
-    if ( !_templateCache.hasOwnProperty(path) ) {
-      await new Promise(resolve => {
-        game.socket.emit('template', path, resp => {
+    if (!_templateCache.hasOwnProperty(path)) {
+      await new Promise((resolve) => {
+        game.socket.emit("template", path, (resp) => {
           const compiled = Handlebars.compile(resp.html, { preventIndent: true });
           Handlebars.registerPartial(path, compiled);
           _templateCache[path] = compiled;
@@ -18,7 +17,7 @@ export async function PatchCore() {
           resolve(compiled);
         });
       });
-    } 
+    }
     return _templateCache[path];
   }
 
@@ -66,9 +65,9 @@ export async function PatchCore() {
   // }
 
   // Patch FormApplication
-  FormApplication.prototype.saveMCEContent = async function(updateData=null) {};
+  FormApplication.prototype.saveMCEContent = async function (updateData = null) {};
 
-  FormApplication.prototype.close = async function(options={}) {
+  FormApplication.prototype.close = async function (options = {}) {
     await this.saveMCEContent();
     return FormApplication_close.call(this, options);
   };
@@ -76,15 +75,14 @@ export async function PatchCore() {
   // Patch Roll._replaceData
   if (!isMinimumCoreVersion("0.7.2")) {
     const Roll__replaceData = Roll.prototype._replaceData;
-    Roll.prototype._replaceData = function(formula) {
+    Roll.prototype._replaceData = function (formula) {
       let result = Roll__replaceData.call(this, formula);
       result = _preProcessDiceFormula(result, this.data);
       return result;
     };
-  }
-  else {
+  } else {
     const Roll__identifyTerms = Roll.prototype._identifyTerms;
-    Roll.prototype._identifyTerms = function(formula) {
+    Roll.prototype._identifyTerms = function (formula) {
       formula = _preProcessDiceFormula(formula, this.data);
       const terms = Roll__identifyTerms.call(this, formula);
       return terms;
@@ -92,7 +90,7 @@ export async function PatchCore() {
   }
 
   const Token_animateMovement = Token.prototype.animateMovement;
-  Token.prototype.animateMovement = async function(...args) {
+  Token.prototype.animateMovement = async function (...args) {
     await Token_animateMovement.call(this, ...args);
     //console.log("D35E | Calling _calculateMinionDistance")
     ActorMinionsHelper.calculateMinionDistance(this.actor, {});
@@ -106,26 +104,19 @@ export async function PatchCore() {
     },
   });
 
-
-
   // Patch, patch, patch
   window.getTemplate = D35E_getTemplate;
 
   const StringTerm_eval = StringTerm.prototype.evaluate;
-  StringTerm.prototype.evaluate = async function(...args) {
+  StringTerm.prototype.evaluate = async function (...args) {
     return this;
   };
 
   //patchCoreForLowLightVision()
 
-  import("./lib/intro.js")
-
-
+  import("./lib/intro.js");
 }
 
-
-
-
 import { isMinimumCoreVersion } from "./lib.js";
-import {patchCoreForLowLightVision} from "./canvas/low-light-vision.js";
-
+import { patchCoreForLowLightVision } from "./canvas/low-light-vision.js";
+patchCoreForLowLightVision();

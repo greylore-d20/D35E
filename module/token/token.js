@@ -1,20 +1,18 @@
 import { hasTokenVision } from "../apps/vision-permission.js";
 
 export class TokenPF extends Token {
-
   async toggleEffect(effect, { active, overlay = false, midUpdate } = {}) {
     let call;
     if (typeof effect == "string") {
       const buffItem = this.actor.items.get(effect);
       if (buffItem) {
         call = await buffItem.update({ "data.active": !buffItem.data.data.active });
-      } else 
-        call = await super.toggleEffect(effect, { active, overlay });
+      } else call = await super.toggleEffect(effect, { active, overlay });
     } else if (effect && !midUpdate && Object.keys(CONFIG.D35E.conditions).includes(effect.id)) {
       const updates = {};
       updates["data.attributes.conditions." + effect.id] = !this.actor.data.data.attributes.conditions[effect.id];
       call = await this.actor.update(updates);
-      effect.label = CONFIG.D35E.conditions[effect.id]
+      effect.label = CONFIG.D35E.conditions[effect.id];
     } else if (effect) {
       call = await super.toggleEffect(effect, { active, overlay });
     }
@@ -24,9 +22,9 @@ export class TokenPF extends Token {
 
   get actorVision() {
     return {
-      lowLight: getProperty(this.actor, "system.attributes.senses.lowLight"),
-      lowLightMultiplier: getProperty(this.actor, "system.attributes.senses.lowLightMultiplier"),
-      lowLightMultiplierBright: getProperty(this.actor, "system.attributes.senses.lowLightMultiplier"),
+      lowLight: getProperty(this.actor, "system.senses.lowLight"),
+      lowLightMultiplier: getProperty(this.actor, "system.senses.lowLightMultiplier"),
+      lowLightMultiplierBright: getProperty(this.actor, "system.senses.lowLightMultiplier"),
     };
   }
 
@@ -53,5 +51,4 @@ export class TokenPF extends Token {
     this.document.refreshDetectionModes();
     super.updateVisionSource(...args);
   }
-
 }

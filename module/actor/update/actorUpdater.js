@@ -2845,20 +2845,17 @@ export class ActorUpdater {
             lightAngle = i.system.light.lightAngle;
             animationSpeed = i.system.light.animationSpeed;
           }
-
-          darkvision = Math.max(darkvision, i.system.senses?.darkvision || 0);
-          lowLight = lowLight || i.system.senses?.lowLight || false;
-          lowLightMultiplier =
-            lowLightMultiplier < (i.system.senses?.lowLightMultiplier || 2)
-              ? i.system.senses?.lowLightMultiplier || 2
-              : lowLightMultiplier;
         } else if (i.type === "race" || i.type === "class" || (i.type === "buff" && i.system.active)) {
-          darkvision = Math.max(darkvision, i.system.senses?.darkvision || 0);
-          lowLight = lowLight || i.system.senses?.lowLight || false;
-          lowLightMultiplier =
-            lowLightMultiplier < (i.system.senses?.lowLightMultiplier || 2)
-              ? i.system.senses?.lowLightMultiplier || 2
-              : lowLightMultiplier;
+          if (i.system.light?.emitLight) {
+            dimLight = i.system.light.dimRadius ? i.system.light.dimRadius : Math.floor(2 * i.system.light.radius);
+            brightLight = Math.floor(i.system.light.radius);
+            color = i.system.light.color || "#000";
+            type = i.system.light.type;
+            alpha = i.system.light.alpha;
+            animationIntensity = i.system.light.animationIntensity;
+            lightAngle = i.system.light.lightAngle;
+            animationSpeed = i.system.light.animationSpeed;
+          }
         }
       }
       if (!getProperty(this.actor.system, "noLightOverride") && !game.settings.get("D35E", "globalDisableTokenLight")) {
