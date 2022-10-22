@@ -1,15 +1,13 @@
 export class EntrySelector extends FormApplication {
   constructor(...args) {
     super(...args);
-
-    this.entries = duplicate(getProperty(this.object.data, this.attribute) || []);
+    this.entries = duplicate(getProperty(this.object, this.attribute) || []);
   }
 
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "entry-selector",
       classes: ["D35E", "entry"],
-      title: "Entry Selector",
       template: "systems/D35E/templates/apps/entry-selector.html",
       width: 320,
       height: "auto",
@@ -20,6 +18,10 @@ export class EntrySelector extends FormApplication {
 
   get attribute() {
     return this.options.name;
+  }
+
+  get title() {
+    return game.i18n.localize("D35E.EntrySelector");
   }
 
   get progression() {
@@ -46,12 +48,12 @@ export class EntrySelector extends FormApplication {
     return this.options.objectFields.split(";");
   }
 
-  getData() {
-    const entries = this.entries.map(o => {
+  async getData() {
+    const entries = this.entries.map((o) => {
       if (this.options.isObjectProperty) {
-         return Object.entries(o).map((o2, a) => {
-           return [o2[1], this.dtypes[a]];
-         });
+        return Object.entries(o).map((o2, a) => {
+          return [o2[1], this.dtypes[a]];
+        });
       } else {
         return o.map((o2, a) => {
           return [o2, this.dtypes[a]];
@@ -75,7 +77,7 @@ export class EntrySelector extends FormApplication {
 
   async _updateObject(event, formData) {
     const updateData = {};
-    
+
     updateData[this.attribute] = this.entries;
 
     return this.object.update(updateData);
@@ -91,16 +93,17 @@ export class EntrySelector extends FormApplication {
         for (let a = 0; a < this.dataCount; a++) {
           let dataType = this.dtypes[a];
           if (a > 0) {
-            if (dataType === "Number") obj.push(this.entries.length === 0 ? -1 : this.entries[this.entries.length - 1][a]);
+            if (dataType === "Number")
+              obj.push(this.entries.length === 0 ? -1 : this.entries[this.entries.length - 1][a]);
             else obj.push("");
           } else {
-            obj.push(this.entries.length+1);
+            obj.push(this.entries.length + 1);
           }
         }
         this.entries.push(obj);
       } else {
         if (this.options.isObjectProperty) {
-          obj = {}
+          obj = {};
 
           for (let field of this.objectFields) {
             let dataType = this.dtypes[this.objectFields.indexOf(field)];
@@ -116,14 +119,14 @@ export class EntrySelector extends FormApplication {
         }
         this.entries.push(obj);
       }
-      this._render(false);
+      return this.render();
     }
 
     if (a.classList.contains("delete-entry")) {
       const tr = a.closest("tr");
       const index = parseInt(tr.dataset.index);
       this.entries.splice(index, 1);
-      this._render(false);
+      return this.render();
     }
   }
 
@@ -139,15 +142,12 @@ export class EntrySelector extends FormApplication {
       let v = parseFloat(value);
       if (isNaN(v)) v = 0;
       if (this.options.isObjectProperty) {
-        this.entries[index][this.objectFields[index2]] = v === 0 ? 0 : Math.floor(v * 100) / 100
-      } else
-        this.entries[index][index2] = v === 0 ? 0 : Math.floor(v * 100) / 100;
-    }
-    else {
+        this.entries[index][this.objectFields[index2]] = v === 0 ? 0 : Math.floor(v * 100) / 100;
+      } else this.entries[index][index2] = v === 0 ? 0 : Math.floor(v * 100) / 100;
+    } else {
       if (this.options.isObjectProperty) {
-        this.entries[index][this.objectFields[index2]] = value
-      } else
-        this.entries[index][index2] = value;
+        this.entries[index][this.objectFields[index2]] = value;
+      } else this.entries[index][index2] = value;
     }
   }
 
