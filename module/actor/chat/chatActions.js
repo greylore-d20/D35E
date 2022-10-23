@@ -64,7 +64,7 @@ export class ActorChatActions {
       } else {
         monster = game.actors.get(monsterId);
       }
-      let tokenData = await monster.getTokenData({
+      let tokenData = await monster.getTokenDocument({
         actorData: {
           permission: { [user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER },
         },
@@ -72,22 +72,22 @@ export class ActorChatActions {
       let totalMonster = new Roll35e(button.dataset.formula, actor.getRollData()).roll().total;
       for (let spawned = 0; spawned < totalMonster; spawned++) {
         let internalSpawnPoint = {
-          x: x - canvas.scene.data.grid * (tokenData.width / 2),
-          y: y - canvas.scene.data.grid * (tokenData.height / 2),
+          x: x - canvas.scene.dimensions.size * (tokenData.width / 2),
+          y: y - canvas.scene.dimensions.size * (tokenData.height / 2),
         };
 
         const openPosition = Propagator.getFreePosition(tokenData, internalSpawnPoint);
         if (!openPosition) {
-          logger.info(MODULE.localize("error.noOpenLocation"));
+          logger.info("No open location.");
         } else {
           internalSpawnPoint = openPosition;
         }
 
-        tokenData.update(internalSpawnPoint);
-        tokenData.update({
-          permission: { [user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER },
+        tokenData.updateSource(internalSpawnPoint);
+        tokenData.updateSource({
+          ownership: { [user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER },
         });
-        tokenData.permission = { [user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER };
+        tokenData.ownership = { [user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER };
         await canvas.scene.createEmbeddedDocuments("Token", [tokenData]);
       }
 
