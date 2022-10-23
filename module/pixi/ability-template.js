@@ -1,20 +1,19 @@
 import { D35E } from "../config.js";
-import {Roll35e} from "../roll.js";
+import { Roll35e } from "../roll.js";
 import { MeasuredTemplatePF } from "../measure.js";
 
 export default class AbilityTemplate extends MeasuredTemplatePF {
-
   /**
    * A factory method to create an AbilityTemplate instance using provided data from an Item5e instance
-   * @param {ItemD35E} item               The Item object for which to construct the template
+   * @param {ItemUse} item               The Item object for which to construct the template
    * @return {AbilityTemplate|null}     The template object, or null if the item does not produce a template
    */
   static fromItem(item, multiplier = 1, rollData = {}, optionalData = {}) {
-    const target = getProperty(item.data, "data.measureTemplate") || {};
+    const target = getProperty(item.item.system, "measureTemplate") || {};
     const templateShape = D35E.areaTargetTypes[target.type];
-    if ( !templateShape ) return null;
+    if (!templateShape) return null;
     let baseSize = new Roll35e(`${target.size}`, rollData).roll().total;
-    let size = baseSize*multiplier || 5;
+    let size = baseSize * multiplier || 5;
     // Prepare template data
     const templateData = {
       t: templateShape,
@@ -24,20 +23,22 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
       x: 0,
       y: 0,
       fillColor: target.customColor || game.user.color,
-      texture: optionalData.customTexture ? optionalData.customTexture : target.customTexture ? target.customTexture : null,
+      texture: optionalData.customTexture
+        ? optionalData.customTexture
+        : target.customTexture
+        ? target.customTexture
+        : null,
       _id: randomID(16),
     };
 
-
-
     // Additional type-specific data
-    switch ( templateShape ) {
+    switch (templateShape) {
       case "cone": // 5e cone RAW should be 53.13 degrees
         if (game.settings.get("D35E", "measureStyle") === true) templateData.angle = 90;
         else templateData.angle = 53.13;
         break;
       case "rect": // 5e rectangular AoEs are always cubes
-        templateData.distance = Math.hypot(target.size*multiplier, target.size*multiplier);
+        templateData.distance = Math.hypot(target.size * multiplier, target.size * multiplier);
         templateData.width = target.value;
         templateData.direction = 45;
         break;
@@ -48,11 +49,10 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
         break;
     }
 
-
     const cls = CONFIG.MeasuredTemplate.documentClass;
     const template = new cls(templateData, { parent: canvas.scene });
 
-    template.item = item
+    template.item = item;
 
     const object = new this(template);
     object.alpha = optionalData.alpha || 1;
@@ -75,6 +75,12 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
 
   /* -------------------------------------------- */
 
+  /**
+   * Activate listeners for the template preview
+   *
+   * @param {CanvasLayer} initialLayer  The initially active CanvasLayer to re-activate after the workflow is complete
+   * @returns {Promise<boolean>} Returns true if placed, or false if cancelled
+   */
   activatePreviewListeners(initialLayer) {
     return new Promise((resolve) => {
       const handlers = {};
@@ -94,8 +100,8 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
         if (now - moveTime <= 20) return;
         const center = event.data.getLocalPosition(this.layer);
         const pos = canvas.grid.getSnappedPosition(center.x, center.y, 2);
-        this.data.x = pos.x;
-        this.data.y = pos.y;
+        this.document.x = pos.x;
+        this.document.y = pos.y;
         this.refresh();
         canvas.app.render();
         moveTime = now;
@@ -110,7 +116,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
         canvas.app.view.onwheel = null;
         // Clear highlight
         this.active = false;
-        const hl = this.getHighlightLayer();
+        const hl = canvas.grid.getHighlightLayer(this.highlightId);
         hl.clear();
         _clear();
 
@@ -125,17 +131,18 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
       handlers.lc = async (event) => {
         handlers.rc(event, false);
 
-        // Confirm final snapped position
-        this.data.update(this.data);
-
         // Create the template
         const result = {
           result: true,
           place: async () => {
-            return (await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.data.toObject()]))[0];
+            const doc = (
+              await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject(false)])
+            )[0];
+            this.document = doc;
+            return doc;
           },
           delete: () => {
-            return this.template?.delete();
+            return this.document.delete();
           },
         };
         _clear();
@@ -148,25 +155,25 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
         event.stopPropagation();
         let delta, snap;
         if (event.ctrlKey) {
-          if (this.data.t === "rect") {
+          if (this.document.t === "rect") {
             delta = Math.sqrt(canvas.dimensions.distance * canvas.dimensions.distance);
           } else {
             delta = canvas.dimensions.distance;
           }
           this.data.distance += delta * -Math.sign(event.deltaY);
         } else {
-          if (pfStyle && this.data.t === "cone") {
+          if (pfStyle && this.document.t === "cone") {
             delta = 90;
             snap = event.shiftKey ? delta : 45;
           } else {
             delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
             snap = event.shiftKey ? delta : 5;
           }
-          if (this.data.t === "rect") {
+          if (this.document.t === "rect") {
             snap = Math.sqrt(Math.pow(5, 2) + Math.pow(5, 2));
-            this.data.distance += snap * -Math.sign(event.deltaY);
+            this.document.distance += snap * -Math.sign(event.deltaY);
           } else {
-            this.data.direction += snap * Math.sign(event.deltaY);
+            this.document.direction += snap * Math.sign(event.deltaY);
           }
         }
         this.refresh();
@@ -186,7 +193,6 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
     return canvas.grid.getHighlightLayer(`Template.${this.id}`) ?? canvas.grid.addHighlightLayer(`Template.${this.id}`);
   }
 
-
   refresh() {
     if (!this.template) return;
     if (!canvas.scene) return;
@@ -199,5 +205,4 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
 
     return this;
   }
-
 }

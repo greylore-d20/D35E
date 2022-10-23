@@ -5,13 +5,13 @@ import { ActorPF } from "./actor/entity.js";
 const FormApplication_close = FormApplication.prototype.close;
 
 export async function PatchCore() {
-  // Patch getTemplate to prevent unwanted indentation in things things like <textarea> elements.
-  async function D35E_getTemplate(path) {
+  // Patch getTemplate to prevent unwanted indentation in things like <textarea> elements.
+  async function D35E_getTemplate(path, id) {
     if (!_templateCache.hasOwnProperty(path)) {
       await new Promise((resolve) => {
         game.socket.emit("template", path, (resp) => {
           const compiled = Handlebars.compile(resp.html, { preventIndent: true });
-          Handlebars.registerPartial(path, compiled);
+          Handlebars.registerPartial(id ?? path, compiled);
           _templateCache[path] = compiled;
           //console.log(`Foundry VTT | Retrieved and compiled template ${path}`);
           resolve(compiled);
@@ -20,49 +20,6 @@ export async function PatchCore() {
     }
     return _templateCache[path];
   }
-
-  // const Token_drawEffects = Token.prototype.drawEffects;
-  // Token.prototype.drawEffects = async function() {
-  //   let effects = this.effects || this.hud.effects;
-  //   effects.removeChildren().forEach(c => c.destroy());
-  //   const tokenEffects = this.data.effects;
-  //   const actorEffects = this.actor?.temporaryEffects || [];
-  //   let overlay = {
-  //     src: this.data.overlayEffect,
-  //     tint: null
-  //   };
-  //
-  //   // Draw status effects
-  //   if ( tokenEffects.length || actorEffects.length ) {
-  //     const promises = [];
-  //     let w = Math.round(canvas.dimensions.size / 2 / 5) * 2;
-  //     let bg = effects.addChild(new PIXI.Graphics()).beginFill(0x000000, 0.40).lineStyle(1.0, 0x000000);
-  //     let i = 0;
-  //
-  //     // Draw actor effects first
-  //     for ( let f of actorEffects ) {
-  //       if ( !f.data.icon ) continue;
-  //       if (f?.data?.flags?.D35E?.show && this.actor?.data?.data?.noBuffDisplay && !this.actor?.testUserPermission(game.user, "OWNER")) continue;
-  //       const tint = f.data.tint ? colorStringToHex(f.data.tint) : null;
-  //       if ( f.getFlag("core", "overlay") ) {
-  //         overlay = {src: f.data.icon, tint};
-  //         continue;
-  //       }
-  //       promises.push(this._drawEffect(f.data.icon, i, bg, w, tint));
-  //       i++;
-  //     }
-  //
-  //     // Next draw token effects
-  //     for ( let f of tokenEffects ) {
-  //       promises.push(this._drawEffect(f, i, bg, w, null));
-  //       i++;
-  //     }
-  //     await Promise.all(promises);
-  //   }
-  //
-  //   // Draw overlay effect
-  //   return this._drawOverlay(overlay)
-  // }
 
   // Patch FormApplication
   FormApplication.prototype.saveMCEContent = async function (updateData = null) {};

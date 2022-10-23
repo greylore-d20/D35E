@@ -705,11 +705,14 @@ export class Item35E extends ItemBase35E {
           ) {
             let itemsToCreate = [];
             for (const i of getProperty(this.system, "shapechange.source.items")) {
-              if (i.type === "attack" && (i.data.attackType === "natural" || i.data.attackType === "extraordinary")) {
+              if (
+                i.type === "attack" &&
+                (i.system.attackType === "natural" || i.system.attackType === "extraordinary")
+              ) {
                 //console.log('add polymorph attack')
                 if (!this.actor) continue;
                 let data = duplicate(i);
-                system.fromPolymorph = true;
+                data.system.fromPolymorph = true;
                 data.name = i.name;
                 delete data._id;
                 itemsToCreate.push(data);
@@ -1293,107 +1296,107 @@ export class Item35E extends ItemBase35E {
     return data;
   }
 
-  static async polymorphBuffFromActor(data, origData, type) {
-    data = {
+  static async polymorphBuffFromActor(shapechangeData, origData, type) {
+    shapechangeData = {
       type: "buff",
       name: origData.name,
       img: origData.img,
-      data: data,
+      system: shapechangeData,
     };
 
-    system.shapechange = { source: origData, type: type };
-    system.buffType = "shapechange";
-    system.sizeOverride = origsystem.traits.size;
+    shapechangeData.system.shapechange = { source: origData, type: type };
+    shapechangeData.system.buffType = "shapechange";
+    shapechangeData.system.sizeOverride = origData.system.traits.size;
 
-    system.changes = [];
-    system.changes.push(...(origData.items.find((i) => i.type === "class")?.data?.changes || []));
+    shapechangeData.system.changes = [];
+    shapechangeData.system.changes.push(...(origData.items.find((i) => i.type === "class")?.data?.changes || []));
     if (type === "polymorph" || type === "wildshape") {
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.abilities.str.total")}`,
+          `${getProperty(origData, "system.abilities.str.total")}`,
           "ability",
           "str",
           "replace",
-          getProperty(origdata, "system.abilities.str.total"),
+          getProperty(origData, "system.abilities.str.total"),
         ],
       ]); // Strength
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.abilities.dex.total")}`,
+          `${getProperty(origData, "system.abilities.dex.total")}`,
           "ability",
           "dex",
           "replace",
-          getProperty(origdata, "system.abilities.dex.total"),
+          getProperty(origData, "system.abilities.dex.total"),
         ],
       ]); // Dexterity
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.abilities.con.total")}`,
+          `${getProperty(origData, "system.abilities.con.total")}`,
           "ability",
           "con",
           "replace",
-          getProperty(origdata, "system.abilities.con.total"),
+          getProperty(origData, "system.abilities.con.total"),
         ],
       ]); // Constitution
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.attributes.speed.land.total")}`,
+          `${getProperty(origData, "system.attributes.speed.land.total")}`,
           "speed",
           "landSpeed",
           "replace",
-          getProperty(origdata, "system.attributes.speed.land.total"),
+          getProperty(origData, "system.attributes.speed.land.total"),
         ],
       ]);
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.attributes.speed.climb.total")}`,
+          `${getProperty(origData, "system.attributes.speed.climb.total")}`,
           "speed",
           "climbSpeed",
           "replace",
-          getProperty(origdata, "system.attributes.speed.climb.total"),
+          getProperty(origData, "system.attributes.speed.climb.total"),
         ],
       ]);
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.attributes.speed.swim.total")}`,
+          `${getProperty(origData, "system.attributes.speed.swim.total")}`,
           "speed",
           "swimSpeed",
           "replace",
-          getProperty(origdata, "system.attributes.speed.swim.total"),
+          getProperty(origData, "system.attributes.speed.swim.total"),
         ],
       ]);
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.attributes.speed.burrow.total")}`,
+          `${getProperty(origData, "system.attributes.speed.burrow.total")}`,
           "speed",
           "burrowSpeed",
           "replace",
-          getProperty(origdata, "system.attributes.speed.burrow.total"),
+          getProperty(origData, "system.attributes.speed.burrow.total"),
         ],
       ]);
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.attributes.speed.fly.total")}`,
+          `${getProperty(origData, "system.attributes.speed.fly.total")}`,
           "speed",
           "flySpeed",
           "replace",
-          getProperty(origdata, "system.attributes.speed.fly.total"),
+          getProperty(origData, "system.attributes.speed.fly.total"),
         ],
       ]);
-      system.changes = system.changes.concat([
+      shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origdata, "system.attributes.naturalACTotal")}`,
+          `${getProperty(origData, "system.attributes.naturalACTotal")}`,
           "ac",
           "nac",
           "base",
-          getProperty(origdata, "system.attributes.naturalACTotal"),
+          getProperty(origData, "system.attributes.naturalACTotal"),
         ],
       ]);
     }
 
-    system.activateActions = [];
+    shapechangeData.system.activateActions = [];
     if (type === "wildshape") {
-      system.activateActions = system.activateActions.concat([
+      shapechangeData.system.activateActions = shapechangeData.system.activateActions.concat([
         {
           name: "Activate Wildshape",
           action: "Condition set wildshaped to true on self",
@@ -1402,7 +1405,7 @@ export class Item35E extends ItemBase35E {
         },
         {
           name: "Set Portrait",
-          action: `Update set data.shapechangeImg to ${origsystem.tokenImg} on self`,
+          action: `Update set data.shapechangeImg to ${origData.system.tokenImg} on self`,
           condition: "",
           img: "",
         },
@@ -1415,7 +1418,7 @@ export class Item35E extends ItemBase35E {
         },
       ]);
     } else if (type === "polymorph") {
-      system.activateActions = system.activateActions.concat([
+      shapechangeData.system.activateActions = shapechangeData.system.activateActions.concat([
         {
           name: "Activate Polymorph",
           action: "Condition set polymorph to true on self",
@@ -1424,7 +1427,7 @@ export class Item35E extends ItemBase35E {
         },
         {
           name: "Set Portrait",
-          action: `Update set data.shapechangeImg to ${origsystem.tokenImg} on self`,
+          action: `Update set data.shapechangeImg to ${origData.system.tokenImg} on self`,
           condition: "",
           img: "",
         },
@@ -1436,20 +1439,20 @@ export class Item35E extends ItemBase35E {
         },
       ]);
     } else if (type === "alter-self") {
-      system.activateActions = system.activateActions.concat([
+      shapechangeData.system.activateActions = shapechangeData.system.activateActions.concat([
         {
           name: "Set Portrait",
-          action: `Update set data.shapechangeImg to ${origsystem.tokenImg} on self`,
+          action: `Update set data.shapechangeImg to ${origData.system.tokenImg} on self`,
           condition: "",
           img: "",
         },
       ]);
     }
 
-    system.deactivateActions = [];
+    shapechangeData.system.deactivateActions = [];
 
     if (type === "wildshape") {
-      system.deactivateActions = system.deactivateActions.concat([
+      shapechangeData.system.deactivateActions = shapechangeData.system.deactivateActions.concat([
         {
           name: "Deactivate Wildshape",
           action: "Condition set wildshaped to false on self",
@@ -1471,7 +1474,7 @@ export class Item35E extends ItemBase35E {
         },
       ]);
     } else if (type === "polymorph") {
-      system.deactivateActions = system.deactivateActions.concat([
+      shapechangeData.system.deactivateActions = shapechangeData.system.deactivateActions.concat([
         {
           name: "Deactivate Polymorph",
           action: "Condition set polymorph to false on self",
@@ -1492,7 +1495,7 @@ export class Item35E extends ItemBase35E {
         },
       ]);
     } else if (type === "alter-self") {
-      system.deactivateActions = system.deactivateActions.concat([
+      shapechangeData.system.deactivateActions = shapechangeData.system.deactivateActions.concat([
         {
           name: "Set Portrait",
           action: `Update set data.shapechangeImg to icons/svg/mystery-man.svg on self`,
@@ -1504,7 +1507,7 @@ export class Item35E extends ItemBase35E {
 
     // Speedlist
     let speedDesc = [];
-    for (let speedKey of Object.keys(origsystem.attributes.speed)) {
+    for (let speedKey of Object.keys(origData.system.attributes.speed)) {
       if (getProperty(origData, `data.attributes.speed.${speedKey}.total`) > 0)
         speedDesc.push(
           speedKey.charAt(0).toUpperCase() +
@@ -1516,15 +1519,18 @@ export class Item35E extends ItemBase35E {
     }
 
     // Set description
-    system.description.value = await renderTemplate("systems/D35E/templates/internal/shapechange-description.html", {
-      size: game.i18n.localize(CONFIG.D35E.actorSizes[origsystem.traits.size]),
-      type: origsystem.details.type,
-      speed: speedDesc.join(", "),
-      str: origsystem.abilities.str.total,
-      dex: origsystem.abilities.dex.total,
-      con: origsystem.abilities.con.total,
-    });
-    return data;
+    shapechangeData.system.description.value = await renderTemplate(
+      "systems/D35E/templates/internal/shapechange-description.html",
+      {
+        size: game.i18n.localize(CONFIG.D35E.actorSizes[origData.system.traits.size]),
+        type: origData.system.details.type,
+        speed: speedDesc.join(", "),
+        str: origData.system.abilities.str.total,
+        dex: origData.system.abilities.dex.total,
+        con: origData.system.abilities.con.total,
+      }
+    );
+    return shapechangeData;
   }
 
   static async toAttack(origData, type) {
@@ -1539,7 +1545,7 @@ export class Item35E extends ItemBase35E {
       data: data,
     };
 
-    const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origsystem);
+    const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origData.system);
 
     data.name = `${origData.name}`;
     data.img = `${origData.img}`;
@@ -1553,7 +1559,7 @@ export class Item35E extends ItemBase35E {
     }
 
     // Set damage formula
-    system.actionType = origsystem.actionType;
+    system.actionType = origData.system.actionType;
     for (let d of getProperty(origdata, "system.damage.parts")) {
       d[0] = d[0].replace(/@sl/g, slcl[0]);
       d[0] = d[0].replace(/@cl/g, slcl[1]);
@@ -1561,18 +1567,18 @@ export class Item35E extends ItemBase35E {
     }
     system.attackType = "misc";
     // Set saves
-    system.save.description = origsystem.save.description;
-    system.save.type = origsystem.save.type;
-    system.save.ability = origsystem.save.ability;
+    system.save.description = origData.system.save.description;
+    system.save.type = origData.system.save.type;
+    system.save.ability = origData.system.save.ability;
     system.save.dc = 10 + slcl[0] + Math.floor(slcl[0] / 2);
 
     // Copy variables
-    system.attackNotes = origsystem.attackNotes;
-    system.effectNotes = origsystem.effectNotes;
-    system.attackBonus = origsystem.attackBonus;
-    system.critConfirmBonus = origsystem.critConfirmBonus;
-    system.specialActions = origsystem.specialActions;
-    system.attackCountFormula = origsystem.attackCountFormula.replace(/@cl/g, slcl[1]).replace(/@sl/g, slcl[0]);
+    system.attackNotes = origData.system.attackNotes;
+    system.effectNotes = origData.system.effectNotes;
+    system.attackBonus = origData.system.attackBonus;
+    system.critConfirmBonus = origData.system.critConfirmBonus;
+    system.specialActions = origData.system.specialActions;
+    system.attackCountFormula = origData.system.attackCountFormula.replace(/@cl/g, slcl[1]).replace(/@sl/g, slcl[0]);
 
     // Determine aura power
     let auraPower = "faint";
@@ -1603,7 +1609,7 @@ export class Item35E extends ItemBase35E {
       data: data,
     };
 
-    const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origsystem);
+    const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origData.system);
 
     data.name = `${origData.name}`;
     data.img = origData.img;
@@ -1615,7 +1621,7 @@ export class Item35E extends ItemBase35E {
     system.measureTemplate = getProperty(origdata, "system.measureTemplate");
 
     // Set damage formula
-    system.actionType = origsystem.actionType;
+    system.actionType = origData.system.actionType;
     for (let d of getProperty(origdata, "system.damage.parts")) {
       d[0] = d[0].replace(/@sl/g, slcl[0]);
       d[0] = d[0].replace(/@cl/g, "@attributes.hd.total");
@@ -1623,17 +1629,17 @@ export class Item35E extends ItemBase35E {
     }
 
     // Set saves
-    system.save.description = origsystem.save.description;
-    system.save.dc = origsystem.save.dc;
-    system.save.type = origsystem.save.type;
+    system.save.description = origData.system.save.description;
+    system.save.dc = origData.system.save.dc;
+    system.save.type = origData.system.save.type;
 
     // Copy variables
-    system.attackNotes = origsystem.attackNotes;
-    system.effectNotes = origsystem.effectNotes;
-    system.attackBonus = origsystem.attackBonus;
-    system.critConfirmBonus = origsystem.critConfirmBonus;
-    system.specialActions = origsystem.specialActions;
-    system.attackCountFormula = origsystem.attackCountFormula.replace(/@cl/g, slcl[1]).replace(/@sl/g, slcl[0]);
+    system.attackNotes = origData.system.attackNotes;
+    system.effectNotes = origData.system.effectNotes;
+    system.attackBonus = origData.system.attackBonus;
+    system.critConfirmBonus = origData.system.critConfirmBonus;
+    system.specialActions = origData.system.specialActions;
+    system.attackCountFormula = origData.system.attackCountFormula.replace(/@cl/g, slcl[1]).replace(/@sl/g, slcl[0]);
 
     system.description.value = getProperty(origdata, "system.description.value");
 

@@ -272,14 +272,14 @@
                 <option value="none" data-ammo-count="9999" data-dmg-formula="">Default Unlimited Ammo</option>
                 {{/if}}
                 {{#each ammunition as |item iid|}}
-                <option value="{{item._id}}" data-attack="{{item.data.data.bonusAmmoAttack}}"
-                        data-note="{{item.data.data.bonusAmmoAttackNote}}" data-ammo-count="{{item.data.data.quantity}}"
-                        data-dmg-uid="{{item.data.data.bonusAmmoDamageUid}}"
-                        data-dmg-type="{{item.data.data.bonusAmmoDamageType}}"
-                        data-id="{{item.data.data.bonusAmmoDamageType}}"
-                        data-enh="{{item.data.data.bonusAmmoEnhancement}}"
+                <option value="{{item._id}}" data-attack="{{item.system.bonusAmmoAttack}}"
+                        data-note="{{item.system.bonusAmmoAttackNote}}" data-ammo-count="{{item.system.quantity}}"
+                        data-dmg-uid="{{item.system.bonusAmmoDamageUid}}"
+                        data-dmg-type="{{item.system.bonusAmmoDamageType}}"
+                        data-id="{{item.system.bonusAmmoDamageType}}"
+                        data-enh="{{item.system.bonusAmmoEnhancement}}"
                         data-name="{{item.name}}"
-                        data-dmg-formula="{{item.data.data.bonusAmmoDamage}}">{{item.name}} ({{item.data.data.quantity}})
+                        data-dmg-formula="{{item.system.bonusAmmoDamage}}">{{item.name}} ({{item.system.quantity}})
                 </option>
                 {{else}}
 
@@ -464,8 +464,8 @@
             <span class="tooltipcontent preview"><h1>{{feat.name}}</h1>{{{feat.getChatDescription}}}</span>
             <label style="{{#unless feat.hasUseableChange}}opacity: 0.8{{/unless}}">{{feat.combatChangeName}} {{#if feat.isCharged}}({{feat.charges}} charges){{/if}}</label>
     
-            {{#if feat.data.data.combatChangesRange.max}}
-            <input type="range" name="optional-range-base-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesRange.max}}" value="0" class="slider" style="flex: 1"
+            {{#if feat.system.combatChangesRange.max}}
+            <input type="range" name="optional-range-base-{{feat.id}}" min="0" max="{{feat.system.combatChangesRange.max}}" value="0" class="slider" style="flex: 1"
                    onchange="this.nextElementSibling.value=this.value">
             <input type="text" name="optional-range-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
             {{/if}}
@@ -475,23 +475,23 @@
                 <span class="checkmark"></span>
             </label>
         </div>
-            {{#if feat.data.data.combatChangesAdditionalRanges.hasAdditionalRanges}}
+            {{#if feat.system.combatChangesAdditionalRanges.hasAdditionalRanges}}
             <div class="form-group">
-                {{#if feat.data.data.combatChangesAdditionalRanges.slider1.max}}
-                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider1.name}}</span>
-                <input type="range" name="optional-range-base-1-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider1.max}}" value="0" class="slider" style="flex: 1"
+                {{#if feat.system.combatChangesAdditionalRanges.slider1.max}}
+                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.system.combatChangesAdditionalRanges.slider1.name}}</span>
+                <input type="range" name="optional-range-base-1-{{feat.id}}" min="0" max="{{feat.system.combatChangesAdditionalRanges.slider1.max}}" value="0" class="slider" style="flex: 1"
                        onchange="this.nextElementSibling.value=this.value">
                 <input type="text" name="optional-range-1-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
                 {{/if}}
-                {{#if feat.data.data.combatChangesAdditionalRanges.slider2.max}}
-                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider2.name}}</span>
-                <input type="range" name="optional-range-base-2-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider2.max}}" value="0" class="slider" style="flex: 1"
+                {{#if feat.system.combatChangesAdditionalRanges.slider2.max}}
+                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.system.combatChangesAdditionalRanges.slider2.name}}</span>
+                <input type="range" name="optional-range-base-2-{{feat.id}}" min="0" max="{{feat.system.combatChangesAdditionalRanges.slider2.max}}" value="0" class="slider" style="flex: 1"
                        onchange="this.nextElementSibling.value=this.value">
                 <input type="text" name="optional-range-2-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
                 {{/if}}
-                {{#if feat.data.data.combatChangesAdditionalRanges.slider3.max}}
-                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.data.data.combatChangesAdditionalRanges.slider3.name}}</span>
-                <input type="range" name="optional-range-base-3-{{feat.id}}" min="0" max="{{feat.data.data.combatChangesAdditionalRanges.slider3.max}}" value="0" class="slider" style="flex: 1"
+                {{#if feat.system.combatChangesAdditionalRanges.slider3.max}}
+                <span style="flex: 0; margin-right: 3px; opacity: 0.8">{{feat.system.combatChangesAdditionalRanges.slider3.name}}</span>
+                <input type="range" name="optional-range-base-3-{{feat.id}}" min="0" max="{{feat.system.combatChangesAdditionalRanges.slider3.max}}" value="0" class="slider" style="flex: 1"
                        onchange="this.nextElementSibling.value=this.value">
                 <input type="text" name="optional-range-3-{{feat.id}}" value="0" disabled style="flex: 0 30; margin-left: 8px"/>
                 {{/if}}
@@ -510,7 +510,7 @@
             <select name="selected-monster" class="auto-save" onchange="updateMonster(this)">
                 {{#select monster}}
                 {{#each summonableMonsters as |monster id|}}
-                <option value="{{monster.data.collection}}:{{monster.data.resultId}}:{{monster.data.text}}" data-pack="{{monster.data.collection}}" data-formula="{{monster.formula}}" data-id="{{monster.data.resultId}}">{{monster.data.text}} ({{monster.formula}})</option>
+                <option value="{{monster.data.documentCollection}}:{{monster.data.documentId}}:{{monster.data.text}}" data-pack="{{monster.data.documentCollection}}" data-formula="{{monster.formula}}" data-id="{{monster.data.documentId}}">{{monster.data.text}} ({{monster.formula}})</option>
                 {{/each}}
                 {{/select}}
             </select>
@@ -537,9 +537,10 @@
                 var monster_pack = $('option:selected', select).attr('data-pack');
                 var mosnter_id = $('option:selected', select).attr('data-id');
                 var mosnter_formula = $('option:selected', select).attr('data-formula');
+                console.log(monster_pack, mosnter_id)
                 const __pack = game.packs.get(monster_pack);
                 const monster = await __pack.getDocument(mosnter_id);
-                const mdd = monster.data.data;
+                const mdd = monster.system;
 
                 $('option:selected', select).closest("section").find("input[name='monster-collection']").val(monster_pack)
                 $('option:selected', select).closest("section").find("input[name='monster-resultId']").val(mosnter_id)
@@ -549,9 +550,9 @@
 
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-name").text(`${monster.name}`)
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-img").attr("src",`${monster.img}`)
-                $('option:selected', select).closest("section").find(".monster-summon-box .monster-cr").text(`CR${monster.data.data.details.totalCr}`)
-                $('option:selected', select).closest("section").find(".monster-summon-box .monster-align").text(`${CONFIG.D35E.actorSizes[monster.data.data.traits.actualSize]} ${monster.racialHD.name} ${monster.data.data.details.alignment}`)
-                $('option:selected', select).closest("section").find(".monster-summon-box .monster-hp").text(`${monster.data.data.attributes.hp.max} hp (${monster.data.data.attributes?.hd?.total || "Unknown"} HD)`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-cr").text(`CR${monster.system.details.totalCr}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-align").text(`${CONFIG.D35E.actorSizes[monster.system.traits.actualSize]} ${monster.racialHD.name} ${monster.system.details.alignment}`)
+                $('option:selected', select).closest("section").find(".monster-summon-box .monster-hp").text(`${monster.system.attributes.hp.max} hp (${monster.system.attributes?.hd?.total || "Unknown"} HD)`)
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-ac").text(`${mdd.attributes.ac?.normal?.total || "Unknown"} (${mdd.attributes.ac?.touch?.total || "Unknown"} touch, ${mdd.attributes?.ac?.flatFooted.total || "Unknown"} flat-footed)`)
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-bab").text(`${mdd.attributes?.bab?.total || "Unknown"}/${mdd.attributes?.cmd?.total || "Unknown"}`)
                 $('option:selected', select).closest("section").find(".monster-summon-box .monster-init").text(`${mdd.attributes?.initiative?.total || "Unknown"}`)

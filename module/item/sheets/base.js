@@ -79,8 +79,8 @@ export class ItemSheetPF extends ItemSheet {
     this.item.datas = [];
     if (this.item.items != null) {
       this.item.datas = this.item.items.map((i) => {
-        i.data.labels = i.labels;
-        return i.data;
+        i.system.labels = i.labels;
+        return i.system;
       });
     }
 
@@ -177,7 +177,7 @@ export class ItemSheetPF extends ItemSheet {
 
     if (this.actor != null) {
       this.actor.items.forEach((i) => {
-        if (i.data.type === "loot" && i.system.subType === "container") {
+        if (i.type === "loot" && i.system.subType === "container") {
           sheetData.availableContainers[i._id] = i.name;
           this.containerMap.set(i._id, i);
         }

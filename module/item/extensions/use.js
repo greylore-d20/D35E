@@ -926,7 +926,7 @@ export class ItemUse {
       for (let summon of this.item.system.summon) {
         const pack = game.packs.get(summon.pack || "D35E.summoning-roll-tables");
         const table = await pack.getDocument(summon.id);
-        for (let result of table.data.results) {
+        for (let result of table.results) {
           summonableMonsters.push({ data: result.data, formula: summon.formula || "1" });
         }
       }
