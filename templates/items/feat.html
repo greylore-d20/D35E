@@ -114,7 +114,7 @@
               {{!-- Feat Type --}}
               <div class="form-group select">
                 <label>{{localize "D35E.Type"}}</label>
-                <select name="data.featType" value="{{data.system.featType}}">
+                <select name="system.featType" value="{{data.system.featType}}">
                   {{#select data.system.featType}}
                   {{#each config.featTypes as |type a|}}
                   <option value="{{a}}">{{type}}</option>
@@ -126,7 +126,7 @@
 
               <div class="form-group select">
                 <label>{{localize "D35E.AbilityType"}}</label>
-                <select name="data.abilityType" value="{{data.system.abilityType}}">
+                <select name="system.abilityType" value="{{data.system.abilityType}}">
                   {{#select data.system.abilityType}}
                   <option value="">{{localize "D35E.None"}}</option>
                   {{#each config.abilityTypes as |type a|}}
@@ -153,14 +153,14 @@
 
               <div class="form-group stacked">
                 <label class="checkbox">
-                  <input type="checkbox" name="data.showInQuickbar" {{checked data.system.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
+                  <input type="checkbox" name="system.showInQuickbar" {{checked data.system.showInQuickbar}}/> {{localize "D35E.ShowInQuickbar"}}
                 </label>
               </div>
 
             <div class="form-group">
               <label>{{localize "D35E.Metamagic"}}</label>
               <label class="checkbox" style="position: relative; flex: 0 20px">
-                <input type="checkbox" class="stylized" name="data.metamagic.enabled" {{checked data.system.metamagic.enabled}}/>
+                <input type="checkbox" class="stylized" name="system.metamagic.enabled" {{checked data.system.metamagic.enabled}}/>
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -168,26 +168,26 @@
             {{#if data.system.metamagic.enabled}}
               <div class="form-group">
                 <label>{{localize "D35E.ShortDescription"}}</label>
-                <input type="text" name="data.metamagic.shortDesc" value="{{data.system.metamagic.shortDesc}}" data-dtype="String"/>
+                <input type="text" name="system.metamagic.shortDesc" value="{{data.system.metamagic.shortDesc}}" data-dtype="String"/>
               </div>
-              <textarea class="metamagic-editor" style="font-family: monospace; min-height: 120px" name="data.metamagic.code">{{data.system.metamagic.code}}</textarea>
+              <textarea class="metamagic-editor" style="font-family: monospace; min-height: 120px" name="system.metamagic.code">{{data.system.metamagic.code}}</textarea>
             {{/if}}
 
               {{#if isSpellSpecialization}}
               <h3 class="form-header">{{localize "D35E.FeatTypeSpellSpecialization"}}</h3>
               <div class="form-group">
                 <label>{{localize "D35E.SpellSpecializationSchool"}}</label>
-                <input type="text" name="data.spellSpecializationName" value="{{data.system.spellSpecializationName}}" data-dtype="String"/>
+                <input type="text" name="system.spellSpecializationName" value="{{data.system.spellSpecializationName}}" data-dtype="String"/>
               </div>
               <div class="form-group">
                 <label>{{localize "D35E.SpellSpecializationForbidden"}}</label>
-                <input type="text" name="data.spellSpecializationForbiddenNames" value="{{data.system.spellSpecializationForbiddenNames}}" data-dtype="String"/>
+                <input type="text" name="system.spellSpecializationForbiddenNames" value="{{data.system.spellSpecializationForbiddenNames}}" data-dtype="String"/>
               </div>
 
             <div class="form-group">
               <label>{{localize "D35E.SpellSpecializationIdDomain"}}</label>
               <label class="checkbox" style="position: relative; flex: 0 20px">
-                <input type="checkbox" class="stylized" name="data.spellSpecialization.isDomain" {{checked data.system.spellSpecialization.isDomain}}/>
+                <input type="checkbox" class="stylized" name="system.spellSpecialization.isDomain" {{checked data.system.spellSpecialization.isDomain}}/>
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -202,8 +202,8 @@
                   <div class="form-group">
                     <img src="{{spell.img}}">
                     <label>{{spell.name}}</label>
-                    <input type="text" name="data.spellSpecialization.spells.{{level}}.id" value="{{spell.id}}" data-dtype="String"/>
-                    <input type="text" name="data.spellSpecialization.spells.{{level}}.pack" value="{{spell.pack}}" data-dtype="String"/>
+                    <input type="text" name="system.spellSpecialization.spells.{{level}}.id" value="{{spell.id}}" data-dtype="String"/>
+                    <input type="text" name="system.spellSpecialization.spells.{{level}}.pack" value="{{spell.pack}}" data-dtype="String"/>
                   </div>
                   <em style="align-self: flex-end;">{{localize "D35E.SpellSpecializationDropSpell"}}</em>
                 </div>
@@ -237,7 +237,7 @@
               <h3 class="form-header">System Properties</h3>
               <div class="form-group">
                 <label>UID</label>
-                <input type="text" name="data.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
+                <input type="text" name="system.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
               </div>
               {{/if}}
             {{/if}}
