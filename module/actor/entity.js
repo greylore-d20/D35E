@@ -36,6 +36,7 @@ export class ActorPF extends Actor {
   static LOG_V10_COMPATIBILITY_WARNINGS = false;
   API_URI = "https://companion.legaciesofthedragon.com/";
   static SPELL_AUTO_HIT = -1337;
+
   //API_URI = 'http://localhost:5000';
 
   constructor(...args) {
@@ -216,7 +217,7 @@ export class ActorPF extends Actor {
         let count = 1;
         while (
           actorData.items.filter((obj) => {
-            return obj.type === "class" && obj.data.tag === tag && obj !== cls;
+            return obj.type === "class" && obj.system.tag === tag && obj !== cls;
           }).length > 0
         ) {
           count++;
@@ -456,7 +457,12 @@ export class ActorPF extends Actor {
       // Add spell slots
       spellbook.spells = spellbook.spells || {};
       for (let a = 0; a < 10; a++) {
-        spellbook.spells[`spell${a}`] = spellbook.spells[`spell${a}`] || { value: 0, max: 0, base: null, known: 0 };
+        spellbook.spells[`spell${a}`] = spellbook.spells[`spell${a}`] || {
+          value: 0,
+          max: 0,
+          base: null,
+          known: 0,
+        };
         let spellbookClassLevel = (preparedData.classes[spellbook.class]?.level || 0) + spellbook.bonusPrestigeCl;
         spellbook.spells[`spell${a}`].maxKnown = preparedData.classes[spellbook.class]?.spellsKnownPerLevel
           ? Math.max(
@@ -834,7 +840,11 @@ export class ActorPF extends Actor {
     if (packItem != null) itemData = packItem.data;
     if (itemData) {
       if (itemData._id) delete itemData._id;
-      if (itemData.document) itemData.document.data.update({ "data.level": parseInt(level), "data.-=spellbook": null });
+      if (itemData.document)
+        itemData.document.data.update({
+          "data.level": parseInt(level),
+          "data.-=spellbook": null,
+        });
       else {
         itemData.data.level = parseInt(level);
         if (itemData.data.spellbook) delete itemData.data.spellbook;
@@ -867,8 +877,8 @@ export class ActorPF extends Actor {
       const packItem = await pack.getDocument(spell.id);
       if (packItem != null) itemData = packItem.data;
       if (itemData) {
-        if (itemData._id) delete itemData._id;
-        itemData.document.data.update({ "data.level": spell.level });
+        //if (itemData._id) delete itemData._id;
+        itemData.system.level = spell.level;
         spellsToAdd.push(itemData);
       }
     }
@@ -888,44 +898,28 @@ export class ActorPF extends Actor {
         if (spellData.level !== parseInt(level)) continue;
         const pack = game.packs.find((p) => p.metadata.id === spellData.pack);
         const packItem = await pack.getDocument(spellData.id);
-        let itemData = null;
-        if (packItem != null) itemData = packItem.data;
         if (itemData) {
+          let itemData = packItem.toObject(true);
           if (itemData._id) delete itemData._id;
-          if (itemData.document)
-            itemData.document.data.update({ "data.level": spellData.level, "data.-=spellbook": null });
-          else {
-            itemData.data.level = spellData.level;
-            if (itemData.data.spellbook) delete itemData.data.spellbook;
-          }
+          itemData.system.level = spellData.level;
+          if (itemData.system.spellbook) delete itemData.system.spellbook;
           spellsToAdd.push(itemData);
         }
       }
-      // let spellId = obj.document ? `${obj.document.pack}.${obj.document._id}` : obj.name
-      // if (_spellbookClass.spelllist.has(spellId)) {
-      //     spellbook = _spellbook
-      //     foundByClass = true;
-      //     foundLevel = true;
-      //     if (obj.document)
-      //         obj.document.data.update({'data.spellbook':_spellbookKey, 'data.learnedAt': _spellbookClass.spelllist.get(spellId).level})
-      //     else {
-      //         obj.data.spellbook = _spellbookKey;
-      //         obj.data.level = _spellbookClass.spelllist.get(spellId).level;
-      //     }
-      // }
     } else {
       for (let p of game.packs.values()) {
         if (p.private && !game.user.isGM) continue;
         if ((p.entity || p.documentName) !== "Item") continue;
 
         const items = await p.getDocuments();
-        for (let obj of items) {
+        for (let _obj of items) {
+          let obj = _obj.toObject(true);
           if (obj.type !== "spell") continue;
           let foundLevel = false;
           if (obj.system.learnedAt !== undefined) {
             obj.system.learnedAt.class.forEach((learnedAtObj) => {
               if (learnedAtObj[0].toLowerCase() === spellbookClass.name.toLowerCase()) {
-                obj.data.document.data.update({ "data.level": learnedAtObj[1] });
+                obj.system.level = learnedAtObj[1];
                 foundLevel = true;
               }
             });
@@ -933,9 +927,9 @@ export class ActorPF extends Actor {
           if (parseInt(level) !== obj.system.level) continue;
           if (!foundLevel) continue;
 
-          if (obj.data._id) delete obj.data._id;
-          obj.data.document.data.update({ "data.spellbook": _spellbookKey });
-          spellsToAdd.push(obj.data);
+          if (obj._id) delete obj._id;
+          obj.system.spellbook = _spellbookKey;
+          spellsToAdd.push(obj);
         }
       }
     }
@@ -2308,7 +2302,11 @@ export class ActorPF extends Actor {
     return DicePF.d20Roll({
       event: options.event,
       parts: ["@mod + @checkMod - @drain"],
-      data: { mod: abl.mod, checkMod: abl.checkMod, drain: getProperty(this.system, "attributes.energyDrain") || 0 },
+      data: {
+        mod: abl.mod,
+        checkMod: abl.checkMod,
+        drain: getProperty(this.system, "attributes.energyDrain") || 0,
+      },
       title: game.i18n.localize("D35E.AbilityTest").format(label),
       speaker: ChatMessage.getSpeaker({ actor: this }),
       chatTemplate: "systems/D35E/templates/chat/roll-ext.html",
@@ -3410,36 +3408,29 @@ export class ActorPF extends Actor {
 
     let linkedItems = [];
     for (let obj of createData) {
-      if (obj?.data?.linkedItems && obj.data.linkedItems.length > 0) {
+      if (obj?.system?.linkedItems && obj.system.linkedItems.length > 0) {
         const linkUUID = uuidv4();
 
-        for (let data of obj.data.linkedItems) {
+        for (let data of obj.system.linkedItems) {
           let itemData = null;
           const pack = game.packs.find((p) => p.metadata.id === data.packId);
           const packItem = await pack.getDocument(data.itemId);
           if (packItem != null) {
-            itemData = packItem.data.toObject(false);
-            itemData.data.originPack = data.pack;
-            itemData.data.originId = packItem.id;
+            itemData = packItem.toObject(false);
+            itemData.system.originPack = data.pack;
+            itemData.system.originId = packItem.id;
           } else {
             return ui.notifications.warn(game.i18n.localize("D35E.LinkedItemMissing"));
           }
           if (itemData) {
-            if (itemData.document) {
-              itemData.document.data.update({ "data.linkSourceId": linkUUID });
-              itemData.document.data.update({ "data.linkSourceName": obj.name });
-              itemData.document.data.update({ "data.linkImported": true });
-            } else {
-              itemData.data.linkSourceId = linkUUID;
-              itemData.data.linkSourceName = obj.name;
-              itemData.data.linkImported = true;
-            }
+            itemData.system.linkSourceId = linkUUID;
+            itemData.system.linkSourceName = obj.name;
+            itemData.system.linkImported = true;
             linkedItems.push(itemData);
           }
         }
 
-        if (obj.document) obj.document.data.update({ "data.linkId": linkUUID });
-        else obj.data.linkId = linkUUID;
+        obj.system.linkId = linkUUID;
       }
     }
 
@@ -3462,14 +3453,12 @@ export class ActorPF extends Actor {
         let oldSize = Object.keys(CONFIG.D35E.sizeChart).indexOf("med");
         LogHelper.log("D35E | Resize Object", newSize, oldSize);
         let weightChange = Math.pow(2, newSize - oldSize);
-        if (obj.document) obj.document.data.update({ "data.weight": obj.data.weight * weightChange });
-        else obj.data.weight = obj.data.weight * weightChange;
+        obj.system.weight = obj.system.weight * weightChange;
       }
       if (["weapon", "equipment", "loot"].includes(obj.type)) {
         LogHelper.log("D35E | Create Object", obj);
-        if (obj.data.identifiedName !== obj.name) {
-          if (obj.document) obj.document.data.update({ "data.identifiedName": obj.name });
-          else obj.data.identifiedName = obj.name;
+        if (obj.system.identifiedName !== obj.name) {
+          obj.system.identifiedName = obj.name;
         }
       }
       if (["spell"].includes(obj.type)) {
@@ -3481,20 +3470,18 @@ export class ActorPF extends Actor {
             let _spellbook = this.system.attributes.spells.spellbooks[_spellbookKey];
             if (_spellbook.hasSpecialSlot && _spellbook.spellcastingType === "divine") {
               spellbook = _spellbook;
-              if (obj.document) obj.document.data.update({ "data.spellbook": _spellbookKey });
-              else obj.data.spellbook = _spellbookKey;
+              obj.system.spellbook = _spellbookKey;
             }
           }
           if (spellbook === undefined) {
-            if (obj.document) obj.document.data.update({ "data.spellbook": "primary" });
-            else obj.data.spellbook = "primary";
+            obj.system.spellbook = "primary";
             spellbook = this.system.attributes.spells.spellbooks["primary"];
             ui.notifications.warn(`No Spellbook found for spell. Adding to Primary spellbook.`);
           }
         } else {
           let spellbook = this.system.attributes.spells.spellbooks[obj.data.spellbook];
           let foundLevel = false;
-          if (!obj.data.spellbook) {
+          if (!obj.system.spellbook) {
             // We try to set spellbook to correct one
             for (let _spellbookKey of Object.keys(getProperty(this.system, "attributes.spells.spellbooks"))) {
               let _spellbook = this.system.attributes.spells.spellbooks[_spellbookKey];
@@ -3508,30 +3495,21 @@ export class ActorPF extends Actor {
                   spellbook = _spellbook;
                   foundByClass = true;
                   foundLevel = true;
-                  if (obj.document)
-                    obj.document.data.update({
-                      "data.spellbook": _spellbookKey,
-                      "data.learnedAt": _spellbookClass.spelllist.get(spellId).level,
-                    });
-                  else {
-                    obj.data.spellbook = _spellbookKey;
-                    obj.data.level = _spellbookClass.spelllist.get(spellId).level;
-                  }
+                  obj.system.spellbook = _spellbookKey;
+                  obj.system.level = _spellbookClass.spelllist.get(spellId).level;
                 }
               }
-              if (!foundByClass && obj.data.learnedAt !== undefined) {
-                for (const learnedAtObj of obj.data.learnedAt.class) {
+              if (!foundByClass && obj.system.learnedAt !== undefined) {
+                for (const learnedAtObj of obj.system.learnedAt.class) {
                   if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
                     spellbook = _spellbook;
-                    if (obj.document) obj.document.data.update({ "data.spellbook": _spellbookKey });
-                    else obj.data.spellbook = _spellbookKey;
+                    obj.system.spellbook = _spellbookKey;
                   }
                 }
               }
             }
             if (spellbook === undefined) {
-              if (obj.document) obj.document.data.update({ "data.spellbook": "primary" });
-              else obj.data.spellbook = "primary";
+              obj.system.spellbook = "primary";
               spellbook = this.system.attributes.spells.spellbooks["primary"];
               ui.notifications.warn(`No Spellbook found for spell. Adding to Primary spellbook.`);
             } else {
@@ -3547,35 +3525,21 @@ export class ActorPF extends Actor {
           if (obj.data.learnedAt !== undefined && !foundLevel) {
             obj.data.learnedAt.class.forEach((learnedAtObj) => {
               if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
-                if (obj.document) {
-                  obj.document.data.update({ "data.level": learnedAtObj[1] });
-                  if (!game.settings.get("D35E", "noAutoSpellpointsCost")) {
-                    if (
-                      game.settings.get("D35E", "spellpointCostCustomFormula") &&
-                      game.settings.get("D35E", "spellpointCostCustomFormula") !== ""
-                    )
-                      obj.document.data.update({
-                        "data.powerPointsCost": new Roll35e(game.settings.get("D35E", "spellpointCostCustomFormula"), {
-                          level: parseInt(learnedAtObj[1]),
-                        }).roll().total,
-                      });
-                    else
-                      obj.document.data.update({
-                        "data.powerPointsCost": Math.max(parseInt(learnedAtObj[1]) * 2 - 1, 0),
-                      });
-                  }
-                } else {
-                  obj.data.level = learnedAtObj[1];
+                {
+                  obj.system.level = learnedAtObj[1];
 
                   if (!game.settings.get("D35E", "noAutoSpellpointsCost")) {
                     if (
                       game.settings.get("D35E", "spellpointCostCustomFormula") &&
                       game.settings.get("D35E", "spellpointCostCustomFormula") !== ""
                     )
-                      obj.data.powerPointsCost = new Roll35e(game.settings.get("D35E", "spellpointCostCustomFormula"), {
-                        level: parseInt(learnedAtObj[1]),
-                      }).roll().total;
-                    else obj.data.powerPointsCost = Math.max(parseInt(learnedAtObj[1]) * 2 - 1, 0);
+                      obj.system.powerPointsCost = new Roll35e(
+                        game.settings.get("D35E", "spellpointCostCustomFormula"),
+                        {
+                          level: parseInt(learnedAtObj[1]),
+                        }
+                      ).roll().total;
+                    else obj.system.powerPointsCost = Math.max(parseInt(learnedAtObj[1]) * 2 - 1, 0);
                   }
                 }
                 foundLevel = true;
@@ -3584,48 +3548,28 @@ export class ActorPF extends Actor {
           }
           if (!foundLevel) {
             if (!game.settings.get("D35E", "noAutoSpellpointsCost")) {
-              if (obj.document)
-                if (
-                  game.settings.get("D35E", "spellpointCostCustomFormula") &&
-                  game.settings.get("D35E", "spellpointCostCustomFormula") !== ""
-                )
-                  obj.document.data.update({
-                    "data.powerPointsCost": new Roll35e(game.settings.get("D35E", "spellpointCostCustomFormula"), {
-                      level: parseInt(obj.data.level),
-                    }).roll().total,
-                  });
-                else
-                  obj.document.data.update({ "data.powerPointsCost": Math.max(parseInt(obj.data.level) * 2 - 1, 0) });
-              else if (
+              if (
                 game.settings.get("D35E", "spellpointCostCustomFormula") &&
                 game.settings.get("D35E", "spellpointCostCustomFormula") !== ""
               )
-                obj.data.powerPointsCost = new Roll35e(game.settings.get("D35E", "spellpointCostCustomFormula"), {
-                  level: parseInt(obj.data.level),
+                obj.system.powerPointsCost = new Roll35e(game.settings.get("D35E", "spellpointCostCustomFormula"), {
+                  level: parseInt(obj.system.level),
                 }).roll().total;
-              else obj.data.powerPointsCost = Math.max(parseInt(obj.data.level) * 2 - 1, 0);
+              else obj.system.powerPointsCost = Math.max(parseInt(obj.system.level) * 2 - 1, 0);
             }
             ui.notifications.warn(`Spell added despite not being in a spell list for class.`);
           }
         }
       }
-      if (obj.data?.creationChanges && obj.data.creationChanges.length) {
+      if (obj.system?.creationChanges && obj.system.creationChanges.length) {
         for (let creationChange of obj.data.creationChanges) {
           if (creationChange) {
-            if (obj.document) {
-              let updateData = {};
-              updateData[`data.${creationChange[0]}`] = new Roll35e(creationChange[1], {}).roll().total;
-              obj.document.data.update(updateData);
-            } else setProperty(obj.data, creationChange[0], new Roll35e(creationChange[1], {}).roll().total);
+            setProperty(obj.system, creationChange[0], new Roll35e(creationChange[1], {}).roll().total);
           }
         }
-        if (obj.document) updateData[`data.creationChanges`] = [];
-        else setProperty(obj.data, "creationChanges", []);
+        setProperty(obj.system, "creationChanges", []);
       }
     }
-    //this.createEmbeddedDocuments
-    //return this.createOwnedItem((noArray ? createData[0] : createData), options);
-    //LogHelper.log('D35E Items Create', duplicate(createData), noArray)
     return this.createEmbeddedDocuments(embeddedName, createData, options);
   }
 
@@ -3757,6 +3701,7 @@ export class ActorPF extends Actor {
     function cleanParam(parameter) {
       return parameter.replace(/"/gi, "");
     }
+
     function isActionRollable(_action) {
       if (_action.indexOf("://") !== -1) return false;
       return (
