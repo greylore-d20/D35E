@@ -1147,14 +1147,14 @@ export class ActorUpdater {
           let tokens = [];
           tokens.push(this.actor.token);
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: tokenImg} }, { stopUpdates: true });
           }
         }
         if (!this.actor.isToken) {
           let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
 
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: tokenImg} }, { stopUpdates: true });
           }
 
           if (source !== null) {
