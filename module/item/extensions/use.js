@@ -8,6 +8,7 @@ import { createCustomChatMessage } from "../../chat.js";
 import { D35E } from "../../config.js";
 import { ItemSpellHelper as ItemSpellHelper } from "../helpers/itemSpellHelper.js";
 import { ItemCombatChangesHelper } from "../helpers/itemCombatChangesHelper.js";
+import {Item35E} from "../entity.js";
 
 export class ItemUse {
   /**
@@ -711,13 +712,14 @@ export class ItemUse {
         if (noteObj.item != null) rollData.item = duplicate(noteObj.item.system);
 
         for (let note of noteObj.notes) {
-          attackNotes.push(
-            ...note.split(/[\n\r]+/).map((o) =>
-              TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {
-                rollData: rollData,
-              })
+          for (let _note of note.split(/[\n\r]+/)) {
+            let attackNote = await TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(_note, rollData)}</span>`, {
+              rollData: rollData,
+            })
+            attackNotes.push(
+                attackNote
             )
-          );
+          }
         }
       }
       if (typeof this.itemData.attackNotes === "string" && this.itemData.attackNotes.length) {
