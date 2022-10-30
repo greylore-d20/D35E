@@ -16,10 +16,10 @@
         </h4></div>
 
     {{#each targets as |target|}}
-    <img src="{{target.data.img}}" data-target="{{target.id}}" width="36" height="36" style="border: none;">
+    <img src="{{target.document.texture.src}}" data-target="{{target.id}}" width="36" height="36" style="border: none;">
     {{/each}}
     {{#each hiddenTargets as |target|}}
-    <img src="{{target.data.img}}" class="gm-sensitive" data-target="{{target.id}}" width="36" height="36" style="border: none; opacity: 0.5;">
+    <img src="{{target.document.texture.src}}" class="gm-sensitive" data-target="{{target.id}}" width="36" height="36" style="border: none; opacity: 0.5;">
     {{/each}}
 </header>
 {{/if}}

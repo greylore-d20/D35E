@@ -109,6 +109,9 @@ export class ActorUpdater {
     for (const k of _absoluteKeys) {
       updated[k] = Math.abs(updated[k]);
     }
+    if (updated[`data.attributes.hp.value`] && !updated[`system.attributes.hp.value`]) {
+      updated[`system.attributes.hp.value`] = updated[`data.attributes.hp.value`];
+    }
     if (updated[`system.attributes.hp.value`] !== undefined && updated[`system.attributes.hp.value`] !== null) {
       if (parseInt(updated[`system.attributes.hp.value`]) == 0) updated[`system.attributes.hp.value`] = 0;
       else {
@@ -1128,14 +1131,14 @@ export class ActorUpdater {
           let tokens = [];
           tokens.push(this.actor.token);
           for (const o of tokens) {
-            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { img: shapechangeImg }, { stopUpdates: true });
+            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
           }
         }
         if (!this.actor.isToken) {
-          let tokens = this.actor.getActiveTokens().filter((o) => o?.actorLink);
+          let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
 
           for (const o of tokens) {
-            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { img: shapechangeImg }, { stopUpdates: true });
+            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
           }
           if (source !== null) source["token.img"] = shapechangeImg;
         }
@@ -1144,14 +1147,14 @@ export class ActorUpdater {
           let tokens = [];
           tokens.push(this.actor.token);
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { img: tokenImg }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
           }
         }
         if (!this.actor.isToken) {
-          let tokens = this.actor.getActiveTokens().filter((o) => o?.actorLink);
+          let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
 
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { img: tokenImg }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
           }
 
           if (source !== null) {
@@ -2794,7 +2797,7 @@ export class ActorUpdater {
       }
       if (!this.actor.isToken) {
         LogHelper.log(this.actor.getActiveTokens());
-        let tokens = this.actor.getActiveTokens().filter((o) => o?.actorLink);
+        let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
         for (const o of tokens) {
           if (size.w !== o.width || size.h !== o.height || size.scale !== o.scale) {
             await ActorPF._updateToken(
@@ -2877,7 +2880,7 @@ export class ActorUpdater {
           }
         }
         if (!this.actor.isToken) {
-          let tokens = this.actor.getActiveTokens().filter((o) => o?.actorLink);
+          let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
           for (const o of tokens) {
             this.actor.updateTokenLight(
               dimLight,
