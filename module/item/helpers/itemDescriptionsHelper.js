@@ -11,17 +11,9 @@ export class ItemDescriptionsHelper {
 
         if (item.hasAttack) {
             let bab = 0;
-            let attackBonus = ((getProperty(item.system,"enh") || 0) ? getProperty(item.system,"enh") : (getProperty(item.system,"masterwork") ? "1" : "0")) + "+" + (getProperty(item.system,"attackBonus") || "0");
-            let abilityBonus = "0";
-            let sizeBonus = CONFIG.D35E.sizeMods[item.actor.system.traits.actualSize] || 0;
+            let totalBonus = this.attackBonus(item, rollData)
             let autoScaleWithBab = (game.settings.get("D35E", "autoScaleAttacksBab") && item.actor.data.type !== "npc" && getProperty(item.system,"attackType") === "weapon" && getProperty(item.system,"autoScaleOption") !== "never") || getProperty(item.system,"autoScaleOption") === "always";
-            if (item.actor) {
-                bab = item.actor.system.attributes.bab.total;
-                if (getProperty(item.system,"ability.attack"))
-                    abilityBonus = item.actor.system.abilities[item.system.ability.attack].mod
-            }
-            let attacks = [];
-            let totalBonus = new Roll35e(`${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`, rollData).roll().total;
+            let attacks = []
             if (autoScaleWithBab) {
                 while (bab > 0) {
                     attacks.push(`${totalBonus >= 0 ? '+'+totalBonus : totalBonus}`)
@@ -39,6 +31,35 @@ export class ItemDescriptionsHelper {
 
         }
         return "";
+    }
+
+    static attackBonus(item, rollData) {
+        // //console.log('D35E | AB ', item.hasAttack)
+        if (!rollData) {
+            if (!item.actor) return []; //There are no requirements when item has no actor!
+            rollData = item.actor.getRollData();
+        }
+        rollData.item = item.getRollData();
+
+        if (item.hasAttack) {
+            let bab = 0;
+            let attackBonus = ((getProperty(item.system,"enh") || 0) ? getProperty(item.system,"enh") : (getProperty(item.system,"masterwork") ? "1" : "0")) + "+" + (getProperty(item.system,"attackBonus") || "0");
+            let abilityBonus = "0";
+            let sizeBonus = CONFIG.D35E.sizeMods[item.actor.system.traits.actualSize] || 0;
+            if (item.actor) {
+                bab = item.actor.system.attributes.bab.total;
+                if (getProperty(item.system,"ability.attack"))
+                    abilityBonus = item.actor.system.abilities[item.system.ability.attack].mod
+            }
+            return Math.floor(new Roll35e(`${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`, rollData).roll().total);
+
+
+        }
+        return 0;
+    }
+
+    static damageRoll(item, rollData) {
+        return Math.floor(new Roll35e(this.damageDescription(item, rollData)).roll().total)
     }
 
     static damageDescription(item, rollData) {
@@ -64,7 +85,7 @@ export class ItemDescriptionsHelper {
             })
         }
         if (getProperty(item.system,"ability.damage"))
-            abilityBonus = parseInt(item.actor.system.abilities[item.system.ability.damage].mod)*item.system.ability.damageMult
+            abilityBonus = Math.floor(parseInt(item.actor.system.abilities[item.system.ability.damage].mod)*item.system.ability.damageMult)
         if (abilityBonus) results.push(abilityBonus)
         if (getProperty(item.system,"enh")) results.push(getProperty(item.system,"enh"))
         return results.join(" + ");

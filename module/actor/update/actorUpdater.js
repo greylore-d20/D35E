@@ -2016,7 +2016,7 @@ export class ActorUpdater {
         if (raceObject) {
           for (let feature of raceObject.system.addedAbilities || []) {
             let e = CACHE.AllAbilities.get(feature.uid);
-            let uniqueId = e.system.uniqueId;
+            let uniqueId = e?.system?.uniqueId;
             if (!uniqueId || uniqueId === "") {
               ui.notifications.warn(game.i18n.localize("D35E.NotAddingAbilityWithNoUID").format(e.name));
               continue;

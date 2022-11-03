@@ -310,7 +310,7 @@ export class Item35E extends ItemBase35E {
     const labels = {};
 
     // Physical items
-    if (hasProperty(itemData, "weight")) {
+    if (hasProperty(data, "weight")) {
       // Sync name
       if (!hasProperty(this.system, "identifiedName")) setProperty(this.system, "identifiedName", this.name);
       // Prepare unidentified cost

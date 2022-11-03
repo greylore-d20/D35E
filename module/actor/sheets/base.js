@@ -20,6 +20,7 @@ import { EntrySelector } from "../../apps/entry-selector.js";
 import { ItemDescriptionsHelper } from "../../item/helpers/itemDescriptionsHelper.js";
 import { ActorWealthHelper } from "../helpers/actorWealthHelper.js";
 import { ItemEnhancementHelper } from "../../item/helpers/itemEnhancementHelper.js";
+import { StatblockGenerator } from "../../utils/statblock-generator.js";
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -832,7 +833,8 @@ export class ActorSheetPF extends ActorSheet {
       this._onItemChangeContainer(ev);
     });
     html.find(".fix-containers").click((ev) => this._onCharacterClearContainers(ev));
-    html.find(".check-updates").click((ev) => this._onCharacterCheckUpdates(ev));
+    html.find(".check-updates").click((ev) => this._onCharacterCheckUpdates(ev))
+    html.find(".generate-statblock").click((ev) => this._onCharacterGenerateStatblock(ev));
 
     html.find(".spell-add-uses").click((ev) => this._onSpellAddUses(ev));
     html.find(".spell-remove-uses").click(this._onSpellRemoveUses.bind(this));
@@ -3448,5 +3450,10 @@ export class ActorSheetPF extends ActorSheet {
         },
       }).render(true);
     });
+  }
+
+  _onCharacterGenerateStatblock(event) {
+    event.preventDefault();
+    StatblockGenerator.generateStatblock(this.actor);
   }
 }

@@ -27,6 +27,7 @@ import { ActorUpdater } from "./update/actorUpdater.js";
 import { LogHelper } from "../helpers/LogHelper.js";
 import { ActorMinionsHelper } from "./helpers/actorMinionsHelper.js";
 import { ItemEnhancementHelper } from "../item/helpers/itemEnhancementHelper.js";
+import {ActorCRHelper} from "./helpers/actorCRHelper.js";
 
 /**
  * Extend the base Actor class to implement additional logic specialized for D&D5e.
@@ -52,6 +53,7 @@ export class ActorPF extends Actor {
       this._cachedAuras = this.items.filter((o) => o.type === "aura" && o.system.active);
     this.conditions = new ActorConditions(this);
     this.buffs = new ActorBuffs(this);
+    this.crHelper = new ActorCRHelper(this);
   }
 
   /* -------------------------------------------- */
@@ -104,7 +106,7 @@ export class ActorPF extends Actor {
 
   get racialHD() {
     if (this.items == null) return null;
-    return this.items.find((o) => o.type === "class" && getProperty(o.system, "classType") === "racial");
+    return this.items.find((o) => o.type === "class" && (getProperty(o.system, "classType") === "racial" || o.name.endsWith("*")));
   }
 
   async updateTokenLight(dimLight, o, brightLight, color, animationIntensity, type, animationSpeed, lightAngle, alpha) {
