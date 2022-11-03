@@ -17,7 +17,7 @@ export class ActorSheetPFNPC extends ActorSheetPF {
     return mergeObject(super.defaultOptions, {
       classes: ["D35E", "sheet", "actor", "npc"],
       width: 725,
-      height: 800,
+      height: 800
     });
   }
 

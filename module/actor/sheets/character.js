@@ -17,7 +17,7 @@ export class ActorSheetPFCharacter extends ActorSheetPF {
       classes: ["D35E", "sheet", "actor", "character"],
       width: 725,
       height: 840
-    });
+      });
   }
 
   static get name() {

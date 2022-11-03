@@ -724,7 +724,7 @@ export class ActorSheetPF extends ActorSheet {
     html.find(".item .item-name h4").click((event) => this._onItemSummary(event));
 
     // Item Dragging
-    let handler = (ev) => this._onDragItemStart(ev);
+    let handler = (ev) => this._onDragStart(ev);
     html.find("li.item").each((i, li) => {
       if (li.classList.contains("inventory-header")) return;
       li.setAttribute("draggable", true);
@@ -2985,6 +2985,8 @@ export class ActorSheetPF extends ActorSheet {
     }
     let dataType = "";
     const actor = this.actor;
+
+
     let itemData = {};
     // Case 1 - Import from a Compendium pack
     if (game?.release?.generation >= 10 && dropData.uuid) {
@@ -3003,7 +3005,7 @@ export class ActorSheetPF extends ActorSheet {
 
     // Case 2 - Data explicitly provided
     else if (dropData.data) {
-      let sameActor = dropData.actorId === actor._id;
+      let sameActor = dropData?.parent?.uuid === actor.uuid;
       if (sameActor && actor.isToken) sameActor = dropData.tokenId === actor.token.id;
       if (sameActor) return this._onSortItem(event, dropData.data); // Sort existing items
 
