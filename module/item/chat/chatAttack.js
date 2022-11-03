@@ -383,7 +383,7 @@ export class ChatAttack {
 
     async addEffect({primaryAttack = true, actor = null, useAmount = 1, cl = null, spellPenetration = null} = {}) {
         if (!this.item) return;
-        this.effectNotes = new ItemRolls(this.item).rollEffect({primaryAttack: primaryAttack}, actor, this.rollData);
+        this.effectNotes = await new ItemRolls(this.item).rollEffect({primaryAttack: primaryAttack}, actor, this.rollData);
         this.spellPenetration = spellPenetration;
         this.isSpell = !!cl;
         await this.addSpecial(actor, useAmount, cl, spellPenetration);

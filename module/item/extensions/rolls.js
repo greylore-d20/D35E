@@ -181,7 +181,7 @@ export class ItemRolls {
   /**
    * Only roll the item's effect.
    */
-  rollEffect({ critical = false, primaryAttack = true } = {}, tempActor = null, _rollData = rollData) {
+  async rollEffect({ critical = false, primaryAttack = true } = {}, tempActor = null, _rollData = rollData) {
     const itemData = this.item.system;
     let actor = this.item.actor;
     if (tempActor !== null) {
@@ -231,27 +231,23 @@ export class ItemRolls {
         rollData.item = mergeObject(duplicate(noteObj.item.system), noteObj.item.getRollData(), { inplace: false });
 
       for (let note of noteObj.notes) {
-        notes.push(
-          ...note
-            .split(/[\n\r]+/)
-            .map((o) =>
-              TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {
-                rollData: rollData,
-              })
-            )
-        );
+        for (let _note of note.split(/[\n\r]+/)) {
+          notes.push(
+            await TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(_note, rollData)}</span>`, {
+              rollData: rollData,
+            })
+          )
+        }
       }
     }
-    notes.push(
-      ...(itemData.effectNotes || "")
-        .split(/[\n\r]+/)
-        .filter((o) => o.length > 0)
-        .map((o) =>
-          TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(o, rollData)}</span>`, {
+    for (let _note of (itemData.effectNotes || "").split(/[\n\r]+/)) {
+      notes.push(
+          await TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(_note, rollData)}</span>`, {
             rollData: rollData,
           })
-        )
-    );
+      )
+    }
+
 
     const inner = notes.join("");
     if (notes.length > 0) {
