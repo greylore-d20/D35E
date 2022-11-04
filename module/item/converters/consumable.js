@@ -10,10 +10,11 @@ export class ItemConsumableConverter {
         data = {
             type: "consumable",
             name: origData.name,
-            data: data,
+            system: data,
         };
+        let system = data.system;
 
-        const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origsystem);
+        const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origData.system);
         if (cl) slcl[1] = cl;
         // Set consumable type
         system.consumableType = type;
@@ -83,33 +84,33 @@ export class ItemConsumableConverter {
         }
 
         // Set damage formula
-        system.actionType = origsystem.actionType;
+        system.actionType = origData.system.actionType;
         for (let d of getProperty(origData, "data.damage.parts")) {
             d[0] = d[0].replace(/@sl/g, slcl[0]);
             system.damage.parts.push(d);
         }
 
         // Set saves
-        system.save.description = origsystem.save.description;
-        system.save.type = origsystem.save.type;
-        system.save.ability = origsystem.save.ability;
+        system.save.description = origData.system.save.description;
+        system.save.type = origData.system.save.type;
+        system.save.ability = origData.system.save.ability;
         system.save.dc = 10 + slcl[0] + Math.floor(slcl[0] / 2);
         system.baseCl = `${slcl[1]}`
-        system.sr = origsystem.sr
-        system.pr = origsystem.pr
+        system.sr = origData.system.sr
+        system.pr = origData.system.pr
         // Copy variables
         if (scrollType)
             system.scrollType = scrollType;
-        system.attackNotes = origsystem.attackNotes;
-        system.actionType = origsystem.actionType;
-        system.effectNotes = origsystem.effectNotes;
-        system.attackBonus = origsystem.attackBonus;
-        system.critConfirmBonus = origsystem.critConfirmBonus;
-        system.specialActions = origsystem.specialActions;
+        system.attackNotes = origData.system.attackNotes;
+        system.actionType = origData.system.actionType;
+        system.effectNotes = origData.system.effectNotes;
+        system.attackBonus = origData.system.attackBonus;
+        system.critConfirmBonus = origData.system.critConfirmBonus;
+        system.specialActions = origData.system.specialActions;
         system.isFromSpell = true;
 
 
-        system.attackCountFormula = origsystem.attackCountFormula.replace(/@sl/g, slcl[0]);
+        system.attackCountFormula = origData.system.attackCountFormula.replace(/@sl/g, slcl[0]);
 
         // Determine aura power
         let auraPower = "faint";
@@ -133,7 +134,7 @@ export class ItemConsumableConverter {
             isPotion: type === "potion" || type === "tattoo",
             isScroll: type === "scroll" || type === "powerstone",
             auraPower: auraPower,
-            aura: (CONFIG.D35E.spellSchools[origsystem.school] || "").toLowerCase(),
+            aura: (CONFIG.D35E.spellSchools[origData.system.school] || "").toLowerCase(),
             sl: slcl[0],
             cl: slcl[1],
             slLabel: slLabel,
