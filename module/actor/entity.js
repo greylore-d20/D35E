@@ -3518,6 +3518,13 @@ export class ActorPF extends Actor {
             }
           }
           let spellbookClass = this.system.classes[spellbook.class]?.name || "Missing";
+          if (this.system.classes[spellbook.class].hasSpellbook) {
+            let spellId = obj.system ? `${obj.system.originPack}.${obj.system.originId}` : obj.name;
+            if (this.system.classes[spellbook.class].spelllist.has(spellId)) {
+              foundLevel = true;
+              obj.system.level = this.system.classes[spellbook.class].spelllist.get(spellId).level;
+            }
+          }
           LogHelper.log(
             "D35E | Spellpoints",
             game.settings.get("D35E", "spellpointCostCustomFormula"),

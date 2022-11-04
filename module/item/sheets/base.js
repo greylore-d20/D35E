@@ -1436,19 +1436,19 @@ export class ItemSheetPF extends ItemSheet {
     } catch (err) {
       return false;
     }
-
-    if (!droppedData.actorId) {
+    let droppedItem = await fromUuid(droppedData.uuid)
+    if (droppedItem.parent.uuid !== this.actor.uuid) {
       return ui.notifications.warn(game.i18n.localize("D35E.FullAttackNeedDropFromActor"));
     }
-    if (droppedData.type === "Item" && droppedData?.type === "attack") {
+    if (droppedData.type === "Item" && droppedItem?.type === "attack") {
       let updateData = {};
-      updateData[`data.attacks.${attackId}.id`] = system._id;
-      updateData[`data.attacks.${attackId}.name`] = system.name;
-      updateData[`data.attacks.${attackId}.img`] = system.img;
-      updateData[`data.attacks.${attackId}.count`] = 1;
-      updateData[`data.attacks.${attackId}.primary`] =
-        droppedData.system.attackType === "natural" && droppedData.system.primaryAttack;
-      updateData[`data.attacks.${attackId}.isWeapon`] = droppedData.system.attackType === "weapon";
+      updateData[`system.attacks.${attackId}.id`] = droppedItem._id;
+      updateData[`system.attacks.${attackId}.name`] = droppedItem.name;
+      updateData[`system.attacks.${attackId}.img`] = droppedItem.img;
+      updateData[`system.attacks.${attackId}.count`] = 1;
+      updateData[`system.attacks.${attackId}.primary`] =
+          droppedItem.system.attackType === "natural" && droppedItem.system.primaryAttack;
+      updateData[`system.attacks.${attackId}.isWeapon`] = droppedItem.system.attackType === "weapon";
       this.item.update(updateData);
     }
   }
@@ -1459,29 +1459,29 @@ export class ItemSheetPF extends ItemSheet {
     let elem = $(event.currentTarget).parents(".full-attack");
     let attackId = elem.attr("data-attack");
     let updateData = {};
-    updateData[`data.attacks.${attackId}.id`] = null;
-    updateData[`data.attacks.${attackId}.name`] = null;
-    updateData[`data.attacks.${attackId}.img`] = null;
-    updateData[`data.attacks.${attackId}.count`] = 1;
-    updateData[`data.attacks.${attackId}.primary`] = false;
-    updateData[`data.attacks.${attackId}.isWeapon`] = false;
+    updateData[`system.attacks.${attackId}.id`] = null;
+    updateData[`system.attacks.${attackId}.name`] = null;
+    updateData[`system.attacks.${attackId}.img`] = null;
+    updateData[`system.attacks.${attackId}.count`] = 0;
+    updateData[`system.attacks.${attackId}.primary`] = false;
+    updateData[`system.attacks.${attackId}.isWeapon`] = false;
     this.item.update(updateData);
   }
 
   async _onRemoveChargeLink(event) {
     let updateData = {};
 
-    updateData[`data.linkedChargeItem.id`] = null;
-    updateData[`data.linkedChargeItem.name`] = null;
-    updateData[`data.linkedChargeItem.img`] = null;
+    updateData[`system.linkedChargeItem.id`] = null;
+    updateData[`system.linkedChargeItem.name`] = null;
+    updateData[`system.linkedChargeItem.img`] = null;
     this.item.update(updateData);
   }
 
   async _onRemoveRolltableLink(event) {
     let updateData = {};
-    updateData[`data.rollTableDraw.id`] = null;
-    updateData[`data.rollTableDraw.name`] = null;
-    updateData[`data.rollTableDraw.pack`] = null;
+    updateData[`system.rollTableDraw.id`] = null;
+    updateData[`system.rollTableDraw.name`] = null;
+    updateData[`system.rollTableDraw.pack`] = null;
     this.item.update(updateData);
   }
 
@@ -1496,18 +1496,19 @@ export class ItemSheetPF extends ItemSheet {
       return false;
     }
 
-    if (!droppedData.actorId) {
-      return ui.notifications.warn(game.i18n.localize("D35E.ResourceNeedDropFromActor"));
+    let droppedItem = await fromUuid(droppedData.uuid)
+    if (droppedItem.parent.uuid !== this.actor.uuid) {
+      return ui.notifications.warn(game.i18n.localize("D35E.FullAttackNeedDropFromActor"));
     }
-    if (droppedData.type === "Item" && droppedData?.system?.uses?.canBeLinked && droppedData?.system?.uses?.max) {
+    if (droppedData.type === "Item" && droppedItem?.system?.uses?.canBeLinked && droppedItem?.system?.uses?.max) {
       let updateData = {};
 
-      updateData[`data.linkedChargeItem.id`] = droppedData.system.uniqueId ? droppedData.system.uniqueId : system._id;
-      updateData[`data.linkedChargeItem.name`] = system.name;
-      updateData[`data.linkedChargeItem.img`] = system.img;
+      updateData[`system.linkedChargeItem.id`] = droppedItem.system.uniqueId ? droppedItem.system.uniqueId : droppedItem._id;
+      updateData[`system.linkedChargeItem.name`] = droppedItem.name;
+      updateData[`system.linkedChargeItem.img`] = droppedItem.img;
       this.item.update(updateData);
     }
-    if (!droppedData?.system?.uses?.canBeLinked) {
+    if (!droppedItem?.system?.uses?.canBeLinked) {
       return ui.notifications.warn(game.i18n.localize("D35E.ResourceMustBeSetAsLinkable"));
     }
   }
@@ -1525,11 +1526,12 @@ export class ItemSheetPF extends ItemSheet {
     let dataType = "";
     if (droppedData.type === "RollTable") {
       let itemData = {};
-      if (droppedData.pack) {
+      let droppedItem = await fromUuid(droppedData.uuid)
+      if (droppedItem.pack) {
         let updateData = {};
         dataType = "compendium";
-        const pack = game.packs.find((p) => p.metadata.id === droppedData.pack);
-        const packItem = await pack.getDocument(droppedData.id);
+        const pack = game.packs.find((p) => p.metadata.id === droppedItem.pack);
+        const packItem = droppedItem;
         if (packItem != null) {
           itemData = packItem.data;
           let summons = duplicate(this.item.system.summon);
@@ -1563,15 +1565,16 @@ export class ItemSheetPF extends ItemSheet {
       return false;
     }
 
-    if (!droppedData.pack) {
+    let droppedItem = await fromUuid(droppedData.uuid)
+    if (!droppedItem.pack) {
       return ui.notifications.warn(game.i18n.localize("D35E.ResourceNeedDropFromCompendium"));
     }
     if (droppedData.type === "RollTable") {
       let updateData = {};
-      let rt = await game.packs.get(droppedData.pack).getDocument(droppedData.id);
-      updateData[`data.rollTableDraw.id`] = droppedData.id;
-      updateData[`data.rollTableDraw.pack`] = droppedData.pack;
-      updateData[`data.rollTableDraw.name`] = rt.data.name;
+      let rt = droppedItem;
+      updateData[`system.rollTableDraw.id`] = rt.id;
+      updateData[`system.rollTableDraw.pack`] = rt.pack;
+      updateData[`system.rollTableDraw.name`] = rt.name;
       this.item.update(updateData);
     }
   }
@@ -1591,13 +1594,11 @@ export class ItemSheetPF extends ItemSheet {
 
     if (droppedData.type === "Item") {
       let itemData = {};
-      if (droppedData.pack) {
-        let updateData = {};
-        dataType = "compendium";
-        const pack = game.packs.find((p) => p.metadata.id === droppedData.pack);
-        const packItem = await pack.getDocument(droppedData.id);
-        if (packItem != null) {
-          let spell = { id: droppedData.id, pack: droppedData.pack, name: packItem.name, img: packItem.img };
+
+      let droppedItem = await fromUuid(droppedData.uuid)
+      if (droppedItem.pack) {
+        if (droppedItem != null) {
+          let spell = { id: droppedItem.id, pack: droppedItem.pack, name: droppedItem.name, img: droppedItem.img, uuid: droppedData.uuid };
           this.item.addSpellToClassSpellbook(spellLevel, spell);
         }
       }
