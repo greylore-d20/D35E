@@ -50,9 +50,13 @@ export class ItemCombatChanges {
           c[4] = c[4].replace(/@range2/g, combatChangesRollData.range2);
           c[4] = c[4].replace(/@range3/g, combatChangesRollData.range3);
           c[4] = c[4].replace(/@range/g, combatChangesRollData.range);
-          c[4] = c[4].replace(/@source.level/g, this.item.system?.level || 0);
+          let regexpSource = /@source.([a-zA-Z\.0-9]+)/g
+          for (const match of c[4].matchAll(regexpSource)) {
+            c[4] = c[4].replace(`@source.${match[1]}`, getProperty(this.item.system,match[1]) || 0);
+          }
         }
-        if (c[3].indexOf("$") === -1 && c[3].indexOf("&") === -1) {
+        // We do not pre-roll things that have a roll inside, we assume they will be rolled later
+        if (c[3].indexOf("d") === -1 && c[3].indexOf("&") === -1) {
           if (c[4] !== "") c[4] = new Roll35e(`${c[4]}`, combatChangesRollData).roll().total;
           else {
             c[4] = 0;
@@ -65,7 +69,10 @@ export class ItemCombatChanges {
             c[5] = c[5].replace(/@range2/g, combatChangesRollData.range2);
             c[5] = c[5].replace(/@range3/g, combatChangesRollData.range3);
             c[5] = c[5].replace(/@range/g, combatChangesRollData.range);
-            c[5] = c[5].replace(/@source.level/g, this.item.system?.level || 0);
+            let regexpSource = /@source.([a-zA-Z\.0-9]+)/g
+            for (const match of c[5].matchAll(regexpSource)) {
+              c[5] = c[5].replace(`@source.${match[1]}`, getProperty(this.item.system,match[1]) || 0);
+            }
           }
           c.push(this.item.id);
           c.push(this.item.name);
