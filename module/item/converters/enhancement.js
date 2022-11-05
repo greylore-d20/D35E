@@ -60,6 +60,8 @@ export class ItemEnhancementConverter {
         system.save.type = origData.system.save.type;
         system.save.ability = origData.system.save.ability;
         system.save.dc = 10 + slcl[0] + Math.floor(slcl[0] / 2);
+        system.sr = origData.system.sr
+        system.pr = origData.system.pr
 
         // Copy variables
         system.attackNotes = origData.system.attackNotes;
