@@ -17,7 +17,7 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
             sheetData.enhancementsFromBuff = []
             let _enhancements = getProperty(this.sheet.item.system,`enhancements.items`) || [];
             _enhancements.forEach(e => {
-                let item = new Item35E(duplicate(e), {owner: this.sheet.item.isOwner})
+                let item = ItemEnhancementHelper.getEnhancementItemFromData(e, this.sheet.item.actor, this.sheet.item.isOwner);
                 this.sheet.ehnancementItemMap.set(item.tag, item);
                 e.data = ItemEnhancementHelper.getEnhancementData(e);
                 e.hasAction = item.hasAction || item.isCharged;

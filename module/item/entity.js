@@ -14,7 +14,7 @@ import { ItemChatAction } from "./chat/chatAction.js";
 import { ItemSpellHelper } from "./helpers/itemSpellHelper.js";
 import { ItemEnhancements } from "./extensions/enhancement.js";
 import { ItemChargeUpdateHelper } from "./helpers/itemChargeUpdateHelper.js";
-import { ItemEnhancementConverter } from "./converters/enchancement.js";
+import { ItemEnhancementConverter } from "./converters/enhancement.js";
 import { ItemCombatChangesHelper } from "./helpers/itemCombatChangesHelper.js";
 import { ItemCombatChanges } from "./extensions/combatChanges.js";
 import { ItemUse } from "./extensions/use.js";

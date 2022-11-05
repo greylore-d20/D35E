@@ -1886,6 +1886,7 @@ export class ActorUpdater {
       }, false);
       linkData(source, updateData, `system.skills.${k}.cs`, isClassSkill);
       for (let k2 of Object.keys(getProperty(s, "subSkills") || {})) {
+        if (k2.indexOf("-=") !== -1) continue;
         linkData(source, updateData, `system.skills.${k}.subSkills.${k2}.cs`, isClassSkill);
       }
     }

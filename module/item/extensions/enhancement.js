@@ -1,6 +1,6 @@
 import {createTag, linkData} from "../../lib.js";
 import {Roll35e} from "../../roll.js";
-import {ItemEnhancementConverter} from "../converters/enchancement.js";
+import {ItemEnhancementConverter} from "../converters/enhancement.js";
 import {Item35E} from "../entity.js";
 import {ItemEnhancementHelper} from "../helpers/itemEnhancementHelper.js";
 import {ItemExtension} from "./itemExtension.js";
@@ -20,10 +20,7 @@ export class ItemEnhancements extends ItemExtension {
         const enhancements = getProperty(this.item.system, `enhancements.items`) || [];
         let itemData = (enhancements).find(i => createTag(i.name) === tag)
         if (itemData != null) {
-            let data = duplicate(itemData);
-            data._id = foundry.utils.randomID();
-            data.actor = this.item.actor;
-            return new Item35E(data, {owner: this.item.isOwner});
+            return ItemEnhancementHelper.getEnhancementItemFromData(itemData, this.item.actor, this.item.isOwner);
         }
         else
             return itemData;

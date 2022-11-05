@@ -1655,18 +1655,17 @@ export class ItemSheetPF extends ItemSheet {
     let dataType = "";
 
     if (droppedData.type === "Item") {
+      let droppedItem = await fromUuid(droppedData.uuid)
       let itemData = {};
-      if (droppedData.pack) {
+      if (droppedItem.pack) {
         let updateData = {};
-        dataType = "compendium";
-        const pack = game.packs.find((p) => p.metadata.id === droppedData.pack);
-        const packItem = await pack.getDocument(droppedData.id);
+        const packItem = droppedItem;
         if (packItem != null) {
           itemData = packItem.data;
-          updateData[`data.spellSpecialization.spells.${spellLevel}.id`] = droppedData.id;
-          updateData[`data.spellSpecialization.spells.${spellLevel}.pack`] = droppedData.pack;
-          updateData[`data.spellSpecialization.spells.${spellLevel}.name`] = packItem.name;
-          updateData[`data.spellSpecialization.spells.${spellLevel}.img`] = packItem.img;
+          updateData[`system.spellSpecialization.spells.${spellLevel}.id`] = droppedData.id;
+          updateData[`system.spellSpecialization.spells.${spellLevel}.pack`] = droppedData.pack;
+          updateData[`system.spellSpecialization.spells.${spellLevel}.name`] = packItem.name;
+          updateData[`system.spellSpecialization.spells.${spellLevel}.img`] = packItem.img;
           this.item.update(updateData);
         }
       }
@@ -1682,19 +1681,14 @@ export class ItemSheetPF extends ItemSheet {
     } catch (err) {
       return false;
     }
-
-    let dataType = "";
     let target = "target";
-    if (this.item.system.target.value === "self") target = "self";
+    if (this.item.system?.target?.value === "self") target = "self";
     if (droppedData.type === "Item") {
-      let itemData = {};
-      if (droppedData.pack) {
-        let updateData = {};
-        dataType = "compendium";
-        const pack = game.packs.find((p) => p.metadata.id === droppedData.pack);
-        const packItem = await pack.getDocument(droppedData.id);
+
+      let droppedItem = await fromUuid(droppedData.uuid)
+      if (droppedItem.pack) {
+        const packItem = droppedItem;
         if (packItem != null && packItem.data.type === "buff") {
-          itemData = packItem.data;
           let buffString = `Create unique "${packItem.name}" from "${droppedData.pack}" on ${target};Set buff "${packItem.name}" field data.level to max(1,(@cl)) on ${target};Activate buff "${packItem.name}" on ${target}`;
 
           let specialActions = duplicate(this.item.system.specialActions);

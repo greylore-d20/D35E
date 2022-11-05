@@ -2,24 +2,24 @@ import {ItemSpellHelper} from "../helpers/itemSpellHelper.js";
 
 export class ItemEnhancementConverter {
     static async toEnhancement(origData, type, cl) {
-        let data = duplicate(game.system.template.Item.enhancement);
-        for (let t of data.templates) {
-            mergeObject(data, duplicate(game.system.template.Item.templates[t]));
+        let newItemData = duplicate(game.system.template.Item.enhancement);
+        for (let t of newItemData.templates) {
+            mergeObject(newItemData, duplicate(game.system.template.Item.templates[t]));
         }
-        delete data.templates;
-        data = {
+        delete newItemData.templates;
+        newItemData = {
             type: "enhancement",
             name: origData.name,
-            data: data,
+            system: newItemData,
         };
-
-        const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origsystem);
+        let system = newItemData.system;
+        const slcl = ItemSpellHelper.getMinimumCasterLevelBySpellData(origData.system);
         system.enhancementType = "misc";
 
         // Set name
-        data.name = `${origData.name}`;
-        data.img = origData.img;
-        data.id = origData._id
+        newItemData.name = `${origData.name}`;
+        newItemData.img = origData.img;
+        newItemData.id = origData._id
         if (type === 'command' || type === 'use') {
             system.uses.per = "day";
             system.uses.maxFormula = "1";
@@ -45,29 +45,29 @@ export class ItemEnhancementConverter {
         // Set activation method
         system.activation.type = "standard";
 
-        system.measureTemplate = getProperty(origData, "data.measureTemplate");
+        system.measureTemplate = getProperty(origData, "system.measureTemplate");
 
 
         // Set damage formula
-        system.actionType = origsystem.actionType;
-        for (let d of getProperty(origData, "data.damage.parts")) {
+        system.actionType = origData.system.actionType;
+        for (let d of getProperty(origData, "system.damage.parts")) {
             d[0] = d[0].replace(/@sl/g, slcl[0]);
             system.damage.parts.push(d);
         }
 
         // Set saves
-        system.save.description = origsystem.save.description;
-        system.save.type = origsystem.save.type;
-        system.save.ability = origsystem.save.ability;
+        system.save.description = origData.system.save.description;
+        system.save.type = origData.system.save.type;
+        system.save.ability = origData.system.save.ability;
         system.save.dc = 10 + slcl[0] + Math.floor(slcl[0] / 2);
 
         // Copy variables
-        system.attackNotes = origsystem.attackNotes;
-        system.effectNotes = origsystem.effectNotes;
-        system.attackBonus = origsystem.attackBonus;
-        system.critConfirmBonus = origsystem.critConfirmBonus;
-        system.specialActions = origsystem.specialActions;
-        system.attackCountFormula = origsystem.attackCountFormula;
+        system.attackNotes = origData.system.attackNotes;
+        system.effectNotes = origData.system.effectNotes;
+        system.attackBonus = origData.system.attackBonus;
+        system.critConfirmBonus = origData.system.critConfirmBonus;
+        system.specialActions = origData.system.specialActions;
+        system.attackCountFormula = origData.system.attackCountFormula;
 
         // Determine aura power
         let auraPower = "faint";
@@ -79,28 +79,28 @@ export class ItemEnhancementConverter {
         // Set description
         system.description.value = getProperty(origData, "data.description.value");
 
-        return data;
+        return newItemData;
     }
 
     static async toEnhancementBuff(origData) {
-        let data = duplicate(game.system.template.Item.enhancement);
-        for (let t of data.templates) {
-            mergeObject(data, duplicate(game.system.template.Item.templates[t]));
+        let newItemData = duplicate(game.system.template.Item.enhancement);
+        for (let t of newItemData.templates) {
+            mergeObject(newItemData, duplicate(game.system.template.Item.templates[t]));
         }
-        delete data.templates;
-        data = {
+        delete newItemData.templates;
+        newItemData = {
             type: "enhancement",
             name: origData.name,
-            data: data,
+            system: newItemData,
         };
-
+        let system = newItemData.system;
 
         system.enhancementType = "misc";
 
         // Set name
-        data.name = `${origData.name}`;
-        data.img = origData.img;
-        data.id = origData._id
+        newItemData.name = `${origData.name}`;
+        newItemData.img = origData.img;
+        newItemData.id = origData._id
 
         system.isFromBuff = true;
 
@@ -110,18 +110,18 @@ export class ItemEnhancementConverter {
         system.price = 0
 
 
-        system.changes = origsystem.changes;
+        system.changes = origData.system.changes;
         for (const c of system.changes) {
             c[0] = c[0].replace(new RegExp('@item.level', 'g'), '@enhancement');
         }
-        system.contextNotes = origsystem.contextNotes;
+        system.contextNotes = origData.system.contextNotes;
         for (const c of system.contextNotes) {
             c[0] = c[0].replace(new RegExp('@item.level', 'g'), '@enhancement');
         }
 
 
-        system.description.value = getProperty(origData, "data.description.value");
+        system.description.value = getProperty(origData, "system.description.value");
 
-        return data;
+        return newItemData;
     }
 }

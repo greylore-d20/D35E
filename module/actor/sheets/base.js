@@ -586,6 +586,8 @@ export class ActorSheetPF extends ActorSheet {
       let skl = skillset[a];
       if (skl === null) return;
       if (settings.worldDefaults?.skills[a] === "hide") return;
+      skl.points = skl.points || 0;
+      skl.mod = skl.mod || 0;
       result.all.skills[a] = skl;
       if (
         (skl.points > 0 || (!skl.rt && this.actor.system.displayNonRTSkills) || skl.visibility === "always") &&
@@ -1543,7 +1545,7 @@ export class ActorSheetPF extends ActorSheet {
     }
 
     const updateData = {};
-    updateData[`data.skills.${tag}`] = skillData;
+    updateData[`system.skills.${tag}`] = skillData;
     if (this.actor.testUserPermission(game.user, "OWNER")) this.actor.update(updateData);
   }
 
@@ -1553,7 +1555,7 @@ export class ActorSheetPF extends ActorSheet {
     const subSkillId = $(event.currentTarget).parents(".sub-skill").attr("data-skill");
 
     const updateData = {};
-    updateData[`data.skills.${mainSkillId}.subSkills.-=${subSkillId}`] = null;
+    updateData[`system.skills.${mainSkillId}.subSkills.-=${subSkillId}`] = null;
     if (this.actor.testUserPermission(game.user, "OWNER")) this.actor.update(updateData);
   }
 
@@ -1562,7 +1564,7 @@ export class ActorSheetPF extends ActorSheet {
     const skillId = $(event.currentTarget).parents(".skill").attr("data-skill");
 
     const updateData = {};
-    updateData[`data.skills.-=${skillId}`] = null;
+    updateData[`system.skills.-=${skillId}`] = null;
     if (this.actor.testUserPermission(game.user, "OWNER")) this.actor.update(updateData);
   }
 
@@ -1589,7 +1591,7 @@ export class ActorSheetPF extends ActorSheet {
     const currentCl =
       getProperty(this.actor.system, `attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`) || 0;
     const newCl = Math.max(0, currentCl + add);
-    const k = `data.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`;
+    const k = `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`;
     let updateData = {};
     updateData[k] = newCl;
     this.actor.update(updateData);
@@ -1601,7 +1603,7 @@ export class ActorSheetPF extends ActorSheet {
 
     const currentCl = getProperty(this.actor.system, `attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`) || 0;
     const newCl = Math.max(0, currentCl + add);
-    const k = `data.attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`;
+    const k = `system.attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`;
     let updateData = {};
     updateData[k] = newCl;
     this.actor.update(updateData);
@@ -1613,7 +1615,7 @@ export class ActorSheetPF extends ActorSheet {
 
     const currentPF = getProperty(this.actor.system, `attributes.psionicFocus`) || false;
     const newPF = !currentPF;
-    const k = `data.attributes.psionicFocus`;
+    const k = `system.attributes.psionicFocus`;
     let updateData = {};
     updateData[k] = newPF;
     this.actor.update(updateData);

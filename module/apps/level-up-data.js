@@ -29,18 +29,18 @@ export class LevelUpDataDialog extends FormApplication {
     let skillset = {};
     Object.keys(this.options.skillset.all.skills).forEach((s) => {
       skillset[s] = {
-        points: this.levelUpData.skills[s] !== undefined ? this.levelUpData.skills[s].points : 0,
+        points: (this.levelUpData.skills[s] !== undefined ? this.levelUpData.skills[s].points : 0) || 0,
         name: this.options.skillset.all.skills[s].name,
         label: this.options.skillset.all.skills[s].label,
         arbitrary: this.options.skillset.all.skills[s].arbitrary,
         custom: this.options.skillset.all.skills[s].custom || this.options.skillset.all.skills[s].worldCustom,
         baseRank:
-          this.options.skillset.all.skills[s].points -
+        (this.options.skillset.all.skills[s].points -
           (this.levelUpData.skills[s] !== undefined
             ? this.levelUpData.skills[s].cls
               ? this.levelUpData.skills[s].points
               : this.levelUpData.skills[s].points / 2
-            : 0),
+            : 0)) || 0,
         rt: this.options.skillset.all.skills[s].rt,
         cs: this.options.skillset.all.skills[s].cs,
         subSkills: {},
@@ -49,21 +49,21 @@ export class LevelUpDataDialog extends FormApplication {
       Object.keys(this.options.skillset.all.skills[s]?.subSkills || []).forEach((sb) => {
         skillset[s].subSkills[sb] = {
           points:
-            this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined
+              (this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined
               ? this.levelUpData.skills[s].subskills[sb].points
-              : 0,
+              : 0) || 0,
           name: this.options.skillset.all.skills[s].subSkills[sb].name,
           label: this.options.skillset.all.skills[s].subSkills[sb].label,
           arbitrary: this.options.skillset.all.skills[s].subSkills[sb].arbitrary,
           custom:
             this.options.skillset.all.skills[s].subSkills[sb].custom || this.options.skillset.all.skills[s].worldCustom,
           baseRank:
-            this.options.skillset.all.skills[s].subSkills[sb].points -
+          (this.options.skillset.all.skills[s].subSkills[sb].points -
             (this.levelUpData.skills[s] !== undefined && this.levelUpData.skills[s].subskills[sb] !== undefined
               ? this.levelUpData.skills[s].subskills[sb].cls
                 ? this.levelUpData.skills[s].subskills[sb].points
                 : this.levelUpData.skills[s].subskills[sb].points / 2
-              : 0),
+              : 0)) || 0,
           rt: this.options.skillset.all.skills[s].rt,
           cs: this.options.skillset.all.skills[s].cs,
         };
