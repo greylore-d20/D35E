@@ -261,7 +261,7 @@ export class CombatD35E extends Combat {
    */
   async _processCurrentCombatant() {
     try {
-      const actor = this.combatant.actor;
+      const actor = this.combatant?.actor;
       const buffId = this.combatant?.flags?.D35E?.buffId;
       if (actor != null) {
         await actor.progressRound();
@@ -294,7 +294,7 @@ export class CombatD35E extends Combat {
 
   updateCombatCharacterSheet() {
     if (game.settings.get("D35E", "useCombatCharacterSheet")) {
-      if (this.combatant.actor) {
+      if (this.combatant?.actor) {
         if (this.npcSheet == null) {
           this.npcSheet = new ActorSheetPFNPCCombat(this.combatant.actor);
         } else {
