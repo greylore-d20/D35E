@@ -1065,7 +1065,7 @@ export class ItemSheetPF extends ItemSheet {
       const li = a.closest(".custom-field");
       //console.log(`D35E | Removing custom attribute | ${li.dataset.customField}`, this.item.system.customAttributes)
       const updateData = {};
-      updateData[`data.customAttributes.-=${li.dataset.customField}`] = null;
+      updateData[`system.customAttributes.-=${li.dataset.customField}`] = null;
       return this.item.update(updateData);
     }
   }
