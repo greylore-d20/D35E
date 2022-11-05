@@ -2934,35 +2934,13 @@ export class ActorSheetPF extends ActorSheet {
     } catch (err) {
       return false;
     }
-    let dataType = "";
     const actor = this.actor;
-    let actorData = {};
-    // Case 1 - Import from a Compendium pack
-    if (game?.release?.generation >= 10 && dropData.uuid) {
-      dropData = fromUuidSync(dropData.uuid);
+    let actorData = fromUuidSync(dropData.uuid);
+    if (actorData.pack) {
+      ui.notifications.error(game.i18n.localize("D35E.CannotLinkMasterFromCompendium"));
+      return;
     }
-    if (dropData.pack) {
-      dataType = "compendium";
-      const pack = game.packs.find((p) => p.metadata.id === dropData.pack);
-      const packItem = await pack.getDocument(dropData.id);
-      if (packItem != null) actorData = packItem.data;
-    }
-
-    // Case 2 - Data explicitly provided
-    else if (dropData.data) {
-      let sameActor = dropData.actorId === actor._id;
-      if (sameActor && actor.isToken) sameActor = dropData.tokenId === actor.token.id;
-      if (sameActor) return this._onSortItem(event, dropData.data); // Sort existing items
-
-      dataType = "data";
-      actorData = dropData.data;
-    }
-
-    // Case 3 - Import from World entity
-    else {
-      dataType = "world";
-      actorData = game.actors.get(dropData.id).data;
-    }
+    let dataType = "world";
 
     this.enrichDropData(actorData);
     return this.importActor(actorData, dataType);
@@ -3084,7 +3062,7 @@ export class ActorSheetPF extends ActorSheet {
     if (itemData.type === "npc") {
       return this.actor._createPolymorphBuffDialog(itemData);
     }
-    if (this.actor.data.type === "npc" && itemData.type === "character") {
+    if (this.actor.type === "npc" && itemData.type === "character") {
       if (dataType === "world") return this.actor._setMaster(itemData);
     }
   }
