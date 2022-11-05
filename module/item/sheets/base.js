@@ -1540,7 +1540,7 @@ export class ItemSheetPF extends ItemSheet {
             {
               name: packItem.name,
               id: packItem.id,
-              pack: droppedData.pack,
+              pack: droppedItem.pack,
               formula: "",
             },
           ]);
@@ -1663,7 +1663,7 @@ export class ItemSheetPF extends ItemSheet {
         if (packItem != null) {
           itemData = packItem.data;
           updateData[`system.spellSpecialization.spells.${spellLevel}.id`] = droppedData.id;
-          updateData[`system.spellSpecialization.spells.${spellLevel}.pack`] = droppedData.pack;
+          updateData[`system.spellSpecialization.spells.${spellLevel}.pack`] = droppedItem.pack;
           updateData[`system.spellSpecialization.spells.${spellLevel}.name`] = packItem.name;
           updateData[`system.spellSpecialization.spells.${spellLevel}.img`] = packItem.img;
           this.item.update(updateData);
@@ -1689,7 +1689,7 @@ export class ItemSheetPF extends ItemSheet {
       if (droppedItem.pack) {
         const packItem = droppedItem;
         if (packItem != null && packItem.data.type === "buff") {
-          let buffString = `Create unique "${packItem.name}" from "${droppedData.pack}" on ${target};Set buff "${packItem.name}" field data.level to max(1,(@cl)) on ${target};Activate buff "${packItem.name}" on ${target}`;
+          let buffString = `Create unique "${packItem.name}" from "${droppedItem.pack}" on ${target};Set buff "${packItem.name}" field data.level to max(1,(@cl)) on ${target};Activate buff "${packItem.name}" on ${target}`;
 
           let specialActions = duplicate(this.item.system.specialActions);
           if (specialActions === undefined) specialActions = [];
