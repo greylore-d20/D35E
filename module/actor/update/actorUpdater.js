@@ -1636,6 +1636,7 @@ export class ActorUpdater {
     // Reset BAB, CMB and CMD
     {
       const k = "system.attributes.bab.total";
+      const l = "system.attributes.bab.nonepic";
       const j = "system.attributes.bab.base";
       let totalLevel = 0;
       let epicLevels = 0;
@@ -1691,7 +1692,8 @@ export class ActorUpdater {
           sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
           sourceInfo[k].positive.push({ name: "Epic Levels", value: epicBab });
         }
-        linkData(source, updateData, k, bab + epicBab);
+        linkData(source, updateData, k, bab + epicBab)
+        linkData(source, updateData, l, bab);
         linkData(source, updateData, j, bab + epicBab);
       }
     }
@@ -2375,6 +2377,7 @@ export class ActorUpdater {
     }
     if (changes[`system.attributes.bab.replace`]) {
       linkData(source, updateData, `system.attributes.bab.total`, changes[`system.attributes.bab.replace`]);
+      linkData(source, updateData, `system.attributes.bab.nonepic`, changes[`system.attributes.bab.replace`]);
       linkData(source, updateData, `system.attributes.cmb.total`, changes[`system.attributes.bab.replace`]);
     }
 

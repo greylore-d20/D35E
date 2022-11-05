@@ -1034,7 +1034,7 @@ export class ActorPF extends Actor {
 
     // Add additional attacks
     let extraAttacks = [];
-    for (let a = 5; a < getProperty(this.system, "attributes.bab.total"); a += 5) {
+    for (let a = 5; a < getProperty(this.system, "attributes.bab.nonepic"); a += 5) {
       extraAttacks = extraAttacks.concat([
         [`-${a}`, `${game.i18n.localize("D35E.Attack")} ${Math.floor((a + 5) / 5)}`],
       ]);

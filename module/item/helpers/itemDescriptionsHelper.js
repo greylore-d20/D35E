@@ -10,7 +10,7 @@ export class ItemDescriptionsHelper {
         rollData.item = item.getRollData();
 
         if (item.hasAttack) {
-            let bab = 0;
+            let bab = item.actor.system.attributes.bab.nonepic;
             let totalBonus = this.attackBonus(item, rollData)
             let autoScaleWithBab = (game.settings.get("D35E", "autoScaleAttacksBab") && item.actor.data.type !== "npc" && getProperty(item.system,"attackType") === "weapon" && getProperty(item.system,"autoScaleOption") !== "never") || getProperty(item.system,"autoScaleOption") === "always";
             let attacks = []
@@ -47,7 +47,7 @@ export class ItemDescriptionsHelper {
             let abilityBonus = "0";
             let sizeBonus = CONFIG.D35E.sizeMods[item.actor.system.traits.actualSize] || 0;
             if (item.actor) {
-                bab = item.actor.system.attributes.bab.total;
+                bab = item.actor.system.attributes.bab.nonepic;
                 if (getProperty(item.system,"ability.attack"))
                     abilityBonus = item.actor.system.abilities[item.system.ability.attack].mod
             }

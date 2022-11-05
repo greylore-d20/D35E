@@ -231,7 +231,7 @@ export class ItemUse {
       getProperty(this.item.system, "autoScaleOption") === "always";
     if (autoScaleAttacks && fullAttack) {
       allAttacks.push({ bonus: 0, label: `${game.i18n.localize("D35E.Attack")}` });
-      for (let a = 5; a < actor.system.attributes.bab.total; a += 5) {
+      for (let a = 5; a < actor.system.attributes.bab.nonepic; a += 5) {
         allAttacks.push({
           bonus: `-${a}`,
           label: `${game.i18n.localize("D35E.Attack")} ${Math.floor((a + 5) / 5)}`,
@@ -920,7 +920,7 @@ export class ItemUse {
         getProperty(this.item.system, "autoScaleOption") !== "never") ||
       getProperty(this.item.system, "autoScaleOption") === "always";
     let extraAttacksCount = autoScaleAttacks
-      ? Math.ceil(actor.system.attributes.bab.total / 5.0)
+      ? Math.ceil(actor.system.attributes.bab.nonepic / 5.0)
       : (getProperty(this.item.system, "attackParts") || []).length + 1;
     let rc = game.settings.get("D35E", `rollConfig`).rollConfig;
     let summonableMonsters = [];
