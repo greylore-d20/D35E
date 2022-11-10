@@ -57,7 +57,11 @@ export class ItemCombatChanges {
         }
         // We do not pre-roll things that have a roll inside, we assume they will be rolled later
         if (c[3].indexOf("d") === -1 && c[3].indexOf("&") === -1) {
-          if (c[4] !== "") c[4] = new Roll35e(`${c[4]}`, combatChangesRollData).roll().total;
+          if (c[4] !== "") {
+            if (c[4].indexOf("@") !== -1) {
+              c[4] = new Roll35e(`${c[4]}`, combatChangesRollData).roll().total;
+            }
+          }
           else {
             c[4] = 0;
             ui.notifications.warn(game.i18n.localize("D35E.EmptyCombatChange").format(this.item.name));
