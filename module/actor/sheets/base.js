@@ -230,7 +230,7 @@ export class ActorSheetPF extends ActorSheet {
           if (sheetData.sourceDetails.system.skills[s].subSkills == null) continue;
           skl2.sourceDetails =
             sheetData.sourceDetails.system.skills[s].subSkills[s2] != null
-              ? sheetData.sourceDetails.system.skills[s].subSkills[s2].changeBonus
+              ? duplicate(sheetData.sourceDetails.system.skills[s].subSkills[s2].changeBonus)
               : [];
           if (sheetData.actor.data.attributes.acp.total && skl2.acp)
             skl2.sourceDetails.push({
