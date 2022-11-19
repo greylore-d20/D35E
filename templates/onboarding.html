@@ -96,7 +96,7 @@
     function showSetClassDetailsTutorial() {
         let userCharacter = game.user.character == null ? null : game.user.character.id;
         // User character is null
-        if((userCharacter === null || $(`#actor-${userCharacter}`).length) && $(`.entry.level-up-data`).length){
+        if((userCharacter === null || $(`#Character-Actor-${userCharacter}`).length) && $(`.entry.level-up-data`).length){
             $('#onboarding-character-class').hide();
             $('#onboarding-character-class-details').show();
         }else{
@@ -112,7 +112,7 @@
 
     function showHotbarTutorial() {
         let userCharacter = game.user.character == null ? null : game.user.character.id;
-        if((userCharacter === null || $(`#actor-${userCharacter}`).length)
+        if((userCharacter === null || $(`#Character-Actor-${userCharacter}`).length)
             && game.user.character.data.items.some(i => i.type === "attack" && i.name === "Dagger")){
             $('#onboarding-character-attacks').hide();
             $('#onboarding-character-hotbar').show();
@@ -128,7 +128,7 @@
 
     function showAddAttackTutorial() {
         let userCharacter = game.user.character == null ? null : game.user.character.id;
-        if((userCharacter === null || $(`#actor-${userCharacter}`).length)
+        if((userCharacter === null || $(`#Character-Actor-${userCharacter}`).length)
             && game.user.character.data.items.some(i => i.name === "Dagger")){
             $('#onboarding-character-weapons').hide();
             $('#onboarding-character-attacks').show();
@@ -139,7 +139,7 @@
 
     function showAddWeaponTutorial() {
         let userCharacter = game.user.character == null ? null : game.user.character.id;
-        if((userCharacter === null || $(`#actor-${userCharacter}`).length)){
+        if((userCharacter === null || $(`#Character-Actor-${userCharacter}`).length)){
             $('#onboarding-character-skills').hide();
             $('#onboarding-character-weapons').show();
         }else{
@@ -153,7 +153,7 @@
             ui.notifications.warn(`Close Level Details window to proceed!`)
             return;
         }
-        if((userCharacter === null || $(`#actor-${userCharacter}`).length)){
+        if((userCharacter === null || $(`#Character-Actor-${userCharacter}`).length)){
             $('#onboarding-character-card').hide();
             $('#onboarding-character-class-details').hide();
             $('#onboarding-character-skills').show();
@@ -165,7 +165,7 @@
     function showAddClassTutorial() {
         let userCharacter = game.user.character == null ? null : game.user.character.id;
         if((userCharacter === null ||
-            ($(`#actor-${userCharacter}`).length
+            ($(`#Character-Actor-${userCharacter}`).length
                 && game.user.character.data.items.some(i => i.type === "race")))){
             $('#onboarding-character-race').hide();
             $('#onboarding-character-class').show();
@@ -180,7 +180,7 @@
         if (userCharacter === null) {
             ui.notifications.warn(`You need to assign character to yourself! Right click on your name in players window, click User Configuraion and select one!`)
         }
-        if(($(`#actor-${userCharacter}`).length)){
+        if(($(`#Character-Actor-${userCharacter}`).length)){
             $('#onboarding-character-card').hide();
             $('#onboarding-character-race').show();
         }else{
@@ -213,28 +213,28 @@
         if (userCharacter === null) {
             ui.notifications.warn(`You need to assign character to yourself! Right click on your name in players window, click User Configuraion and select one!`)
         }
-        if(($(`#actor-${userCharacter}`).length)){
+        if(($(`#Character-Actor-${userCharacter}`).length)){
             let intro = introJs()
             intro.addSteps([
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > header`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > header`),
                     intro: "This is header area. Here you can find some basic information about your character.",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter}  > section > form > nav`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter}  > section > form > nav`),
                     intro: "This is main sheet navigation. From here you can access all sub-sheets of you character card.",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > section > div.tab.details.flexcol.active`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > section > div.tab.details.flexcol.active`),
                     intro: "This is you character summary. You can find most often accessed data here, like character Abilities, Skills or Attacks. Labels with blue color are clickable - and this is the same on all character sheet sub-sheets.",
                     position: 'right'
                 }
             ]);
             intro.onbeforechange(function(targetElement) {
                 if ($(targetElement).data("tab") === "details") {
-                    document.querySelector(`#actor-${userCharacter} > section > form > nav > a:nth-child(1)`).click();
+                    document.querySelector(`#Character-Actor-${userCharacter} > section > form > nav > a:nth-child(1)`).click();
                 }
             });
             intro.onexit(function() {
@@ -253,36 +253,36 @@
         if (userCharacter === null) {
             ui.notifications.warn(`You need to assign character to yourself! Right click on your name in players window, click User Configuraion and select one!`)
         }
-        if(($(`#actor-${userCharacter}`).length)){
+        if(($(`#Character-Actor-${userCharacter}`).length)){
             let intro = introJs()
             intro.addSteps([
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > section > div.tab.feats.flexcol > section > div.tab.feats-group:nth-child(1)`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > section > div.tab.feats.flexcol > section > div.tab.feats-group:nth-child(1)`),
                     intro: "This sub-sheet holds all data about your character Classes. You can see class features, your current level, and manage everything class related from here.",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > ol`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > ol`),
                     intro: "This area holds a list of your classes. You can drag and drop Classes from Class compendium here - or user <strong>+ Add</strong> button to create new from scratch",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2) > ul > li`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2) > ul > li`),
                     intro: "This is your level.",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2)`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2)`),
                     intro: "These fields represent your level details. This list displays all levels you gained during the course of your adventure",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter}  > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(26)`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter}  > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(26)`),
                     intro: "Gray fields means you have not yet progressed to a level. It will be enabled when you level up.",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2) > div:nth-child(2) > a`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > section > div.tab.feats > section > div.tab.feats-group.flexcol:nth-child(1) > div:nth-child(2) > div:nth-child(2) > a`),
                     intro: "Fields with arrow represent levels that you gained but not set up. You can click on arrow to set up level - a separate window will appear",
                     position: 'right'
                 }
@@ -291,8 +291,8 @@
         ]);
             intro.onbeforechange(function(targetElement) {
                 if ($(targetElement).hasClass("feats-group")) {
-                    document.querySelector(`#actor-${userCharacter} > section > form > nav > a:nth-child(5)`).click();
-                    document.querySelector(`#actor-${userCharacter} > section > form > section > div.tab.feats.flexcol.active > nav > a:nth-child(1)`).click();
+                    document.querySelector(`#Character-Actor-${userCharacter} > section > form > nav > a:nth-child(5)`).click();
+                    document.querySelector(`#Character-Actor-${userCharacter} > section > form > section > div.tab.feats.flexcol.active > nav > a:nth-child(1)`).click();
                 }
             });
             intro.onexit(function() {
@@ -309,16 +309,16 @@
 
     function displayLevelUpDataWindowIntro() {
         let userCharacter = game.user.character == null ? null : game.user.character.id;
-        if((userCharacter === null || $(`#actor-${userCharacter}`).length) && $(`.sheet.level-up-data`).length){
+        if((userCharacter === null || $(`#Character-Actor-${userCharacter}`).length) && $(`.sheet.level-up-data`).length){
             let intro = introJs()
             intro.addSteps([
                 {
-                    element: document.querySelector(`#actor-${userCharacter} > section > form > header`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter} > section > form > header`),
                     intro: "This is header area. Here you can find some basic information about your character.",
                     position: 'right'
                 },
                 {
-                    element: document.querySelector(`#actor-${userCharacter}  > section > form > nav`),
+                    element: document.querySelector(`#Character-Actor-${userCharacter}  > section > form > nav`),
                     intro: "This is main sheet navigation. ",
                     position: 'right'
                 }
