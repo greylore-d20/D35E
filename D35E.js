@@ -110,6 +110,7 @@ Hooks.once("init", async function() {
       sizeVal: sizeInt
     },
     migrateWorld: migrations.migrateWorld,
+    migrateCompendium: migrations.migrateCompendium,
     createdMeasureTemplates: new Set()
   };
 

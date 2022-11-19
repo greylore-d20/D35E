@@ -200,12 +200,13 @@ export class ItemSpellHelper {
 
   static getSpellDuration(durationData, level = 1) {
     let durationLabel = "";
-    let needRounds = !["", "inst", "perm", "seeText"].includes(durationData.units);
+    console.log(durationData)
+    let needRounds = !["", "inst", "perm", "seeText","spec"].includes(durationData.units);
     if (!needRounds || !durationData.value) {
       durationLabel = CONFIG.D35E.timePeriodsSpells[durationData.units];
     } else {
       let isPerLevel = durationData.value.indexOf("@cl") !== -1;
-      if (!isPerLevel) {
+      if (isPerLevel) {
         durationLabel =
           Roll35e.safeRoll(durationData.value, { cl: level }).total +
           " " +
@@ -216,7 +217,7 @@ export class ItemSpellHelper {
         else durationLabel = durationData.value + " " + CONFIG.D35E.timePeriodsSpells[durationData.units];
       }
     }
-    if (durationData.dismissable) durationLabel = label.duration + " (D)";
+    if (durationData.dismissable) durationLabel = durationLabel + " (D)";
     return durationLabel;
   }
 

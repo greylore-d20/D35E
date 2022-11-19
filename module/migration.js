@@ -100,6 +100,7 @@ export const migrateCompendium = async function(pack) {
     console.error(err);
   }
 
+  console.log(`D35E | Starting migration of ${pack.collection}`)
   // Iterate over compendium entries - applying fine-tuned migration functions
   for ( let ent of content ) {
     try {
@@ -113,7 +114,7 @@ export const migrateCompendium = async function(pack) {
       console.error(err);
     }
   }
-  //console.log(`Migrated all ${entity} entities from Compendium ${pack.collection}`);
+  console.log(`D35E | Migrated all ${entity} entities from Compendium ${pack.collection}`);
 };
 
 /* -------------------------------------------- */
@@ -652,7 +653,7 @@ const _migrateSpellDuration = function(ent, updateData) {
   if (isNaN(value) || !value)
     value = "";
   let dismissable = false;
-  if (duration.indexOf("(D)") !== -1) {
+  if (duration.indexOf("(d)") !== -1) {
     dismissable = true;
   }
 
@@ -712,6 +713,12 @@ const _migrateSpellDuration = function(ent, updateData) {
   else if (duration.indexOf("hours") !== -1) {
     newDurationUnits = "hours"
   }
+  else if (duration.indexOf("hour") !== -1) {
+    newDurationUnits = "hours"
+  }
+  else if (duration.indexOf("day") !== -1) {
+    newDurationUnits = "days"
+  }
   else if (duration.indexOf("days") !== -1) {
     newDurationUnits = "days"
   }
@@ -723,7 +730,7 @@ const _migrateSpellDuration = function(ent, updateData) {
   }
 
   const oldValue = getProperty(ent.data.data, "spellDurationData.units");
-  if (!oldValue) {
+  if (!oldValue || true) {
     updateData["data.spellDurationData"] = {value: value, units: newDurationUnits, dismissable: dismissable}
   }
 

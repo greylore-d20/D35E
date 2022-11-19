@@ -1,32 +1,21 @@
-import { DicePF } from "../dice.js";
-import { Item35E } from "../item/entity.js";
-import {
-  createTag,
-  linkData,
-  isMinimumCoreVersion,
-  shuffle,
-  uuidv4,
-  getOriginalNameIfExists,
-  isEqual,
-} from "../lib.js";
-import { createCustomChatMessage } from "../chat.js";
-import { CACHE } from "../cache.js";
-import { DamageTypes } from "../damage-types.js";
-import { D35E } from "../config.js";
-import { Roll35e } from "../roll.js";
-import { ActorRestDialog } from "../apps/actor-rest.js";
-import { VisionPermissionSheet } from "../apps/vision-permission.js";
-import { Propagator } from "../misc/propagator.js";
-import { ItemCharges } from "../item/extensions/charges.js";
-import { ItemConsumableConverter } from "../item/converters/consumable.js";
-import { ItemCombatChangesHelper } from "../item/helpers/itemCombatChangesHelper.js";
-import { ItemPrepareDataHelper } from "./helpers/itemPrepareDataHelper.js";
-import { ActorBuffs } from "./actions/buffs.js";
-import { ActorConditions } from "./actions/conditions.js";
-import { ActorUpdater } from "./update/actorUpdater.js";
-import { LogHelper } from "../helpers/LogHelper.js";
-import { ActorMinionsHelper } from "./helpers/actorMinionsHelper.js";
-import { ItemEnhancementHelper } from "../item/helpers/itemEnhancementHelper.js";
+import {DicePF} from "../dice.js";
+import {Item35E} from "../item/entity.js";
+import {createTag, getOriginalNameIfExists, isMinimumCoreVersion, linkData, shuffle, uuidv4,} from "../lib.js";
+import {createCustomChatMessage} from "../chat.js";
+import {DamageTypes} from "../damage-types.js";
+import {D35E} from "../config.js";
+import {Roll35e} from "../roll.js";
+import {ActorRestDialog} from "../apps/actor-rest.js";
+import {VisionPermissionSheet} from "../apps/vision-permission.js";
+import {ItemConsumableConverter} from "../item/converters/consumable.js";
+import {ItemCombatChangesHelper} from "../item/helpers/itemCombatChangesHelper.js";
+import {ItemPrepareDataHelper} from "./helpers/itemPrepareDataHelper.js";
+import {ActorBuffs} from "./actions/buffs.js";
+import {ActorConditions} from "./actions/conditions.js";
+import {ActorUpdater} from "./update/actorUpdater.js";
+import {LogHelper} from "../helpers/LogHelper.js";
+import {ActorMinionsHelper} from "./helpers/actorMinionsHelper.js";
+import {ItemEnhancementHelper} from "../item/helpers/itemEnhancementHelper.js";
 import {ActorCRHelper} from "./helpers/actorCRHelper.js";
 
 /**
@@ -3518,7 +3507,7 @@ export class ActorPF extends Actor {
             }
           }
           let spellbookClass = this.system.classes[spellbook.class]?.name || "Missing";
-          if (this.system.classes[spellbook.class].hasSpellbook) {
+          if (this.system.classes[spellbook.class]?.hasSpellbook) {
             let spellId = obj.system ? `${obj.system.originPack}.${obj.system.originId}` : obj.name;
             if (this.system.classes[spellbook.class].spelllist.has(spellId)) {
               foundLevel = true;
