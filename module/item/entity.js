@@ -913,7 +913,7 @@ export class Item35E extends ItemBase35E {
           (getProperty(rollData, change[3].substr(1)) || "0") + " + " + Item35E._fillTemplate(change[4], rollData)
         );
       } else {
-        setProperty(rollData, change[3], (getProperty(rollData, change[3]) || 0) + (change[4] || 0));
+        setProperty(rollData, change[3], (getProperty(rollData, change[3]) || 0) + parseInt(change[4] || 0));
       }
     });
   }
