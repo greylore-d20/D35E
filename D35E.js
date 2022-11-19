@@ -744,7 +744,7 @@ Hooks.on("controlToken", (token, selected) => {
 
 Hooks.on("hotbarDrop", (bar, data, slot) => {
   if ( data.type !== "Item" ) return;
-  createItemMacro(data.data, slot);
+  createItemMacro(data.uuid, slot);
   return false;
 });
 
@@ -828,7 +828,8 @@ Hooks.on("aipSetup", (packageConfig) => {
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
-async function createItemMacro(item, slot) {
+async function createItemMacro(itemUuid, slot) {
+  const item = await fromUuid(itemUuid);
   const actor = getItemOwner(item);
   const command = `game.D35E.rollItemMacro("${item.name}", {\n` +
   `  itemId: "${item._id}",\n` +
