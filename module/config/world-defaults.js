@@ -7,7 +7,7 @@ export class WorldDefaultConfig extends FormApplication {
   }
 
   get skillOptions() {
-    return {fields: 'Name;Attribute (Short);Requires Training;Armor Class Penalty', dtypes: 'String;String;Boolean;Boolean'}
+    return {fields: 'Name;Attribute (Short);Requires Training;Armor Class Penalty', dtypes: 'String;Attribute;Boolean;Boolean'}
   }
 
   get fields() {
@@ -33,8 +33,9 @@ export class WorldDefaultConfig extends FormApplication {
       });
     });
     return {
-      settings: settings, skillsets: 
-      CONFIG.D35E.skills,
+      settings: settings,
+      skillsets: CONFIG.D35E.skills,
+      abilities: CONFIG.D35E.abilities,
       entries: entries,
       fields: this.fields,
     }
@@ -71,6 +72,7 @@ export class WorldDefaultConfig extends FormApplication {
     html.find('button[name="submit"]').click(this._onSubmit.bind(this))
     html.find(".entry-control").click(this._onEntryControl.bind(this));
     html.find('tr td input[type="text"]').change(this._onEntryChange.bind(this));
+    html.find('tr td select.custom-skill').change(this._onEntryChange.bind(this));
   }
 
   async _onEntryControl(event) {
@@ -116,7 +118,7 @@ export class WorldDefaultConfig extends FormApplication {
     const index = parseInt(tr.dataset.index);
     const index2 = parseInt(a.dataset.index);
     const value = a.value;
-
+    console.log(tr.dataset, a.dataset, a.value)
     if (a.dataset.dtype === "Number") {
       let v = parseFloat(value);
       if (isNaN(v)) v = 0;

@@ -24,7 +24,32 @@
         <tr class="entry" data-index="{{index}}">
             {{#each entry as |v k|}}
             {{#with v}}
-            <td><input type="text" data-index="{{k}}" value="{{0}}" data-dtype="{{1}}" name="{{index}}-{{k}}" /></td>
+            {{#if (eq (lookup v 1) "Boolean") }}
+            <td>
+
+                <select class="custom-skill" style="flex: 100px" name="{{index}}-{{k}}" data-index="{{k}}" data-dtype="{{1}}">
+                    {{#select (lookup v 0)}}
+                    <option value="true">{{localize "D35E.True"}}</option>
+                    <option value="false">{{localize "D35E.False"}}</option>
+                    {{/select}}
+                </select>
+            </td>
+            {{/if}}
+            {{#if (eq (lookup v 1) "Attribute") }}
+            <td>
+
+                <select class="custom-skill" style="flex: 100px" name="{{index}}-{{k}}" data-index="{{k}}" data-dtype="{{1}}">
+                    {{#select (lookup v 0)}}
+                    {{#each ../../abilities as |abl a|}}
+                    <option value="{{a}}">{{abl}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </td>
+            {{/if}}
+            {{#if (eq (lookup v 1) "String") }}
+                <td><input type="text" data-index="{{k}}" value="{{0}}" data-dtype="{{1}}" name="{{index}}-{{k}}" /></td>
+            {{/if}}
             {{/with}}
             {{/each}}
             <td class="entry-control"><a class="entry-control delete-entry"><i class="fas fa-minus"></i></a></td>

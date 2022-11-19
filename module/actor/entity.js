@@ -5609,6 +5609,6 @@ export class ActorPF extends Actor {
       count++;
       tag = createTag(skillData.name || "skill") + count.toString();
     }
-    createData[`data.skills.${tag}`] = skillData;
+    createData[`system.skills.${tag}`] = skillData;
   }
 }
