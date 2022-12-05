@@ -513,10 +513,10 @@ export class Item35E extends ItemBase35E {
 
     console.log("Should be true/false, is true true", updated, getProperty(this.system, "active"));
 
-    for (var key in expandedData?.data?.customAttributes) {
+    for (var key in expandedData?.system?.customAttributes) {
       if (updated[`system.customAttributes.${key}`] === null) continue;
-      if (expandedData.data.customAttributes.hasOwnProperty(key)) {
-        let customAttribute = expandedData.data.customAttributes[key];
+      if (expandedData.system.customAttributes.hasOwnProperty(key)) {
+        let customAttribute = expandedData.system.customAttributes[key];
         let addedAttributes = new Set();
         if (customAttribute.selectList !== undefined) {
           if (customAttribute.selectList) {
