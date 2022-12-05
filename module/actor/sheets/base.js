@@ -1721,9 +1721,9 @@ export class ActorSheetPF extends ActorSheet {
     const itemData = {
       name: `New ${type.capitalize()}`,
       type: type,
-      data: duplicate(header.dataset),
+      system: duplicate(header.dataset),
     };
-    delete itemData.data["type"];
+    delete itemData.system["type"];
     return this.actor.createOwnedItem(itemData);
   }
 

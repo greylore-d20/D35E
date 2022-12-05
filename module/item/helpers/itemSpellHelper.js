@@ -38,7 +38,7 @@ export class ItemSpellHelper {
       types: "",
     };
     const data = {
-      data: mergeObject(item.system, sourceItem.system, { inplace: false }),
+      data: mergeObject(item.system, sourceItem?.system || {}, { inplace: false }),
       label: label,
     };
 

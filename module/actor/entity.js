@@ -595,8 +595,8 @@ export class ActorPF extends Actor {
 
   _onUpdate(updated, options, userId, context) {
     if (
-      hasProperty(updated, "data.attributes.vision.lowLight") ||
-      hasProperty(updated, "data.attributes.vision.darkvision")
+      hasProperty(updated, "system.attributes.senses.lowLight") ||
+      hasProperty(updated, "system.attributes.senses.darkvision")
     ) {
       try {
         canvas.sight.initializeTokens();
@@ -609,7 +609,7 @@ export class ActorPF extends Actor {
 
       i._updateMaxUses(itemUpdateData, { actorRollData: actorRollData });
       if (Object.keys(itemUpdateData).length > 0) {
-        const itemDiff = diffObject(flattenObject(i.data.toObject()), itemUpdateData);
+        const itemDiff = diffObject(flattenObject(i.toObject()), itemUpdateData);
         if (Object.keys(itemDiff).length > 0) i.update(itemDiff);
       }
     }
@@ -803,12 +803,12 @@ export class ActorPF extends Actor {
     let initial = {};
     // Assume NPCs are always proficient with weapons and always have spells prepared
     if (!this.hasPlayerOwner) {
-      if (t === "weapon") initial["data.proficient"] = true;
-      if (["weapon", "equipment"].includes(t)) initial["data.equipped"] = true;
+      if (t === "weapon") initial["system.proficient"] = true;
+      if (["weapon", "equipment"].includes(t)) initial["system.equipped"] = true;
     }
     if (t === "spell") {
       if (this.sheet != null && this.sheet._spellbookTab != null) {
-        initial["data.spellbook"] = this.sheet._spellbookTab;
+        initial["system.spellbook"] = this.sheet._spellbookTab;
       }
     }
     mergeObject(itemData, initial);
@@ -3432,13 +3432,13 @@ export class ActorPF extends Actor {
       // Don't auto-equip transferred items
       if (obj._id != null && ["weapon", "equipment"].includes(obj.type)) {
         if (obj.document) obj.document.data.update({ "data.equipped": false });
-        else obj.data.equipped = false;
+        else obj.system.equipped = false;
       }
       // Adjust weight on drop from compendium
       if (
         ["weapon", "equipment", "loot"].includes(obj.type) &&
         options.dataType !== "data" &&
-        !obj.data.constantWeight
+        !obj.system.constantWeight
       ) {
         let newSize = Object.keys(CONFIG.D35E.sizeChart).indexOf(getProperty(this.system, "traits.actualSize"));
         let oldSize = Object.keys(CONFIG.D35E.sizeChart).indexOf("med");
@@ -3470,7 +3470,7 @@ export class ActorPF extends Actor {
             ui.notifications.warn(`No Spellbook found for spell. Adding to Primary spellbook.`);
           }
         } else {
-          let spellbook = this.system.attributes.spells.spellbooks[obj.data.spellbook];
+          let spellbook = this.system.attributes.spells.spellbooks[obj.system.spellbook];
           let foundLevel = false;
           if (!obj.system.spellbook) {
             // We try to set spellbook to correct one
@@ -3520,8 +3520,8 @@ export class ActorPF extends Actor {
             game.settings.get("D35E", "spellpointCostCustomFormula") &&
               game.settings.get("D35E", "spellpointCostCustomFormula") !== ""
           );
-          if (obj.data.learnedAt !== undefined && !foundLevel) {
-            obj.data.learnedAt.class.forEach((learnedAtObj) => {
+          if (obj.system.learnedAt !== undefined && !foundLevel) {
+            obj.system.learnedAt.class.forEach((learnedAtObj) => {
               if (learnedAtObj[0].toLowerCase() === spellbookClass.toLowerCase()) {
                 {
                   obj.system.level = learnedAtObj[1];
@@ -3560,7 +3560,7 @@ export class ActorPF extends Actor {
         }
       }
       if (obj.system?.creationChanges && obj.system.creationChanges.length) {
-        for (let creationChange of obj.data.creationChanges) {
+        for (let creationChange of obj.system.creationChanges) {
           if (creationChange) {
             setProperty(obj.system, creationChange[0], new Roll35e(creationChange[1], {}).roll().total);
           }
@@ -3656,7 +3656,7 @@ export class ActorPF extends Actor {
       return result;
     } else {
       if (!this._cachedRollData || force) {
-        data = this.data.toObject(false).data;
+        data = this.system;
         const result = mergeObject(
           data,
           {

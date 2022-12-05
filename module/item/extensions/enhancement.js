@@ -211,8 +211,8 @@ export class ItemEnhancements extends ItemExtension {
             if (getProperty(this.item.system,"enhancements.automation.updateName") || force) {
                 let baseName = useIdentifiedName && getProperty(this.item.system,"identifiedName") || getProperty(this.item.system,"unidentified.name")
                 if (getProperty(this.item.system,"unidentified.name") === '') {
-                    updateData[`system.unidentified.name`] = this.name;
-                    baseName = this.name
+                    updateData[`system.unidentified.name`] = this.item.name;
+                    baseName = this.item.name
                 }
                 updateData[`system.identifiedName`] = this.#buildName(baseName, _enhancements)
             }
@@ -237,17 +237,18 @@ export class ItemEnhancements extends ItemExtension {
         let suffixes = []
         let totalEnchancement = 0;
         for (const obj of enhancements) {
-            if (obj.data.nameExtension !== undefined && obj.data.nameExtension !== null) {
-                if (obj.data.nameExtension.prefix !== null && obj.data.nameExtension.prefix.trim() !== "") prefixes.push(obj.data.nameExtension.prefix.trim())
-                if (obj.data.nameExtension.suffix !== null && obj.data.nameExtension.suffix.trim() !== "") suffixes.push(obj.data.nameExtension.suffix.trim())
+            let enhancementData = ItemEnhancementHelper.getEnhancementData(obj)
+            if (enhancementData.nameExtension !== undefined && enhancementData.nameExtension !== null) {
+                if (enhancementData.nameExtension.prefix !== null && enhancementData.nameExtension.prefix.trim() !== "") prefixes.push(enhancementData.nameExtension.prefix.trim())
+                if (enhancementData.nameExtension.suffix !== null && enhancementData.nameExtension.suffix.trim() !== "") suffixes.push(enhancementData.nameExtension.suffix.trim())
             }
 
-            if (obj.data.enhancementType === "weapon" && this.item.type === 'weapon')
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
-            if (obj.data.enhancementType === "armor" && this.item.type === 'equipment')
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
+            if (enhancementData.enhancementType === "weapon" && this.item.type === 'weapon')
+                if (!enhancementData.enhIsLevel)
+                    totalEnchancement += enhancementData.enh
+            if (enhancementData.enhancementType === "armor" && this.item.type === 'equipment')
+                if (!enhancementData.enhIsLevel)
+                    totalEnchancement += enhancementData.enh
         }
         let enhSuffix = ''
         let ofSuffix = ''
@@ -266,24 +267,25 @@ export class ItemEnhancements extends ItemExtension {
         let maxSingleEnhancementIncrease = 0;
         let flatPrice = 0;
         for (const obj of enhancements) {
-            if (obj.data.enhancementType === "weapon" && this.item.type === 'weapon') {
-                totalEnchancementIncrease += obj.data.enhIncrease
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
-                flatPrice += obj.data.price
-                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
+            let enhancementData = ItemEnhancementHelper.getEnhancementData(obj)
+            if (enhancementData.enhancementType === "weapon" && this.item.type === 'weapon') {
+                totalEnchancementIncrease += enhancementData.enhIncrease
+                if (!enhancementData.enhIsLevel)
+                    totalEnchancement += enhancementData.enh
+                flatPrice += enhancementData.price
+                maxSingleEnhancementIncrease = Math.max(enhancementData.enhIncrease, maxSingleEnhancementIncrease)
             }
-            if (obj.data.enhancementType === "armor" && this.item.type === 'equipment') {
-                totalEnchancementIncrease += obj.data.enhIncrease
-                if (!obj.data.enhIsLevel)
-                    totalEnchancement += obj.data.enh
-                flatPrice += obj.data.price
-                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
+            if (enhancementData.enhancementType === "armor" && this.item.type === 'equipment') {
+                totalEnchancementIncrease += enhancementData.enhIncrease
+                if (!enhancementData.enhIsLevel)
+                    totalEnchancement += enhancementData.enh
+                flatPrice += enhancementData.price
+                maxSingleEnhancementIncrease = Math.max(enhancementData.enhIncrease, maxSingleEnhancementIncrease)
             }
-            if (obj.data.enhancementType === "misc") {
-                totalEnchancementIncrease += obj.data.enhIncrease
-                flatPrice += obj.data.price
-                maxSingleEnhancementIncrease = Math.max(obj.data.enhIncrease, maxSingleEnhancementIncrease)
+            if (enhancementData.enhancementType === "misc") {
+                totalEnchancementIncrease += enhancementData.enhIncrease
+                flatPrice += enhancementData.price
+                maxSingleEnhancementIncrease = Math.max(enhancementData.enhIncrease, maxSingleEnhancementIncrease)
             }
         }
         let useEpicPricing = false
