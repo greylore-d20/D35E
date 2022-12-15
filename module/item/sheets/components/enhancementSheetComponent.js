@@ -46,6 +46,9 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
     }
 
     activateListeners(html) {
+
+        // Quick Item Action control
+        html.find('div[data-tab="enhancements"] .item-actions a').mouseup((ev) => this.#quickItemActionControl(ev));
         html.find('div[data-tab="enhancements"]').on("drop", this.#onDrop.bind(this,"enh"));
         html.find('div[data-tab="enhancements"] .item-delete').click(this.#onEnhItemDelete.bind(this));
         html.find("div[data-tab='enhancements'] .item-detail.item-uses input.uses").off("change").change(this.#setEnhUses.bind(this));
@@ -241,7 +244,6 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
             await this.sheet.item.enhancements.useEnhancementItem(item)
         }
     }
-
 
 
     #onEnhItemSummary(event) {

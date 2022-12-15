@@ -954,9 +954,6 @@ export class ItemSheetPF extends ItemSheet {
     html.find('div[data-tab="spellbook"] .item-delete').click(this._onSpellListSpellDelete.bind(this));
     html.find('div[data-tab="spellbook"] .item-add').click(this._addSpellListSpellToSpellbook.bind(this));
 
-    // Quick Item Action control
-    html.find(".item-actions a").mouseup((ev) => this._quickItemActionControl(ev));
-
     html.find(".search-list").on("change", (event) => event.stopPropagation());
 
     // Conditional Dragging
