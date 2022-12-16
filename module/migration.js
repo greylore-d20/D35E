@@ -710,11 +710,11 @@ const _migrateSpellDuration = function(ent, updateData) {
   else if (duration.indexOf("turns") !== -1) {
     newDurationUnits = "turns"
   }
-  else if (duration.indexOf("hours") !== -1) {
-    newDurationUnits = "hours"
+  else if (duration.indexOf("hour") !== -1) {
+    newDurationUnits = "hour"
   }
   else if (duration.indexOf("hour") !== -1) {
-    newDurationUnits = "hours"
+    newDurationUnits = "hour"
   }
   else if (duration.indexOf("day") !== -1) {
     newDurationUnits = "days"
