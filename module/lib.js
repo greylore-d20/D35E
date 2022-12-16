@@ -381,8 +381,9 @@ export const getOriginalNameIfExists = function (object) {
   if (typeof Babele !== "undefined") {
     if (object.translated)
       return object.originalName;
-    if (object.getFlag("babele", "translated"))
+    if (object.getFlag !== undefined && object.getFlag("babele", "translated"))
       return object.getFlag("babele", "originalName");      
+    return object.name;
   }
   return object.name
 }
