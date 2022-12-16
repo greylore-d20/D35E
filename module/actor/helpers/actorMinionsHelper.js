@@ -1,3 +1,5 @@
+import {LogHelper} from "../../helpers/LogHelper.js";
+
 export class ActorMinionsHelper {
     static async calculateMinionDistance(master) {
         if (master == null) return;
@@ -22,7 +24,7 @@ export class ActorMinionsHelper {
                         attributes: {minionDistance: {}}
                     }
                 };
-                minionsystem.attributes.minionDistance[master.data.name.toLowerCase().replace(/ /g, '').replace(/,/g, '')] = distance
+                minionData.system.attributes.minionDistance[master.data.name.toLowerCase().replace(/ /g, '').replace(/,/g, '')] = distance
                 master.update(minionData, {stopUpdates: true, skipToken: true, skipMinions: true});
                 master.update(masterData, {stopUpdates: true, skipToken: true});
             }
@@ -47,7 +49,7 @@ export class ActorMinionsHelper {
                                 }
                             }
                         };
-                        minionsystem.attributes.minionDistance[minion.data.name.toLowerCase().replace(/ /g, '').replace(/,/g, '')] = distance
+                        minionData.attributes.minionDistance[minion.data.name.toLowerCase().replace(/ /g, '').replace(/,/g, '')] = distance
                         minion.update(masterData, {stopUpdates: true, skipToken: true});
                     }
                 }
