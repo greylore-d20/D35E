@@ -912,10 +912,6 @@ export class ItemSheetPF extends ItemSheet {
       toggleButton.click(this._createAttack.bind(this));
     }
 
-    if (["feat"].includes(this.item.type)) {
-      html.find("button[name='add-domain-spells']").click(this._addSpellsToSpellbook.bind(this));
-    }
-
     // Modify conditionals
     html.find(".conditional-control").click(this._onConditionalControl.bind(this));
 
@@ -1269,12 +1265,6 @@ export class ItemSheetPF extends ItemSheet {
     //await this._onSubmit(event);
 
     return this.item.parent.createAttackFromWeapon(this.item);
-  }
-
-  async _addSpellsToSpellbook(event) {
-    event.preventDefault();
-    if (this.item.actor == null) throw new Error(game.i18n.localize("D35E.ErrorItemNoOwner"));
-    await this.item.parent.addSpellsToSpellbook(this.item);
   }
 
   _onEntrySelector(event) {
@@ -1659,7 +1649,7 @@ export class ItemSheetPF extends ItemSheet {
         const packItem = droppedItem;
         if (packItem != null) {
           itemData = packItem.data;
-          updateData[`system.spellSpecialization.spells.${spellLevel}.id`] = droppedData.id;
+          updateData[`system.spellSpecialization.spells.${spellLevel}.id`] = droppedItem._id;
           updateData[`system.spellSpecialization.spells.${spellLevel}.pack`] = droppedItem.pack;
           updateData[`system.spellSpecialization.spells.${spellLevel}.name`] = packItem.name;
           updateData[`system.spellSpecialization.spells.${spellLevel}.img`] = packItem.img;

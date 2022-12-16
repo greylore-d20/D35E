@@ -866,7 +866,7 @@ export class ActorPF extends Actor {
       if (!spell.id) continue;
       const pack = game.packs.find((p) => p.metadata.id === spell.pack);
       const packItem = await pack.getDocument(spell.id);
-      if (packItem != null) itemData = packItem.data;
+      if (packItem != null) itemData = packItem.toObject(false);
       if (itemData) {
         //if (itemData._id) delete itemData._id;
         itemData.system.level = spell.level;

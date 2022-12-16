@@ -482,6 +482,11 @@ Hooks.on("renderSceneNavigation", function() {
   }
 });
 
+Hooks.on("dropActorSheetData", function(actor, sheet, dropData) {
+  if (actor && actor.sheet) {
+    actor.sheet.addItemFromDropData(dropData);
+  }
+});
 
 Hooks.on("deleteActor", function() {
   TopPortraitBar.clear()

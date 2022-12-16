@@ -2955,7 +2955,6 @@ export class ActorSheetPF extends ActorSheet {
       ui.notifications.error(game.i18n.localize("D35E.GMLockedCharacterSheet"));
       return;
     }
-    // Try to extract the dropData
     let dropData;
     try {
       dropData = JSON.parse(event.dataTransfer.getData("text/plain"));
@@ -2963,6 +2962,10 @@ export class ActorSheetPF extends ActorSheet {
     } catch (err) {
       return false;
     }
+    return await this.addItemFromDropData(dropData);
+  }
+
+  async addItemFromDropData(dropData) {
     let dataType = "";
     const actor = this.actor;
 
@@ -3000,29 +3003,29 @@ export class ActorSheetPF extends ActorSheet {
     }
     if (itemData.data.uniqueId) {
       return new Dialog(
-        {
-          title: `${game.i18n.localize("D35E.DropItemWithUIDTitle")}`,
-          content: `<div class="flexrow form-group">
+          {
+            title: `${game.i18n.localize("D35E.DropItemWithUIDTitle")}`,
+            content: `<div class="flexrow form-group">
           <span style="flex: 1">${game.i18n.localize("D35E.DropItemWithUID")}</span>
         </div>`,
-          buttons: {
-            confirm: {
-              label: game.i18n.localize("D35E.ImportStripUid"),
-              callback: (html) => {
-                delete itemData.data.uniqueId;
-                this.enrichDropData(itemData);
-                return this.importItem(itemData, dataType);
+            buttons: {
+              confirm: {
+                label: game.i18n.localize("D35E.ImportStripUid"),
+                callback: (html) => {
+                  delete itemData.data.uniqueId;
+                  this.enrichDropData(itemData);
+                  return this.importItem(itemData, dataType);
+                },
+              },
+              cancel: {
+                label: game.i18n.localize("Cancel"),
               },
             },
-            cancel: {
-              label: game.i18n.localize("Cancel"),
-            },
+            default: "confirm",
           },
-          default: "confirm",
-        },
-        {
-          classes: ["dialog", "D35E", "duplicate-initiative"],
-        }
+          {
+            classes: ["dialog", "D35E", "duplicate-initiative"],
+          }
       ).render(true);
     } else {
       this.enrichDropData(itemData);

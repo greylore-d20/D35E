@@ -26,4 +26,18 @@ export class FeatSheet35E extends ItemSheetPF {
         }
         return sheetData;
     }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+        html.find("button[name='add-domain-spells']").click(this.#addSpellsToSpellbook.bind(this));
+        html.find('div[data-tab="description"] .item-add').click(this._addSpellListSpellToSpellbook.bind(this));
+
+    }
+
+    async #addSpellsToSpellbook(event) {
+        event.preventDefault();
+        if (this.item.actor == null) throw new Error(game.i18n.localize("D35E.ErrorItemNoOwner"));
+        await this.item.parent.addSpellsToSpellbook(this.item);
+    }
+
 }
