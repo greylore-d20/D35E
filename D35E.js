@@ -574,24 +574,23 @@ Hooks.on("updateItem", (item, changedData, options, user) => {
 
 
 Hooks.on("renderTokenConfig", async (app, html) => {
-  console.log(app.object.data)
   // Disable vision elements if custom vision is disabled
-  const enableCustomVision = getProperty(object, "flags.D35E.customVisionRules") === true;
-  if (!enableCustomVision) {
+  const noVisionOverride = getProperty(app.object.actorData, "system.noVisionOverride") === true;
+  if (!noVisionOverride) {
     const tabElem = html.find(`.tab[data-tab="vision"]`);
     tabElem.find(`input, select`).prop("disabled", true);
     tabElem.find("a").unbind();
   }
-  let token = app.object.data.token || app.object.data;
-  let newHTML = await renderTemplate("systems/D35E/templates/internal/token-light-info.html", {
-    object: duplicate(token.actorLink ? token.document.data.toObject(false) : token.flags ? token.toObject(false) : app.object.data.toObject(false)),
-    globalDisable: game.settings.get("D35E", "globalDisableTokenLight")
-  });
-  html.find('.tab[data-tab="vision"] > *:nth-child(5)').after(newHTML);
-  let newHTML2 = await renderTemplate("systems/D35E/templates/internal/token-config.html", {
-    object: duplicate(token.actorLink ? token.toObject(false) : token.flags ? token.toObject(false) : app.object.data.toObject(false))
-  });
-  html.find('.tab[data-tab="vision"] > *:nth-child(2)').after(newHTML2);
+  // let token = app.object.data.token || app.object.data;
+  // let newHTML = await renderTemplate("systems/D35E/templates/internal/token-light-info.html", {
+  //   object: duplicate(token.actorLink ? token.document.data.toObject(false) : token.flags ? token.toObject(false) : app.object.data.toObject(false)),
+  //   globalDisable: game.settings.get("D35E", "globalDisableTokenLight")
+  // });
+  // html.find('.tab[data-tab="vision"] > *:nth-child(5)').after(newHTML);
+  // let newHTML2 = await renderTemplate("systems/D35E/templates/internal/token-config.html", {
+  //   object: duplicate(token.actorLink ? token.toObject(false) : token.flags ? token.toObject(false) : app.object.data.toObject(false))
+  // });
+  // html.find('.tab[data-tab="vision"] > *:nth-child(2)').after(newHTML2);
 });
 
 Hooks.on("renderAmbientLightConfig", (app, html) => {
@@ -955,6 +954,27 @@ Hooks.on("getSceneControlButtons", (controls) => {
         button: true,
       },
       {
+        name: "d35e-gm-tools-convert-to-loot",
+        title: "D35E.ConvertToLoot",
+        icon: "fa-regular fa-treasure-chest",
+        onClick: async () => {
+          let selectedTokens = canvas.tokens.controlled.filter(
+              (t) => game.actors.get(t.data.actorId).type === "npc" || game.actors.get(t.data.actorId).type === "character"
+          );
+          if (selectedTokens.length === 0) {
+            ui.notifications.error(`Please select at least one token`);
+            return;
+          }
+          for (let token of selectedTokens)
+          {
+            await token.document.update({"actorLink":false, "actorData":{"flags":{"core":{"sheetClass": "D35E.ActorSheetPFNPCLoot"}}}})
+            await canvas.scene.updateEmbeddedDocuments("Token",[{_id: token.id}])
+          }
+          ui.notifications.info(`Converted to Loot`);
+        },
+        button: true,
+      },
+      {
         name: "d35e-gm-tools-treasure-generator",
         title: "D35E.TreasureGenerator",
         icon: "fas fa-gem",
@@ -971,26 +991,6 @@ Hooks.on("getSceneControlButtons", (controls) => {
           ))
             {await genTreasureFromToken(token);}
             ui.notifications.info(`Treasure generation finished`);
-        },
-        button: true,
-      },
-      {
-        name: "d35e-gm-tools-convert-to-loot",
-        title: "D35E.ConvertToLoot",
-        icon: "fa-regular fa-treasure-chest",
-        onClick: async () => {
-          let selectedTokens = canvas.tokens.controlled.filter(
-              (t) => game.actors.get(t.data.actorId).type === "npc" || game.actors.get(t.data.actorId).type === "character"
-          );
-          if (selectedTokens.length === 0) {
-            ui.notifications.error(`Please select at least one token`);
-            return;
-          }
-          for (let token of selectedTokens)
-          {
-            await token.document.update({"actorLink":false, "actorData":{"flags":{"core":{"sheetClass": "D35E.ActorSheetPFNPCLoot"}}}})
-          }
-          ui.notifications.info(`Treasure generation finished`);
         },
         button: true,
       },
