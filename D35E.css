@@ -2718,6 +2718,11 @@
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
 }
+.D35E.sheet.item .tab .item-price {
+  flex: 0 0 160px;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+}
 .D35E.sheet.item .tab .item-list {
   list-style: none;
   margin: 0;
@@ -3080,6 +3085,9 @@
 .D35E.sheet.item .inventory-list .item-detail.item-weight {
   flex: 0 0 54px;
   padding: 0 1px 0 1px;
+}
+.D35E.sheet.item .inventory-list .item-detail.item-price {
+  flex: 0 0 160px;
 }
 .D35E.sheet.item .inventory-list .item-detail.item-identified {
   flex: 0 0 32px;
@@ -6542,7 +6550,8 @@ button.unidentify-all {
 .loot-sheet-npc.sheet .sheet-navigation {
   margin-bottom: 15px;
 }
-input#price-modifier-percent-display {
+input#price-modifier-percent-display,
+input#price-modifier-percent-display-buy {
   background: none;
   border: 1px solid transparent;
   width: 50px;
@@ -6553,6 +6562,8 @@ input#quantity {
 }
 input#price-modifier-percent-display:hover,
 input#price-modifier-percent-display:focus,
+input#price-modifier-percent-display-buy:hover,
+input#price-modifier-percent-display-buy:focus,
 input#quantity:hover,
 input#quantity:focus {
   border: 1px solid #111;

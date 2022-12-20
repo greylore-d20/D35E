@@ -5,7 +5,7 @@ export var PatreonIntegrationFactory = (function(){
         }
 
         isPatreonActive() {
-            return false;
+            return true;
         }
     }
     var instance;

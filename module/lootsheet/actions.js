@@ -182,7 +182,7 @@ export class LootSheetActions {
     /**
      * Quick function to do a trasaction between a seller (source) and a buyer (target)
      */
-    static async transaction(speaker, seller, buyer, itemId, quantity, buyerUnlimitedFunds = false) {
+    static async transaction(speaker, seller, buyer, itemId, quantity, buyerUnlimitedFunds = false, isPlayerSelling = false) {
         console.log("Loot Sheet | Transaction")
 
         let sellItem = seller.items.get(itemId);
@@ -193,7 +193,7 @@ export class LootSheetActions {
             quantity = sellItem.data.quantity;
         }
 
-        let sellerModifier = seller.getFlag("D35E", "priceModifier");
+        let sellerModifier = isPlayerSelling ? buyer.getFlag("D35E", "priceModifierBuy") : seller.getFlag("D35E", "priceModifier");
         if (!sellerModifier) sellerModifier = 1.0;
 
         let itemCost = LootSheetActions.getItemCost(sellItem)
@@ -331,14 +331,36 @@ export class LootSheetActions {
         }
         let moved = await LootSheetActions.moveItem(seller, buyer, itemId, quantity);
 
+
         if(moved) {
+            let priceString = LootSheetActions.getPriceAsString(originalCost, conversionRate);
             LootSheetActions.chatMessage(
                 speaker, buyer,
-                game.i18n.format("D35E.ls.chatPurchase", { buyer: buyer.name, quantity: quantity, name: moved.item.showName, cost: originalCost.toFixed(2) }),
+                game.i18n.format("D35E.ls.chatPurchase", { buyer: buyer.name, quantity: quantity, name: moved.item.showName, cost: priceString }),
                 moved.item);
         }
     }
 
+    static getPriceAsString(originalCost, conversionRate) {
+        let cost = originalCost;
+        let priceString = [];
+        let rateKeys = Object.keys(conversionRate).reverse().reverse();
+        for (let rate of rateKeys) {
+            let rateConversion = conversionRate[rate];
+            if (rateConversion > 0) {
+                let ratePart = Math.floor(cost / rateConversion);
+                if (ratePart > 0) {
+                    cost -= ratePart * rateConversion;
+                    priceString.push(`${ratePart} ${rate}`)
+                }
+            } else {
+                if (cost > 0) {
+                    priceString.push(`${cost} ${rate}`)
+                }
+            }
+        }
+        return priceString.join(" ")
+    }
     /**
      * Actor gives something to another actor
      */

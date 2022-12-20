@@ -16,7 +16,13 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     });
 
     Handlebars.registerHelper('lootsheetprice', function(basePrice, modifier) {
-      return Math.round(basePrice * modifier * 100) / 100;
+      const conversionRate = {
+        "pp": 10,
+        "gp": 1,
+        "sp": 0.1,
+        "cp": 0.01
+      };
+      return LootSheetActions.getPriceAsString(Math.round(basePrice * modifier * 100) / 100, conversionRate);
     });
 
     Handlebars.registerHelper('lootsheetweight', function(baseWeight, count) {
@@ -90,11 +96,15 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
 
     let priceModifier = 1.0;
+    let priceModifierBuy = 1.0;
     console.log("D35E LootSheet | ", lootsheettype)
     if (lootsheettype === "Merchant") {
       priceModifier = await this.actor.getFlag("D35E", "priceModifier");
       if (!priceModifier) await this.actor.setFlag("D35E", "priceModifier", 1.0);
       priceModifier = await this.actor.getFlag("D35E", "priceModifier");
+      priceModifierBuy = await this.actor.getFlag("D35E", "priceModifierBuy");
+      if (!priceModifierBuy) await this.actor.setFlag("D35E", "priceModifierBuy", 1.0);
+      priceModifierBuy = await this.actor.getFlag("D35E", "priceModifierBuy");
     }
 
     let totalItems = 0
@@ -112,13 +122,14 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       i.empty = itemQuantity <= 0 || (i.isCharged && itemCharges <= 0);
 
       totalItems += itemQuantity
-      totalWeight += itemQuantity * i.data.weight || 0;
+      totalWeight += itemQuantity * i.system.weight || 0;
       totalPrice += itemQuantity * LootSheetActions.getItemCost(i)
     }));
 
     sheetData.lootsheettype = lootsheettype;
     sheetData.rolltable = rolltable;
     sheetData.priceModifier = priceModifier;
+    sheetData.priceModifierBuy = priceModifierBuy;
     sheetData.rolltables = game.tables.contents;
     sheetData.canAct = game.user.playerId in sheetData.actor.ownership && sheetData.actor.ownership[game.user.playerId] == 3;
     sheetData.totalItems = totalItems
@@ -287,7 +298,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
     if (clearInventory) {
 
-      let currentItems = this.actor.data.items.map(i => i._id);
+      let currentItems = this.actor.items.map(i => i._id);
       await this.actor.deleteEmbeddedEntity("Item", currentItems);
       console.log(currentItems);
     }
@@ -308,7 +319,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       let itemQtyRoll = new Roll(itemQtyFormula);
       itemQtyRoll.roll();
       console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
-      let newItemData = newItem.data.toObject(false)
+      let newItemData = newItem.toObject(false)
       if (itemStack) {
         let existingItem = this.actor.items.find(i => i.name === newItem.name);
         if (existingItem) {
@@ -433,7 +444,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       }
 
       let d = new QuantityDialog((quantity) => {
-        LootSheetActions.transaction(game.user.character, game.user.character, this.actor, itemId, quantity, true)
+        LootSheetActions.transaction(game.user.character, game.user.character, this.actor, itemId, quantity, true, true)
       }, options);
       d.render(true);
     } else {
@@ -553,7 +564,13 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
     priceModifier = Math.round(priceModifier * 100);
 
-    renderTemplate("modules/d35elootsheetnpc/template/dialog-price-modifier.html", {'priceModifier': priceModifier}).then(html => {
+
+    let priceModifierBuy = await this.actor.getFlag("D35E", "priceModifierBuy");
+    if (!priceModifierBuy) priceModifierBuy = 1.0;
+
+    priceModifierBuy = Math.round(priceModifierBuy * 100);
+
+    renderTemplate("systems/D35E/templates/lootsheet/dialog-price-modifier.html", {'priceModifier': priceModifier, 'priceModifierBuy': priceModifierBuy}).then(html => {
       new Dialog({
         title: game.i18n.localize("D35E.ls.priceModifierTitle"),
         content: html,
@@ -561,7 +578,10 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
           one: {
             icon: '<i class="fas fa-check"></i>',
             label: game.i18n.localize("D35E.ls.update"),
-            callback: () => this.actor.setFlag("D35E", "priceModifier", document.getElementById("price-modifier-percent").value / 100)
+            callback: () =>  {
+              this.actor.setFlag("D35E", "priceModifier", document.getElementById("price-modifier-percent").value / 100)
+              this.actor.setFlag("D35E", "priceModifierBuy", document.getElementById("price-modifier-percent-buy").value / 100)
+            }
           },
           two: {
             icon: '<i class="fas fa-times"></i>',
