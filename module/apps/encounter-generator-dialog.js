@@ -122,15 +122,16 @@ export class EncounterGeneratorDialog extends FormApplication {
                     let monsters = (await grabbedTables.find(t => t.data._id === val).roll()).results
                     testELArray = duplicate(monsterArray)
                     monsters.forEach(monster => {
-                        let monsterCR = game.D35E.CompendiumDirectoryPF.browser.compendiums.bestiary.items.find(x => x.item._id === monster.resultId)
+                        let monsterCR = game.D35E.CompendiumDirectoryPF.browser.compendiums.bestiary.items.find(x => x.item._id === monster.documentId)
                         testELArray.push({
-                            id: monster.resultId,
+                            id: monster.documentId,
+                            pack: monster.documentCollection,
                             name: monster.text,
                             img: monster.img,
-                            cr: monsterCR.item.data.details.cr,
-                            HP: monsterCR.item.data.attributes.hp.max,
-                            AC: monsterCR.item.data.attributes.ac.normal.total,
-                            SPD: monsterCR.item.data.attributes.speed.land.base
+                            cr: monsterCR.item.system.details.cr,
+                            HP: monsterCR.item.system.attributes.hp.max,
+                            AC: monsterCR.item.system.attributes.ac.normal.total,
+                            SPD: monsterCR.item.system.attributes.speed.land.base
                         })
 
 
@@ -188,6 +189,7 @@ export class EncounterGeneratorDialog extends FormApplication {
                     if (i.id === key) {
                         countArray.push({
                             id: i.id,
+                            pack: i.pack,
                             count: value,
                             name: i.name,
                             cr: i.cr,

@@ -126,14 +126,15 @@ export class ItemEnhancements extends ItemExtension {
         return (getProperty(this.item.system,`enhancements.items`) || []).some(i => createTag(i.name) === tag);
     }
 
-    async updateBaseItemName() {
+    async updateBaseItemName(stopUpdates = false) {
         const updateData = {};
         //console.log("updating name")
         let _enhancements = duplicate(getProperty(this.item.system,`enhancements.items`) || []);
         this.#preUpdateMagicItemName(updateData, _enhancements, true);
         this.#preUpdateMagicItemProperties(updateData, _enhancements, true);
-        await this.item.update(updateData);
+        await this.item.update(updateData, { stopUpdates: stopUpdates });
     }
+
 
     async deleteEnhancement(enhancementId) {
         const updateData = {};

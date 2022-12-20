@@ -2,7 +2,7 @@
  * This registers very simple layer that is used to properly render
  * left menu buttons.
  */
-export default class D35ELayer extends CanvasLayer {
+export default class D35ELayer extends InteractionLayer {
     constructor() {
         super();
     }
@@ -53,19 +53,15 @@ export default class D35ELayer extends CanvasLayer {
         canvas.tokens.controlled.forEach(token => token.release())
       }
 
-      activate(a, b, c) {
-            super.activate(a, b, c)
+      activate() {
+          super.activate()
           canvas.tokens.interactiveChildren = true;
       }
 
-      deactivate(a, b, c) {
-          super.deactivate(a, b, c)
+      deactivate() {
+          super.deactivate()
           //canvas.tokens.interactiveChildren = false;
       }
-
-    async draw() {
-        super.draw();
-    }
 
 
 

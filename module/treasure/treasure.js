@@ -58,7 +58,7 @@ function getItem(link) {
 	} // Target 2 - Item Link
 	else {
 		let id = link
-		entity = id ? game.items.getDocument(id) : null
+		entity = id ? game.items.get(id) : null
 	}
 
 	return entity
@@ -176,27 +176,24 @@ export default class TreasureGenerator {
 		if (item.id) {
 			try {
 				// //console.log("fetchin " + item.id);
-				let _it = await getItem(item.id)
-				let it = new Item35E(_it.data, {temporary: true})
-				delete it._id
+				let _it = (await getItem(item.id)).toObject(false)
+				delete _it._id;
+				let it = new Item35E(_it, {temporary: true})
 				// //console.log(it);
 				if (item.consumableType) {
 					//TODO handle caster Level, not every item has it defined, others have it at 0 when not needed (been added automatically)
-					await it.data.update({'data.quantity':item.amount})
+					await it.updateSource({'system.quantity':item.amount})
 					if (item.itemOverride) {
 						execFunctions(item.itemOverride)	
-						await it.data.update({...item.itemOverride.data})
+						await it.updateSource({...item.itemOverride.data})
 					}
 					let consumableItem = await ItemConsumableConverter.toConsumable(
-						it.data,
+						it.toObject(false),
 						item.consumableType
 					)
 					consumableItem = new Item35E(consumableItem, {temporary: true})
 					delete consumableItem._id
-					if (consumableItem.data._id) {
-						delete consumableItem.data._id
-					}
-					return consumableItem.data.toObject(false)
+					return consumableItem.toObject()
 				} else if (item.ability.length > 0 || item.enhancement > 0) {
 					let enhancements = []
 
@@ -223,7 +220,7 @@ export default class TreasureGenerator {
 						}
 					}
 
-					let _enhancements = it.data.data.enhancements || {}
+					let _enhancements = it.system.enhancements || {}
 					let _enhancementsItems =
 						_enhancements.items || []
 					for (let enhancement of enhancements) {
@@ -233,28 +230,28 @@ export default class TreasureGenerator {
 							enhancement.enhancement
 						)
 						_enhancementsItems.push(
-							enhancementData['data.enhancements.items'].splice(
+							enhancementData['system.enhancements.items'].splice(
 								-1
 							)[0]
 						)
 					}
 
-					await it.data.update({'data.enhancements':_enhancements, 'data.quantity':item.amount})
+					await it.updateSource({'system.enhancements':_enhancements, 'system.quantity':item.amount})
 					if (item.itemOverride) {
 						execFunctions(item.itemOverride)	
-						await it.data.update({...item.itemOverride.data})
+						await it.updateSource({...item.itemOverride.data})
 					}
-					let _createdItem =it.data.toObject(false)
+					let _createdItem =it.toObject()
 					
 
 					return _createdItem
 				} else {
-					await it.data.update({'data.quantity':item.amount})
+					await it.updateSource({'system.quantity':item.amount})
 					if (item.itemOverride) {
 						execFunctions(item.itemOverride)						
-						await it.data.update({...item.itemOverride.data, 'name':item.itemOverride.data.data.identifiedName})
+						await it.updateSource({...item.itemOverride.data, 'name':item.itemOverride.data.data.identifiedName})
 					}
-					return it.data.toObject(false)
+					return it.toObject()
 				}
 			} catch (err) {
 				console.error(`D35E | TREASURE | error fetching item ${item.type} - ${item.id}`)
@@ -1057,12 +1054,12 @@ export async function genTreasureFromToken(
 	}
 
 	//restore original npc items items
-	let itemsToDelete = token.actor.data.items
+	let itemsToDelete = token.actor.items
 		.filter(
 			(item) =>
 				!game.actors
-					.get(token.data.actorId)
-					.data.items.map((it) => it._id)
+					.get(token.actor.id)
+					.items.map((it) => it._id)
 					.includes(item._id)
 		)
 		.map((it) => it._id)
@@ -1087,18 +1084,11 @@ export async function genTreasureFromToken(
       
     }
     let createdItems = await canvas.tokens
-        .get(token.data._id)
+        .get(token.id)
         .actor.createEmbeddedEntity("Item", itemsToCreate, { stopUpdates: true });
     for (let item of createdItems) {
       if (item.data.type === "weapon" || item.data.type === "equipment") {
-        const updateData = {};
-        let _enhancements = duplicate(
-          getProperty(item.data, `data.enhancements.items`) || []
-        );
-
-        item.updateMagicItemName(updateData, _enhancements, true, true);
-        item.updateMagicItemProperties(updateData, _enhancements, true);
-        await item.update(updateData, { stopUpdates: true });
+        await item.enhancements.updateBaseItemName(true)
       }
     }
 

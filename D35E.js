@@ -171,7 +171,7 @@ Hooks.once("init", async function() {
   Actors.registerSheet("D35E", ActorSheetPFCharacter, { types: ["character"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFCharacter") });
   Actors.registerSheet("D35E", ActorSheetPFNPC, { types: ["npc"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFNPC")  });
   Actors.registerSheet("D35E", ActorSheetPFNPCLite, { types: ["npc"], makeDefault: false, label: game.i18n.localize("D35E.ActorSheetPFNPCLite")  });
-  Actors.registerSheet("D35E", ActorSheetPFNPCLoot, { types: ["npc"], makeDefault: false, label: game.i18n.localize("D35E.ActorSheetPFNPCLoot")  });
+  Actors.registerSheet("D35E", ActorSheetPFNPCLoot, { types: ["npc","character"], makeDefault: false, label: game.i18n.localize("D35E.ActorSheetPFNPCLoot")  });
   Actors.registerSheet("D35E", ActorSheetPFNPCMonster, { types: ["npc","character"], makeDefault: false, label: game.i18n.localize("D35E.ActorSheetPFNPCMonster")  });
   Actors.registerSheet("D35E", ActorSheetTrap, { types: ["trap"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFNPCTrap")  });
   Actors.registerSheet("D35E", ActorSheetObject, { types: ["object"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFNPCObject")  });
@@ -188,6 +188,13 @@ Hooks.once("init", async function() {
 
   if (isMinimumCoreVersion("10.0")) {
     CONFIG.statusEffects = getConditions();
+    const layers = {
+      d35e: {
+        layerClass: D35ELayer,
+        group: "primary"
+      }
+    }
+    CONFIG.Canvas.layers = foundry.utils.mergeObject(Canvas.layers, layers);
   } else {
     CONFIG.statusEffects = getConditions();
     const layers = {
@@ -964,6 +971,26 @@ Hooks.on("getSceneControlButtons", (controls) => {
           ))
             {await genTreasureFromToken(token);}
             ui.notifications.info(`Treasure generation finished`);
+        },
+        button: true,
+      },
+      {
+        name: "d35e-gm-tools-convert-to-loot",
+        title: "D35E.ConvertToLoot",
+        icon: "fa-regular fa-treasure-chest",
+        onClick: async () => {
+          let selectedTokens = canvas.tokens.controlled.filter(
+              (t) => game.actors.get(t.data.actorId).type === "npc" || game.actors.get(t.data.actorId).type === "character"
+          );
+          if (selectedTokens.length === 0) {
+            ui.notifications.error(`Please select at least one token`);
+            return;
+          }
+          for (let token of selectedTokens)
+          {
+            await token.document.update({"actorLink":false, "actorData":{"flags":{"core":{"sheetClass": "D35E.ActorSheetPFNPCLoot"}}}})
+          }
+          ui.notifications.info(`Treasure generation finished`);
         },
         button: true,
       },

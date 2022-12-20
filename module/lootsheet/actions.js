@@ -134,7 +134,7 @@ export class LootSheetActions {
             if (moved) {
                 LootSheetActions.chatMessage(
                     speaker, looter,
-                    game.i18n.format("ls.chatLootCoins", { buyer: looter.name, quantity: moved.quantity, currency: game.i18n.localize("ls." + itemId) }));
+                    game.i18n.format("D35E.ls.chatLootCoins", { buyer: looter.name, quantity: moved.quantity, currency: game.i18n.localize("D35E.ls." + itemId) }));
             }
         }
         else {
@@ -143,7 +143,7 @@ export class LootSheetActions {
 
             LootSheetActions.chatMessage(
                 speaker, looter,
-                game.i18n.format("ls.chatLoot", { buyer: looter.name, quantity: moved.quantity, name: moved.item.showName }),
+                game.i18n.format("D35E.ls.chatLoot", { buyer: looter.name, quantity: moved.quantity, name: moved.item.showName }),
                 moved.item);
         }
     }
@@ -159,7 +159,7 @@ export class LootSheetActions {
         let cost = Math.floor(moved.item.showCost)
 
         if(merchant.getFlag("D35E", "lootsheettype") === "Merchant") {
-            messageKey = "ls.chatSell"
+            messageKey = "D35E.ls.chatSell"
             let sellerFunds = duplicate(giver.system.currency)
             if(sellerFunds && moved.item.showCost > 0) {
                 if( moved.item.data.subType !== "tradeGoods" ) {
@@ -170,7 +170,7 @@ export class LootSheetActions {
                 await giver.update({ "data.currency": sellerFunds }); // 2x required or it will not be stored? WHY???
             }
         } else {
-            messageKey = "ls.chatDrop"
+            messageKey = "D35E.ls.chatDrop"
         }
 
         LootSheetActions.chatMessage(
@@ -334,7 +334,7 @@ export class LootSheetActions {
         if(moved) {
             LootSheetActions.chatMessage(
                 speaker, buyer,
-                game.i18n.format("ls.chatPurchase", { buyer: buyer.name, quantity: quantity, name: moved.item.showName, cost: originalCost.toFixed(2) }),
+                game.i18n.format("D35E.ls.chatPurchase", { buyer: buyer.name, quantity: quantity, name: moved.item.showName, cost: originalCost.toFixed(2) }),
                 moved.item);
         }
     }
@@ -364,7 +364,7 @@ export class LootSheetActions {
             if(moved) {
                 LootSheetActions.chatMessage(
                     speaker, receiver,
-                    game.i18n.format("ls.chatGive", {giver: giver.data.name, receiver: receiver.data.name, quantity: quantity, item: moved.item.showName}),
+                    game.i18n.format("D35E.ls.chatGive", {giver: giver.data.name, receiver: receiver.data.name, quantity: quantity, item: moved.item.showName}),
                     moved.item);
             }
         } else {

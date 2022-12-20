@@ -2,7 +2,7 @@ import { ActorSheetPFNPC } from "./npc.js";
 import { createTabs } from "../../lib.js";
 import {LootSheetActions} from "../../lootsheet/actions.js";
 import {QuantityDialog} from "../../lootsheet/quantityDialog.js";
-import {PatreonIntegrationFactory} from "../../patreonIntegration.js";
+import {PatreonIntegrationFactory} from "../../patreon-integration.js";
 
 export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
   get template() {
