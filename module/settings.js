@@ -685,6 +685,33 @@ export const registerSystemSettings = function() {
     },
   });
 
+  game.settings.register("D35E", "changeScrollIcon", {
+    name: game.i18n.localize("SETTINGS.lsChangeIconForSpellScrollsTitle"),
+    hint: game.i18n.localize("SETTINGS.lsChangeIconForSpellScrollsHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+  game.settings.register("D35E", "buyChat", {
+    name: game.i18n.localize("SETTINGS.lsPurchaseChatMessageTitle"),
+    hint: game.i18n.localize("SETTINGS.lsPurchaseChatMessageHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+  game.settings.register("D35E", "clearInventory", {
+    name: game.i18n.localize("SETTINGS.lsClearInventoryTitle"),
+    hint: game.i18n.localize("SETTINGS.lsClearInventoryHint"),
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
 
   // game.settings.register("D35E", 'displayItemsInContainers', {
   //   name: `SETTINGS.D35EDisplayItemsInContainersN`,

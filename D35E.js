@@ -171,6 +171,7 @@ Hooks.once("init", async function() {
   Actors.registerSheet("D35E", ActorSheetPFCharacter, { types: ["character"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFCharacter") });
   Actors.registerSheet("D35E", ActorSheetPFNPC, { types: ["npc"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFNPC")  });
   Actors.registerSheet("D35E", ActorSheetPFNPCLite, { types: ["npc"], makeDefault: false, label: game.i18n.localize("D35E.ActorSheetPFNPCLite")  });
+  Actors.registerSheet("D35E", ActorSheetPFNPCLoot, { types: ["npc"], makeDefault: false, label: game.i18n.localize("D35E.ActorSheetPFNPCLoot")  });
   Actors.registerSheet("D35E", ActorSheetPFNPCMonster, { types: ["npc","character"], makeDefault: false, label: game.i18n.localize("D35E.ActorSheetPFNPCMonster")  });
   Actors.registerSheet("D35E", ActorSheetTrap, { types: ["trap"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFNPCTrap")  });
   Actors.registerSheet("D35E", ActorSheetObject, { types: ["object"], makeDefault: true, label: game.i18n.localize("D35E.ActorSheetPFNPCObject")  });
@@ -206,6 +207,13 @@ Hooks.once("init", async function() {
     CONFIG.Canvas.layers.templates = TemplateLayerPF;
     CONFIG.Canvas.layers.sight = SightLayerPF;
   }
+
+  Handlebars.registerHelper('ifeq', function(a, b, options) {
+    if (a == b) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
 
 
 

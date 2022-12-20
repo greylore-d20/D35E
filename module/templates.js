@@ -24,6 +24,7 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/D35E/templates/actors/parts/actor-details.html",
     "systems/D35E/templates/actors/parts/actor-attributes.html",
     "systems/D35E/templates/actors/parts/actor-config.html",
+    "systems/D35E/templates/actors/npc-sheet-gmpart.html",
 
     // Item Sheet Partials
     "systems/D35E/templates/items/parts/item-action.html",
