@@ -1906,7 +1906,7 @@ export class ActorUpdater {
       let templateClassesToUpdate = [];
       for (const templateClass of classes.filter((o) => getProperty(o.system, "classType") === "template")) {
         if (!!templateClass) {
-          if (templateClass.system.levels === level) return;
+          if (templateClass.system.levels === level) continue;
           let updateObject = {};
           updateObject["_id"] = templateClass.id || templateClass._id;
           updateObject["system.levels"] = level;

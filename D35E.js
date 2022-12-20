@@ -491,7 +491,7 @@ Hooks.on("renderSceneNavigation", function() {
 });
 
 Hooks.on("dropActorSheetData", function(actor, sheet, dropData) {
-  if (actor && actor.sheet) {
+  if (actor && actor.sheet && dropData.id) { //We only handle the weird drops that do not have UUID
     actor.sheet.addItemFromDropData(dropData);
   }
 });
