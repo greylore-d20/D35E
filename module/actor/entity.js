@@ -5569,7 +5569,7 @@ export class ActorPF extends Actor {
     let createData = {};
     let worldDefaultsSettings = game.settings.get("D35E", "worldDefaults");
     for (let skill of worldDefaultsSettings.worldDefaults.customSkills) {
-      this.__addNewCustomSkill(createData, skill[0], skill[1], skill[2], skill[3]);
+      this.__addNewCustomSkill(createData, skill[0], skill[1], skill[2] === 'true', skill[3] === 'true');
     }
     this.data.update(createData);
   }
