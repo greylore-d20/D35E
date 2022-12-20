@@ -60,7 +60,7 @@
           {{#ifeq lootsheettype "Merchant"}}
           {{#unless isPatreonEnabled}}
           <a class="item header-button tooltip grayed">
-            <span class="tooltipcontent">This feature is exclusive to Patreon Supporters</span>
+            <span class="tooltipcontent">{{localize "D35E.patreonLocked"}}</span>
             {{localize "D35E.ls.sell"}}
             <i class="fas fa-lock"></i>
           </a>
