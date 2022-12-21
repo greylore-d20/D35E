@@ -26,6 +26,7 @@ import {CombatantD35E, CombatD35E} from "./module/combat/combat.js";
 import { createCustomChatMessage } from "./module/chat.js";
 import { } from "./module/canvas/low-light-vision.js";
 import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
+import {PatreonIntegrationFactory} from "./module/patreon-integration.js";
 
 import {
   getItemOwner,
@@ -232,7 +233,7 @@ Hooks.once("init", async function() {
   // Preload Handlebars Templates
   await preloadHandlebarsTemplates();
   applyConfigModifications();
-
+  PatreonIntegrationFactory.getInstance().doPatreonCheck();
   // Register sheet application classes
 
   // Enable skin

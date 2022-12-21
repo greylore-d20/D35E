@@ -1511,24 +1511,24 @@ export class ActorUpdater {
       }
     }
 
-    // Reset saving throws
     for (let a of Object.keys(data1.attributes.savingThrows)) {
       {
         const k = `system.attributes.savingThrows.${a}.total`;
         const j = `system.attributes.savingThrows.${a}.base`;
         let totalLevel = 0;
         let epicLevels = 0;
+        // Reset saving throws
+        let highStart = false;
         if (useFractionalBaseBonuses) {
-          let highStart = false;
           linkData(
             source,
             updateData,
             k,
             Math.floor(
-              classes.reduce((cur, obj) => {
+              classes.reduce((cur, obj, idx) => {
                 const saveScale = getProperty(obj, `system.savingThrows.${a}.value`) || "";
                 if (saveScale === "high") {
-                  const acc = highStart ? 0 : 2;
+                  const acc = (highStart || idx) ? 0 : 2;
                   highStart = true;
                   return cur + obj.system.levels / 2 + acc;
                 }

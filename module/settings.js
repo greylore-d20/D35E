@@ -712,6 +712,17 @@ export const registerSystemSettings = function() {
     type: Boolean
   });
 
+  game.settings.register("D35E", "user-key", {
+    name: "Patreon Access Key",
+    hint: "Access Key to enable Patreon Content",
+    scope: "world",
+    config: true,
+    default: "",
+    type: String,
+    onChange: () => {
+      window.location.reload();
+    },
+  });
 
   // game.settings.register("D35E", 'displayItemsInContainers', {
   //   name: `SETTINGS.D35EDisplayItemsInContainersN`,
