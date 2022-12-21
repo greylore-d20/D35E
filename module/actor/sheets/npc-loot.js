@@ -141,8 +141,12 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     sheetData.totalPrice = totalPrice
     sheetData.weightUnit = game.settings.get("D35E", "units") == "metric" ? game.i18n.localize("D35E.Kgs") : game.i18n.localize("D35E.Lbs")
     sheetData.isPatreonEnabled = PatreonIntegrationFactory.getInstance().isPatreonActive();
-    let playerActorData = game.user.character.toObject();
-    sheetData.playerItems = this.#splitItemsToGroups(playerActorData);
+    sheetData.hasPlayerCharacter = false;
+    if (game.user.character) {
+      sheetData.hasPlayerCharacter = true;
+      let playerActorData = game.user.character.toObject();
+      sheetData.playerItems = this.#splitItemsToGroups(playerActorData);
+    }
     // Return data for rendering
     return sheetData;
   }
