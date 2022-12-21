@@ -424,6 +424,7 @@ export class ItemUse {
 
     let dc = this.#_getSpellDC(rollData);
     rollData.dc = dc;
+    rollData.spellPenetration = rollData.cl + (rollData.featSpellPenetrationBonus || 0)
     this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
 
     let manyshotAttacks = [];
@@ -787,7 +788,7 @@ export class ItemUse {
           measureId: templateId,
           measureX: templateX,
           measureY: templateY,
-          spellPenetration: rollData.cl + (rollData.featSpellPenetrationBonus || 0),
+          spellPenetration: rollData.spellPenetration,
         },
         { inplace: false }
       );

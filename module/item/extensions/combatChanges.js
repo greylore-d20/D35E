@@ -58,7 +58,7 @@ export class ItemCombatChanges {
         // We do not pre-roll things that have a roll inside, we assume they will be rolled later
         if (c[3].indexOf("d") === -1 && c[3].indexOf("&") === -1) {
           if (c[4] !== "") {
-            if (c[4].indexOf("@") !== -1) {
+            if (c[4].toString().indexOf("@") !== -1) {
               c[4] = new Roll35e(`${c[4]}`, combatChangesRollData).roll().total;
             }
           }

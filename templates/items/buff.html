@@ -23,7 +23,7 @@
           {{labels.buffType}}
         </li>
         <li class="tooltip">
-          <span class="tooltipcontent">@item.level : {{data.system.level}}</span>
+          <span class="tooltipcontent">@item.level : {{data.system.level}}<br>@self.level : {{data.system.level}} (use in Combat Actions)</span>
           <input type="text" name="system.level" value="{{#if data.system.level}}{{data.system.level}}{{/if}}" placeholder="{{localize "D35E.Level"}}"/>
         </li>
       </ul>
