@@ -17,6 +17,7 @@ parser.add_argument('-u','--user', nargs='?', help='Icon storage server username
 parser.add_argument('-s','--server', nargs='?', help='Icon storage server')
 parser.add_argument('-t','--token', nargs='?', help='GitLab PAT')
 parser.add_argument('-i','--icons-only', action='store_true', default=False)
+parser.add_argument('-h','--hotfix', action='store_true', default=False)
 
 args = parser.parse_args()
 version = args.version
@@ -82,7 +83,7 @@ if os.path.exists("dnd35e-icons.tbz2"):
 p = subprocess.run(["tar", "-cvjSf", "dnd35e-icons.tbz2","icons"])
 subprocess.run(["scp", "dnd35e-icons.tbz2", f"{user}@{server}:/home/dragonsh/special/"])
 
+if not args.icons_only:
+    origin = repo.remote(name='origin')
+    origin.push()
 
-# origin = repo.remote(name='origin')
-# origin.push()
-print("Commited, you can push now")
