@@ -2021,7 +2021,7 @@ export class ActorUpdater {
             let e = CACHE.AllAbilities.get(feature.uid);
             let uniqueId = e?.system?.uniqueId;
             if (!uniqueId || uniqueId === "") {
-              ui.notifications.warn(game.i18n.localize("D35E.NotAddingAbilityWithNoUID").format(e.name));
+              ui.notifications.warn(game.i18n.localize("D35E.NotAddingAbilityWithNoUID").format(e?.name || "[Ability not found]"));
               continue;
             }
             if (uniqueId.endsWith("*")) {

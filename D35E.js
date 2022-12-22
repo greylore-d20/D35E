@@ -233,7 +233,6 @@ Hooks.once("init", async function() {
   // Preload Handlebars Templates
   await preloadHandlebarsTemplates();
   applyConfigModifications();
-  PatreonIntegrationFactory.getInstance().doPatreonCheck();
   // Register sheet application classes
 
   // Enable skin
@@ -362,6 +361,10 @@ Hooks.once("ready", async function() {
 
   console.log("D35E | Cache is ", CACHE)
   //game.actors.contents.forEach(obj => { obj._updateChanges({sourceOnly: true}, {skipToken: true}); });
+
+  console.log("D35E | Checking Patreon information")
+  PatreonIntegrationFactory.getInstance().doPatreonCheck();
+
 
   Hooks.on('renderTokenHUD', (app, html, data) => { TokenQuickActions.addTop3Attacks(app, html, data) });
   Hooks.on('renderTokenHUD', (app, html, data) => { TokenQuickActions.addTop3Buffs(app, html, data) });
