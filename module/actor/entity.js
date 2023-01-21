@@ -1529,24 +1529,7 @@ export class ActorPF extends Actor {
     for (let noteObj of noteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
-
-      for (let note of noteObj.notes) {
-        if (!isMinimumCoreVersion("0.5.2")) {
-          let noteStr = "";
-          if (note.length > 0) {
-            noteStr = DicePF.messageRoll({
-              data: rollData,
-              msgStr: note,
-            });
-          }
-          if (noteStr.length > 0) notes.push(...noteStr.split(/[\n\r]+/));
-        } else
-          notes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-          );
-      }
+      await this.enrichAndAddNotes(noteObj, rollData, notes)
     }
     let props = this.getDefenseHeaders();
     if (notes.length > 0) props.push({ header: game.i18n.localize("D35E.Notes"), value: notes });
@@ -1596,6 +1579,30 @@ export class ActorPF extends Actor {
       });
     } else {
       _roll.call(this, type, null, props);
+    }
+  }
+
+  async enrichAndAddNotes (noteObj, rollData, notes) {
+    for (let note of noteObj.notes) {
+      if (!isMinimumCoreVersion('0.5.2')) {
+        let noteStr = ''
+        if (note.length > 0) {
+          noteStr = DicePF.messageRoll({
+            data: rollData,
+            msgStr: note,
+          })
+        }
+        if (noteStr.length > 0) notes.push(...noteStr.split(/[\n\r]+/))
+      } else {
+        for (let _note of note.split(/[\n\r]+/)) {
+          let enrichedNote = await TextEditor.enrichHTML(Item35E._fillTemplate(_note, rollData), {
+            rollData: rollData,
+          })
+          notes.push(
+            enrichedNote,
+          )
+        }
+      }
     }
   }
 
@@ -1737,23 +1744,8 @@ export class ActorPF extends Actor {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
 
-      for (let note of noteObj.notes) {
-        if (!isMinimumCoreVersion("0.5.2")) {
-          let noteStr = "";
-          if (note.length > 0) {
-            noteStr = DicePF.messageRoll({
-              data: rollData,
-              msgStr: note,
-            });
-          }
-          if (noteStr.length > 0) notes.push(...noteStr.split(/[\n\r]+/));
-        } else
-          notes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-          );
-      }
+      await this.enrichAndAddNotes(noteObj, rollData, notes)
+
     }
     let props = this.getDefenseHeaders();
     if (notes.length > 0) props.push({ header: game.i18n.localize("D35E.Notes"), value: notes });
@@ -1966,11 +1958,14 @@ export class ActorPF extends Actor {
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).getRollData();
 
       for (let note of noteObj.notes) {
-        notes.push(
-          ...note
-            .split(/[\n\r]+/)
-            .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-        );
+        for (let _note of note.split(/[\n\r]+/)) {
+          let enrichedNote = await TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), {
+            rollData: rollData,
+          })
+          notes.push(
+            enrichedNote
+          )
+        }
       }
     }
     if (skl.rt && (skl.points === null || skl.points === 0)) {
@@ -2168,24 +2163,8 @@ export class ActorPF extends Actor {
     for (let noteObj of noteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      await this.enrichAndAddNotes(noteObj, rollData, notes)
 
-      for (let note of noteObj.notes) {
-        if (!isMinimumCoreVersion("0.5.2")) {
-          let noteStr = "";
-          if (note.length > 0) {
-            noteStr = DicePF.messageRoll({
-              data: rollData,
-              msgStr: note,
-            });
-          }
-          if (noteStr.length > 0) notes.push(...noteStr.split(/[\n\r]+/));
-        } else
-          notes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-          );
-      }
     }
     let props = this.getDefenseHeaders();
     if (notes.length > 0) props.push({ header: game.i18n.localize("D35E.Notes"), value: notes });
@@ -2255,7 +2234,7 @@ export class ActorPF extends Actor {
    * @param {String} abilityId    The ability ID (e.g. "str")
    * @param {Object} options      Options which configure how ability tests are rolled
    */
-  rollAbilityTest(abilityId, options = {}) {
+  async rollAbilityTest(abilityId, options = {}) {
     if (!this.testUserPermission(game.user, "OWNER"))
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
@@ -2266,24 +2245,7 @@ export class ActorPF extends Actor {
     for (let noteObj of noteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
-
-      for (let note of noteObj.notes) {
-        if (!isMinimumCoreVersion("0.5.2")) {
-          let noteStr = "";
-          if (note.length > 0) {
-            noteStr = DicePF.messageRoll({
-              data: rollData,
-              msgStr: note,
-            });
-          }
-          if (noteStr.length > 0) notes.push(...noteStr.split(/[\n\r]+/));
-        } else
-          notes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-          );
-      }
+      await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
 
     let props = this.getDefenseHeaders();
@@ -2398,7 +2360,7 @@ export class ActorPF extends Actor {
   /**
    * Display defenses in chat.
    */
-  displayDefenses() {
+  async displayDefenses() {
     if (!this.testUserPermission(game.user, "OWNER"))
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
     const rollData = duplicate(this.system);
@@ -2412,23 +2374,8 @@ export class ActorPF extends Actor {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
 
-      for (let note of noteObj.notes) {
-        if (!isMinimumCoreVersion("0.5.2")) {
-          let noteStr = "";
-          if (note.length > 0) {
-            noteStr = DicePF.messageRoll({
-              data: rollData,
-              msgStr: note,
-            });
-          }
-          if (noteStr.length > 0) acNotes.push(...noteStr.split(/[\n\r]+/));
-        } else
-          acNotes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-          );
-      }
+      await this.enrichAndAddNotes(noteObj, rollData, acNotes)
+
     }
 
     // Add contextual CMD notes
@@ -2440,23 +2387,8 @@ export class ActorPF extends Actor {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
 
-      for (let note of noteObj.notes) {
-        if (!isMinimumCoreVersion("0.5.2")) {
-          let noteStr = "";
-          if (note.length > 0) {
-            noteStr = DicePF.messageRoll({
-              data: rollData,
-              msgStr: note,
-            });
-          }
-          if (noteStr.length > 0) cmdDotes.push(...noteStr.split(/[\n\r]+/));
-        } else
-          cmdNotes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-          );
-      }
+      await this.enrichAndAddNotes(noteObj, rollData, cmdNotes)
+
     }
 
     // Add contextual SR notes
@@ -2467,24 +2399,7 @@ export class ActorPF extends Actor {
     for (let noteObj of srNoteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
-
-      for (let note of noteObj.notes) {
-        if (!isMinimumCoreVersion("0.5.2")) {
-          let noteStr = "";
-          if (note.length > 0) {
-            noteStr = DicePF.messageRoll({
-              data: rollData,
-              msgStr: note,
-            });
-          }
-          if (noteStr.length > 0) srNotes.push(...noteStr.split(/[\n\r]+/));
-        } else
-          srNotes.push(
-            ...note
-              .split(/[\n\r]+/)
-              .map((o) => TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), { rollData: rollData }))
-          );
-      }
+      await this.enrichAndAddNotes(noteObj, rollData, srNotes)
     }
 
     // Add misc data
