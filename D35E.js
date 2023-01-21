@@ -579,11 +579,15 @@ Hooks.on("updateItem", (item, changedData, options, user) => {
 
 Hooks.on("renderTokenConfig", async (app, html) => {
   // Disable vision elements if custom vision is disabled
-  const noVisionOverride = getProperty(app.object.actorData, "system.noVisionOverride") === true;
+  const noVisionOverride = getProperty(app.object.actor, "system.noVisionOverride") === true;
   if (!noVisionOverride) {
+    html.find(`.tab[data-tab="vision"]`).prepend(`<div style='width: 100%; padding: 4px; border-bottom: 1px solid var(--color-border-light-primary); margin-bottom: 4px;'><i class="fa-solid fa-circle-info"></i> ${game.i18n.localize("D35E.VisionControlledByActor")}</div>`);
     const tabElem = html.find(`.tab[data-tab="vision"]`);
     tabElem.find(`input, select`).prop("disabled", true);
     tabElem.find("a").unbind();
+  } else {
+
+    html.find(`.tab[data-tab="vision"]`).prepend(`<div style='width: 100%; padding: 4px; border-bottom: 1px solid var(--color-border-light-primary); margin-bottom: 4px;'><i class="fa-solid fa-circle-info"></i> ${game.i18n.localize("D35E.VisionNoAutomation")}</div>`);
   }
   // let token = app.object.data.token || app.object.data;
   // let newHTML = await renderTemplate("systems/D35E/templates/internal/token-light-info.html", {

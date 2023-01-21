@@ -49,9 +49,15 @@ export class ItemDescriptionsHelper {
             if (item.actor) {
                 bab = (getProperty(item.actor.system, "attributes.bab.nonepic") || 0);
                 if (getProperty(item.system,"ability.attack"))
-                    abilityBonus = item.actor.system.abilities[item.system.ability.attack].mod
+                    abilityBonus = (item.actor.system.abilities[item.system.ability.attack].mod || 0)
             }
-            return Math.floor(new Roll35e(`${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`, rollData).roll().total);
+            try {
+                return Math.floor(
+                  new Roll35e(`${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`, rollData).roll().total);
+            } catch (e) {
+                ui.notifications.error(game.i18n.format("DICE.WarnAttackRollIncorrect", {name: item.name, roll: `${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`}));
+                return 0;
+            }
 
 
         }
