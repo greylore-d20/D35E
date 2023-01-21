@@ -1038,18 +1038,22 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       return false;
     }
     console.log(data)
+    let item = await fromUuid(data.uuid)
     // Item is from compendium
     if(data.uuid.indexOf("Actor.") === -1) {
-      if (game.user.isGM) { super._onDrop(event) }
+      if (game.user.isGM) {
+        super._onDrop(event)
+        return;
+      }
       else {
         ui.notifications.error(game.i18n.localize("ERROR.lsInvalidDrop"));
       }
     }
     // Item from an actor
-    let sourceActor = game.actors.get(data.actorId);
     let targetActor = this.token ? canvas.tokens.get(this.token.id).actor : this.actor;
-    let item = await fromUuid(data.uuid)
-    LootSheetActions.dropOrSellItem(game.user.character, targetActor, sourceActor, item._id)
+    if (item.actor)
+      LootSheetActions.dropOrSellItem(item.actor, targetActor, item.actor, item._id)
+
   }
 
 }

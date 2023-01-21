@@ -2468,7 +2468,7 @@ export class ActorUpdater {
         data,
         updateData,
         `system.skills.${sklKey}.rank`,
-        Math.floor(cs && skl.points > 0 ? skl.points : skl.points / 2)
+        Math.floor(cs && skl.points > 0 ? (skl.points || 0) : (skl.points || 0) / 2)
       );
       // Parse sub-skills
       for (let [subSklKey, subSkl] of Object.entries(skl.subSkills || {})) {
@@ -2486,7 +2486,7 @@ export class ActorUpdater {
         if (subSkl.ability !== "") ablMod = subSkl.ability ? systemData.abilities[subSkl.ability].mod : 0;
         specificSkillBonus = subSkl.changeBonus || 0;
         sklValue =
-          Math.floor(scs && subSkl.points > 0 ? subSkl.points : subSkl.points / 2) +
+          Math.floor(scs && subSkl.points > 0 ? (subSkl.points || 0) : (subSkl.points || 0) / 2) +
           ablMod +
           specificSkillBonus -
           acpPenalty -

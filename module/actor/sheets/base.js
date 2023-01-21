@@ -2993,7 +2993,7 @@ export class ActorSheetPF extends ActorSheet {
       if (sameActor) return this._onSortItem(event, dropData.data); // Sort existing items
 
       dataType = "data";
-      itemData = dropData.data;
+      itemData = dropData.data.toObject(false);
     }
 
     // Case 3 - Import from World entity

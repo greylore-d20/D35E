@@ -31,7 +31,7 @@
   <div class="directory-container">
     <ol class="directory-list">
       {{#each collection as |c|}}
-      <li class="directory-item flexrow" data-collection="{{c.collection}}" data-entry-id="{{c.item._id}}">
+      <li class="directory-item flexrow" data-collection="{{c.collection}}" data-entry-id="{{c.item.uuid}}">
         <img class="profile" src="{{c.item.img}}" title="{{c.item.name}}"/>
         <div class="flexcol">
           <h4 class="entry-name"><a>{{c.item.name}}</a>

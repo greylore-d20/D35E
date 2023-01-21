@@ -4,7 +4,9 @@
     "download": "https://www.legaciesofthedragon.com/D35E/dnd35e.zip",
     "templateVersion": 2,
     "gridUnits": "ft",
-    "author": "Rughalt",
+    "authors": [{
+        "name": "Antoni 'Rughalt' Sobkowicz"
+    }],
     "media": [
         {
             "link": "https://legaciesofthedragon.com/img/logo-dnd35e-bazaar.png",
@@ -49,259 +51,259 @@
     "packs": [
         {
             "path": "./packs/classes.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "classes",
             "label": "Classes"
         },
         {
             "path": "./packs/minion-classes.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "minion-classes",
             "label": "Minion Classes"
         },
         {
             "path": "./packs/commonbuffs.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "commonbuffs",
             "label": "Common Buffs"
         },
         {
             "path": "./packs/spellItems.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "spell-items",
             "label": "Spell Items"
         },
         {
             "path": "./packs/commonauras.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "common-auras",
             "label": "Common Auras"
         },
         {
             "path": "./packs/itembuffs.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "item-buffs",
             "label": "Item Buffs"
         },
         {
             "path": "./packs/magic-items.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "magicitems",
             "label": "Magic Items"
         },
         {
             "path": "./packs/racialfeatures.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "racialfeatures",
             "label": "Races"
         },
         {
             "path": "./packs/racial-abilities.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "racial-abilities",
             "label": "Racial Abilities"
         },
         {
             "path": "./packs/natural-attacks.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "natural-attacks",
             "label": "Natural Attacks"
         },
         {
             "path": "./packs/class-abilities.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "class-abilities",
             "label": "Class Abilities"
         },
         {
             "path": "./packs/spell-like-abilities.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "spelllike",
             "label": "Spell-Like Abilities"
         },
         {
             "path": "./packs/spells.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "spells",
             "label": "Spells"
         },
         {
             "path": "./packs/spell-school-domain.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "spell-schools-domains",
             "label": "Spell Schools and Domains"
         },
         {
             "path": "./packs/templates.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "templates",
             "label": "Templates"
         },
         {
             "path": "./packs/powers.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "powers",
             "label": "Powers"
         },
         {
             "path": "./packs/feats.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "feats",
             "label": "Feats"
         },
         {
             "path": "./packs/items.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "items",
             "label": "Items"
         },
         {
             "path": "./packs/armors-and-shields.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "armors-and-shields",
             "label": "Armor and Shields"
         },
         {
             "path": "./packs/enhancements.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "enhancements",
             "label": "Enhancements"
         },
         {
             "path": "./packs/weapons-and-ammo.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "weapons-and-ammo",
             "label": "Weapons and Ammo"
         },
         {
             "path": "./packs/racial-hd.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "racialhd",
             "label": "Racial HD"
         },
         {
             "path": "./packs/materials.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "materials",
             "label": "Materials"
         },
         {
             "path": "./packs/damage-types.db",
-            "entity": "Item",
+            "type": "Item",
             "system": "D35E",
             "name": "damage-types",
             "label": "Damage Types"
         },
         {
             "path": "./packs/srd-rules.db",
-            "entity": "JournalEntry",
+            "type": "JournalEntry",
             "system": "D35E",
             "name": "srd-rules",
             "label": "SRD Rules Extended Descriptions"
         },
         {
             "path": "./packs/sample-macros.db",
-            "entity": "Macro",
+            "type": "Macro",
             "system": "D35E",
             "name": "sample-macros",
             "label": "Sample Macros"
         },
         {
             "path": "./packs/roll-tables.db",
-            "entity": "RollTable",
+            "type": "RollTable",
             "system": "D35E",
             "name": "roll-tables",
             "label": "Roll Tables"
         },
         {
             "path": "./packs/item-roll-tables.db",
-            "entity": "RollTable",
+            "type": "RollTable",
             "system": "D35E",
             "name": "item-roll-tables",
             "label": "Item Roll Tables"
         },
         {
             "path": "./packs/summoning-roll-tables.db",
-            "entity": "RollTable",
+            "type": "RollTable",
             "system": "D35E",
             "name": "summoning-roll-tables",
             "label": "Summoning Roll Tables"
         },
         {
             "path": "./packs/bestiary.db",
-            "entity": "Actor",
+            "type": "Actor",
             "system": "D35E",
             "name": "bestiary",
             "label": "Bestiary"
         },
         {
             "path": "./packs/minions.db",
-            "entity": "Actor",
+            "type": "Actor",
             "system": "D35E",
             "name": "minion",
             "label": "Minions (Familiars, Animal Companions)"
         },
         {
             "path": "./packs/sample-chars.db",
-            "entity": "Actor",
+            "type": "Actor",
             "system": "D35E",
             "name": "sample-chars",
             "label": "Sample Characters"
         },
         {
             "path": "./packs/summon.db",
-            "entity": "Actor",
+            "type": "Actor",
             "system": "D35E",
             "name": "summon",
             "label": "Summoned Bestiary"
         },
         {
             "path": "./packs/traps.db",
-            "entity": "Actor",
+            "type": "Actor",
             "system": "D35E",
             "name": "traps",
             "label": "Traps"
         },
         {
             "path": "./packs/conditions.db",
-            "entity": "JournalEntry",
+            "type": "JournalEntry",
             "system": "D35E",
             "name": "conditions",
             "label": "Conditions"
         },
         {
             "path": "./packs/documentation.db",
-            "entity": "JournalEntry",
+            "type": "JournalEntry",
             "system": "D35E",
             "name": "docs",
             "label": "Documentation"
         },
         {
             "path": "./packs/scenes.db",
-            "entity": "Scene",
+            "type": "Scene",
             "system": "D35E",
             "name": "scenes",
             "label": "Scenes"

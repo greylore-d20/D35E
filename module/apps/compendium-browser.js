@@ -140,6 +140,7 @@ export class CompendiumBrowser extends Application {
       issystem: pack.metadata.packageName === "D35E",
       item: {
         _id: item._id,
+        uuid: item.uuid,
         name: item.name,
         type: item.type,
         img: item.img,
@@ -664,8 +665,7 @@ export class CompendiumBrowser extends Application {
     // Set the transfer data
     event.dataTransfer.setData("text/plain", JSON.stringify({
       type: pack.entity || pack.documentName,
-      pack: pack.collection,
-      id: li.getAttribute("data-entry-id")
+      uuid: li.getAttribute("data-entry-id")
     }));
   }
 
