@@ -501,7 +501,7 @@ Hooks.on("renderSceneNavigation", function() {
   }
 });
 
-Hooks.on("dropActorSheetData", function(actor, sheet, dropData) {
+Hooks.on("dropActorSheetData", function(actor, sheet, dropData, userId) {
   if (actor && actor.sheet && dropData.id) { //We only handle the weird drops that do not have UUID
     actor.sheet.addItemFromDropData(dropData);
   }
@@ -650,10 +650,19 @@ Hooks.on("canvasReady", async (canvas, options, userId) => {
   debouncedCollate(canvas.scene.id, true, true, "canvasReady")
 });
 
-Hooks.on("updateToken", async (token, options, userId) => {
+Hooks.on("updateToken", async (token, data, options, userId) => {
+  if (userId !== game.user.id) return false;
   if (options?.stopAuraUpdate) return;
   if (options.tokenOnly) return;
   debouncedCollate(canvas.scene.id, true, true, "updateToken")
+});
+
+
+Hooks.on("preUpdateToken", (token, data, options, userId) => {
+  if (userId !== game.user.id) return false;
+  if (!game.user.isGM && !token.actor.getFlag("D35E", "allowPlayerMovement")) {
+    return false;
+  }
 });
 
 Hooks.on("deleteToken", async (token, options, userId) => {

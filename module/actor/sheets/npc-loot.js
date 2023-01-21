@@ -163,7 +163,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     //console.log("Loot Sheet | activateListeners")
     super.activateListeners(html);
 
-    const dragEnabled = await this.actor.getFlag("D35E", "dragEnabled");
+    const dragEnabled = this.actor.getFlag("D35E", "dragEnabled") && this.actor.getFlag("D35E", "lootsheettype") === "loot";
     if(!dragEnabled) {
       // Remove dragging capability
       let handler = ev => this._onDragItemStart(ev);
@@ -256,11 +256,11 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     for(let i=0; i<flags.length; i++) {
       const name = flags[i][0].split(".")
       const value = flags[i][1]
-      if( name.length == 4 ) { // Ex : data.flags.lootsheetnpcpf1.dragEnabled
+      if( name.length === 3 ) { // Ex : data.flags.lootsheetnpcpf1.dragEnabled
         // check if has changed
-        if(this.actor.getFlag(name[2], name[3]) != value) {
-          console.log(`Setting flag ${name[2]}.${name[3]} to ${value}`)
-          await this.actor.setFlag(name[2], name[3], value)
+        if(this.actor.getFlag(name[1], name[2]) != value) {
+          console.log(`Setting flag ${name[1]}.${name[2]} to ${value}`)
+          await this.actor.setFlag(name[1], name[2], value)
         }
       }
     }
@@ -962,9 +962,9 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
         if (actor) {
 
-          u.actor = actor.data.name;
-          u.actorId = actor.data._id;
-          u.playerId = u.data._id;
+          u.actor = actor.name;
+          u.actorId = actor._id;
+          u.playerId = u._id;
 
           //Check if there are default permissions to the actor
           if (typeof actorData.permission.default !== "undefined") {
@@ -975,7 +975,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
             if (actorData.permission.default === 2 && !owners.includes(actor.data._id)) {
 
-              owners.push(actor.data._id);
+              owners.push(actor._id);
             }
 
           } else {
@@ -985,14 +985,14 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
           }
 
           //if the player has some form of permission to the object update the actorData
-          if (u.data._id in actorData.permission && !owners.includes(actor.data._id)) {
+          if (u.data._id in actorData.permission && !owners.includes(actor._id)) {
             console.log("Loot Sheet | Found individual actor permission");
 
-            u.lootPermission = actorData.permission[u.data._id];
-            console.log("Loot Sheet | assigning " + actorData.permission[u.data._id] + " permission to hidden field");
+            u.lootPermission = actorData.permission[u._id];
+            console.log("Loot Sheet | assigning " + actorData.permission[u._id] + " permission to hidden field");
 
-            if (actorData.permission[u.data._id] === 2) {
-              owners.push(actor.data._id);
+            if (actorData.permission[u._id] === 3) {
+              owners.push(actor._id);
             }
           }
 
@@ -1006,8 +1006,8 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     }
 
     // calculate the split of coins between all owners of the sheet.
-    let currencySplit = duplicate(actorData.data.currency);
-    let altCurrencySplit = duplicate(actorData.data.altCurrency);
+    let currencySplit = duplicate(actorData.system.currency);
+    let altCurrencySplit = duplicate(actorData.system.altCurrency);
     for (let c in currencySplit) {
       if (owners.length) {
         currencySplit[c] = Math.floor(currencySplit[c] / owners.length) + " / " + Math.floor(altCurrencySplit[c] / owners.length)
@@ -1025,7 +1025,11 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     actorData.flags.loot = loot;
   }
 
-  async _onDrop(event) {
+  async _onDropActor(event) {
+    ui.notifications.error(game.i18n.localize("ERROR.lsInvalidDrop"));
+  }
+
+  async _onDropItem(event) {
     event.preventDefault();
 
     // Try to extract the data
@@ -1042,8 +1046,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     // Item is from compendium
     if(data.uuid.indexOf("Actor.") === -1) {
       if (game.user.isGM) {
-        super._onDrop(event)
-        return;
+        return super._onDropItem(event, data);
       }
       else {
         ui.notifications.error(game.i18n.localize("ERROR.lsInvalidDrop"));

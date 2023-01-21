@@ -21,6 +21,7 @@ import { ItemDescriptionsHelper } from "../../item/helpers/itemDescriptionsHelpe
 import { ActorWealthHelper } from "../helpers/actorWealthHelper.js";
 import { ItemEnhancementHelper } from "../../item/helpers/itemEnhancementHelper.js";
 import { StatblockGenerator } from "../../utils/statblock-generator.js";
+import { LootSheetActions } from '../../lootsheet/actions.js'
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -2949,19 +2950,22 @@ export class ActorSheetPF extends ActorSheet {
   /**
    * @override
    */
-  async _onDropItem(event) {
+  async _onDropItem(event, data) {
     event.preventDefault();
     if (this.actor.system.lockEditingByPlayers && !game.user.isGM) {
       ui.notifications.error(game.i18n.localize("D35E.GMLockedCharacterSheet"));
       return;
     }
-    let dropData;
-    try {
-      dropData = JSON.parse(event.dataTransfer.getData("text/plain"));
-      if (dropData.type !== "Item" && dropData.type !== "Actor") return;
-    } catch (err) {
-      return false;
+    let dropData = data;
+    if (!dropData) {
+      try {
+        dropData = JSON.parse(event.dataTransfer.getData("text/plain"));
+        if (dropData.type !== "Item" && dropData.type !== "Actor") return;
+      } catch (err) {
+        return false;
+      }
     }
+    //if ()
     return await this.addItemFromDropData(dropData);
   }
 
@@ -2989,8 +2993,14 @@ export class ActorSheetPF extends ActorSheet {
     // Case 2 - Data explicitly provided
     else if (dropData.data) {
       let sameActor = dropData?.parent?.uuid === actor.uuid;
-      if (sameActor && actor.isToken) sameActor = dropData.tokenId === actor.token.id;
+      //if (sameActor && actor.isToken) sameActor = dropData.tokenId === actor.token.id;
       if (sameActor) return this._onSortItem(event, dropData.data); // Sort existing items
+      if (dropData.parent.sheet.id) {
+        if (dropData.parent.sheet.id.indexOf("ActorSheetPFNPCLoot") !== -1) {
+          if (dropData.parent.getFlag("D35E", "lootsheettype") === "loot")
+            return LootSheetActions.lootItem(this.actor, dropData.parent, this.actor, dropData.id, null)
+        }
+      }
 
       dataType = "data";
       itemData = dropData.data.toObject(false);

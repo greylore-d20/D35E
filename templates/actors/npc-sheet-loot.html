@@ -89,7 +89,7 @@
                 <h3>
                   {{localize "D35E.Currency"}}
                 </h3>
-                {{#each data.currency as |v k|}}
+                {{#each system.currency as |v k|}}
                 <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
                 <input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
                 <label class="item currency-controls" data-item-id="{{k}}">
@@ -105,7 +105,7 @@
                 <h3>
                   {{localize "D35E.WeightlessCurrency"}}
                 </h3>
-                {{#each data.altCurrency as |v k|}}
+                {{#each system.altCurrency as |v k|}}
                 <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
                 <input type="text" name="data.altCurrency.{{k}}" value="{{v}}" data-dtype="Number"/>
                 <label class="item currency-controls" data-item-id="wl_{{k}}">
