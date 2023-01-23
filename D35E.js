@@ -660,8 +660,10 @@ Hooks.on("updateToken", async (token, data, options, userId) => {
 
 Hooks.on("preUpdateToken", (token, data, options, userId) => {
   if (userId !== game.user.id) return false;
-  if (!game.user.isGM && !token.actor.getFlag("D35E", "allowPlayerMovement")) {
-    return false;
+  if (data?.x || data?.y) {
+    if (!game.user.isGM && !token.actor.getFlag("D35E", "allowPlayerMovement")) {
+      return false;
+    }
   }
 });
 

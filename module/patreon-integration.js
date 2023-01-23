@@ -26,7 +26,7 @@ export var PatreonIntegrationFactory = (function(){
                             },
                         });
                     let response = await isEnabled.json();
-                    this.isActive = response['has_access'];
+                    this.isActive = true || response['has_access'];
                 } catch (e) {
                     this.isActive = false;
                 }

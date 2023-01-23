@@ -67,6 +67,7 @@ export class ActorChatActions {
       let tokenData = await monster.getTokenDocument({
         actorData: {
           permission: { [user]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER },
+          flags: {D35E: {allowPlayerMovement: true}}
         },
       });
       let totalMonster = new Roll35e(button.dataset.formula, actor.getRollData()).roll().total;

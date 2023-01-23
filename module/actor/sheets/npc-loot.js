@@ -163,7 +163,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     //console.log("Loot Sheet | activateListeners")
     super.activateListeners(html);
 
-    const dragEnabled = this.actor.getFlag("D35E", "dragEnabled") && this.actor.getFlag("D35E", "lootsheettype") === "loot";
+    const dragEnabled = this.actor.getFlag("D35E", "dragEnabled") && this.actor.getFlag("D35E", "lootsheettype") === "Loot";
     if(!dragEnabled) {
       // Remove dragging capability
       let handler = ev => this._onDragItemStart(ev);
@@ -408,7 +408,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       let itemName = $(event.currentTarget).parents(".item").find("h4").text()
 
       let options = { acceptLabel: game.i18n.localize("D35E.ls.purchase") }
-      if(quantity == 1) {
+      if(quantity === 1) {
         options['title'] = game.i18n.localize("D35E.ls.purchase")
         options['label'] = game.i18n.format("D35E.ls.buyContent", { item: itemName })
         options['quantity'] = 1
@@ -435,11 +435,11 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
     if (game.user.actorId) {
       let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-      let quantity = Number($(event.currentTarget).parents(".item").attr("data-item-quantity"));
+      let maxQuantity = Number($(event.currentTarget).parents(".item").attr("data-item-quantity"));
       let itemName = $(event.currentTarget).parents(".item").find("h4").text()
 
       let options = { acceptLabel: game.i18n.localize("D35E.ls.purchase") }
-      if(quantity == 1) {
+      if(maxQuantity === 1) {
         options['title'] = game.i18n.localize("D35E.ls.purchase")
         options['label'] = game.i18n.format("D35E.ls.buyContent", { item: itemName })
         options['quantity'] = 1
@@ -447,8 +447,9 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
         options['title'] = game.i18n.format("D35E.ls.buyTitle", { item: itemName })
       }
 
-      let d = new QuantityDialog((quantity) => {
-        LootSheetActions.transaction(game.user.character, game.user.character, this.actor, itemId, quantity, true, true)
+      let d = new QuantityDialog(async (quantity) => {
+        await LootSheetActions.transaction(game.user.character, game.user.character, this.actor, itemId, Math.min(maxQuantity,quantity), true, true)
+        this.render(true);
       }, options);
       d.render(true);
     } else {
