@@ -3353,7 +3353,8 @@ export class ActorPF extends Actor {
       if (
         ["weapon", "equipment", "loot"].includes(obj.type) &&
         options.dataType !== "data" &&
-        !obj.system.constantWeight
+        !obj.system.constantWeight &&
+        !options.keepWeight
       ) {
         let newSize = Object.keys(CONFIG.D35E.sizeChart).indexOf(getProperty(this.system, "traits.actualSize"));
         let oldSize = Object.keys(CONFIG.D35E.sizeChart).indexOf("med");

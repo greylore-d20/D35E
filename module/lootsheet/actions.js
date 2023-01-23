@@ -1,4 +1,5 @@
 export class LootSheetActions {
+    static QUANTITY_ALL=-1;
 
     static errorMessageToActor(source, message) {
         ui.notifications.error(message, { actor: source.name });
@@ -65,7 +66,7 @@ export class LootSheetActions {
         }
 
         newItem.system.quantity = quantity;
-        await destination.createEmbeddedEntity("Item", newItem);
+        await destination.createEmbeddedEntity("Item", newItem, {keepWeight: true});
         newItem.showName = LootSheetActions.getItemName(newItem)
         newItem.showCost = LootSheetActions.getItemCost(newItem)
 
@@ -91,11 +92,11 @@ export class LootSheetActions {
             if (quantity == 0) return null;
 
             const srcUpdate = { data: { altCurrency: { } } };
-            srcUpdate.data.altCurrency[itemId] = source.system.altCurrency[itemId] - quantity;
+            srcUpdate.altCurrency[itemId] = source.system.altCurrency[itemId] - quantity;
             await source.update(srcUpdate)
 
             const dstUpdate = { data: { altCurrency: { } } };
-            dstUpdate.data.altCurrency[itemId] = destination.system.altCurrency[itemId] + quantity;
+            dstUpdate.altCurrency[itemId] = destination.system.altCurrency[itemId] + quantity;
             await destination.update(dstUpdate)
         }
         else {
@@ -108,11 +109,11 @@ export class LootSheetActions {
             if (quantity == 0) return null;
 
             const srcUpdate = { data: { currency: { } } };
-            srcUpdate.data.currency[itemId] = source.system.currency[itemId] - quantity;
+            srcUpdate.currency[itemId] = source.system.currency[itemId] - quantity;
             await source.update(srcUpdate)
 
             const dstUpdate = { data: { currency: { } } };
-            dstUpdate.data.currency[itemId] = destination.system.currency[itemId] + quantity;
+            dstUpdate.currency[itemId] = destination.system.currency[itemId] + quantity;
             await destination.update(dstUpdate)
         }
 
@@ -153,30 +154,20 @@ export class LootSheetActions {
      */
     static async dropOrSellItem(speaker, merchant, giver, itemId) {
         //console.log("Loot Sheet | Drop or sell item")
-        let moved = await LootSheetActions.moveItem(giver, merchant, itemId);
-        if(!moved) return;
         let messageKey = ""
-        let cost = Math.floor(moved.item.showCost)
-
         if(merchant.getFlag("D35E", "lootsheettype") === "Merchant") {
-            messageKey = "D35E.ls.chatSell"
-            let sellerFunds = duplicate(giver.system.currency)
-            if(sellerFunds && moved.item.showCost > 0) {
-                if( moved.item.data.subType !== "tradeGoods" ) {
-                    cost = Math.round(cost / 2)
-                }
-                sellerFunds["gp"] += cost * moved.quantity
-                await giver.update({ "data.currency": sellerFunds });
-                await giver.update({ "data.currency": sellerFunds }); // 2x required or it will not be stored? WHY???
-            }
+            await this.transaction(giver, giver, merchant, itemId, LootSheetActions.QUANTITY_ALL, true, true)
         } else {
+
+            let moved = await LootSheetActions.moveItem(giver, merchant, itemId);
+            if(!moved) return;
             messageKey = "D35E.ls.chatDrop"
+            LootSheetActions.chatMessage(
+              speaker, giver,
+              game.i18n.format(messageKey, { seller: giver.name, quantity: moved.quantity, price: cost * moved.quantity, item: moved.item.showName, container: merchant.name }),
+              moved.item);
         }
 
-        LootSheetActions.chatMessage(
-            speaker, giver,
-            game.i18n.format(messageKey, { seller: giver.name, quantity: moved.quantity, price: cost * moved.quantity, item: moved.item.showName, container: merchant.name }),
-            moved.item);
     }
 
     /**
@@ -189,8 +180,8 @@ export class LootSheetActions {
 
 
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
-        if (sellItem.data.quantity < quantity) {
-            quantity = sellItem.data.quantity;
+        if (sellItem.system.quantity < quantity || quantity === LootSheetActions.QUANTITY_ALL) {
+            quantity = sellItem.system.quantity;
         }
 
         let sellerModifier = isPlayerSelling ? buyer.getFlag("D35E", "priceModifierBuy") : seller.getFlag("D35E", "priceModifier");
@@ -251,8 +242,8 @@ export class LootSheetActions {
             for (const currency of Object.keys(conversionRate).reverse()) {
                 //console.log("Rate: " + conversionRate[currency])
                 if(conversionRate[currency] < 1) {
-                    const ratio = 1/conversionRate[currency]
-                    const value = Math.min(itemCost, Math.floor(buyerFunds[currency] / ratio))
+                    const ratio = conversionRate[currency] ? 1/conversionRate[currency] : 0;
+                    const value = conversionRate[currency] ? Math.min(itemCost, Math.floor(buyerFunds[currency] / ratio)) : 0
                     if (DEBUG) console.log("Loot Sheet | BuyerFunds " + currency + ": " + buyerFunds[currency])
                     if (DEBUG) console.log("Loot Sheet | Ratio: " + ratio)
                     if (DEBUG) console.log("Loot Sheet | Value: " + value)
@@ -273,8 +264,8 @@ export class LootSheetActions {
             for (const currency of Object.keys(conversionRate).reverse()) {
                 //console.log("Rate: " + conversionRate[currency])
                 if(conversionRate[currency] < 1) {
-                    const ratio = 1/conversionRate[currency]
-                    const value = Math.min(itemCost, Math.floor(buyerFundsAlt[currency] / ratio))
+                    const ratio = conversionRate[currency] ? 1/conversionRate[currency] : 0;
+                    const value = conversionRate[currency] ? Math.min(itemCost, Math.floor(buyerFunds[currency] / ratio)) : 0
                     if (DEBUG) console.log("Loot Sheet | BuyerFunds " + currency + ": " + buyerFunds[currency])
                     if (DEBUG) console.log("Loot Sheet | Ratio: " + ratio)
                     if (DEBUG) console.log("Loot Sheet | Value: " + value)
@@ -325,7 +316,11 @@ export class LootSheetActions {
 
         let sellerFunds = duplicate(seller.system.currency)
         if(sellerFunds && originalCost > 0) {
-            sellerFunds["gp"] += originalCost;
+            let currencyKey = "gp";
+            for (const currency of Object.keys(conversionRate).reverse()) {
+                if (conversionRate[currency] === 1) currencyKey = currency;
+            }
+            sellerFunds[currencyKey] += originalCost;
             await seller.update({ "data.currency": sellerFunds });
             await seller.update({ "data.currency": sellerFunds }); // 2x required or it will not be stored? WHY???
         }
@@ -386,7 +381,7 @@ export class LootSheetActions {
             if(moved) {
                 LootSheetActions.chatMessage(
                     speaker, receiver,
-                    game.i18n.format("D35E.ls.chatGive", {giver: giver.data.name, receiver: receiver.data.name, quantity: quantity, item: moved.item.showName}),
+                    game.i18n.format("D35E.ls.chatGive", {giver: giver.name, receiver: receiver.name, quantity: quantity, item: moved.item.showName}),
                     moved.item);
             }
         } else {
@@ -401,7 +396,7 @@ export class LootSheetActions {
     static getItemName(_item) {
         let item = _item;
         if(!item) return ""
-        else return (item.system.identified || !item.system.unidentified || !item.system.unidentified.name || item.system.unidentified.name.length == 0) ? item.name : item.data.unidentified.name
+        else return (item.system.identified || !item.system.unidentified || !item.system.unidentified.name || item.system.unidentified.name.length == 0) ? item.name : item.system.unidentified.name
     }
 
     /**

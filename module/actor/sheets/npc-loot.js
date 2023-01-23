@@ -53,8 +53,8 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    * Returns the loot price that the player is aware of
    */
   getLootPrice(item) {
-    if(game.user.isGM || item.data.identified) {
-      return item.data.price;
+    if(game.user.isGM || item.system.identified) {
+      return item.system.price;
     }
     return LootSheetActions.getItemCost(item);
   }
@@ -63,7 +63,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    * Returns the loot name that the player knows
    */
   getLootName(item) {
-    if(game.user.isGM || item.data.identified) {
+    if(game.user.isGM || item.system.identified) {
       return item.name;
     }
     return LootSheetActions.getItemName(item);
@@ -643,7 +643,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
         let deleteList = []
         this.actor.items.forEach( item  => {
               if (["weapon", "equipment", "consumable", "tool", "loot"].indexOf(item.type) >= 0) {
-                let itemCost = LootSheetActions.getItemCost(item.data)
+                let itemCost = LootSheetActions.getItemCost(item)
                 if( item.system.subType !== "tradeGoods" ) {
                   itemCost = Math.round(itemCost / 2)
                 }
