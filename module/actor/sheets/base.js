@@ -2995,8 +2995,8 @@ export class ActorSheetPF extends ActorSheet {
       let sameActor = dropData?.parent?.uuid === actor.uuid;
       //if (sameActor && actor.isToken) sameActor = dropData.tokenId === actor.token.id;
       if (sameActor) return this._onSortItem(event, dropData.data); // Sort existing items
-      if (dropData.parent.sheet.id) {
-        if (dropData.parent.sheet.id.indexOf("ActorSheetPFNPCLoot") !== -1) {
+      if (dropData?.parent?.sheet?.id) {
+        if (dropData?.parent?.sheet.id.indexOf("ActorSheetPFNPCLoot") !== -1) {
           if (dropData.parent.getFlag("D35E", "lootsheettype") === "loot")
             return LootSheetActions.lootItem(this.actor, dropData.parent, this.actor, dropData.id, null)
         }
