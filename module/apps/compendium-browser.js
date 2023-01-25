@@ -642,8 +642,8 @@ export class CompendiumBrowser extends Application {
    * @private
    */
   async _onEntry(collectionKey, entryId) {
-    const pack = game.packs.find(o => o.collection === collectionKey);
-    const entity = await pack.getDocument(entryId);
+
+    const entity = await fromUuid(entryId);
     entity.sheet.render(true);
   }
 
@@ -719,8 +719,10 @@ export class CompendiumBrowser extends Application {
   _filterResults() {
     this.element.find("li.directory-item").each((a, li) => {
       const id = li.dataset.entryId;
-      let item = this.items.find(i => i.item._id === id).item;
-      li.style.display = this._passesFilters(item) ? "flex" : "none";
+      let item = this.items.find(i => i?.item?.uuid === id)?.item;
+      if (item) {
+        li.style.display = this._passesFilters(item) ? "flex" : "none";
+      }
     });
   }
 
