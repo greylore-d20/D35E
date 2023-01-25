@@ -1952,14 +1952,15 @@ export class ActorPF extends Actor {
     rollData.skillId = skillId;
     rollData.skillTag = skillTag;
     rollData.subSkillId = subSkillId;
-    const noteObjects = this.getContextNotes(`skill.${isSubSkill ? skillParts[2] : skillId}`);
+    let contextNoteSkillId = isSubSkill ?  `skill.${skillId}.subSkills.${subSkillId}` : `skill.${skillId}`;
+    const noteObjects = this.getContextNotes(contextNoteSkillId);
     for (let noteObj of noteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).getRollData();
 
       for (let note of noteObj.notes) {
         for (let _note of note.split(/[\n\r]+/)) {
-          let enrichedNote = await TextEditor.enrichHTML(Item35E._fillTemplate(o, rollData), {
+          let enrichedNote = await TextEditor.enrichHTML(Item35E._fillTemplate(_note, rollData), {
             rollData: rollData,
           })
           notes.push(
@@ -3206,7 +3207,8 @@ export class ActorPF extends Actor {
 
     // Skill
     if (context.match(/^skill\.(.+)/)) {
-      const skillKey = RegExp.$1;
+      let skillKey = RegExp.$1;
+      if (skillKey.indexOf(".") !== -1) skillKey = skillKey.split(".")[2]
       const skill = this.getSkill(skillKey);
       const ability = skill.ability;
       for (let note of result) {
