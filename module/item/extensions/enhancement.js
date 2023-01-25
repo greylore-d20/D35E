@@ -293,14 +293,14 @@ export class ItemEnhancements extends ItemExtension {
         if (maxSingleEnhancementIncrease > 5 || totalEnchancement > 5)
             useEpicPricing = true
         // Base price for weapon
-        if (this.type === 'weapon') {
+        if (this.item.type === 'weapon') {
             if (totalEnchancementIncrease > 0)
                 totalPrice += 300
             if (!useEpicPricing)
                 totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 2000 + flatPrice
             else
                 totalPrice += totalEnchancementIncrease * totalEnchancementIncrease * 2000 * 10 + 10 * flatPrice
-        } else if (this.type === 'equipment') {
+        } else if (this.item.type === 'equipment') {
             if (totalEnchancementIncrease > 0)
                 totalPrice += 150
             if (!useEpicPricing)

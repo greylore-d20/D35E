@@ -142,7 +142,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             //await this._onSubmit(event);  // Submit any unsaved changes
             const changes =this.sheet.item.system.combatChanges || [];
             // Combat Changes are
-            await this.sheet.item.update({"data.combatChanges": changes.concat([["", "", "", "", "", ""]])});
+            await this.sheet.item.update({"system.combatChanges": changes.concat([["", "", "", "", "", ""]])});
         }
 
         // Remove a change
@@ -151,7 +151,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             const li = a.closest(".change");
             const changes = duplicate(this.sheet.item.system.combatChanges);
             changes.splice(Number(li.dataset.change), 1);
-            await this.sheet.item.update({"data.combatChanges": changes});
+            await this.sheet.item.update({"system.combatChanges": changes});
         }
     }
 
@@ -164,7 +164,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             //await this._onSubmit(event);  // Submit any unsaved changes
             const changes = duplicate(this.sheet.item.system.creationChanges) || [];
             // Combat Changes are
-            return this.sheet.item.update({"data.creationChanges": changes.concat([["", ""]])});
+            return this.sheet.item.update({"system.creationChanges": changes.concat([["", ""]])});
         }
 
         // Remove a change
@@ -173,7 +173,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             const li = a.closest(".change");
             const changes = duplicate(this.sheet.item.system.creationChanges);
             changes.splice(Number(li.dataset.change), 1);
-            return this.sheet.item.update({"data.creationChanges": changes});
+            return this.sheet.item.update({"system.creationChanges": changes});
         }
     }
 
@@ -186,7 +186,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             //await this._onSubmit(event);  // Submit any unsaved changes
             const changes = duplicate(this.sheet.item.system.requirements) || [];
             // Combat Changes are
-            return this.sheet.item.update({"data.requirements": changes.concat([["", "", ""]])});
+            return this.sheet.item.update({"system.requirements": changes.concat([["", "", ""]])});
         }
 
         // Remove a change
@@ -195,7 +195,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             const li = a.closest(".change");
             const changes = duplicate(this.sheet.item.system.requirements);
             changes.splice(Number(li.dataset.change), 1);
-            return this.sheet.item.update({"data.requirements": changes});
+            return this.sheet.item.update({"system.requirements": changes});
         }
     }
 
@@ -208,7 +208,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             //await this._onSubmit(event);  // Submit any unsaved changes
             const changes = duplicate(this.sheet.item.system.resistances) || [];
             // Combat Changes are
-            return this.sheet.item.update({"data.resistances": changes.concat([["", "", false, false, false]])});
+            return this.sheet.item.update({"system.resistances": changes.concat([["", "", false, false, false]])});
         }
 
         // Remove a change
@@ -217,7 +217,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             const li = a.closest(".change");
             const changes = duplicate(this.sheet.item.system.resistances);
             changes.splice(Number(li.dataset.change), 1);
-            return this.sheet.item.update({"data.resistances": changes});
+            return this.sheet.item.update({"system.resistances": changes});
         }
     }
 
@@ -230,7 +230,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             //await this._onSubmit(event);  // Submit any unsaved changes
             const changes = duplicate(this.sheet.item.system.damageReduction) || [];
             // Combat Changes are
-            return this.sheet.item.update({"data.damageReduction": changes.concat([["", "", false]])});
+            return this.sheet.item.update({"system.damageReduction": changes.concat([["", "", false]])});
         }
 
         // Remove a change
@@ -239,7 +239,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
             const li = a.closest(".change");
             const changes = duplicate(this.sheet.item.system.damageReduction);
             changes.splice(Number(li.dataset.change), 1);
-            return this.sheet.item.update({"data.damageReduction": changes});
+            return this.sheet.item.update({"system.damageReduction": changes});
         }
     }
 
@@ -249,18 +249,16 @@ export class ChangesSheetComponent extends ItemSheetComponent {
 
         // Add new change
         if (a.classList.contains("add-change")) {
-            //console.log('AAAAAITEM', this.sheet.item);
             let _changes = duplicate(this.sheet.item.system.changes) || [];
-            return this.sheet.item.update({"data.changes": _changes.concat([["", "", "", "", 0]])});
+            return this.sheet.item.update({"system.changes": _changes.concat([["", "", "", "", 0]])});
         }
 
         // Remove a change
         if (a.classList.contains("delete-change")) {
-            //await this._onSubmit(event);
             const li = a.closest(".change");
             const changes = duplicate(this.sheet.item.system.changes);
             changes.splice(Number(li.dataset.change), 1);
-            return this.sheet.item.update({"data.changes": changes});
+            return this.sheet.item.update({"system.changes": changes});
         }
     }
 }
