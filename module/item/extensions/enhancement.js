@@ -144,7 +144,7 @@ export class ItemEnhancements extends ItemExtension {
         });
         this.#preUpdateMagicItemName(updateData, _enhancements);
         this.#preUpdateMagicItemProperties(updateData, _enhancements);
-        updateData[`data.enhancements.items`] = _enhancements;
+        updateData[`system.enhancements.items`] = _enhancements;
         await this.item.update(updateData);
     }
 
@@ -360,7 +360,7 @@ export class ItemEnhancements extends ItemExtension {
         //console.log('Total enh',totalEnchancement, type)
         if (type === 'weapon' && enhancements.length) {
             if (doLinkData) linkData(srcData, data, "system.weaponData.alignment", alignment);
-            else data['data.weaponData.alignment'] = alignment
+            else data['system.weaponData.alignment'] = alignment
         }
     }
 
@@ -384,11 +384,11 @@ export class ItemEnhancements extends ItemExtension {
         if (totalEnchancement > 0) {
             if (type === 'weapon') {
                 if (doLinkData) linkData(srcData, data, "system.enh", totalEnchancement);
-                else data['data.enh'] = totalEnchancement
+                else data['system.enh'] = totalEnchancement
             }
             else if (type === 'equipment') {
                 if (doLinkData) linkData(srcData, data, "system.armor.enh", totalEnchancement);
-                else data['data.armor.enh'] = totalEnchancement
+                else data['system.armor.enh'] = totalEnchancement
             }
         }
     }
