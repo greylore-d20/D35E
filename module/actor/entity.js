@@ -4767,14 +4767,14 @@ export class ActorPF extends Actor {
         heal.abl *= 2;
       }
 
-      updateData["data.attributes.hp.value"] = Math.min(
+      updateData["system.attributes.hp.value"] = Math.min(
         actorData.attributes.hp.value + heal.hp,
         actorData.attributes.hp.max
       );
-      updateData["data.attributes.hp.nonlethal"] = Math.max(actorData.attributes.hp.nonlethal - heal.hp, 0);
+      updateData["system.attributes.hp.nonlethal"] = Math.max(actorData.attributes.hp.nonlethal - heal.hp, 0);
       for (let [key, abl] of Object.entries(actorData.abilities)) {
         let dmg = Math.abs(abl.damage);
-        updateData[`data.abilities.${key}.damage`] = Math.max(0, dmg - heal.abl);
+        updateData[`system.abilities.${key}.damage`] = Math.max(0, dmg - heal.abl);
       }
     }
 
@@ -4791,33 +4791,33 @@ export class ActorPF extends Actor {
           hasItemUpdates = true;
           itemUpdate["_id"] = item.id;
           if (itemData.uses.rechargeFormula) {
-            itemUpdate["data.uses.value"] = Math.min(
+            itemUpdate["system.uses.value"] = Math.min(
               itemData.uses.value + new Roll35e(itemData.uses.rechargeFormula, itemData).roll().total,
               itemData.uses.max
             );
-            rollData.item.uses.value = itemUpdate["data.uses.value"];
+            rollData.item.uses.value = itemUpdate["system.uses.value"];
           } else {
-            itemUpdate["data.uses.value"] = itemData.uses.max;
-            rollData.item.uses.value = itemUpdate["data.uses.value"];
+            itemUpdate["system.uses.value"] = itemData.uses.max;
+            rollData.item.uses.value = itemUpdate["system.uses.value"];
           }
         }
-        if (hasProperty(item, "data.combatChangesRange.maxFormula")) {
-          if (getProperty(item, "data.combatChangesRange.maxFormula") !== "") {
-            let roll = new Roll35e(getProperty(item, "data.combatChangesRange.maxFormula"), rollData).roll();
+        if (hasProperty(item, "system.combatChangesRange.maxFormula")) {
+          if (getProperty(item, "system.combatChangesRange.maxFormula") !== "") {
+            let roll = new Roll35e(getProperty(item, "system.combatChangesRange.maxFormula"), rollData).roll();
             hasItemUpdates = true;
-            itemUpdate["data.combatChangesRange.max"] = roll.total;
+            itemUpdate["system.combatChangesRange.max"] = roll.total;
             itemUpdate["_id"] = item.id;
           }
         }
         for (let i = 1; i <= 3; i++)
-          if (hasProperty(item, `data.combatChangesAdditionalRanges.slider${i}.maxFormula`)) {
-            if (getProperty(item, `data.combatChangesAdditionalRanges.slider${i}.maxFormula`) !== "") {
+          if (hasProperty(item, `system.combatChangesAdditionalRanges.slider${i}.maxFormula`)) {
+            if (getProperty(item, `system.combatChangesAdditionalRanges.slider${i}.maxFormula`) !== "") {
               hasItemUpdates = true;
               let roll = new Roll35e(
-                getProperty(item, `data.combatChangesAdditionalRanges.slider${i}.maxFormula`),
+                getProperty(item, `system.combatChangesAdditionalRanges.slider${i}.maxFormula`),
                 rollData
               ).roll();
-              itemUpdate[`data.combatChangesAdditionalRanges.slider${i}.max`] = roll.total;
+              itemUpdate[`system.combatChangesAdditionalRanges.slider${i}.max`] = roll.total;
               itemUpdate["_id"] = item.id;
             }
           }
@@ -4830,13 +4830,13 @@ export class ActorPF extends Actor {
           hasItemUpdates = true;
           itemUpdate["_id"] = item.id;
           if (itemData.enhancements.uses.rechargeFormula) {
-            itemUpdate["data.enhancements.uses.value"] = Math.min(
+            itemUpdate["system.enhancements.uses.value"] = Math.min(
               itemData.enhancements.uses.value +
                 new Roll35e(itemData.enhancements.uses.rechargeFormula, itemData).roll().total,
               itemData.enhancements.uses.max
             );
           } else {
-            itemUpdate["data.enhancements.uses.value"] = itemData.enhancements.uses.max;
+            itemUpdate["system.enhancements.uses.value"] = itemData.enhancements.uses.max;
           }
         } else if (item.type === "spell") {
           const spellbook = getProperty(actorData, `attributes.spells.spellbooks.${itemData.spellbook}`),
@@ -4849,7 +4849,7 @@ export class ActorPF extends Actor {
           ) {
             hasItemUpdates = true;
             itemUpdate["_id"] = item.id;
-            itemUpdate["data.preparation.preparedAmount"] = itemData.preparation.maxAmount;
+            itemUpdate["system.preparation.preparedAmount"] = itemData.preparation.maxAmount;
           }
         }
 
@@ -4869,17 +4869,21 @@ export class ActorPF extends Actor {
             }
           }
           itemUpdate["_id"] = item.id;
-          itemUpdate[`data.enhancements.items`] = enhItems;
+          itemUpdate[`system.enhancements.items`] = enhItems;
         }
         if (itemUpdate["_id"]) items.push(itemUpdate);
       }
-      if (hasItemUpdates) await this.updateEmbeddedDocuments("Item", items, { stopUpdates: true });
+      console.log("Updating embedded items?", hasItemUpdates)
+      if (hasItemUpdates) {
+        console.log("Updating embedded items", items)
+        await this.updateEmbeddedDocuments("Item", items, { stopUpdates: true });
+      }
 
       // Restore spontaneous spellbooks
       for (let [key, spellbook] of Object.entries(actorData.attributes.spells.spellbooks)) {
         if (spellbook.spontaneous) {
           for (let sl of Object.keys(CONFIG.D35E.spellLevels)) {
-            updateData[`data.attributes.spells.spellbooks.${key}.spells.spell${sl}.value`] = getProperty(
+            updateData[`system.attributes.spells.spellbooks.${key}.spells.spell${sl}.value`] = getProperty(
               actorData,
               `attributes.spells.spellbooks.${key}.spells.spell${sl}.max`
             );
@@ -4890,17 +4894,17 @@ export class ActorPF extends Actor {
           if (actorData == null && this.actor != null) rollData = this.getRollData();
           else rollData = actorData;
           try {
-            updateData[`data.attributes.spells.spellbooks.${key}.powerPoints`] = new Roll35e(
+            updateData[`system.attributes.spells.spellbooks.${key}.powerPoints`] = new Roll35e(
               getProperty(actorData, `attributes.spells.spellbooks.${key}.dailyPowerPointsFormula`),
               rollData
             ).roll().total;
           } catch (e) {
-            updateData[`data.attributes.spells.spellbooks.${key}.powerPoints`] = 0;
+            updateData[`system.attributes.spells.spellbooks.${key}.powerPoints`] = 0;
           }
         }
       }
 
-      updateData[`data.attributes.turnUndeadUses`] = getProperty(actorData, `attributes.turnUndeadUsesTotal`);
+      updateData[`system.attributes.turnUndeadUses`] = getProperty(actorData, `attributes.turnUndeadUsesTotal`);
     }
 
     this.update(updateData);
