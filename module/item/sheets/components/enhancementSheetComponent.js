@@ -246,11 +246,11 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
     }
 
 
-    #onEnhItemSummary(event) {
+    async #onEnhItemSummary(event) {
         event.preventDefault();
         let li = $(event.currentTarget).parents(".item-box"),
             item = this.sheet.ehnancementItemMap.get(li.attr("data-item-id")),
-            chatData = item.getChatData({secrets: this.sheet.actor ? this.sheet.actor.isOwner : false});
+            chatData = await item.getChatData({secrets: this.sheet.actor ? this.sheet.actor.isOwner : false});
 
         // Toggle summary
         if (li.hasClass("expanded")) {

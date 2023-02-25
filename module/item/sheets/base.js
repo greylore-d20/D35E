@@ -169,6 +169,11 @@ export class ItemSheetPF extends ItemSheet {
     sheetData.availableContainers = {};
     sheetData.availableContainers["none"] = "None";
 
+    sheetData.enriched = {}
+    sheetData.enriched.description = {}
+    sheetData.enriched.description.value = await TextEditor.enrichHTML(await this.item.getDescription(), {async: true});
+    sheetData.enriched.description.unidentified = await TextEditor.enrichHTML(await this.item.getUnidentifiedDescription(), {async: true});
+
     sheetData.material = this.item.system.material?.system || this.item.system.material?.data;
     sheetData.materialMetadata = {
       name: this.item.system.material?.name,
@@ -263,7 +268,6 @@ export class ItemSheetPF extends ItemSheet {
       }
 
       // Enrich description
-      sheetData.description = TextEditor.enrichHTML(this.item.system.description.value);
     }
     if (this.item.type === "card") {
       let spellbook = null;
@@ -279,7 +283,6 @@ export class ItemSheetPF extends ItemSheet {
       }
 
       // Enrich description
-      sheetData.description = TextEditor.enrichHTML(this.item.system.description.value);
     }
     if (this.item.type === "race") {
       sheetData.children = {

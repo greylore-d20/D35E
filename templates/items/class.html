@@ -319,8 +319,7 @@
 
             <div class="tab flexcol active" data-group="primary" data-tab="description">
         <section class="description-body flexcol" style="height: 385px">
-                {{editor content=data.system.description.value target="data.description.value" button=true owner=owner
-                editable=editable}}
+                {{editor enriched.description.value target="system.description.value" button=true editable=editable}}
         </section>
         </div>
         {{/if}}

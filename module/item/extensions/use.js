@@ -260,13 +260,13 @@ export class ItemUse {
         label: `Rapid Shot`,
       });
       rollData.rapidShotPenalty = -2;
-      attackExtraParts.push("@rapidShotPenalty");
+      attackExtraParts.push({part:"@rapidShotPenalty", value: rollData.rapidShotPenalty, source:game.i18n.localize("D35E.AttackRapidShot")});
     }
 
     if (flurryOfBlows) {
       allAttacks.push({
         bonus: 0,
-        label: `Flurry of Blows`,
+        label: game.i18n.localize("D35E.AttackFlurryOfBlows"),
       });
       let monkClass = (actor?.items || []).filter(
         (o) => o.type === "class" && (o.name === "Monk" || o.system.customTag === "monk")
@@ -274,18 +274,19 @@ export class ItemUse {
       //1-4 = -2
       if (monkClass.system.levels < 5) {
         rollData.flurryOfBlowsPenalty = -2;
-        attackExtraParts.push("@flurryOfBlowsPenalty");
+        attackExtraParts.push({part:"@flurryOfBlowsPenalty", value: rollData.rapidShotPenalty, source:game.i18n.localize("D35E.AttackFlurryOfBlows")});
+
       }
       //5-8 = -1
       else if (monkClass.system.levels < 9) {
         rollData.flurryOfBlowsPenalty = -1;
-        attackExtraParts.push("@flurryOfBlowsPenalty");
+        attackExtraParts.push({part:"@flurryOfBlowsPenalty", value: rollData.rapidShotPenalty, source:game.i18n.localize("D35E.AttackFlurryOfBlows")});
         //9+ = 0
         //11+ = 2nd extra attack
       } else if (monkClass.system.levels > 10) {
         allAttacks.push({
           bonus: 0,
-          label: `Flurry of Blows 2`,
+          label: game.i18n.localize("D35E.AttackFlurryOfBlows"),
         });
       }
     }
@@ -329,8 +330,14 @@ export class ItemUse {
         if (modifier.target === "attack") {
           if (modifier.subTarget !== "allAttack") {
             if (!attackEnhancementMap.has(modifier.subTarget)) attackEnhancementMap.set(modifier.subTarget, []);
-            attackEnhancementMap.get(modifier.subTarget).push(modifier.formula);
-          } else attackExtraParts.push(modifier.formula);
+            attackEnhancementMap.get(modifier.subTarget).push(
+              {part:modifier.formula, value: modifier.formula, source:`${conditional.name}`}
+            );
+          } else {
+            attackExtraParts.push(
+              {part:modifier.formula, value: modifier.formula, source:`${conditional.name}`}
+            );
+          }
         }
         if (modifier.target === "damage") {
           if (modifier.subTarget !== "allDamage") {
@@ -338,12 +345,14 @@ export class ItemUse {
             damageEnhancementMap.get(modifier.subTarget).push({
               formula: modifier.formula,
               type: modifier.type,
+              source: conditional.name
             });
           } else
             damageExtraParts.push([
               modifier.formula,
               CACHE.DamageTypes.get(modifier.type)?.data?.name || game.i18n.localize("D35E.UnknownDamageType"),
               modifier.type,
+              `${conditional.name}`
             ]);
         }
       }
@@ -352,42 +361,16 @@ export class ItemUse {
     // Getting all combat changes from items
     let allCombatChanges = [];
     let attackType = this.item.type;
-    actor.items
-      .filter(
-        (o) =>
-          o.type === "aura" ||
-          o.type === "feat" ||
-          (o.type === "buff" && o.system.active) ||
-          (o.type === "equipment" && o.system.equipped === true && !o.system.melded)
-      )
-      .forEach((i) => {
-        if (i.combatChanges.hasCombatChange(attackType, rollData)) {
-          allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData));
-          rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name}`);
-        }
-        if (
-          i.combatChanges.hasCombatChange(attackType + "Optional", rollData) &&
-          optionalFeatIds.indexOf(i._id) !== -1
-        ) {
-          allCombatChanges = allCombatChanges.concat(
-            i.combatChanges.getPossibleCombatChanges(attackType + "Optional", rollData, optionalFeatRanges.get(i._id))
-          );
-          i.addCharges(
-            -1 *
-              (i.system.combatChangesUsesCost === "chargesPerUse"
-                ? i.system?.uses?.chargesPerUse || 1
-                : optionalFeatRanges.get(i._id).base)
-          );
-          if (optionalFeatRanges.get(i._id)) {
-            let ranges = [];
-            if (optionalFeatRanges.get(i._id).base) ranges.push(optionalFeatRanges.get(i._id).base);
-            if (optionalFeatRanges.get(i._id).slider1) ranges.push(optionalFeatRanges.get(i._id).slider1);
-            if (optionalFeatRanges.get(i._id).slider2) ranges.push(optionalFeatRanges.get(i._id).slider2);
-            if (optionalFeatRanges.get(i._id).slider3) ranges.push(optionalFeatRanges.get(i._id).slider3);
-            rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name} (${ranges.join(", ")})`);
-          } else rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name}`);
-        }
-      });
+    allCombatChanges = ItemCombatChangesHelper.getAllSelectedCombatChangesForRoll(
+      actor.items,
+      attackType,
+      rollData,
+      allCombatChanges,
+      rollModifiers,
+      optionalFeatIds,
+      optionalFeatRanges
+    )
+
     this.item._addCombatChangesToRollData(allCombatChanges, rollData);
 
     if (rollData.isKeen && !getProperty(this.item.system, "threatRangeExtended")) {
@@ -397,17 +380,24 @@ export class ItemUse {
       //getProperty(this.item.system,"ability.critRange") = baseCrit;
     }
 
-    if (rollData.featDamageBonus) {
-      if (rollData.featDamageBonus !== 0)
-        damageExtraParts.push(["@critMult*(${this.featDamageBonus})", "Feats", "base"]);
+    if (rollData.featDamageBonusList) {
+      for (let [i, bonus] of rollData.featDamageBonusList.entries()) {
+        damageExtraParts.push(["@critMult*(${this.featDamageBonusList["+i+"].value})", bonus["sourceName"], "base"]);
+      }
     }
-    if (rollData.featDamagePrecision) {
-      damageExtraParts.push(["(${this.featDamagePrecision})", "Precision"]);
+    if (rollData.featDamagePrecisionList) {
+      for (let [i, bonus] of rollData.featDamagePrecisionList.entries()) {
+        damageExtraParts.push(["(${this.featDamagePrecisionList["+i+"].value})", bonus["sourceName"]]);
+      }
     }
-    if (rollData.featDamage) {
-      for (let dmg of Object.keys(rollData.featDamage)) {
+    if (rollData.featDamageList) {
+      for (let dmg of Object.keys(rollData.featDamageList)) {
         // //console.log('Bonus damage!', dmg, rollData.featDamage[dmg])
-        damageExtraParts.push(["(${this.featDamage." + dmg + "})", dmg]);
+        for (let [i, bonus] of rollData.featDamageList[dmg].entries()) {
+          let extraDamagePart = ["(${this.featDamageList['" + dmg + "']["+i+"].value})", dmg, null, bonus["sourceName"]];
+          damageExtraParts.push(extraDamagePart);
+        }
+
       }
     }
 
@@ -478,6 +468,7 @@ export class ItemUse {
             aepConditional.formula,
             CACHE.DamageTypes.get(aepConditional.type)?.data?.name || game.i18n.localize("D35E.UnknownDamageType"),
             aepConditional.type,
+            aepConditional.source,
           ]);
         }
         await attack.addAttack({
@@ -742,7 +733,7 @@ export class ItemUse {
         )}</label><div class="flexrow">${innerHTML}</div></div>`;
       }
 
-      const properties = this.item.getChatData({}, rollData).properties;
+      const properties = (await this.item.getChatData({}, rollData)).properties;
       if (properties.length > 0)
         props.push({
           header: game.i18n.localize("D35E.InfoShort"),
@@ -986,10 +977,10 @@ export class ItemUse {
           (o) => o.type === "feat" && (o.originalName === "Flurry of Blows" || o.system.customTag === "flurryOfBlows")
         ).length > 0,
       maxGreaterManyshotValue: getProperty(actor.system, "abilities.wis.mod"),
-      weaponFeats: actor.items.filter((o) =>
+      weaponFeats: actor.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, `${this.item.type}`)
       ),
-      weaponFeatsOptional: actor.items.filter((o) =>
+      weaponFeatsOptional: actor.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, `${this.item.type}Optional`)
       ),
       conditionals: getProperty(this.item.system, "conditionals"),
@@ -1415,7 +1406,7 @@ export class ItemUse {
       if (this.item.actor) {
         let allCombatChanges = [];
         let attackType = this.item.type;
-        this.item.actor.items
+        this.item.actor.combatChangeItems
           .filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, attackType))
           .forEach((i) => {
             allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData));

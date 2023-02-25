@@ -83,6 +83,7 @@ export class ItemCombatChanges {
           c.push(this.item.img);
           c.push(getProperty(this.item.system, "combatChangesApplySpecialActionsOnce"));
         }
+        c['sourceName'] = this.item.name;
         return c;
       });
   }

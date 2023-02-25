@@ -5,8 +5,10 @@ export class ItemCombatChangesHelper {
     }
 
     static isCombatChangeItemType(item) {
-        return item.type === "feat" || item.type === "aura" || (item.type === "buff" && getProperty(item.system,"active")) || (item.type === "equipment" && getProperty(item.system,"equipped") === true && !getProperty(item.system,"melded"));
+        let combatChangeItemType = item.type === "feat" || item.type === "aura" || (item.type === "buff" && getProperty(item.system,"active")) || (item.type === "equipment" && getProperty(item.system,"equipped") === true && !getProperty(item.system,"melded"))
+        return combatChangeItemType && (getProperty(item.system, "combatChanges") || []).length;
     }
+
 
     static getAllSelectedCombatChangesForRoll(items, attackType, rollData, allCombatChanges, rollModifiers, optionalFeatIds, optionalFeatRanges) {
         items.filter(o => this.isCombatChangeItemType(o)).forEach(i => {

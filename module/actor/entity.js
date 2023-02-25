@@ -43,6 +43,8 @@ export class ActorPF extends Actor {
     this.conditions = new ActorConditions(this);
     this.buffs = new ActorBuffs(this);
     this.crHelper = new ActorCRHelper(this);
+    this.combatChangeItems = this.items.filter((o) => ItemCombatChangesHelper.isCombatChangeItemType(o));
+
   }
 
   /* -------------------------------------------- */
@@ -294,6 +296,13 @@ export class ActorPF extends Actor {
           });
         }
       });
+
+
+    let naturalAttackCount = (actorData.items || []).filter(
+      (o) => o.type === "attack" && o.system.attackType === "natural"
+    )?.length;
+    preparedData.naturalAttackCount = naturalAttackCount;
+
     preparedData.classLevels = totalNonRacialLevels;
     {
       let group = "feat";
@@ -489,6 +498,7 @@ export class ActorPF extends Actor {
       deck.canRemovePrestigeCl = deck.bonusPrestigeCl > 0;
     }
     preparedData.canLevelUp = preparedData.details.xp.value >= preparedData.details.xp.max;
+    this.combatChangeItems = this.items.filter((o) => ItemCombatChangesHelper.isCombatChangeItemType(o));
   }
 
   async refresh(options = {}) {
@@ -1545,10 +1555,10 @@ export class ActorPF extends Actor {
         : game.settings.get("D35E", `rollConfig`).rollConfig[this.type].grapple ||
           game.settings.get("core", "rollMode"),
       rollModes: CONFIG.Dice.rollModes,
-      resFeats: this.items.filter((o) =>
+      resFeats: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "spellPowerResistance")
       ),
-      resFeatsOptional: this.items.filter((o) =>
+      resFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, `spellPowerResistanceOptional`)
       ),
       label: label,
@@ -1763,8 +1773,8 @@ export class ActorPF extends Actor {
         : game.settings.get("D35E", `rollConfig`).rollConfig[this.type].savingThrow ||
           game.settings.get("core", "rollMode"),
       rollModes: CONFIG.Dice.rollModes,
-      stFeats: this.items.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "savingThrow")),
-      stFeatsOptional: this.items.filter((o) =>
+      stFeats: this.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "savingThrow")),
+      stFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "savingThrowOptional")
       ),
       label: label,
@@ -1985,8 +1995,8 @@ export class ActorPF extends Actor {
         ? options.rollMode
         : game.settings.get("D35E", `rollConfig`).rollConfig[this.type].skill || game.settings.get("core", "rollMode"),
       rollModes: CONFIG.Dice.rollModes,
-      skFeats: this.items.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "skill")),
-      skFeatsOptional: this.items.filter((o) =>
+      skFeats: this.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "skill")),
+      skFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "skillOptional")
       ),
       label: label,
@@ -2179,8 +2189,8 @@ export class ActorPF extends Actor {
         : game.settings.get("D35E", `rollConfig`).rollConfig[this.type].grapple ||
           game.settings.get("core", "rollMode"),
       rollModes: CONFIG.Dice.rollModes,
-      grFeats: this.items.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "grapple")),
-      grFeatsOptional: this.items.filter((o) =>
+      grFeats: this.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "grapple")),
+      grFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "grappleOptional")
       ),
       label: label,
@@ -2649,8 +2659,8 @@ export class ActorPF extends Actor {
       isAlreadyProne: getProperty(this.system, "attributes.conditions.prone"),
       baseConcealmentAtLeast20: getProperty(this.system, "attributes.concealment.total") > 20,
       baseConcealmentAtLeast50: getProperty(this.system, "attributes.concealment.total") > 50,
-      defenseFeats: this.items.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "defense")),
-      defenseFeatsOptional: this.items.filter((o) =>
+      defenseFeats: this.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "defense")),
+      defenseFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "defenseOptional")
       ),
       conditionals: getProperty(this.system, "conditionals"),

@@ -3625,6 +3625,20 @@
 #chat-log .message .toggle-header {
   margin-bottom: -3px;
 }
+#chat-log .message .table-container {
+  position: relative;
+  margin: 0;
+  line-height: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid #999;
+  border-radius: 3px;
+  box-shadow: 0 0 2px #FFF inset;
+  word-break: break-all;
+}
+#chat-log .message table {
+  border: 0;
+  margin: 0;
+}
 #chat-log .message .dice-tooltips {
   padding: 0px 4px;
   border: 1px solid rgba(0, 0, 0, 0.2);

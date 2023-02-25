@@ -1,8 +1,12 @@
 import {Roll35e} from "../../roll.js";
+import { ItemRolls } from '../extensions/rolls.js'
+import { ItemCombatChangesHelper } from './itemCombatChangesHelper.js'
+import { ItemCombatCalculationsHelper } from './itemCombatCalculationsHelper.js'
 
 export class ItemDescriptionsHelper {
-    static attackDescription(item, rollData) {
+    static attackDescription(item, _rollData) {
         // //console.log('D35E | AB ', item.hasAttack)
+        let rollData = duplicate(_rollData)
         if (!rollData) {
             if (!item.actor) return []; //There are no requirements when item has no actor!
             rollData = item.actor.getRollData();
@@ -36,24 +40,34 @@ export class ItemDescriptionsHelper {
     static attackBonus(item, rollData) {
         // //console.log('D35E | AB ', item.hasAttack)
         if (!rollData) {
-            if (!item.actor) return []; //There are no requirements when item has no actor!
+            if (!item.actor) return [];
             rollData = item.actor.getRollData();
         }
         rollData.item = item.getRollData();
 
         if (item.hasAttack) {
-            let bab = 0;
-            let attackBonus = ((getProperty(item.system,"enh") || 0) ? getProperty(item.system,"enh") : (getProperty(item.system,"masterwork") ? "1" : "0")) + "+" + (getProperty(item.system,"attackBonus") || "0");
-            let abilityBonus = "0";
-            let sizeBonus = CONFIG.D35E.sizeMods[item.actor.system.traits.actualSize] || 0;
             if (item.actor) {
-                bab = (getProperty(item.actor.system, "attributes.bab.nonepic") || 0);
-                if (getProperty(item.system,"ability.attack"))
-                    abilityBonus = (item.actor.system.abilities[item.system.ability.attack].mod || 0)
+                let allCombatChanges = [];
+                let attackType = item.type;
+                item.actor.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, attackType)).
+                  forEach((i) => {
+                      allCombatChanges = allCombatChanges.concat(
+                        i.combatChanges.getPossibleCombatChanges(attackType, rollData));
+                  });
+                item._addCombatChangesToRollData(allCombatChanges, rollData);
             }
+
+            let roll = new ItemRolls(item).rollAttack({
+                data: rollData,
+                bonus: 0,
+                extraParts: [],
+                primaryAttack: item.system.primaryAttack,
+                replacedEnh: rollData.item?.enh || 0,
+                bonusOnly: true
+            })
+
             try {
-                return Math.floor(
-                  new Roll35e(`${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`, rollData).roll().total);
+                return Math.floor(roll.total);
             } catch (e) {
                 ui.notifications.error(game.i18n.format("DICE.WarnAttackRollIncorrect", {name: item.name, roll: `${bab} + ${attackBonus} + ${abilityBonus} + ${sizeBonus}`}));
                 return 0;
@@ -91,7 +105,7 @@ export class ItemDescriptionsHelper {
             })
         }
         if (getProperty(item.system,"ability.damage"))
-            abilityBonus = Math.floor(parseInt(item.actor.system.abilities[item.system.ability.damage].mod)*item.system.ability.damageMult)
+            abilityBonus = Math.floor(parseInt(item.actor.system.abilities[item.system.ability.damage].mod)*ItemCombatCalculationsHelper.calculateAbilityModifier(item, item.system.ability.damageMult, item.system.attackType, item.system.primaryAttack))
         if (abilityBonus) results.push(abilityBonus)
         if (getProperty(item.system,"enh")) results.push(getProperty(item.system,"enh"))
         return results.join(" + ");
@@ -114,5 +128,13 @@ export class ItemDescriptionsHelper {
         let range = [rng.value, rng.long ? `/ ${rng.long}` : null, CONFIG.D35E.distanceUnitsShort[rng.units]].filterJoin(" ");
         if (range.length > 0) return [range].join(" ");
         return "";
+    }
+
+    static linkItemDescription(item, uuid) {
+        if (['spell','card'].includes(item.type)) {
+            item.system.shortDescription = `@LinkedDescription[${uuid}]`
+        } else {
+            item.system.description.value = `@LinkedDescription[${uuid}]`
+        }
     }
 }

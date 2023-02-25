@@ -103,15 +103,26 @@ export class ChatAttack {
             replacedEnh: Math.max(this.ammoEnh, this.rollData.item?.enh || 0)
         });
         this.rolls.push(roll)
+        var descriptionParts = roll.descriptionParts;
         let d20 = roll.terms[0];
         let critType = 0;
         if ((d20.total >= this.critRange && !critical) || (d20.total === 20 && critical)) critType = 1;
         else if (d20.total === 1) critType = 2;
-
+        descriptionParts.unshift({value:`${d20.total}`, roll: d20.formula, name:`Attack Roll`})
         // Add tooltip
-        let tooltip = $(await roll.getTooltip()).prepend(`<div class="dice-formula">${roll.formula}</div>`)[0].outerHTML;
+        let tooltip = '';
+        for (let descriptionPart of descriptionParts) {
+
+            tooltip+= `<tr>
+                <td><b>${descriptionPart.name}</b></td>
+                <td><b>${descriptionPart.value}</b></td>
+                </tr>
+                `;
+        }
+
+        var tooltips = `<div class="dice-formula" style="margin-bottom: 8px">${roll.formula}</div><div class="table-container"><table>${tooltip}</table></div>`;
         data.flavor = critical ? game.i18n.localize("D35E.CriticalConfirmation") : this.label;
-        data.tooltip = tooltip;
+        data.tooltip = tooltips;
         data.total = roll.total;
         data.isCrit = critType === 1;
         if (!data.isCrit)
@@ -134,60 +145,66 @@ export class ChatAttack {
     }
 
     getShortToolTip(dmgVal, dmgName) {
-        if (dmgName === null) return `<img src="systems/D35E/icons/damage-type/unknown.svg" title="Part" class="dmg-type-icon" />${dmgVal}`
-        let dmgIconBase = dmgName.toLowerCase();
-        let dmgIcon = "unknown"
-        switch (dmgIconBase) {
-            case "fire":
-            case "f":
-                dmgIcon = "fire";
-                break;
-            case "cold":
-            case "c":
-                dmgIcon = "cold";
-                break;
-            case "electricity":
-            case "electric":
-            case "el":
-            case "e":
-                dmgIcon = "electricity";
-                break;
-            case "acid":
-            case "a":
-                dmgIcon = "acid";
-                break;
-            case "sonic":
-                dmgIcon = "sonic";
-                break;
-            case "air":
-                dmgIcon = "air";
-                break;
-            case "piercing":
-            case "p":
-                dmgIcon = "p";
-                break;
-            case "slashing":
-            case "s":
-                dmgIcon = "s";
-                break;
-            case "bludgeoning":
-            case "b":
-                dmgIcon = "b";
-                break;
-            case "unarmed":
-                dmgIcon = "unarmed";
-                break;
-            case "positive energy":
-                dmgIcon = "positive-energy";
-                break;
-            case "force":
-                dmgIcon = "force";
-                break;
-            case "negative energy":
-                dmgIcon = "negative-energy";
-                break;
-        }
+        let dmgIcon = this.#getDamageIcon(dmgName)
         return `<img src="systems/D35E/icons/damage-type/${dmgIcon}.svg" title="${dmgName}" class="dmg-type-icon" />${dmgVal}`
+    }
+
+    #getDamageIcon (dmgName) {
+        let dmgIconBase = dmgName?.toLowerCase() || ''
+        let dmgIcon = 'unknown'
+        switch (dmgIconBase) {
+            case 'fire':
+            case 'f':
+                dmgIcon = 'fire'
+                break
+            case 'cold':
+            case 'c':
+                dmgIcon = 'cold'
+                break
+            case 'electricity':
+            case 'electric':
+            case 'el':
+            case 'e':
+                dmgIcon = 'electricity'
+                break
+            case 'acid':
+            case 'a':
+                dmgIcon = 'acid'
+                break
+            case 'sonic':
+                dmgIcon = 'sonic'
+                break
+            case 'air':
+                dmgIcon = 'air'
+                break
+            case 'piercing':
+            case 'p':
+                dmgIcon = 'p'
+                break
+            case 'slashing':
+            case 's':
+                dmgIcon = 's'
+                break
+            case 'bludgeoning':
+            case 'b':
+                dmgIcon = 'b'
+                break
+            case 'unarmed':
+                dmgIcon = 'unarmed'
+                break
+            case 'positive energy':
+                dmgIcon = 'positive-energy'
+                break
+            case 'force':
+                dmgIcon = 'force'
+                break
+            case 'negative energy':
+                dmgIcon = 'negative-energy'
+                break
+            default:
+                return 'unknown'
+        }
+        return dmgIcon;
     }
 
     async addDamage({extraParts = [], primaryAttack = true, critical = false, multiattack = 0, modifiers = {}} = {}) {
@@ -320,18 +337,30 @@ export class ChatAttack {
     }
 
     async createTooltipsForRolls(rolls, totalDamage, damageTypeTotal, tooltips) {
+
         for (let roll of rolls) {
+
+            const parts = roll.roll.dice.map(d => d.getTooltipData());
+            let formulas = [];
+            for (let part of parts) {
+                formulas.push(part.formula)
+            }
+            let formulaText = "";
+            if (formulas.length) {
+                formulaText = ` (${formulas.join(" ")})`;
+            }
+            let sourceText = "";
+            if (roll.source) {
+                sourceText = ` (${roll.source})`;
+            }
             let tooltip = $(await roll.roll.getTooltip());
 
             let totalText = roll.roll.total.toString();
-            if (roll.damageType.length) totalText += ` (${roll.damageType})`;
-            tooltip = tooltip.prepend(`
-                <header class="part-header flexrow" style="border-bottom: none; margin-top: 4px">
-                    <span class="part-formula"></span>
-                    <span class="part-total">${totalText}</span>
-                </header>
-                <div class="dice-formula">${roll.roll.formula}</div>
-                `)[0].outerHTML;
+            tooltip = `<tr>
+                <td><img src="systems/D35E/icons/damage-type/${this.#getDamageIcon(roll.damageType)}.svg" title="${roll.damageType}" class="dmg-type-icon" /> <b>${roll.damageType || 'Unknown'} ${sourceText}</b></td>
+                <td><b>${totalText}</b> ${formulaText}</td>
+                </tr>
+                `;
             // Alter tooltip
             let tooltipHtml = $(tooltip);
             totalDamage += roll.roll.total;
@@ -343,6 +372,7 @@ export class ChatAttack {
 
             tooltips += tooltip;
         }
+        tooltips = `<div class="table-container"><table>${tooltips}</table></div>`;
         return {totalDamage, tooltips};
     }
 

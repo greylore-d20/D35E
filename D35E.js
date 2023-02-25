@@ -70,6 +70,7 @@ import {FeatSheet35E} from "./module/item/sheets/feat.js";
 import {Weapon35E} from "./module/item/weapon.js";
 import {Equipment35E} from "./module/item/equipment.js";
 import {ItemBase35E} from "./module/item/base.js";
+import { Spell35E } from './module/item/spell.js'
 
 // Add String.format
 if (!String.prototype.format) {
@@ -138,7 +139,8 @@ Hooks.once("init", async function() {
   CONFIG.Item.documentClasses = {
     default: Item35E,
     weapon: Weapon35E,
-    equipment: Equipment35E
+    equipment: Equipment35E,
+    spell: Spell35E
   };
   CONFIG.ActiveEffect.documentClass = ActiveEffectD35E;
   CONFIG.MeasuredTemplate.objectClass = MeasuredTemplatePF;
@@ -239,6 +241,30 @@ Hooks.once("init", async function() {
   $('body').toggleClass('d35ecustom', game.settings.get("D35E", "customSkin"));
   $('body').toggleClass('color-blind', game.settings.get("D35E", "colorblindColors"));
   $('body').toggleClass('no-players-list', game.settings.get("D35E", "hidePlayersList"));
+  CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
+    {
+      pattern: /@LinkedDescription\[(.+?)\]/gm,
+      enricher: async (match, options) => {
+        console.log("D35E | Enriching Linked Description")
+        let item = await fromUuid(match[1]);
+        const a = document.createElement('div')
+        a.innerHTML = item.getChatDescription
+        return a;
+      },
+    }],
+  )
+  CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
+    {
+      pattern: /@LinkedFieldText\[(.+?)\]\{(.+?)}/gm,
+      enricher: async (match, options) => {
+        console.log("D35E | Enriching Linked Description")
+        let item = await fromUuid(match[1]);
+        const a = document.createElement('div')
+        a.innerHTML = await TextEditor.enrichHTML(getProperty(item,match[2]), {async: true});
+        return a;
+      },
+    }],
+  )
 });
 
 
@@ -729,6 +755,15 @@ Hooks.on("preCreateOwnedItem", (actor, item) => {
   }
 });
 
+Hooks.on("preCreateItem", (data, d, options, user) => {
+  if (!(data.parent instanceof Actor)) return;
+
+  if (user !== game.userId) {
+    console.log("Not updating actor as action was started by other user")
+    return
+  }
+  //data.parent.refresh(options);
+});
 
 Hooks.on("createItem", (data, options, user) => {
   if (!(data.parent instanceof Actor)) return;

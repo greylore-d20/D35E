@@ -550,6 +550,7 @@ export class ActorUpdater {
       }
       if (!obj.system.changeFlags) continue;
       for (let [flagKey, flagValue] of Object.entries(obj.system.changeFlags)) {
+        flags[flagKey] = flags[flagKey] || false;
         if (flagValue === true) {
           flags[flagKey] = true;
 
@@ -1283,9 +1284,9 @@ export class ActorUpdater {
       }
     }
 
-    for (let [changeTarget, value] of Object.entries(changes)) {
+    for (let [changeType, value] of Object.entries(changes)) {
       if (value.positive !== 0 || value.negative !== 0) {
-        let flatTargets = ActorChangesHelper.getChangeFlat(buffTarget, changeTarget, rollData.data);
+        let flatTargets = ActorChangesHelper.getChangeFlat(buffTarget, changeType, rollData.data);
         if (flatTargets == null) continue;
 
         if (!(flatTargets instanceof Array)) flatTargets = [flatTargets];
@@ -1310,12 +1311,14 @@ export class ActorUpdater {
                 name: changeSource.name,
                 type: changeSource.type,
                 value: changeSource.value,
+                bonusType: changeType
               });
             if (changeSource.value < 0)
               sourceInfo[target].negative.push({
                 name: changeSource.name,
                 type: changeSource.type,
                 value: changeSource.value,
+                bonusType: changeType
               });
           }
         }
@@ -1622,6 +1625,11 @@ export class ActorUpdater {
         }
       });
 
+    let naturalAttackCount = (items || []).filter(
+      (o) => o.type === "attack" && o.system.attackType === "natural"
+    )?.length;
+    flags.naturalAttackCount = naturalAttackCount;
+
     // Reset specific skill bonuses
     for (let sklKey of ActorChangesHelper.getChangeFlat("skills", "", this.actor.system)) {
       if (hasProperty(source, sklKey)) linkData(source, updateData, sklKey, 0);
@@ -1878,6 +1886,17 @@ export class ActorUpdater {
 
     // Reset initiative
     linkData(source, updateData, "system.attributes.init.total", 0);
+
+    //Set flags on actor so they are accessible
+
+    for (let flagKey of Object.keys(flags)) {
+      linkData(
+        source,
+        updateData,
+        `flags.D35E.${flagKey}`,
+        flags[flagKey]
+      )
+    }
 
     // Reset class skills
     for (let [k, s] of Object.entries(getProperty(source, "system.skills"))) {

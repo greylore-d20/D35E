@@ -69,7 +69,7 @@ export class Item35E extends ItemBase35E {
     return this.system?.rollTableDraw?.id || false;
   }
 
-  get hasMultiAttack() {
+  get hasMultipleAttacks() {
     return (
       this.hasAttack &&
       getProperty(this.system, "attackParts") != null &&
@@ -566,8 +566,6 @@ export class Item35E extends ItemBase35E {
     let deactivateBuff =
       getProperty(this.system, "active") && updated["system.active"] !== undefined && !updated["system.active"];
     // Update description
-    if (this.type === "spell") await this._updateSpellDescription(updated, srcData);
-    if (this.type === "card") await this._updateCardDescription(updated, srcData);
 
     // Set weapon subtype
     if (
@@ -898,23 +896,41 @@ export class Item35E extends ItemBase35E {
 
   /* -------------------------------------------- */
 
-  getChatData(htmlOptions, rollData) {
+  async getChatData(htmlOptions, rollData) {
     return new ItemChatData(this).getChatData(htmlOptions, rollData);
   }
 
+  async getDescription() {
+    return this.system.description.value;
+  }
+
+  async getUnidentifiedDescription() {
+    return this.system.description.unidentified;
+  }
+
   _addCombatChangesToRollData(allCombatChanges, rollData) {
+    let changeId = null;
+    let changeVal = null;
     allCombatChanges.forEach((change) => {
       if (change[3].indexOf("$") !== -1) {
-        setProperty(rollData, change[3].substr(1), Item35E._fillTemplate(change[4], rollData));
+        changeId = change[3].substr(1);
+        changeVal = Item35E._fillTemplate(change[4], rollData)
+        setProperty(rollData, changeId, changeVal);
       } else if (change[3].indexOf("&") !== -1) {
+        changeId = change[3].substr(1);
+        changeVal = Item35E._fillTemplate(change[4], rollData);
         setProperty(
           rollData,
           change[3].substr(1),
-          (getProperty(rollData, change[3].substr(1)) || "0") + " + " + Item35E._fillTemplate(change[4], rollData)
+          (getProperty(rollData, change[3].substr(1)) || "0") + " + " + changeVal
         );
       } else {
-        setProperty(rollData, change[3], (getProperty(rollData, change[3]) || 0) + parseInt(change[4] || 0));
+        changeId = change[3];
+        changeVal = parseInt(change[4] || 0);
+        setProperty(rollData, change[3], (getProperty(rollData, change[3]) || 0) + changeVal);
       }
+      var listId = changeId.indexOf(".") !== -1 ? `${changeId.replace(".","List.")}` : `${changeId}List`
+      setProperty(rollData, listId, (getProperty(rollData, listId) || []).concat([{value: changeVal, sourceName: change['sourceName']}]));
     });
   }
 
@@ -1257,31 +1273,6 @@ export class Item35E extends ItemBase35E {
       return "Last round";
     }
     return "Indefinite";
-  }
-
-  /**
-   * Updates the spell's description.
-   */
-  async _updateSpellDescription(updateData, srcData) {
-    const data = ItemSpellHelper.generateSpellDescription(this, srcData);
-
-    linkData(
-      srcData,
-      updateData,
-      "system.description.value",
-      await renderTemplate("systems/D35E/templates/internal/spell-description.html", data)
-    );
-  }
-
-  async _updateCardDescription(updateData, srcData) {
-    const data = ItemSpellHelper.generateSpellDescription(srcData);
-
-    linkData(
-      srcData,
-      updateData,
-      "system.description.value",
-      await renderTemplate("systems/D35E/templates/internal/spell-description.html", data)
-    );
   }
 
   /* -------------------------------------------- */
@@ -1686,7 +1677,7 @@ export class Item35E extends ItemBase35E {
       if (this.hasAttack) {
         result["attack.0"] = `${game.i18n.localize("D35E.Attack")} 1`;
       }
-      if (this.hasMultiAttack) {
+      if (this.hasMultipleAttacks) {
         for (let [k, v] of Object.entries(getProperty(this.system, "attackParts"))) {
           result[`attack.${Number(k) + 1}`] = v[1];
         }

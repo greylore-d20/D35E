@@ -153,9 +153,10 @@ export class ActorPrepareSourceHelper {
                 if (grp.length > 0) {
                     sourceDetails[changeTarget] = sourceDetails[changeTarget] || [];
                     for (let src of grp) {
-                        let srcInfo = this.#translateSourceInfo(src.type, src.subtype, src.name);
+                        let srcInfo = this.#translateSourceInfo(src.type, src.subtype, src.name, src.bonusType);
                         sourceDetails[changeTarget].push({
                             name: srcInfo,
+                            bonusType: src.bonusType,
                             value: src.value,
                             isItemBonus: this.#isItemBonus(src.type, src.subtype, src.name)
                         });
@@ -167,7 +168,7 @@ export class ActorPrepareSourceHelper {
         return sourceDetails;
     }
 
-    static #translateSourceInfo(type, subtype, name) {
+    static #translateSourceInfo(type, subtype, name, bonusType) {
         let result = "";
         if (type === "size") result = "Size";
         if (type === "buff") {
@@ -189,10 +190,15 @@ export class ActorPrepareSourceHelper {
             if (subtype === "racial") result = "Racial Traits";
             if (subtype === "misc") result = "Misc Features";
         }
+        let finalName = "";
+        if (!name || name.length === 0) finalName = result;
+        else if (result === "") finalName = name;
+        else finalName = `${result} → ${name}`;
 
-        if (!name || name.length === 0) return result;
-        if (result === "") return name;
-        return `${result} (${name})`;
+        if (bonusType) {
+            finalName = `${CONFIG.D35E.bonusModifiers[bonusType]} [${finalName}]`;
+        }
+        return finalName
     }
 
     static #isItemBonus(type, subtype, name) {

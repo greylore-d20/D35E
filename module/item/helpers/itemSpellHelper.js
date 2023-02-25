@@ -29,7 +29,7 @@ export class ItemSpellHelper {
     rollData.spellPenetration = rollData.cl + (rollData?.featSpellPenetrationBonus || 0);
   }
 
-  static generateSpellDescription(item, sourceItem) {
+  static async generateSpellDescription(sourceItem) {
     const reSplit = CONFIG.D35E.re.traitSeparator;
 
     const label = {
@@ -38,9 +38,11 @@ export class ItemSpellHelper {
       types: "",
     };
     const data = {
-      data: mergeObject(item.system, sourceItem?.system || {}, { inplace: false }),
+      data: mergeObject(sourceItem?.system || {}, { inplace: false }),
       label: label,
     };
+
+    data.renderedShortDescription = await TextEditor.enrichHTML(getProperty(data.data, "shortDescription"), {async: true})
 
     // Set subschool and types label
     const types = getProperty(sourceItem, "system.types");

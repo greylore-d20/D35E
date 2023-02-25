@@ -8,22 +8,18 @@
     {{#if showIdentifyDescription}}
     <section class="description-body">
       <div class="tab description-group flexcol" data-group="description" data-tab="identified">
-        {{editor content=data.system.description.value target="system.description.value" button=true owner=owner
-        editable=editable}}
+        {{editor enriched.description.value target="system.description.value" button=true editable=editable}}
       </div>
 
       <div class="tab description-group flexcol" data-group="description" data-tab="unidentified">
-        {{editor content=data.system.description.unidentified target="system.description.unidentified" button=true
-        owner=owner editable=editable}}
+        {{editor enriched.description.unidentified target="system.description.unidentified" button=true editable=editable}}
       </div>
     </section>
     {{else}}
     {{#if showUnidentifiedData}}
-    {{editor content=data.system.description.unidentified target="system.description.unidentified" button=true
-    owner=owner editable=editable}}
+    {{editor enriched.description.unidentified target="system.description.unidentified" button=true editable=editable}}
     {{else}}
-    {{editor content=data.system.description.value target="system.description.value" button=true owner=owner
-    editable=editable}}
+    {{editor enriched.description.value target="system.description.value" button=true editable=editable}}
     {{/if}}
     {{/if}}
     {{#if 

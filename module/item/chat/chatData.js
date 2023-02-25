@@ -9,7 +9,8 @@ export class ItemChatData {
         this.item = item;
     }
 
-    getChatData(htmlOptions, rollData) {
+    async getChatData(htmlOptions, rollData) {
+        if (!htmlOptions) htmlOptions = {}
         const data = duplicate(this.item.system);
         const labels = this.item.labels;
         if (!rollData) {
@@ -18,7 +19,7 @@ export class ItemChatData {
             if (this.item.actor) {
                 let allCombatChanges = []
                 let attackType = this.item.type;
-                this.item.actor.items.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,attackType)).forEach(i => {
+                this.item.actor.combatChangeItems.filter(o => ItemCombatChangesHelper.canHaveCombatChanges(o,rollData,attackType)).forEach(i => {
                     allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData))
                 })
 
@@ -67,12 +68,12 @@ export class ItemChatData {
             rollData.ablMod = ablMod;
         }
 
-
+        htmlOptions.async = true;
         // Rich text description
         if (this.item.showUnidentifiedData) {
-            data.description.value = TextEditor.enrichHTML(data.description.unidentified, htmlOptions);
+            data.description.value = await TextEditor.enrichHTML(await this.item.getUnidentifiedDescription(), htmlOptions);
         } else {
-            data.description.value = TextEditor.enrichHTML(data.description.value, htmlOptions);
+            data.description.value = await TextEditor.enrichHTML(await this.item.getDescription(), htmlOptions);
         }
 
         // General equipment properties

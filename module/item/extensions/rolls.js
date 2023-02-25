@@ -4,6 +4,7 @@ import { CACHE } from "../../cache.js";
 import { Item35E } from "../entity.js";
 import { createCustomChatMessage } from "../../chat.js";
 import { ItemSpellHelper as ItemSpellHelper } from "../helpers/itemSpellHelper.js";
+import { ItemCombatCalculationsHelper } from '../helpers/itemCombatCalculationsHelper.js'
 
 /**
  * Place an attack roll using an item (weapon, feat, spell, or equipment)
@@ -33,10 +34,10 @@ export class ItemRolls {
       name: this.item.displayName,
       tokenId: token ? `${token.parent.id}.${token.id}` : null,
       item: this.item.data,
-      data: this.item.getChatData(),
+      data: await this.item.getChatData(),
       labels: this.item.labels,
       hasAttack: this.item.hasAttack,
-      hasMultiAttack: this.item.hasMultiAttack,
+      hasMultipleAttacks: this.item.hasMultipleAttacks,
       hasAction: this.item.hasAction || this.item.isCharged,
       isHealing: this.item.isHealing,
       hasDamage: this.item.hasDamage,
@@ -104,15 +105,24 @@ export class ItemRolls {
 
     // Define Roll parts
     let parts = [];
+    let descriptionParts = [];
     // Add ability modifier
-    if (abl != "" && rollData.abilities[abl] != null && rollData.abilities[abl].mod !== 0)
+    if (abl != "" && rollData.abilities[abl] != null) {
       parts.push(`@abilities.${abl}.mod`);
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackAbilityModifier"), value:rollData.abilities[abl].mod})
+    }
     // Add bonus parts
     if (options.parts != null) parts = parts.concat(options.parts);
     // Add size bonus
-    if (rollData.sizeBonus !== 0) parts.push("@sizeBonus");
-    if (rollData.featAttackBonus) {
-      if (rollData.featAttackBonus !== 0) parts.push("${this.featAttackBonus}");
+    if (rollData.sizeBonus !== 0) {
+      parts.push('@sizeBonus')
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackSizeBonus"), value:rollData.sizeBonus})
+    }
+    if (rollData.featAttackBonusList) {
+      for (let [i, bonus] of rollData.featAttackBonusList.entries()) {
+        parts.push("${this.featAttackBonusList["+i+"].value}")
+        descriptionParts.push({name:bonus["sourceName"], value:bonus["value"]})
+      }
     }
 
     // Add attack bonus
@@ -120,59 +130,80 @@ export class ItemRolls {
       let attackBonus = new Roll35e(rollData.item.attackBonus, rollData).roll().total;
       rollData.item.attackBonus = attackBonus.toString();
       parts.push("@item.attackBonus");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackItemBonus"), value:rollData.item.attackBonus})
     }
 
     // Add certain attack bonuses
     if (rollData.attributes.attack.general !== 0) {
       parts.push("@attributes.attack.general");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackGeneralBonus"), value:rollData.attributes.attack.general})
     }
     if (["mwak", "msak"].includes(itemData.actionType) && rollData.attributes.attack.melee !== 0) {
       parts.push("@attributes.attack.melee");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackGeneralMeleeBonus"), value:rollData.attributes.attack.melee})
     } else if (["rwak", "rsak"].includes(itemData.actionType) && rollData.attributes.attack.ranged !== 0) {
       parts.push("@attributes.attack.ranged");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackGeneralRangedBonus"), value:rollData.attributes.attack.ranged})
     }
     // Add BAB
-    if (rollData.attributes.bab.total !== 0 && rollData.attributes.bab.total != null) {
+    if (rollData.attributes.bab.total != null) {
       parts.push("@attributes.bab.total");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackBAB"), value:rollData.attributes.bab.total})
     }
     rollData.item.enh = options?.replacedEnh || 0;
     // Add item's enhancement bonus
     if (rollData.item.enh !== 0 && rollData.item.enh != null) {
       parts.push("@item.enh");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackEnhancementBonus"), value:rollData.item.enh})
     }
     // Subtract energy drain
     if (rollData.attributes.energyDrain != null && rollData.attributes.energyDrain !== 0) {
       parts.push("- max(0, abs(@attributes.energyDrain))");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackEnergyDrainPenalty"), value:rollData.attributes.energyDrain})
     }
     // Add proficiency penalty
-    if (this.item.data.type === "attack" && !itemData.proficient) {
+    if (this.item.type === "attack" && !itemData.proficient) {
       parts.push("@item.proficiencyPenalty");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackProficiencyPenalty"), value:rollData.item.proficiencyPenalty})
     }
     // Add masterwork bonus
-    if (this.item.data.type === "attack" && itemData.masterwork === true && itemData.enh < 1) {
+    if (this.item.type === "attack" && itemData.masterwork === true && itemData.enh < 1) {
       rollData.item.masterworkBonus = 1;
       parts.push("@item.masterworkBonus");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackMasterworkBonus"), value:rollData.item.masterworkBonus})
     }
     // Add secondary natural attack penalty
-
-    let hasMultiattack = this.item.actor
-      ? this.item.actor.items.filter(
-          (o) => o.type === "feat" && (o.name === "Multiattack" || o.system.changeFlags.multiAttack)
-        ).length > 0
-      : false;
-    if (options.primaryAttack === false && hasMultiattack) parts.push("-2");
-    if (options.primaryAttack === false && !hasMultiattack) parts.push("-5");
-    // Add bonus
+    if (options.primaryAttack === false) {
+      if (this.item.actor.getFlag("D35E","improvedMultiAttack")) {
+        descriptionParts.push({name:game.i18n.localize("D35E.AttackSecondaryAttackPenalty"), value:0})
+      } else if (this.item.actor.getFlag("D35E","multiAttack")) {
+        parts.push("-2");
+        descriptionParts.push({name:game.i18n.localize("D35E.AttackSecondaryAttackPenalty"), value:-2})
+      } else {
+        parts.push("-5");
+        descriptionParts.push({name:game.i18n.localize("D35E.AttackSecondaryAttackPenalty"), value:-5})
+      }
+    }
 
     if (options.bonus) {
       rollData.bonus = options.bonus;
       parts.push("@bonus");
+      descriptionParts.push({name:game.i18n.localize("D35E.AttackArbitraryBonus"), value:options.bonus})
     }
     // Add extra parts
     if (options.extraParts != null) {
-      parts = parts.concat(options.extraParts);
+      for (let part of options.extraParts) {
+        parts = parts.push(part.part);
+        descriptionParts.push({name:part.source, value:part.value})
+      }
     }
-    let roll = new Roll35e(["1d20"].concat(parts).join("+"), rollData).roll();
+    let roll = null;
+    if (options.bonusOnly) {
+      roll = new Roll35e(parts.join("+"), rollData).roll()
+    } else {
+      roll = new Roll35e(["1d20"].concat(parts).join("+"), rollData).roll()
+    }
+    roll.descriptionParts = descriptionParts;
     return roll;
   }
 
@@ -213,12 +244,7 @@ export class ItemRolls {
     rollData.critMult = 1;
     if (critical) rollData.critMult = rollData.item.ability.critMult;
     // Determine ability multiplier
-    if (rollData.item.ability.damageMult != null) rollData.ablMult = rollData.item.ability.damageMult;
-    if (primaryAttack === false && rollData.ablMult > 0) rollData.ablMult = 0.5;
-    let naturalAttackCount = (this.item.actor?.items || []).filter(
-      (o) => o.type === "attack" && o.system.attackType === "natural"
-    )?.length;
-    if (rollData.item.attackType === "natural" && primaryAttack && naturalAttackCount === 1) rollData.ablMult = 1.5;
+    rollData.ablMult = ItemCombatCalculationsHelper.calculateAbilityModifier(this.item, rollData.item.ability.damageMult, rollData.item.attackType, primaryAttack)
 
     // Create effect string
     let notes = [];
@@ -290,14 +316,13 @@ export class ItemRolls {
     rollData.critMult = 1;
     rollData.ablMult = 1;
     if (critical) rollData.critMult = getProperty(this.item.system, "ability.critMult");
-    // Determine ability multiplier
-    if (rollData.damageAbilityMultiplier !== undefined && rollData.damageAbilityMultiplier !== null)
+    // Determine ability multiplier from the rollData override or from the item itself
+    if (rollData.damageAbilityMultiplier !== undefined && rollData.damageAbilityMultiplier !== null) {
       rollData.ablMult = rollData.damageAbilityMultiplier;
-    if (primaryAttack === false && rollData.ablMult > 0) rollData.ablMult = 0.5;
-    let naturalAttackCount = (this.item.actor?.items || []).filter(
-      (o) => o.type === "attack" && o.system.attackType === "natural"
-    )?.length;
-    if (rollData.item.attackType === "natural" && primaryAttack && naturalAttackCount === 1) rollData.ablMult = 1.5;
+    } else {
+      rollData.ablMult = rollData.item.ability.damageMult;
+    }
+    rollData.ablMult = ItemCombatCalculationsHelper.calculateAbilityModifier(this.item, rollData.ablMult, rollData.item.attackType, primaryAttack )
 
     // Define Roll parts
     let parts = this.#_mapDamageTypes(rollData.item.damage.parts);
@@ -320,7 +345,7 @@ export class ItemRolls {
         parts.push({
           base: "@ablDamage * @critMult",
           extra: [],
-          damageType: "Ability",
+          damageType: `Ability (${(rollData.ablMult || 1)})`,
           damageTypeUid: parts[0].damageTypeUid,
         });
       else if (rollData.ablDamage !== 0)
@@ -405,14 +430,22 @@ export class ItemRolls {
         .map((p) => {
           if (p[2] === "base")
             return { base: p[0], extra: [], damageType: p[1], damageTypeUid: parts[0].damageTypeUid };
-          if (p[2]) p[1] = CACHE.DamageTypes.get(p[2]).data.name;
+          if (p[2] && p[2] !== null) p[1] = CACHE.DamageTypes.get(p[2]).name;
           else if (p[1]) {
-            for (let damageType of CACHE.DamageTypes.values()) {
-              if (damageType.system.identifiers.some((i) => i[0].toLowerCase() === p[1].toLowerCase()))
-                p[2] = damageType.system.uniqueId;
+            let uidDamageType = CACHE.DamageTypes.get(p[1]);
+            if (uidDamageType) {
+              p[2] = p[1];
+              p[1] = uidDamageType.name;
+            } else {
+              for (let damageType of CACHE.DamageTypes.values()) {
+                if (damageType.system.identifiers.some((i) => i[0].toLowerCase() === p[1].toLowerCase())) {
+                  p[2] = damageType.system.uniqueId;
+                  p[1] = damageType.name;
+                }
+              }
             }
           }
-          return { base: p[0], extra: [], damageType: p[1], damageTypeUid: p[2] };
+          return { base: p[0], extra: [], damageType: p[1], damageTypeUid: p[2], source: p[3] };
         })
     );
     // Create roll
@@ -431,9 +464,10 @@ export class ItemRolls {
           roll: new Roll35e(rollString, rollData).roll(),
           damageType: part.damageType,
           damageTypeUid: part.damageTypeUid,
+          source: part.source
         };
       } else {
-        let rollString = `${modifiers.multiplier ? modifiers.multiplier + "*" : ""}((${[part.base, ...part.extra].join(
+        let rollString = `${(modifiers.multiplier && modifiers.multiplier !== 1) ? modifiers.multiplier + "*" : ""}((${[part.base, ...part.extra].join(
           "+"
         )}))`;
         if (modifiers.maximize) rollString = rollString.replace(/d([1-9]+)/g, "*$1");
@@ -441,6 +475,7 @@ export class ItemRolls {
           roll: new Roll35e(rollString, rollData).roll(),
           damageType: part.damageType,
           damageTypeUid: part.damageTypeUid,
+          source: part.source
         };
       }
       rolls.push(roll);

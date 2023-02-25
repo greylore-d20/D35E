@@ -108,7 +108,7 @@ export class ActorSheetPF extends ActorSheet {
       i.id = item.id;
       i.hasAttack = item.hasAttack;
       i.possibleUpdate = item.system.possibleUpdate;
-      i.hasMultiAttack = item.hasMultiAttack;
+      i.hasMultipleAttacks = item.hasMultipleAttacks;
       i.containerId = getProperty(item.system, "containerId");
       i.hasDamage = item.hasDamage;
       i.hasEffect = item.hasEffect;
@@ -1376,7 +1376,7 @@ export class ActorSheetPF extends ActorSheet {
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
    * @private
    */
-  _onItemSummary(event) {
+  async _onItemSummary(event) {
     event.preventDefault();
     let li = $(event.currentTarget).closest(".item"),
       item = this.actor.getOwnedItem(li.attr("data-item-id"));
@@ -1392,7 +1392,7 @@ export class ActorSheetPF extends ActorSheet {
     } else {
       let summary = li.children(".item-summary");
       if (!summary.length && item) {
-        let chatData = item.getChatData({ secrets: this.actor.isOwner });
+        let chatData = await item.getChatData({ secrets: this.actor.isOwner });
         let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
         let subElements = $(`<ul class="item-enh-list"></ul>`);
         let props = $(`<div class="item-properties"></div>`);
@@ -1965,12 +1965,6 @@ export class ActorSheetPF extends ActorSheet {
           await eval("(async () => {" + i.system.metamagic.code + "})()");
         }
       }
-
-      newSpell.data.description.value = await renderTemplate(
-        "systems/D35E/templates/internal/spell-description.html",
-        new Item35E(newSpell)._generateSpellDescription(newSpell)
-      );
-
       let x = await this.actor.createEmbeddedEntity("Item", newSpell, { ignoreSpellbookAndLevel: true });
     };
 
@@ -2984,9 +2978,10 @@ export class ActorSheetPF extends ActorSheet {
       const pack = game.packs.find((p) => p.metadata.id === dropData.pack);
       const packItem = await pack.getDocument(dropData.id || dropData._id);
       if (packItem != null) {
-        itemData = packItem.data.toObject(false);
-        itemData.data.originPack = dropData.pack;
-        itemData.data.originId = packItem.id;
+        itemData = packItem.toObject(false);
+        itemData.system.originPack = dropData.pack;
+        itemData.system.originId = packItem.id;
+        ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid)
       }
     }
 
@@ -3329,9 +3324,10 @@ export class ActorSheetPF extends ActorSheet {
     const pack = game.packs.find((p) => p.metadata.id === packId);
     const packItem = await pack.getDocument(itemId);
     if (packItem != null) {
-      itemData = packItem.data.toObject(false);
-      itemData.data.originPack = packId;
-      itemData.data.originId = packItem.id;
+      itemData = packItem.toObject(false);
+      itemData.system.originPack = packId;
+      itemData.system.originId = packItem.id;
+      ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid)
     }
     itemData.data.quantity = quantity;
     this.enrichDropData(itemData);
