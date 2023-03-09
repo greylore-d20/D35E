@@ -1384,7 +1384,15 @@ export class ActorUpdater {
     //linkData(data, updateData, "system.attributes.hd.racialClass", data1.details.level.value - raceLA);
 
     let cr = data1.details.cr || 0;
-    linkData(source, updateData, "system.details.totalCr", cr < 1 ? cr : Math.floor(cr));
+    let crVal = cr;
+    if (typeof cr === 'string') {
+      if (cr.includes("/")) {
+        crVal = parseInt(cr.split("/")[0]) / parseInt(cr.split("/")[1]);
+      } else
+        crVal = parseFloat(cr);
+    }
+    linkData(source, updateData, "system.details.cr", crVal < 1 ? crVal.toFixed(2) : Math.floor(crVal));
+    linkData(source, updateData, "system.details.totalCr", crVal < 1 ? crVal.toFixed(2) : Math.floor(crVal));
 
     // Reset abilities
     for (let [a, abl] of Object.entries(data1.abilities)) {
