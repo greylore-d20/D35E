@@ -2,6 +2,9 @@ import { ActorPF } from "../actor/entity.js";
 import { D35E } from "../config.js";
 import { Roll35e } from "../roll.js";
 import { ActorSheetPFNPCCombat } from "../actor/sheets/npc-combat.js";
+import { TokenPF } from "../token/token.js";
+import { TokenDocumentPF } from "../token/tokenDocument.js";
+import { LogHelper } from "../helpers/LogHelper.js";
 
 export class CombatantD35E extends Combatant {
   constructor(...args) {
@@ -76,6 +79,7 @@ export class CombatD35E extends Combat {
   constructor(...args) {
     super(...args);
     this.buffs = new Map();
+    this.roundBuffUpdates = new Map();
     this.npcSheet = null;
   }
 
@@ -190,15 +194,17 @@ export class CombatD35E extends Combat {
     await this.updateEmbeddedDocuments("Combatant", updates);
 
     // Add enabled, existing buffs to combat tracker
+    let buffsToAdd = [];
     for (let id of ids) {
       const c = this.combatants.get(id);
       if (!c) continue;
       if (c.actor) {
         for (let buff of c.actor.trackedBuffs) {
-          await this.addBuffToCombat(buff, c.actor);
+          buffsToAdd.push({ actor: c.actor, buff: buff, initiative: c.initiative });
         }
       }
     }
+    await this.addBuffsToCombat(buffsToAdd);
 
     // Ensure the turn order remains with the same combatant
     if (updateTurn) await this.update({ turn: this.turns.findIndex((t) => t.id === currentId) });
@@ -264,20 +270,90 @@ export class CombatD35E extends Combat {
       const actor = this.combatant?.actor;
       const buffId = this.combatant?.flags?.D35E?.buffId;
       if (actor != null) {
+        if (this.roundBuffUpdates.size) {
+          LogHelper.debug(this.roundBuffUpdates);
+          let promises = [];
+
+          // Update actor embedded documents
+          for (let [actorUuid, update] of this.roundBuffUpdates.entries()) {
+            let _actor = await this.getActorFromTokenOrActorUuid(actorUuid);
+            if (update.itemUpdateData.length > 0) {
+              promises.push(_actor.updateEmbeddedDocuments("Item", update.itemUpdateData));
+            }
+          }
+          await Promise.all(promises);
+
+          // Update Actor resources
+          promises = [];
+          for (let [actorUuid, update] of this.roundBuffUpdates.entries()) {
+            let _actor = await this.getActorFromTokenOrActorUuid(actorUuid);
+            if (Object.keys(update.itemResourcesData).length > 0 || update.deletedOrChanged) {
+              await _actor.update(update.itemResourcesData);
+            }
+            if (update.itemsEnding.length) _actor.renderBuffEndChatCard(update.itemsEnding);
+            if (update.itemsOnRound.length) _actor.applyOnRoundBuffActions(update.itemsOnRound);
+          }
+          await Promise.all(promises);
+
+          let buffsToDelete = new Set();
+          for (let [actorUuid, update] of this.roundBuffUpdates.entries()) {
+            let _actor = await this.getActorFromTokenOrActorUuid(actorUuid);
+            if (update.itemsToDelete.length > 0) {
+              promises.push(_actor.deleteEmbeddedDocuments("Item", update.itemsToDelete));
+              buffsToDelete.add(update.buffsToDelete);
+            }
+          }
+          await Promise.all(promises);
+
+          if (buffsToDelete.size) {
+            await this.removeBuffsFromCombat(Array.from(buffsToDelete));
+          }
+          // Clear round buff updates
+          this.roundBuffUpdates.clear();
+
+          LogHelper.getTime("D35E.processCurrentCombatant");
+        }
         await actor.progressRound();
       } else if (buffId) {
+        LogHelper.startTimer("D35E.processCurrentCombatant");
         let actor;
-        if (this.combatant?.flags?.D35E?.isToken) {
-          actor = canvas.scene.tokens.get(this.combatant?.flags?.D35E?.tokenId).actor;
+        if (!this.combatant?.flags?.D35E?.actorUuid) {
+          if (this.combatant?.flags?.D35E?.isToken) {
+            actor = canvas.scene.tokens.get(this.combatant?.flags?.D35E?.tokenId).actor;
+          } else {
+            actor = game.actors.get(this.combatant?.flags?.D35E?.actor);
+          }
         } else {
-          actor = game.actors.get(this.combatant?.flags?.D35E?.actor);
+          actor = await this.getActorFromTokenOrActorUuid(this.combatant?.flags?.D35E?.actorUuid);
         }
-        await actor.progressBuff(buffId, 1);
+        if (this.combatant?.flags?.D35E?.isAura) {
+          for (let combatant of this.combatants) {
+            if (combatant?.flags?.D35E?.buffId) continue;
+            let _actor = null;
+            if (combatant.actor) {
+              _actor = combatant.actor;
+            }
+            if (_actor) {
+              const aura = _actor.getAura(buffId);
+              if (aura) {
+                await _actor.progressBuff(this.roundBuffUpdates, aura.id, 1);
+              }
+            }
+          }
+        } else {
+          await actor.progressBuff(this.roundBuffUpdates, buffId, 1);
+        }
         await this.nextTurn();
       }
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async getActorFromTokenOrActorUuid(uuid) {
+    let actorOrToken = await fromUuid(uuid);
+    if (actorOrToken instanceof TokenDocumentPF) return actorOrToken.actor;
+    else return actorOrToken;
   }
 
   /**
@@ -315,41 +391,57 @@ export class CombatD35E extends Combat {
     return combat;
   }
 
-  async addBuffToCombat(buff, actor) {
-    for (let combatant of this.combatants) {
-      if (this.combatant?.flags?.D35E?.buffId === buff.id) {
-        await combatant.update({ initiative: this.combatant.initiaitve + 0.01 });
-        return;
+  async addBuffsToCombat(buffs) {
+    let buffsToAdd = [];
+    let buffsToUpdate = [];
+    for (let buffActor of buffs) {
+      let buff = buffActor.buff;
+      let actor = buffActor.actor;
+      let updateExisting = false;
+      for (let combatant of this.combatants) {
+        if (this.combatant?.flags?.D35E?.buffId === buff.id) {
+          buffsToUpdate.push({ id: this.combatant.id, initiative: this.combatant.initiaitve + 0.01 });
+          updateExisting = true;
+        }
       }
-    }
-    let buffDelta = 0.01;
-    if (buff.system.timeline.tickOnEnd) buffDelta = -0.01;
-    let buffCombatant = (
-      await this.createEmbeddedDocuments("Combatant", [
-        {
+      if (!updateExisting) {
+        let buffDelta = 0.01;
+        if (buff.system.timeline.tickOnEnd) buffDelta = -0.01;
+        buffsToAdd.push({
           name: buff.name,
           img: buff.img,
-          initiative: this.combatant.initiative + buffDelta,
+          initiative: buffActor.initiative || this.combatant.initiative || 20 + buffDelta,
           flags: {
             D35E: {
+              isBuff: true,
               buffId: buff.id,
+              isAura: buff.isAura,
               actor: actor.id,
+              actorUuid: actor.uuid,
               isToken: actor.isToken,
               tokenId: actor?.token?.id,
               actorImg: actor.img,
               actorName: actor.name,
             },
           },
-        },
-      ])
-    )[0];
+        });
+      }
+    }
+
+    await this.updateEmbeddedDocuments("Combatant", buffsToUpdate);
+    await this.createEmbeddedDocuments("Combatant", buffsToAdd);
   }
 
-  async removeBuffFromCombat(buff) {
+  /**
+   *
+   * @param {string[]} buffs
+   * @returns {Promise<void>}
+   */
+  async removeBuffsFromCombat(buffs) {
     try {
       let combatantsToDelete = [];
       for (let combatant of this.combatants) {
-        if (combatant?.flags?.D35E?.buffId === buff.id) {
+        if (buffs.includes(combatant?.flags?.D35E?.buffId)) {
           combatantsToDelete.push(combatant.id);
         }
       }

@@ -8,7 +8,7 @@ import { createCustomChatMessage } from "../../chat.js";
 import { D35E } from "../../config.js";
 import { ItemSpellHelper as ItemSpellHelper } from "../helpers/itemSpellHelper.js";
 import { ItemCombatChangesHelper } from "../helpers/itemCombatChangesHelper.js";
-import {Item35E} from "../entity.js";
+import { Item35E } from "../entity.js";
 
 export class ItemUse {
   /**
@@ -260,7 +260,11 @@ export class ItemUse {
         label: `Rapid Shot`,
       });
       rollData.rapidShotPenalty = -2;
-      attackExtraParts.push({part:"@rapidShotPenalty", value: rollData.rapidShotPenalty, source:game.i18n.localize("D35E.AttackRapidShot")});
+      attackExtraParts.push({
+        part: "@rapidShotPenalty",
+        value: rollData.rapidShotPenalty,
+        source: game.i18n.localize("D35E.AttackRapidShot"),
+      });
     }
 
     if (flurryOfBlows) {
@@ -274,13 +278,20 @@ export class ItemUse {
       //1-4 = -2
       if (monkClass.system.levels < 5) {
         rollData.flurryOfBlowsPenalty = -2;
-        attackExtraParts.push({part:"@flurryOfBlowsPenalty", value: rollData.rapidShotPenalty, source:game.i18n.localize("D35E.AttackFlurryOfBlows")});
-
+        attackExtraParts.push({
+          part: "@flurryOfBlowsPenalty",
+          value: rollData.rapidShotPenalty,
+          source: game.i18n.localize("D35E.AttackFlurryOfBlows"),
+        });
       }
       //5-8 = -1
       else if (monkClass.system.levels < 9) {
         rollData.flurryOfBlowsPenalty = -1;
-        attackExtraParts.push({part:"@flurryOfBlowsPenalty", value: rollData.rapidShotPenalty, source:game.i18n.localize("D35E.AttackFlurryOfBlows")});
+        attackExtraParts.push({
+          part: "@flurryOfBlowsPenalty",
+          value: rollData.rapidShotPenalty,
+          source: game.i18n.localize("D35E.AttackFlurryOfBlows"),
+        });
         //9+ = 0
         //11+ = 2nd extra attack
       } else if (monkClass.system.levels > 10) {
@@ -330,13 +341,11 @@ export class ItemUse {
         if (modifier.target === "attack") {
           if (modifier.subTarget !== "allAttack") {
             if (!attackEnhancementMap.has(modifier.subTarget)) attackEnhancementMap.set(modifier.subTarget, []);
-            attackEnhancementMap.get(modifier.subTarget).push(
-              {part:modifier.formula, value: modifier.formula, source:`${conditional.name}`}
-            );
+            attackEnhancementMap
+              .get(modifier.subTarget)
+              .push({ part: modifier.formula, value: modifier.formula, source: `${conditional.name}` });
           } else {
-            attackExtraParts.push(
-              {part:modifier.formula, value: modifier.formula, source:`${conditional.name}`}
-            );
+            attackExtraParts.push({ part: modifier.formula, value: modifier.formula, source: `${conditional.name}` });
           }
         }
         if (modifier.target === "damage") {
@@ -345,14 +354,14 @@ export class ItemUse {
             damageEnhancementMap.get(modifier.subTarget).push({
               formula: modifier.formula,
               type: modifier.type,
-              source: conditional.name
+              source: conditional.name,
             });
           } else
             damageExtraParts.push([
               modifier.formula,
               CACHE.DamageTypes.get(modifier.type)?.data?.name || game.i18n.localize("D35E.UnknownDamageType"),
               modifier.type,
-              `${conditional.name}`
+              `${conditional.name}`,
             ]);
         }
       }
@@ -369,7 +378,7 @@ export class ItemUse {
       rollModifiers,
       optionalFeatIds,
       optionalFeatRanges
-    )
+    );
 
     this.item._addCombatChangesToRollData(allCombatChanges, rollData);
 
@@ -382,22 +391,30 @@ export class ItemUse {
 
     if (rollData.featDamageBonusList) {
       for (let [i, bonus] of rollData.featDamageBonusList.entries()) {
-        damageExtraParts.push(["@critMult*(${this.featDamageBonusList["+i+"].value})", bonus["sourceName"], "base"]);
+        damageExtraParts.push([
+          "@critMult*(${this.featDamageBonusList[" + i + "].value})",
+          bonus["sourceName"],
+          "base",
+        ]);
       }
     }
     if (rollData.featDamagePrecisionList) {
       for (let [i, bonus] of rollData.featDamagePrecisionList.entries()) {
-        damageExtraParts.push(["(${this.featDamagePrecisionList["+i+"].value})", bonus["sourceName"]]);
+        damageExtraParts.push(["(${this.featDamagePrecisionList[" + i + "].value})", bonus["sourceName"]]);
       }
     }
     if (rollData.featDamageList) {
       for (let dmg of Object.keys(rollData.featDamageList)) {
         // //console.log('Bonus damage!', dmg, rollData.featDamage[dmg])
         for (let [i, bonus] of rollData.featDamageList[dmg].entries()) {
-          let extraDamagePart = ["(${this.featDamageList['" + dmg + "']["+i+"].value})", dmg, null, bonus["sourceName"]];
+          let extraDamagePart = [
+            "(${this.featDamageList['" + dmg + "'][" + i + "].value})",
+            dmg,
+            null,
+            bonus["sourceName"],
+          ];
           damageExtraParts.push(extraDamagePart);
         }
-
       }
     }
 
@@ -414,7 +431,7 @@ export class ItemUse {
 
     let dc = this.#_getSpellDC(rollData);
     rollData.dc = dc;
-    rollData.spellPenetration = rollData.cl + (rollData.featSpellPenetrationBonus || 0)
+    rollData.spellPenetration = rollData.cl + (rollData.featSpellPenetrationBonus || 0);
     this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
 
     let manyshotAttacks = [];
@@ -646,7 +663,7 @@ export class ItemUse {
       }
       let _template = await result.place();
       if (selectedTargets.length == 0) {
-        // We can override selevted dargets
+        // We can override selected targets
         selectedTargets = template.getTokensWithin().filter((t) => !t.data.hidden);
         hiddenTargets = template.getTokensWithin().filter((t) => t.data.hidden);
       }
@@ -705,12 +722,13 @@ export class ItemUse {
 
         for (let note of noteObj.notes) {
           for (let _note of note.split(/[\n\r]+/)) {
-            let attackNote = await TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(_note, rollData)}</span>`, {
-              rollData: rollData,
-            })
-            attackNotes.push(
-                attackNote
-            )
+            let attackNote = await TextEditor.enrichHTML(
+              `<span class="tag">${Item35E._fillTemplate(_note, rollData)}</span>`,
+              {
+                rollData: rollData,
+              }
+            );
+            attackNotes.push(attackNote);
           }
         }
       }
@@ -744,7 +762,19 @@ export class ItemUse {
           header: game.i18n.localize("D35E.RollModifiers"),
           value: rollModifiers,
         });
-
+      hiddenTargets = hiddenTargets.map((t) => {
+        return {
+          name: t.document.name,
+          img: t.document.texture.src,
+        };
+      });
+      selectedTargets = selectedTargets.map((t) => {
+        return {
+          id: t.id,
+          name: t.document.name,
+          img: t.document.texture.src,
+        };
+      });
       const token = actor ? actor.token : null;
       const templateData = mergeObject(
         chatTemplateData,

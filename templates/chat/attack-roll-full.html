@@ -11,7 +11,7 @@
         {{#if atk.hasAttack}}
             <div class="dice-roll attack-roll">
                 {{#if atk.attack.flavor}}
-                    <div class="dice-flavor">{{atk.attack.flavor}} {{#if ../item.data.ability.vsTouchAc}}(vs Touch AC){{/if}}
+                    <div class="dice-flavor">{{atk.attack.flavor}} {{#if ../item.vsTouchAc}}(vs Touch AC){{/if}}
                         {{#if ../nonLethal}}({{localize "D35E.WeaponPropNonLethal"}}){{/if}}
                     </div>
                 {{/if}}
@@ -24,7 +24,7 @@
             {{#if atk.hasCritConfirm}}
                 <div class="dice-roll crit-confirm-roll">
                     {{#if atk.critConfirm.flavor}}
-                    <div class="dice-flavor">{{atk.critConfirm.flavor}} {{#if ../item.data.ability.vsTouchAc}}(vs Touch
+                    <div class="dice-flavor">{{atk.critConfirm.flavor}} {{#if ../item.vsTouchAc}}(vs Touch
                         AC){{/if}}
                     </div>
                     {{/if}}

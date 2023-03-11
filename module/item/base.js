@@ -20,5 +20,9 @@ export class ItemBase35E extends Item {
         return null;
     }
 
+    updateGetSubtype(updated) {
+        return null;
+    }
+
 
 }

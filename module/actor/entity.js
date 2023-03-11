@@ -1,22 +1,23 @@
-import {DicePF} from "../dice.js";
-import {Item35E} from "../item/entity.js";
-import {createTag, getOriginalNameIfExists, isMinimumCoreVersion, linkData, shuffle, uuidv4,} from "../lib.js";
-import {createCustomChatMessage} from "../chat.js";
-import {DamageTypes} from "../damage-types.js";
-import {D35E} from "../config.js";
-import {Roll35e} from "../roll.js";
-import {ActorRestDialog} from "../apps/actor-rest.js";
-import {VisionPermissionSheet} from "../apps/vision-permission.js";
-import {ItemConsumableConverter} from "../item/converters/consumable.js";
-import {ItemCombatChangesHelper} from "../item/helpers/itemCombatChangesHelper.js";
-import {ItemPrepareDataHelper} from "./helpers/itemPrepareDataHelper.js";
-import {ActorBuffs} from "./actions/buffs.js";
-import {ActorConditions} from "./actions/conditions.js";
-import {ActorUpdater} from "./update/actorUpdater.js";
-import {LogHelper} from "../helpers/LogHelper.js";
-import {ActorMinionsHelper} from "./helpers/actorMinionsHelper.js";
-import {ItemEnhancementHelper} from "../item/helpers/itemEnhancementHelper.js";
-import {ActorCRHelper} from "./helpers/actorCRHelper.js";
+import { DicePF } from "../dice.js";
+import { Item35E } from "../item/entity.js";
+import { createTag, getOriginalNameIfExists, isMinimumCoreVersion, linkData, shuffle, uuidv4 } from "../lib.js";
+import { createCustomChatMessage } from "../chat.js";
+import { DamageTypes } from "../damage-types.js";
+import { D35E } from "../config.js";
+import { Roll35e } from "../roll.js";
+import { ActorRestDialog } from "../apps/actor-rest.js";
+import { VisionPermissionSheet } from "../apps/vision-permission.js";
+import { ItemConsumableConverter } from "../item/converters/consumable.js";
+import { ItemCombatChangesHelper } from "../item/helpers/itemCombatChangesHelper.js";
+import { ItemPrepareDataHelper } from "./helpers/itemPrepareDataHelper.js";
+import { ActorBuffs } from "./actions/buffs.js";
+import { ActorConditions } from "./actions/conditions.js";
+import { ActorUpdater } from "./update/actorUpdater.js";
+import { LogHelper } from "../helpers/LogHelper.js";
+import { ActorMinionsHelper } from "./helpers/actorMinionsHelper.js";
+import { ItemEnhancementHelper } from "../item/helpers/itemEnhancementHelper.js";
+import { ActorCRHelper } from "./helpers/actorCRHelper.js";
+import { CombatChange } from "../item/extensions/combatChange.js";
 
 /**
  * Extend the base Actor class to implement additional logic specialized for D&D5e.
@@ -44,7 +45,6 @@ export class ActorPF extends Actor {
     this.buffs = new ActorBuffs(this);
     this.crHelper = new ActorCRHelper(this);
     this.combatChangeItems = this.items.filter((o) => ItemCombatChangesHelper.isCombatChangeItemType(o));
-
   }
 
   /* -------------------------------------------- */
@@ -78,10 +78,16 @@ export class ActorPF extends Actor {
     return this._cachedAuras;
   }
 
+  getAura(auraId) {
+    return this.auras.find((o) => o.id === auraId || o.system.sourceAuraId === auraId);
+  }
+
   get trackedBuffs() {
     if (this.items == null) return null;
     return this.items.filter(
-      (o) => o.type === "buff" && getProperty(o.system, "active") && getProperty(o.system, "timeline.enabled")
+      (o) =>
+        (o.type === "buff" && getProperty(o.system, "active") && getProperty(o.system, "timeline.enabled")) ||
+        (o.type === "aura" && getProperty(o.system, "active") && !getProperty(o.system, "sourceTokenId"))
     );
   }
 
@@ -97,7 +103,13 @@ export class ActorPF extends Actor {
 
   get racialHD() {
     if (this.items == null) return null;
-    return this.items.find((o) => o.type === "class" && (getProperty(o.system, "classType") === "racial" || o.name.endsWith("*")));
+    return this.items.find(
+      (o) => o.type === "class" && (getProperty(o.system, "classType") === "racial" || o.name.endsWith("*"))
+    );
+  }
+
+  get displayName() {
+    return this.name;
   }
 
   async updateTokenLight(dimLight, o, brightLight, color, animationIntensity, type, animationSpeed, lightAngle, alpha) {
@@ -296,7 +308,6 @@ export class ActorPF extends Actor {
           });
         }
       });
-
 
     let naturalAttackCount = (actorData.items || []).filter(
       (o) => o.type === "attack" && o.system.attackType === "natural"
@@ -1491,6 +1502,16 @@ export class ActorPF extends Actor {
 
       let roll = new Roll35e("1d20 + @spellPenetrationTotal", rollData).roll();
 
+      rollData.rollTotal = roll.total;
+      rollData.success = rollData.resistanceTotal > rollData.rollTotal;
+      let actions = await this.getAndApplyCombatChangesSpecialActions(
+        allCombatChanges,
+        this,
+        rollData,
+        optionalFeatIds,
+        optionalFeatRanges
+      );
+
       const token = this ? this.token : null;
 
       // Set chat data
@@ -1510,6 +1531,7 @@ export class ActorPF extends Actor {
       const templateData = mergeObject(
         chatTemplateData,
         {
+          actor: this,
           img: this.img,
           label:
             type === "sr" ? game.i18n.localize("D35E.SpellResistance") : game.i18n.localize("D35E.PowerResistance"),
@@ -1521,7 +1543,7 @@ export class ActorPF extends Actor {
           success: rollData.resistanceTotal > roll.total,
           properties: props,
           hasProperties: props.length > 0,
-          actions: [],
+          actions: actions,
         },
         { inplace: true }
       );
@@ -1539,7 +1561,7 @@ export class ActorPF extends Actor {
     for (let noteObj of noteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
-      await this.enrichAndAddNotes(noteObj, rollData, notes)
+      await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
     let props = this.getDefenseHeaders();
     if (notes.length > 0) props.push({ header: game.i18n.localize("D35E.Notes"), value: notes });
@@ -1592,25 +1614,23 @@ export class ActorPF extends Actor {
     }
   }
 
-  async enrichAndAddNotes (noteObj, rollData, notes) {
+  async enrichAndAddNotes(noteObj, rollData, notes) {
     for (let note of noteObj.notes) {
-      if (!isMinimumCoreVersion('0.5.2')) {
-        let noteStr = ''
+      if (!isMinimumCoreVersion("0.5.2")) {
+        let noteStr = "";
         if (note.length > 0) {
           noteStr = DicePF.messageRoll({
             data: rollData,
             msgStr: note,
-          })
+          });
         }
-        if (noteStr.length > 0) notes.push(...noteStr.split(/[\n\r]+/))
+        if (noteStr.length > 0) notes.push(...noteStr.split(/[\n\r]+/));
       } else {
         for (let _note of note.split(/[\n\r]+/)) {
           let enrichedNote = await TextEditor.enrichHTML(Item35E._fillTemplate(_note, rollData), {
             rollData: rollData,
-          })
-          notes.push(
-            enrichedNote,
-          )
+          });
+          notes.push(enrichedNote);
         }
       }
     }
@@ -1688,6 +1708,17 @@ export class ActorPF extends Actor {
       rollData.savingThrowManualBonus = savingThrowManualBonus;
 
       let roll = new Roll35e("1d20 + @savingThrowBonus + @savingThrowManualBonus + @featSavingThrow", rollData).roll();
+
+      rollData.rollTotal = roll.total;
+      rollData.success = target ? roll.total >= target : true;
+      let actions = await this.getAndApplyCombatChangesSpecialActions(
+        allCombatChanges,
+        this,
+        rollData,
+        optionalFeatIds,
+        optionalFeatRanges
+      );
+
       // Set chat data
       let chatData = {
         speaker: options.speaker ? options.speaker : ChatMessage.getSpeaker({ actor: this.data }),
@@ -1703,6 +1734,7 @@ export class ActorPF extends Actor {
       const templateData = mergeObject(
         chatTemplateData,
         {
+          actor: this,
           img: this.img,
           saveTypeName: game.i18n.localize(CONFIG.D35E.savingThrows[saveType]),
           roll: roll,
@@ -1713,6 +1745,7 @@ export class ActorPF extends Actor {
           success: target && roll.total >= target,
           properties: props,
           hasProperties: props.length > 0,
+          actions: actions,
         },
         { inplace: false }
       );
@@ -1754,8 +1787,7 @@ export class ActorPF extends Actor {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
 
-      await this.enrichAndAddNotes(noteObj, rollData, notes)
-
+      await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
     let props = this.getDefenseHeaders();
     if (notes.length > 0) props.push({ header: game.i18n.localize("D35E.Notes"), value: notes });
@@ -1773,7 +1805,9 @@ export class ActorPF extends Actor {
         : game.settings.get("D35E", `rollConfig`).rollConfig[this.type].savingThrow ||
           game.settings.get("core", "rollMode"),
       rollModes: CONFIG.Dice.rollModes,
-      stFeats: this.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "savingThrow")),
+      stFeats: this.combatChangeItems.filter((o) =>
+        ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "savingThrow")
+      ),
       stFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "savingThrowOptional")
       ),
@@ -1811,6 +1845,50 @@ export class ActorPF extends Actor {
       (o.type === "buff" && o.system.active) ||
       (o.type === "equipment" && o.system.equipped === true && !o.system.melded && !o.broken)
     );
+  }
+
+  /**
+   *
+   * @param {CombatChange[]} combatChanges
+   * @param actor
+   * @param rollData
+   * @param optionalFeatIds
+   * @param optionalFeatRanges
+   * @returns {Promise<*[]>}
+   */
+  async getAndApplyCombatChangesSpecialActions(combatChanges, actor, rollData, optionalFeatIds, optionalFeatRanges) {
+    let actions = [];
+    for (const c of combatChanges) {
+      if (c.specialAction && c.specialAction !== "") {
+        if (c.specialActionCondition && c.specialActionCondition !== "") {
+          if (!new Roll35e(c.specialActionCondition, rollData).roll().total) continue;
+        }
+        await this.addCommandAsSpecial(
+          actions,
+          c.itemName,
+          c.itemImg,
+          c.specialAction,
+          rollData.rollTotal,
+          optionalFeatRanges.get(c.itemId)?.base || 0
+        );
+      }
+    }
+    return actions;
+  }
+
+  async addCommandAsSpecial(actions, name, img, actionData, roll = 0, range = 0) {
+    let _actionData = actionData.replace(/\(@range\)/g, `${range}`).replace(/\(@roll\)/g, `${roll}`);
+
+    // If this is self action, run it on the actor on the time of render
+    await this.autoApplyActionsOnSelf(_actionData);
+    actions.push({
+      label: name,
+      value: _actionData,
+      isTargeted: _actionData.endsWith("target") || _actionData.endsWith("target;"),
+      action: "customAction",
+      img: img,
+      hasImg: img !== undefined && img !== null && img !== "",
+    });
   }
 
   /**
@@ -1888,6 +1966,7 @@ export class ActorPF extends Actor {
         });
 
       this._addCombatChangesToRollData(allCombatChanges, rollData);
+
       rollData.featSkillBonus = rollData.featSkillBonus || 0;
       rollData.skillModTotal = skillModTotal;
       rollData.skillManualBonus = skillManualBonus;
@@ -1896,6 +1975,16 @@ export class ActorPF extends Actor {
         skillRollFormula + " + @skillModTotal + @skillManualBonus + @featSkillBonus",
         rollData
       ).roll();
+
+      rollData.rollTotal = roll.total;
+      rollData.success = target ? roll.total >= target : true;
+      let actions = await this.getAndApplyCombatChangesSpecialActions(
+        allCombatChanges,
+        this,
+        rollData,
+        optionalFeatIds,
+        optionalFeatRanges
+      );
 
       const token = this ? this.token : null;
 
@@ -1916,6 +2005,8 @@ export class ActorPF extends Actor {
       const templateData = mergeObject(
         chatTemplateData,
         {
+          revealed: false,
+          actions: actions,
           img: this.img,
           roll: roll,
           sklName: sklName,
@@ -1926,6 +2017,7 @@ export class ActorPF extends Actor {
           take10: take10,
           tooltip: $(await roll.getTooltip()).prepend(`<div class="dice-formula">${roll.formula}</div>`)[0].outerHTML,
           success: target && roll.total >= target,
+          target: target,
           properties: props,
           hasProperties: props.length > 0,
         },
@@ -1962,7 +2054,7 @@ export class ActorPF extends Actor {
     rollData.skillId = skillId;
     rollData.skillTag = skillTag;
     rollData.subSkillId = subSkillId;
-    let contextNoteSkillId = isSubSkill ?  `skill.${skillId}.subSkills.${subSkillId}` : `skill.${skillId}`;
+    let contextNoteSkillId = isSubSkill ? `skill.${skillId}.subSkills.${subSkillId}` : `skill.${skillId}`;
     const noteObjects = this.getContextNotes(contextNoteSkillId);
     for (let noteObj of noteObjects) {
       rollData.item = {};
@@ -1972,10 +2064,8 @@ export class ActorPF extends Actor {
         for (let _note of note.split(/[\n\r]+/)) {
           let enrichedNote = await TextEditor.enrichHTML(Item35E._fillTemplate(_note, rollData), {
             rollData: rollData,
-          })
-          notes.push(
-            enrichedNote
-          )
+          });
+          notes.push(enrichedNote);
         }
       }
     }
@@ -2009,21 +2099,21 @@ export class ActorPF extends Actor {
       label: game.i18n.localize("D35E.Take10"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, skl, html, props, sklName, "10");
+        roll = _roll.call(this, options.target, html, props, sklName, "10");
       },
     };
     buttons.takeTwenty = {
       label: game.i18n.localize("D35E.Take20"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, skl, html, props, sklName, "20");
+        roll = _roll.call(this, options.target, html, props, sklName, "20");
       },
     };
     buttons.normal = {
       label: game.i18n.localize("D35E.Roll"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, skl, html, props, sklName, "1d20");
+        roll = _roll.call(this, options.target, html, props, sklName, "1d20");
       },
     };
     await new Promise((resolve) => {
@@ -2174,8 +2264,7 @@ export class ActorPF extends Actor {
     for (let noteObj of noteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
-      await this.enrichAndAddNotes(noteObj, rollData, notes)
-
+      await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
     let props = this.getDefenseHeaders();
     if (notes.length > 0) props.push({ header: game.i18n.localize("D35E.Notes"), value: notes });
@@ -2189,7 +2278,9 @@ export class ActorPF extends Actor {
         : game.settings.get("D35E", `rollConfig`).rollConfig[this.type].grapple ||
           game.settings.get("core", "rollMode"),
       rollModes: CONFIG.Dice.rollModes,
-      grFeats: this.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "grapple")),
+      grFeats: this.combatChangeItems.filter((o) =>
+        ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "grapple")
+      ),
       grFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "grappleOptional")
       ),
@@ -2220,19 +2311,25 @@ export class ActorPF extends Actor {
     });
   }
 
+  /**
+   *
+   * @param {CombatChange[]} allCombatChanges
+   * @param rollData
+   * @private
+   */
   _addCombatChangesToRollData(allCombatChanges, rollData) {
     for (const change of allCombatChanges) {
       //LogHelper.log('D35E | Change', change[4])
-      if (change[3].indexOf("$") !== -1) {
-        setProperty(rollData, change[3].substr(1), Item35E._fillTemplate(change[4], rollData));
-      } else if (change[3].indexOf("&") !== -1) {
+      if (change.field.indexOf("$") !== -1) {
+        setProperty(rollData, change.field.substr(1), Item35E._fillTemplate(change.formula, rollData));
+      } else if (change.field.indexOf("&") !== -1) {
         setProperty(
           rollData,
-          change[3].substr(1),
-          (getProperty(rollData, change[3]) || "") + Item35E._fillTemplate(change[4], rollData)
+          change.formula.substr(1),
+          (getProperty(rollData, change.formula) || "") + Item35E._fillTemplate(change.formula, rollData)
         );
       } else {
-        setProperty(rollData, change[3], (getProperty(rollData, change[3]) || 0) + (change[4] || 0));
+        setProperty(rollData, change.field, (getProperty(rollData, change.field) || 0) + (change.field || 0));
       }
     }
   }
@@ -2385,8 +2482,7 @@ export class ActorPF extends Actor {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
 
-      await this.enrichAndAddNotes(noteObj, rollData, acNotes)
-
+      await this.enrichAndAddNotes(noteObj, rollData, acNotes);
     }
 
     // Add contextual CMD notes
@@ -2398,8 +2494,7 @@ export class ActorPF extends Actor {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
 
-      await this.enrichAndAddNotes(noteObj, rollData, cmdNotes)
-
+      await this.enrichAndAddNotes(noteObj, rollData, cmdNotes);
     }
 
     // Add contextual SR notes
@@ -2410,7 +2505,7 @@ export class ActorPF extends Actor {
     for (let noteObj of srNoteObjects) {
       rollData.item = {};
       if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
-      await this.enrichAndAddNotes(noteObj, rollData, srNotes)
+      await this.enrichAndAddNotes(noteObj, rollData, srNotes);
     }
 
     // Add misc data
@@ -2615,6 +2710,14 @@ export class ActorPF extends Actor {
 
       this._addCombatChangesToRollData(allCombatChanges, rollData);
 
+      let actions = await this.getAndApplyCombatChangesSpecialActions(
+        allCombatChanges,
+        this,
+        rollData,
+        optionalFeatIds,
+        optionalFeatRanges
+      );
+
       ac += rollData.featAC || 0;
 
       //LogHelper.log('D35E | Final roll AC', ac)
@@ -2629,6 +2732,7 @@ export class ActorPF extends Actor {
         conceal: conceal,
         fullConceal: fullConceal,
         concealOverride: rollData.concealOverride,
+        actions: actions,
       };
     };
     let rollData = this.getRollData();
@@ -2659,7 +2763,9 @@ export class ActorPF extends Actor {
       isAlreadyProne: getProperty(this.system, "attributes.conditions.prone"),
       baseConcealmentAtLeast20: getProperty(this.system, "attributes.concealment.total") > 20,
       baseConcealmentAtLeast50: getProperty(this.system, "attributes.concealment.total") > 50,
-      defenseFeats: this.combatChangeItems.filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "defense")),
+      defenseFeats: this.combatChangeItems.filter((o) =>
+        ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "defense")
+      ),
       defenseFeatsOptional: this.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, "defenseOptional")
       ),
@@ -3005,6 +3111,7 @@ export class ActorPF extends Actor {
         if (damageData.damagePoolPossibleReductionsUpdate) {
           await a.updateDamageReductionPoolItems(damageData.damagePoolPossibleReductionsUpdate);
         }
+
         // Set chat data
         let chatData = {
           speaker: ChatMessage.getSpeaker({ actor: a.data }),
@@ -3022,6 +3129,7 @@ export class ActorPF extends Actor {
         const templateData = mergeObject(
           chatTemplateData,
           {
+            actor: a,
             damageData: damageData,
             img: a.img,
             roll: roll,
@@ -3029,6 +3137,7 @@ export class ActorPF extends Actor {
             hit: hit,
             achit: achit,
             crit: crit,
+            actions: finalAc.actions,
             concealMiss: concealMiss,
             concealRoll: concealRoll,
             concealTarget: concealTarget,
@@ -3218,7 +3327,7 @@ export class ActorPF extends Actor {
     // Skill
     if (context.match(/^skill\.(.+)/)) {
       let skillKey = RegExp.$1;
-      if (skillKey.indexOf(".") !== -1) skillKey = skillKey.split(".")[2]
+      if (skillKey.indexOf(".") !== -1) skillKey = skillKey.split(".")[2];
       const skill = this.getSkill(skillKey);
       const ability = skill.ability;
       for (let note of result) {
@@ -4883,9 +4992,9 @@ export class ActorPF extends Actor {
         }
         if (itemUpdate["_id"]) items.push(itemUpdate);
       }
-      console.log("Updating embedded items?", hasItemUpdates)
+      console.log("Updating embedded items?", hasItemUpdates);
       if (hasItemUpdates) {
-        console.log("Updating embedded items", items)
+        console.log("Updating embedded items", items);
         await this.updateEmbeddedDocuments("Item", items, { stopUpdates: true });
       }
 
@@ -4933,7 +5042,7 @@ export class ActorPF extends Actor {
     }
   }
 
-  async renderFastHealingRegenerationChatCard() {
+  async renderFastHealingRegenerationChatCard(roundDelta = 1) {
     let d = this.system;
 
     const token = this ? this.token : null;
@@ -4955,7 +5064,7 @@ export class ActorPF extends Actor {
     if (d.traits.regenTotal) {
       actions.push({
         label: game.i18n.localize("D35E.Regeneration"),
-        value: `Regenerate ${d.traits.regenTotal} on self;`,
+        value: `Regenerate ${d.traits.regenTotal * roundDelta} on self;`,
         isTargeted: false,
         action: "customAction",
         img: "",
@@ -4965,7 +5074,7 @@ export class ActorPF extends Actor {
     if (d.traits.fastHealingTotal) {
       actions.push({
         label: game.i18n.localize("D35E.FastHealing"),
-        value: `SelfDamage -${d.traits.fastHealingTotal} on self;`,
+        value: `SelfDamage -${d.traits.fastHealingTotal * roundDelta} on self;`,
         isTargeted: false,
         action: "customAction",
         img: "",
@@ -5154,7 +5263,7 @@ export class ActorPF extends Actor {
     );
   }
 
-  async applyOnRoundBuffActions(items) {
+  async applyOnRoundBuffActions(items, roundDelta = 1) {
     const token = this ? this.token : null;
     let chatTemplateData = {
       name: this.name,
@@ -5175,7 +5284,7 @@ export class ActorPF extends Actor {
       for (let _action of i.system.perRoundActions)
         actions.push({
           label: i.name,
-          value: _action.action,
+          value: _action.action.replaceAll("@roundDelta", roundDelta),
           isTargeted: false,
           action: "customAction",
           img: i.img,
@@ -5385,43 +5494,43 @@ export class ActorPF extends Actor {
     return this.update(updateData);
   }
 
-  async progressBuff(buffId, roundDelta = 1) {
+  async progressBuff(buffUpdates, buffId, roundDelta = 1) {
     //await this.refresh();
-    let itemUpdateData = [];
-    let itemsEnding = [];
-    let itemsOnRound = [];
-    let itemsToDelete = [];
-    let itemResourcesData = {};
-    let deletedOrChanged = false;
+    if (!buffUpdates.has(this.uuid)) {
+      buffUpdates.set(this.uuid, {
+        itemUpdateData: [],
+        itemsEnding: [],
+        itemsOnRound: [],
+        itemsToDelete: [],
+        itemResourcesData: {},
+        buffsToDelete: [],
+        deletedOrChanged: false,
+      });
+    }
+    const bu = buffUpdates.get(this.uuid);
     if (this.items !== undefined && this.items.size > 0) {
       // Update items
+      /**
+       * @type {Item35E}
+       */
       let i = this.items.get(buffId);
-      this.getItemResourcesUpdate(i, itemResourcesData);
-      let _data = i.getElapsedTimeUpdateData(roundDelta);
-      if (_data && _data["data.active"] === false) itemsEnding.push(i);
-      if ((i.system.perRoundActions || []).length && !_data.delete) itemsOnRound.push(i);
-      if (_data && !_data.delete && !_data.ignore) {
-        itemUpdateData.push({ item: i, data: _data });
-        deletedOrChanged = true;
-      } else if (_data && _data.delete === true) {
-        itemUpdateData.push({ item: i, data: { _id: _data._id, "data.active": false } });
-        itemsToDelete.push(_data._id);
-        deletedOrChanged = true;
+      if (!i) {
+        bu.buffsToDelete.push(buffId);
+        bu.deletedOrChanged = true;
+      } else {
+        this.getItemResourcesUpdate(i, bu.itemResourcesData);
+        let elapsedTimeUpdateData = i.getElapsedTimeUpdateData(roundDelta);
+        if (elapsedTimeUpdateData && elapsedTimeUpdateData["data.active"] === false) bu.itemsEnding.push(i);
+        if ((i.system.perRoundActions || []).length && !elapsedTimeUpdateData.delete) bu.itemsOnRound.push(i);
+        if (elapsedTimeUpdateData && !elapsedTimeUpdateData.delete && !elapsedTimeUpdateData.ignore) {
+          bu.itemUpdateData.push(elapsedTimeUpdateData);
+          bu.deletedOrChanged = true;
+        } else if (elapsedTimeUpdateData && elapsedTimeUpdateData.delete === true) {
+          bu.itemUpdateData.push({ _id: elapsedTimeUpdateData._id, "data.active": false });
+          bu.buffsToDelete.push(elapsedTimeUpdateData._id);
+          bu.deletedOrChanged = true;
+        }
       }
-    }
-
-    if (itemUpdateData.length > 0) {
-      let updatePromises = [];
-      for (let updateData of itemUpdateData) {
-        updatePromises.push(updateData.item.update(updateData.data, { stopUpdates: true }));
-      }
-      await Promise.all(updatePromises);
-    }
-    if (Object.keys(itemResourcesData).length > 0 || deletedOrChanged) await this.update(itemResourcesData);
-    if (itemsEnding.length) this.renderBuffEndChatCard(itemsEnding);
-    if (itemsOnRound.length) this.applyOnRoundBuffActions(itemsOnRound);
-    if (itemsToDelete.length > 0) {
-      await this.deleteEmbeddedDocuments("Item", itemsToDelete, {});
     }
   }
 
@@ -5464,11 +5573,11 @@ export class ActorPF extends Actor {
     }
     if (Object.keys(itemResourcesData).length > 0 || deletedOrChanged) await this.update(itemResourcesData);
     if (itemsEnding.length) this.renderBuffEndChatCard(itemsEnding);
-    if (itemsOnRound.length) this.applyOnRoundBuffActions(itemsOnRound);
+    if (itemsOnRound.length) this.applyOnRoundBuffActions(itemsOnRound, roundDelta);
     if (itemsToDelete.length > 0) {
       await this.deleteEmbeddedDocuments("Item", itemsToDelete, {});
     }
-    this.renderFastHealingRegenerationChatCard();
+    this.renderFastHealingRegenerationChatCard(roundDelta);
   }
 
   static getActorFromTokenPlaceable(source) {
@@ -5501,7 +5610,7 @@ export class ActorPF extends Actor {
     let createData = {};
     let worldDefaultsSettings = game.settings.get("D35E", "worldDefaults");
     for (let skill of worldDefaultsSettings.worldDefaults.customSkills) {
-      this.__addNewCustomSkill(createData, skill[0], skill[1], skill[2] === 'true', skill[3] === 'true');
+      this.__addNewCustomSkill(createData, skill[0], skill[1], skill[2] === "true", skill[3] === "true");
     }
     this.data.update(createData);
   }

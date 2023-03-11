@@ -1,27 +1,28 @@
-import { ActorTraitSelector } from "../../apps/trait-selector.js";
-import { LevelUpDialog } from "../../apps/level-up-box.js";
-import { DamageReductionSetting } from "../../apps/damage-reduction-setting.js";
-import { LevelUpDataDialog } from "../../apps/level-up-data.js";
-import { ActorSheetFlags } from "../../apps/actor-flags.js";
-import { DicePF } from "../../dice.js";
-import { createTag, createTabs, isMinimumCoreVersion, uuidv4 } from "../../lib.js";
-import { NoteEditor } from "../../apps/note-editor.js";
-import { SpellbookEditor } from "../../apps/spellbook-editor.js";
-import { DeckEditor } from "../../apps/deck-editor.js";
-import { D35E } from "../../config.js";
-import { PointBuyCalculator } from "../../apps/point-buy-calculator.js";
-import { Item35E } from "../../item/entity.js";
-import { CompendiumDirectoryPF } from "../../sidebar/compendium.js";
-import { DamageTypes } from "../../damage-types.js";
-import { Roll35e } from "../../roll.js";
-import ActorSensesConfig from "../../apps/senses-config.js";
-import AbilityConfig from "../../apps/ability-config.js";
-import { EntrySelector } from "../../apps/entry-selector.js";
-import { ItemDescriptionsHelper } from "../../item/helpers/itemDescriptionsHelper.js";
-import { ActorWealthHelper } from "../helpers/actorWealthHelper.js";
-import { ItemEnhancementHelper } from "../../item/helpers/itemEnhancementHelper.js";
-import { StatblockGenerator } from "../../utils/statblock-generator.js";
+import { ActorTraitSelector } from '../../apps/trait-selector.js'
+import { LevelUpDialog } from '../../apps/level-up-box.js'
+import { DamageReductionSetting } from '../../apps/damage-reduction-setting.js'
+import { LevelUpDataDialog } from '../../apps/level-up-data.js'
+import { ActorSheetFlags } from '../../apps/actor-flags.js'
+import { DicePF } from '../../dice.js'
+import { createTabs, createTag, isMinimumCoreVersion, uuidv4 } from '../../lib.js'
+import { NoteEditor } from '../../apps/note-editor.js'
+import { SpellbookEditor } from '../../apps/spellbook-editor.js'
+import { DeckEditor } from '../../apps/deck-editor.js'
+import { D35E } from '../../config.js'
+import { PointBuyCalculator } from '../../apps/point-buy-calculator.js'
+import { Item35E } from '../../item/entity.js'
+import { CompendiumDirectoryPF } from '../../sidebar/compendium.js'
+import { DamageTypes } from '../../damage-types.js'
+import { Roll35e } from '../../roll.js'
+import ActorSensesConfig from '../../apps/senses-config.js'
+import AbilityConfig from '../../apps/ability-config.js'
+import { EntrySelector } from '../../apps/entry-selector.js'
+import { ItemDescriptionsHelper } from '../../item/helpers/itemDescriptionsHelper.js'
+import { ActorWealthHelper } from '../helpers/actorWealthHelper.js'
+import { ItemEnhancementHelper } from '../../item/helpers/itemEnhancementHelper.js'
+import { StatblockGenerator } from '../../utils/statblock-generator.js'
 import { LootSheetActions } from '../../lootsheet/actions.js'
+import { ItemDrawerHelper  } from './helpers/itemDrawerHelper.js'
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -33,9 +34,12 @@ export class ActorSheetPF extends ActorSheet {
   constructor(...args) {
     super(...args);
 
+    this.itemDrawerHelper = new ItemDrawerHelper(this);
+
     this.options.submitOnClose = false;
     this.randomUuid = uuidv4();
     this.alreadyOpening = false;
+
     /**
      * The scroll position on the active tab
      * @type {number}
@@ -1030,11 +1034,10 @@ export class ActorSheetPF extends ActorSheet {
       let subType = sessionStorage.getItem(`D35E-last-subtype-${this.id}`);
       let filter = sessionStorage.getItem(`D35E-filter-${this.id}`);
       let label = sessionStorage.getItem(`D35E-label-${this.id}`);
-      let previousData = JSON.parse(sessionStorage.getItem(`D35E-data-${this.id}`));
       let opened = sessionStorage.getItem(`D35E-opened-${this.id}`) === "true";
       let scrollPosition = parseInt(sessionStorage.getItem(`D35E-position-${this.id}`) || "0");
       if (opened) {
-        await this.loadData(entityType, type, subType, filter, previousData, label);
+        await this.loadData(entityType, type, subType, filter, label);
         $(`#${this.randomUuid}-itemList`).scrollTop(scrollPosition);
       }
     }
@@ -3175,138 +3178,8 @@ export class ActorSheetPF extends ActorSheet {
     new LevelUpDataDialog(this.actor, options).render(true);
   }
 
-  async loadData(entityType, type, subtype, filter, previousData, label) {
-    if ($(`.item-add-${this.randomUuid}-overlay`).css("display") !== "none") {
-      //console.log("D35E | Item Browser | Skipping, its already visible", this.randomUuid)
-      return;
-    }
-
-    $(`#items-add-${this.randomUuid}-label`).text(`${game.i18n.localize("D35E.Add")} ${label}`);
-    //console.log("D35E | Item Browser | Loading pack inline browser", this.randomUuid, `.item-add-${this.randomUuid}-overlay`, $(`.item-add-${this.randomUuid}-overlay`).css('display'))
-    function _filterItems(item, entityType, type, subtype) {
-      if (item.system.uniqueId) return false;
-      if (entityType === "spells" && item.type !== type) return false;
-      if (
-        entityType === "items" &&
-        type.split(",").indexOf(item.type) !== -1 &&
-        (item.system.subType === subtype || subtype === "-")
-      )
-        return true;
-      if (entityType === "feats" && item.type === type && item.system.featType === subtype && !item.system.uniqueId)
-        return true;
-      if (entityType === "buffs" && item.type !== type) return false;
-      if (entityType === "enhancements" && item.type !== "enhancement") return false;
-      return false;
-    }
-    $(`.item-add-${this.randomUuid}-overlay`).show();
-    $(`.items-add-${this.randomUuid}-working-item`).show();
-    $(`.items-add-${this.randomUuid}-list`).hide();
-    sessionStorage.setItem(`D35E-last-ent-type-${this.id}`, entityType);
-    sessionStorage.setItem(`D35E-last-type-${this.id}`, type);
-    sessionStorage.setItem(`D35E-last-subtype-${this.id}`, subtype);
-    sessionStorage.setItem(`D35E-opened-${this.id}`, true);
-    sessionStorage.setItem(`D35E-label-${this.id}`, label);
-    $(`#${this.randomUuid}-itemList`).empty();
-    let addedItems = [];
-    if (!previousData) {
-      for (let p of game.packs.values()) {
-        if (p.private && !game.user.isGM) continue;
-        if ((p.entity || p.documentName) !== "Item") continue;
-
-        const items = await p.getDocuments();
-        for (let i of items) {
-          if (!_filterItems(i, entityType, type, subtype)) continue;
-          let li = $(
-            `<li class="item-list-item item" data-item-id="${i.id}">
-                               <div class="item-name non-rollable flexrow">
-                               <div class="item-image non-rollable" style="background-image: url('${i.img}')"></div>
-                                <span onclick="$(this).parent().parent().children('.item-browser-details').slideToggle()">${i.name}</span>
-                                <a class="item-control"  style="flex: 0; margin: 0 4px;" title="Remove Quantity" onclick="modifyInputValue('amount-add-${i.id}',-1)">
-                                    <i class="fas fa-minus remove-skill"></i>
-                                </a>
-                                <input type="text"  class="skill-value" name='amount-add-${i.id}' value="1" readonly style="border: none; flex: 0 25px; text-align: center;" placeholder="0"/>
-                                <a class="item-control" title="Add Quantity" style="flex: 0 20px; margin: 0 4px;" onclick="modifyInputValue('amount-add-${i.id}',1)">
-                                    <i class="fas fa-plus add-skill"></i>
-                                </a>
-                                <a class="add-from-compendium blue-button" style="flex: 0 40px; text-align: center">Add</a> </div>
-                                <div style="display: none" class="item-browser-details flexcol">
-                                <div style="max-height:100px; overflow: hidden;  -webkit-mask-image: linear-gradient(to bottom, black 75px, transparent 100px); mask-image: linear-gradient(to bottom, black 75px, transparent 100px);">${i.system.description.value}</div>
-                                ` +
-              (i.type !== "feat"
-                ? `<div style="flex: 0 20px; opacity: 0.8" ><i class="fas fa-coins"></i> ${i.system.price} gp</div>`
-                : "") +
-              `
-                                </div>
-                        </li>`
-          );
-          li.find(".add-from-compendium").mouseup((ev) => {
-            sessionStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop());
-            this._addItemFromBrowser(p.metadata.id, i.id, ev);
-          });
-          if (!$(`#${this.randomUuid}-itemList li[data-item-id='${i.id}']`).length) {
-            $(`#${this.randomUuid}-itemList`).append(li);
-            addedItems.push({
-              id: i.id,
-              name: i.name,
-              pack: p.metadata.id,
-              img: i.img,
-              description: i.system.description,
-              price: i.system.price,
-              type: i.type,
-            });
-          }
-        }
-
-        sessionStorage.setItem(`D35E-data-${this.id}`, JSON.stringify(addedItems));
-      }
-    } else {
-      for (let i of previousData) {
-        let li = $(
-          `<li class="item-list-item item" data-item-id="${i.id}">
-                               <div class="item-name non-rollable flexrow">
-                               <div class="item-image non-rollable" style="background-image: url('${i.img}')"></div>
-                                <span onclick="$(this).parent().parent().children('.item-browser-details').slideToggle()">${i.name}</span>
-                                <a class="item-control"  style="flex: 0; margin: 0 4px;" title="Remove Quantity" onclick="modifyInputValue('amount-add-${i.id}',-1)">
-                                    <i class="fas fa-minus remove-skill"></i>
-                                </a>
-                                <input type="text"  class="skill-value" name='amount-add-${i.id}' value="1" readonly style="border: none; flex: 0 25px; text-align: center;" placeholder="0"/>
-                                <a class="item-control" title="Add Quantity" style="flex: 0 20px; margin: 0 4px;" onclick="modifyInputValue('amount-add-${i.id}',1)">
-                                    <i class="fas fa-plus add-skill"></i>
-                                </a>
-                                <a class="add-from-compendium blue-button" style="flex: 0 40px; text-align: center">Add</a> </div>
-                                <div style="display: none" class="item-browser-details flexcol">
-                                <div style="max-height: 100px; overflow: hidden;  -webkit-mask-image: linear-gradient(to bottom, black 75px, transparent 100px); mask-image: linear-gradient(to bottom, black 75px, transparent 100px);">${i.description.value}</div>
-                                ` +
-            (i.type !== "feat"
-              ? `<div style="flex: 0 20px; opacity: 0.8" ><i class="fas fa-coins"></i> ${i.price} gp</div>`
-              : "") +
-            `
-                                </div>
-                        </li>`
-        );
-        li.find(".add-from-compendium").mouseup((ev) => {
-          sessionStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop());
-          this._addItemFromBrowser(i.pack, i.id, ev);
-        });
-        if (!$(`#${this.randomUuid}-itemList li[data-item-id='${i.id}']`).length) {
-          $(`#${this.randomUuid}-itemList`).append(li);
-        }
-      }
-    }
-    $(`.items-add-${this.randomUuid}-openCompendium`).unbind("mouseup");
-    $(`.items-add-${this.randomUuid}-openCompendium`).mouseup((ev) => {
-      sessionStorage.setItem(`D35E-opened-${this.id}`, false);
-      $(`.item-add-${this.randomUuid}-overlay`).hide();
-      CompendiumDirectoryPF.browseCompendium(entityType);
-    });
-    $(`.items-add-${this.randomUuid}-working-item`).hide();
-    $(`.items-add-${this.randomUuid}-list`).show();
-    if (filter) {
-      $(`#${this.randomUuid}-itemList-filter`).val(filter);
-      $(`#${this.randomUuid}-itemList li`).filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(filter) > -1);
-      });
-    }
+  async loadData(entityType, type, subtype, filter, label) {
+    await this.itemDrawerHelper.loadDrawerData(label, entityType, type, subtype, filter)
   }
 
   _closeInlineData(ev) {

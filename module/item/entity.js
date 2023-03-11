@@ -65,6 +65,10 @@ export class Item35E extends ItemBase35E {
     return createTag(this.name);
   }
 
+  get isAura() {
+    return this.type === "aura";
+  }
+
   get hasRolltableDraw() {
     return this.system?.rollTableDraw?.id || false;
   }
@@ -352,8 +356,8 @@ export class Item35E extends ItemBase35E {
       labels.level = C.spellLevels[data.level];
       labels.school = C.spellSchools[data.school];
       labels.components = Object.entries(data.components)
-        .map((c) => {
-          c[1] === true ? c[0].titleCase().slice(0, 1) : null;
+        .map((component) => {
+          component[1] === true ? component[0].titleCase().slice(0, 1) : null;
         })
         .filterJoin(",");
       if (this.actor) {
@@ -675,6 +679,8 @@ export class Item35E extends ItemBase35E {
       updated["system.damagePool.current"] =
         updated["system.damagePool.total"] || getProperty(this.system, "damagePool.total");
     }
+    updated["system.index.subType"] = this.updateGetSubtype(updated);
+    updated["system.index.uniqueId"] = updated["uniqueId"] || getProperty(this.system, "uniqueId");
     let updateData = await super.update(updated, options);
     if (this.actor !== null && !options.massUpdate) {
       if (activateBuff) {
@@ -728,7 +734,7 @@ export class Item35E extends ItemBase35E {
           await this.actor.refresh({ reloadAuras: true });
         }
         if (game.combats.active) {
-          game.combats.active.addBuffToCombat(this, this.actor);
+          game.combats.active.addBuffsToCombat([{ buff: this, actor: this.actor }]);
         }
       } else if (deactivateBuff) {
         if (getProperty(this.system, "buffType") === "shapechange") {
@@ -773,7 +779,7 @@ export class Item35E extends ItemBase35E {
           await this.actor.refresh({ reloadAuras: true });
         }
         if (game.combats.active) {
-          game.combats.active.removeBuffFromCombat(this);
+          game.combats.active.removeBuffsFromCombat([this.id]);
         }
       } else {
         if ((updated["system.range"] || updated["system.auraTarget"]) && this.type === "aura") {
@@ -900,7 +906,8 @@ export class Item35E extends ItemBase35E {
     return new ItemChatData(this).getChatData(htmlOptions, rollData);
   }
 
-  async getDescription() {
+  async getDescription(unidentified = false) {
+    if (unidentified) return this.getUnidentifiedDescription();
     return this.system.description.value;
   }
 
@@ -912,25 +919,29 @@ export class Item35E extends ItemBase35E {
     let changeId = null;
     let changeVal = null;
     allCombatChanges.forEach((change) => {
-      if (change[3].indexOf("$") !== -1) {
-        changeId = change[3].substr(1);
-        changeVal = Item35E._fillTemplate(change[4], rollData)
+      if (change.field.indexOf("$") !== -1) {
+        changeId = change.field.substr(1);
+        changeVal = Item35E._fillTemplate(change.formula, rollData);
         setProperty(rollData, changeId, changeVal);
-      } else if (change[3].indexOf("&") !== -1) {
-        changeId = change[3].substr(1);
-        changeVal = Item35E._fillTemplate(change[4], rollData);
+      } else if (change.field.indexOf("&") !== -1) {
+        changeId = change.field.substr(1);
+        changeVal = Item35E._fillTemplate(change.formula, rollData);
         setProperty(
           rollData,
-          change[3].substr(1),
-          (getProperty(rollData, change[3].substr(1)) || "0") + " + " + changeVal
+          change.field.substr(1),
+          (getProperty(rollData, change.field.substr(1)) || "0") + " + " + changeVal
         );
       } else {
-        changeId = change[3];
-        changeVal = parseInt(change[4] || 0);
-        setProperty(rollData, change[3], (getProperty(rollData, change[3]) || 0) + changeVal);
+        changeId = change.field;
+        changeVal = parseInt(change.formula || 0);
+        setProperty(rollData, change.field, (getProperty(rollData, change.field) || 0) + changeVal);
       }
-      var listId = changeId.indexOf(".") !== -1 ? `${changeId.replace(".","List.")}` : `${changeId}List`
-      setProperty(rollData, listId, (getProperty(rollData, listId) || []).concat([{value: changeVal, sourceName: change['sourceName']}]));
+      var listId = changeId.indexOf(".") !== -1 ? `${changeId.replace(".", "List.")}` : `${changeId}List`;
+      setProperty(
+        rollData,
+        listId,
+        (getProperty(rollData, listId) || []).concat([{ value: changeVal, sourceName: change["sourceName"] }])
+      );
     });
   }
 
@@ -963,18 +974,32 @@ export class Item35E extends ItemBase35E {
       : game.combats.active.getCombatantByActor(actor.id);
   }
 
+  /**
+   *
+   * @param {CombatChange[]} allCombatChanges
+   * @param attack
+   * @param actor
+   * @param rollData
+   * @param optionalFeatRanges
+   * @param attackId
+   * @returns {Promise<void>}
+   * @private
+   */
   async _addCombatSpecialActionsToAttack(allCombatChanges, attack, actor, rollData, optionalFeatRanges, attackId) {
     for (const c of allCombatChanges) {
-      if (c[5] && c[5] !== "0") {
-        if (c[9] && attackId !== 0) continue;
+      if (c.specialAction && c.specialAction !== "") {
+        if (c.applyActionsOnlyOnce && attackId !== 0) continue;
+        if (c.specialActionCondition && c.specialActionCondition !== "") {
+          if (new Roll35e(c.specialActionCondition, rollData).roll().total !== true) continue;
+        }
         await attack.addCommandAsSpecial(
-          c[7],
-          c[8],
-          c[5],
+          c.itemName,
+          c.itemImg,
+          c.specialAction,
           actor,
           rollData.useAmount || 1,
           rollData.cl,
-          optionalFeatRanges.get(c[6])?.base || 0
+          optionalFeatRanges.get(c.itemId)?.base || 0
         );
       }
     }

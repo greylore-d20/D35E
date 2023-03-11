@@ -7,7 +7,7 @@
             <label>{{localize "D35E.Targets"}}</label>
             <div>
             {{#each targets as |target|}}
-                <img src="{{target.data.img}}" width="36" height="36">
+                <img src="{{target.document.texture.src}}" width="36" height="36">
             {{/each}}</div>
 
             <input type="hidden" name="target-ids" value="{{#each targets as |target|}}{{target.data._id}};{{/each}}"/>
