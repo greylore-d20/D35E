@@ -1,28 +1,28 @@
-import { ActorTraitSelector } from '../../apps/trait-selector.js'
-import { LevelUpDialog } from '../../apps/level-up-box.js'
-import { DamageReductionSetting } from '../../apps/damage-reduction-setting.js'
-import { LevelUpDataDialog } from '../../apps/level-up-data.js'
-import { ActorSheetFlags } from '../../apps/actor-flags.js'
-import { DicePF } from '../../dice.js'
-import { createTabs, createTag, isMinimumCoreVersion, uuidv4 } from '../../lib.js'
-import { NoteEditor } from '../../apps/note-editor.js'
-import { SpellbookEditor } from '../../apps/spellbook-editor.js'
-import { DeckEditor } from '../../apps/deck-editor.js'
-import { D35E } from '../../config.js'
-import { PointBuyCalculator } from '../../apps/point-buy-calculator.js'
-import { Item35E } from '../../item/entity.js'
-import { CompendiumDirectoryPF } from '../../sidebar/compendium.js'
-import { DamageTypes } from '../../damage-types.js'
-import { Roll35e } from '../../roll.js'
-import ActorSensesConfig from '../../apps/senses-config.js'
-import AbilityConfig from '../../apps/ability-config.js'
-import { EntrySelector } from '../../apps/entry-selector.js'
-import { ItemDescriptionsHelper } from '../../item/helpers/itemDescriptionsHelper.js'
-import { ActorWealthHelper } from '../helpers/actorWealthHelper.js'
-import { ItemEnhancementHelper } from '../../item/helpers/itemEnhancementHelper.js'
-import { StatblockGenerator } from '../../utils/statblock-generator.js'
-import { LootSheetActions } from '../../lootsheet/actions.js'
-import { ItemDrawerHelper  } from './helpers/itemDrawerHelper.js'
+import { ActorTraitSelector } from "../../apps/trait-selector.js";
+import { LevelUpDialog } from "../../apps/level-up-box.js";
+import { DamageReductionSetting } from "../../apps/damage-reduction-setting.js";
+import { LevelUpDataDialog } from "../../apps/level-up-data.js";
+import { ActorSheetFlags } from "../../apps/actor-flags.js";
+import { DicePF } from "../../dice.js";
+import { createTabs, createTag, isMinimumCoreVersion, uuidv4 } from "../../lib.js";
+import { NoteEditor } from "../../apps/note-editor.js";
+import { SpellbookEditor } from "../../apps/spellbook-editor.js";
+import { DeckEditor } from "../../apps/deck-editor.js";
+import { D35E } from "../../config.js";
+import { PointBuyCalculator } from "../../apps/point-buy-calculator.js";
+import { Item35E } from "../../item/entity.js";
+import { CompendiumDirectoryPF } from "../../sidebar/compendium.js";
+import { DamageTypes } from "../../damage-types.js";
+import { Roll35e } from "../../roll.js";
+import ActorSensesConfig from "../../apps/senses-config.js";
+import AbilityConfig from "../../apps/ability-config.js";
+import { EntrySelector } from "../../apps/entry-selector.js";
+import { ItemDescriptionsHelper } from "../../item/helpers/itemDescriptionsHelper.js";
+import { ActorWealthHelper } from "../helpers/actorWealthHelper.js";
+import { ItemEnhancementHelper } from "../../item/helpers/itemEnhancementHelper.js";
+import { StatblockGenerator } from "../../utils/statblock-generator.js";
+import { LootSheetActions } from "../../lootsheet/actions.js";
+import { ItemDrawerHelper } from "./helpers/itemDrawerHelper.js";
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -189,16 +189,6 @@ export class ActorSheetPF extends ActorSheet {
         sheetData.sourceDetails != null && sheetData.sourceDetails.system.skills[s] != null
           ? duplicate(sheetData.sourceDetails.system.skills[s].changeBonus)
           : [];
-      if (sheetData.actor.data.attributes.acp.total && skl.acp)
-        skl.sourceDetails.push({
-          name: game.i18n.localize("D35E.ACP"),
-          value: `-${sheetData.actor.data.attributes.acp.total}`,
-        });
-      if (skl.ability)
-        skl.sourceDetails.push({
-          name: game.i18n.localize("D35E.Ability"),
-          value: getProperty(sheetData.actor, `data.abilities.${skl.ability}.mod`),
-        });
       if (!sheetData.actor.data.details.levelUpProgression && !skl.cls && skl.points)
         // We do not display this as this is already calculated
         skl.sourceDetails.push({
@@ -840,7 +830,7 @@ export class ActorSheetPF extends ActorSheet {
       this._onItemChangeContainer(ev);
     });
     html.find(".fix-containers").click((ev) => this._onCharacterClearContainers(ev));
-    html.find(".check-updates").click((ev) => this._onCharacterCheckUpdates(ev))
+    html.find(".check-updates").click((ev) => this._onCharacterCheckUpdates(ev));
     html.find(".generate-statblock").click((ev) => this._onCharacterGenerateStatblock(ev));
 
     html.find(".spell-add-uses").click((ev) => this._onSpellAddUses(ev));
@@ -2970,7 +2960,6 @@ export class ActorSheetPF extends ActorSheet {
     let dataType = "";
     const actor = this.actor;
 
-
     let itemData = {};
     // Case 1 - Import from a Compendium pack
     if (game?.release?.generation >= 10 && dropData.uuid) {
@@ -2984,7 +2973,7 @@ export class ActorSheetPF extends ActorSheet {
         itemData = packItem.toObject(false);
         itemData.system.originPack = dropData.pack;
         itemData.system.originId = packItem.id;
-        ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid)
+        ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid);
       }
     }
 
@@ -2996,7 +2985,7 @@ export class ActorSheetPF extends ActorSheet {
       if (dropData?.parent?.sheet?.id) {
         if (dropData?.parent?.sheet.id.indexOf("ActorSheetPFNPCLoot") !== -1) {
           if (dropData.parent.getFlag("D35E", "lootsheettype") === "loot")
-            return LootSheetActions.lootItem(this.actor, dropData.parent, this.actor, dropData.id, null)
+            return LootSheetActions.lootItem(this.actor, dropData.parent, this.actor, dropData.id, null);
         }
       }
 
@@ -3011,29 +3000,29 @@ export class ActorSheetPF extends ActorSheet {
     }
     if (itemData.data.uniqueId) {
       return new Dialog(
-          {
-            title: `${game.i18n.localize("D35E.DropItemWithUIDTitle")}`,
-            content: `<div class="flexrow form-group">
+        {
+          title: `${game.i18n.localize("D35E.DropItemWithUIDTitle")}`,
+          content: `<div class="flexrow form-group">
           <span style="flex: 1">${game.i18n.localize("D35E.DropItemWithUID")}</span>
         </div>`,
-            buttons: {
-              confirm: {
-                label: game.i18n.localize("D35E.ImportStripUid"),
-                callback: (html) => {
-                  delete itemData.data.uniqueId;
-                  this.enrichDropData(itemData);
-                  return this.importItem(itemData, dataType);
-                },
-              },
-              cancel: {
-                label: game.i18n.localize("Cancel"),
+          buttons: {
+            confirm: {
+              label: game.i18n.localize("D35E.ImportStripUid"),
+              callback: (html) => {
+                delete itemData.data.uniqueId;
+                this.enrichDropData(itemData);
+                return this.importItem(itemData, dataType);
               },
             },
-            default: "confirm",
+            cancel: {
+              label: game.i18n.localize("Cancel"),
+            },
           },
-          {
-            classes: ["dialog", "D35E", "duplicate-initiative"],
-          }
+          default: "confirm",
+        },
+        {
+          classes: ["dialog", "D35E", "duplicate-initiative"],
+        }
       ).render(true);
     } else {
       this.enrichDropData(itemData);
@@ -3179,7 +3168,7 @@ export class ActorSheetPF extends ActorSheet {
   }
 
   async loadData(entityType, type, subtype, filter, label) {
-    await this.itemDrawerHelper.loadDrawerData(label, entityType, type, subtype, filter)
+    await this.itemDrawerHelper.loadDrawerData(label, entityType, type, subtype, filter);
   }
 
   _closeInlineData(ev) {
@@ -3200,7 +3189,7 @@ export class ActorSheetPF extends ActorSheet {
       itemData = packItem.toObject(false);
       itemData.system.originPack = packId;
       itemData.system.originId = packItem.id;
-      ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid)
+      ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid);
     }
     itemData.data.quantity = quantity;
     this.enrichDropData(itemData);

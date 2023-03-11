@@ -127,7 +127,7 @@ export class CombatD35E extends Combat {
       const c = this.combatants.get(id);
       if (!c) return results;
       const actorData = c.actor ? c.actor.system : {};
-      formula = formula || this._getInitiativeFormula(c.actor ? c.actor : null);
+      formula = this._getInitiativeFormula(c.actor ? c.actor : null) || formula;
 
       actorData.bonus = bonus;
       // Add bonus
@@ -399,8 +399,11 @@ export class CombatD35E extends Combat {
       let actor = buffActor.actor;
       let updateExisting = false;
       for (let combatant of this.combatants) {
-        if (this.combatant?.flags?.D35E?.buffId === buff.id) {
-          buffsToUpdate.push({ id: this.combatant.id, initiative: this.combatant.initiaitve + 0.01 });
+        if (combatant?.flags?.D35E?.buffId === buff.id) {
+          buffsToUpdate.push({
+            _id: combatant.id,
+            initiative: buffActor.initiative || this.combatant.initiaitve + 0.01 || 20,
+          });
           updateExisting = true;
         }
       }

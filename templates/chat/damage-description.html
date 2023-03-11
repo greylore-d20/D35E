@@ -134,6 +134,7 @@
             {{#unless isSpell}}
             <div class="chat-attack">
                 <div class="dice-roll attack-roll flexcol">
+                    <div class="dice-flavor">{{localize "D35E.AC"}}</div>
                     <div class="flexrow">
                         <div class="flexcol">
                             <div class="dice-result ">
@@ -150,6 +151,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="dice-flavor" style="text-align: center"><h2>AC Details</h2></div>
+                <div class="table-container">
+                    <table>
+                        <tbody>
+                        {{#each acModifiers as |modifier|}}
+                            <tr>
+                                <td><b>{{modifier.sourceName}}</b></td>
+                                <td><b>{{modifier.value}}</b></td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table></div>
             </div>
             {{#if damageData.incorporealRolled}}
             <div class="chat-attack">

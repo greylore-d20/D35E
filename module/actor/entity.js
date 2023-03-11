@@ -1901,7 +1901,7 @@ export class ActorPF extends Actor {
     if (!this.testUserPermission(game.user, "OWNER"))
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
-    const _roll = async function (target, form, props, sklName, skillRollFormula) {
+    const _roll = async function (target, form, props, sklName, skillRollFormula, sourceSkillId) {
       let optionalFeatIds = [],
         skillModTotal = skl.mod,
         optionalFeatRanges = new Map(),
@@ -1964,11 +1964,14 @@ export class ActorPF extends Actor {
           header: game.i18n.localize("D35E.RollModifiers"),
           value: rollModifiers,
         });
-
       this._addCombatChangesToRollData(allCombatChanges, rollData);
 
+      rollData.skillModTotal = 0;
+      let skillSourceDetails = this.sourceDetails[sourceSkillId] || [];
+      for (let skillDetail of skillSourceDetails) {
+        rollData.skillModTotal += skillDetail.value;
+      }
       rollData.featSkillBonus = rollData.featSkillBonus || 0;
-      rollData.skillModTotal = skillModTotal;
       rollData.skillManualBonus = skillManualBonus;
 
       let roll = new Roll35e(
@@ -1986,8 +1989,22 @@ export class ActorPF extends Actor {
         optionalFeatRanges
       );
 
-      const token = this ? this.token : null;
+      let modifiersList = skillSourceDetails;
+      modifiersList.unshift({ value: roll.terms[0].results[0].result, name: "Skill Roll" });
+      if (skillManualBonus) modifiersList.push({ value: skillManualBonus, name: "Situational Modifier" });
+      modifiersList.push(...(rollData.featSkillBonusList || []));
 
+      const token = this ? this.token : null;
+      let tooltip = "";
+      for (let descriptionPart of modifiersList) {
+        tooltip += `<tr>
+                <td><b>${descriptionPart.name}</b></td>
+                <td><b>${descriptionPart.value}</b></td>
+                </tr>
+                `;
+      }
+      var tooltips = `<div class="dice-formula" style="margin-bottom: 8px">${roll.formula}</div><div class="table-container"><table>${tooltip}</table></div>`;
+      let renderedTooltip = $(await roll.getTooltip()).prepend(tooltips)[0].outerHTML;
       // Set chat data
       let chatData = {
         speaker: options.speaker ? options.speaker : ChatMessage.getSpeaker({ actor: this.data }),
@@ -2015,7 +2032,7 @@ export class ActorPF extends Actor {
           skl: skl,
           take20: take20,
           take10: take10,
-          tooltip: $(await roll.getTooltip()).prepend(`<div class="dice-formula">${roll.formula}</div>`)[0].outerHTML,
+          tooltip: renderedTooltip,
           success: target && roll.total >= target,
           target: target,
           properties: props,
@@ -2055,6 +2072,9 @@ export class ActorPF extends Actor {
     rollData.skillTag = skillTag;
     rollData.subSkillId = subSkillId;
     let contextNoteSkillId = isSubSkill ? `skill.${skillId}.subSkills.${subSkillId}` : `skill.${skillId}`;
+    let sourceChangesSkillId = isSubSkill
+      ? `system.skills.${skillId}.subSkills.${subSkillId}.changeBonus`
+      : `system.skills.${skillId}.changeBonus`;
     const noteObjects = this.getContextNotes(contextNoteSkillId);
     for (let noteObj of noteObjects) {
       rollData.item = {};
@@ -2099,21 +2119,21 @@ export class ActorPF extends Actor {
       label: game.i18n.localize("D35E.Take10"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, options.target, html, props, sklName, "10");
+        roll = _roll.call(this, options.target, html, props, sklName, "10", sourceChangesSkillId);
       },
     };
     buttons.takeTwenty = {
       label: game.i18n.localize("D35E.Take20"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, options.target, html, props, sklName, "20");
+        roll = _roll.call(this, options.target, html, props, sklName, "20", sourceChangesSkillId);
       },
     };
     buttons.normal = {
       label: game.i18n.localize("D35E.Roll"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, options.target, html, props, sklName, "1d20");
+        roll = _roll.call(this, options.target, html, props, sklName, "1d20", sourceChangesSkillId);
       },
     };
     await new Promise((resolve) => {
@@ -2237,6 +2257,7 @@ export class ActorPF extends Actor {
       const templateData = mergeObject(
         chatTemplateData,
         {
+          actor: this,
           img: this.img,
           roll: roll,
           total: roll.total,
@@ -2318,20 +2339,33 @@ export class ActorPF extends Actor {
    * @private
    */
   _addCombatChangesToRollData(allCombatChanges, rollData) {
-    for (const change of allCombatChanges) {
-      //LogHelper.log('D35E | Change', change[4])
+    let changeId = null;
+    let changeVal = null;
+    allCombatChanges.forEach((change) => {
       if (change.field.indexOf("$") !== -1) {
-        setProperty(rollData, change.field.substr(1), Item35E._fillTemplate(change.formula, rollData));
+        changeId = change.field.substr(1);
+        changeVal = Item35E._fillTemplate(change.formula, rollData);
+        setProperty(rollData, changeId, changeVal);
       } else if (change.field.indexOf("&") !== -1) {
+        changeId = change.field.substr(1);
+        changeVal = Item35E._fillTemplate(change.formula, rollData);
         setProperty(
           rollData,
-          change.formula.substr(1),
-          (getProperty(rollData, change.formula) || "") + Item35E._fillTemplate(change.formula, rollData)
+          change.field.substr(1),
+          (getProperty(rollData, change.field.substr(1)) || "0") + " + " + changeVal
         );
       } else {
-        setProperty(rollData, change.field, (getProperty(rollData, change.field) || 0) + (change.field || 0));
+        changeId = change.field;
+        changeVal = parseInt(change.formula || 0);
+        setProperty(rollData, change.field, (getProperty(rollData, change.field) || 0) + changeVal);
       }
-    }
+      var listId = changeId.indexOf(".") !== -1 ? `${changeId.replace(".", "List.")}` : `${changeId}List`;
+      setProperty(
+        rollData,
+        listId,
+        (getProperty(rollData, listId) || []).concat([{ value: changeVal, sourceName: change["sourceName"] }])
+      );
+    });
   }
 
   /* -------------------------------------------- */
@@ -2604,6 +2638,7 @@ export class ActorPF extends Actor {
         conceal = false,
         fullConceal = false,
         rollMode = "gmroll";
+      let baseAc = ac;
       // Get form data
       if (form) {
         rollData.acBonus = form.find('[name="ac-bonus"]').val();
@@ -2710,16 +2745,9 @@ export class ActorPF extends Actor {
 
       this._addCombatChangesToRollData(allCombatChanges, rollData);
 
-      let actions = await this.getAndApplyCombatChangesSpecialActions(
-        allCombatChanges,
-        this,
-        rollData,
-        optionalFeatIds,
-        optionalFeatRanges
-      );
-
-      ac += rollData.featAC || 0;
-
+      ac += parseInt(rollData.featAC) || 0;
+      rollData.featACList = rollData.featACList || [];
+      rollData.featACList.unshift({ value: baseAc, sourceName: game.i18n.localize("D35E.AC") });
       //LogHelper.log('D35E | Final roll AC', ac)
       return {
         ac: ac,
@@ -2732,7 +2760,11 @@ export class ActorPF extends Actor {
         conceal: conceal,
         fullConceal: fullConceal,
         concealOverride: rollData.concealOverride,
-        actions: actions,
+        allCombatChanges: allCombatChanges,
+        rollData: rollData,
+        optionalFeatIds: optionalFeatIds,
+        optionalFeatRanges: optionalFeatRanges,
+        acModifiers: rollData.featACList || [],
       };
     };
     let rollData = this.getRollData();
@@ -3112,6 +3144,18 @@ export class ActorPF extends Actor {
           await a.updateDamageReductionPoolItems(damageData.damagePoolPossibleReductionsUpdate);
         }
 
+        let actions = [];
+        finalAc.rollData.hit = hit;
+        if (finalAc.allCombatChanges && finalAc.allCombatChanges.length > 0) {
+          actions = await a.getAndApplyCombatChangesSpecialActions(
+            finalAc.allCombatChanges,
+            this,
+            finalAc.rollData,
+            finalAc.optionalFeatIds,
+            finalAc.optionalFeatRanges
+          );
+        }
+
         // Set chat data
         let chatData = {
           speaker: ChatMessage.getSpeaker({ actor: a.data }),
@@ -3137,7 +3181,8 @@ export class ActorPF extends Actor {
             hit: hit,
             achit: achit,
             crit: crit,
-            actions: finalAc.actions,
+            actions: actions,
+            acModifiers: finalAc.acModifiers || [],
             concealMiss: concealMiss,
             concealRoll: concealRoll,
             concealTarget: concealTarget,

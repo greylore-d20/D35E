@@ -1132,14 +1132,16 @@ export class ActorUpdater {
           let tokens = [];
           tokens.push(this.actor.token);
           for (const o of tokens) {
-            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
+            if (shapechangeImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: shapechangeImg } }, { stopUpdates: true });
           }
         }
         if (!this.actor.isToken) {
           let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
 
           for (const o of tokens) {
-            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
+            if (shapechangeImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: shapechangeImg } }, { stopUpdates: true });
           }
           if (source !== null) source["token.img"] = shapechangeImg;
         }
@@ -1148,14 +1150,16 @@ export class ActorUpdater {
           let tokens = [];
           tokens.push(this.actor.token);
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: tokenImg} }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: tokenImg } }, { stopUpdates: true });
           }
         }
         if (!this.actor.isToken) {
           let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
 
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: tokenImg} }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: tokenImg } }, { stopUpdates: true });
           }
 
           if (source !== null) {
@@ -1311,14 +1315,14 @@ export class ActorUpdater {
                 name: changeSource.name,
                 type: changeSource.type,
                 value: changeSource.value,
-                bonusType: changeType
+                bonusType: changeType,
               });
             if (changeSource.value < 0)
               sourceInfo[target].negative.push({
                 name: changeSource.name,
                 type: changeSource.type,
                 value: changeSource.value,
-                bonusType: changeType
+                bonusType: changeType,
               });
           }
         }
@@ -1385,11 +1389,10 @@ export class ActorUpdater {
 
     let cr = data1.details.cr || 0;
     let crVal = cr;
-    if (typeof cr === 'string') {
+    if (typeof cr === "string") {
       if (cr.includes("/")) {
         crVal = parseInt(cr.split("/")[0]) / parseInt(cr.split("/")[1]);
-      } else
-        crVal = parseFloat(cr);
+      } else crVal = parseFloat(cr);
     }
     linkData(source, updateData, "system.details.cr", crVal < 1 ? crVal.toFixed(2) : Math.floor(crVal));
     linkData(source, updateData, "system.details.totalCr", crVal < 1 ? crVal.toFixed(2) : Math.floor(crVal));
@@ -1539,7 +1542,7 @@ export class ActorUpdater {
               classes.reduce((cur, obj, idx) => {
                 const saveScale = getProperty(obj, `system.savingThrows.${a}.value`) || "";
                 if (saveScale === "high") {
-                  const acc = (highStart || idx) ? 0 : 2;
+                  const acc = highStart || idx ? 0 : 2;
                   highStart = true;
                   return cur + obj.system.levels / 2 + acc;
                 }
@@ -1708,7 +1711,7 @@ export class ActorUpdater {
           sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
           sourceInfo[k].positive.push({ name: "Epic Levels", value: epicBab });
         }
-        linkData(source, updateData, k, bab + epicBab)
+        linkData(source, updateData, k, bab + epicBab);
         linkData(source, updateData, l, bab);
         linkData(source, updateData, j, bab + epicBab);
       }
@@ -1898,12 +1901,7 @@ export class ActorUpdater {
     //Set flags on actor so they are accessible
 
     for (let flagKey of Object.keys(flags)) {
-      linkData(
-        source,
-        updateData,
-        `flags.D35E.${flagKey}`,
-        flags[flagKey]
-      )
+      linkData(source, updateData, `flags.D35E.${flagKey}`, flags[flagKey]);
     }
 
     // Reset class skills
@@ -2048,7 +2046,9 @@ export class ActorUpdater {
             let e = CACHE.AllAbilities.get(feature.uid);
             let uniqueId = e?.system?.uniqueId;
             if (!uniqueId || uniqueId === "") {
-              ui.notifications.warn(game.i18n.localize("D35E.NotAddingAbilityWithNoUID").format(e?.name || "[Ability not found]"));
+              ui.notifications.warn(
+                game.i18n.localize("D35E.NotAddingAbilityWithNoUID").format(e?.name || "[Ability not found]")
+              );
               continue;
             }
             if (uniqueId.endsWith("*")) {
@@ -2491,11 +2491,14 @@ export class ActorUpdater {
           energyDrainPenalty
       );
       linkData(data, updateData, `system.skills.${sklKey}.mod`, sklValue);
+      linkData(data, updateData, `system.skills.${sklKey}.acpPenalty`, acpPenalty);
+      linkData(data, updateData, `system.skills.${sklKey}.energyDrainPenalty`, energyDrainPenalty);
+      linkData(data, updateData, `system.skills.${sklKey}.abilityModifier`, ablMod);
       linkData(
         data,
         updateData,
         `system.skills.${sklKey}.rank`,
-        Math.floor(cs && skl.points > 0 ? (skl.points || 0) : (skl.points || 0) / 2)
+        Math.floor(cs && skl.points > 0 ? skl.points || 0 : (skl.points || 0) / 2)
       );
       // Parse sub-skills
       for (let [subSklKey, subSkl] of Object.entries(skl.subSkills || {})) {
@@ -2512,13 +2515,22 @@ export class ActorUpdater {
         ablMod = 0;
         if (subSkl.ability !== "") ablMod = subSkl.ability ? systemData.abilities[subSkl.ability].mod : 0;
         specificSkillBonus = subSkl.changeBonus || 0;
+
         sklValue =
-          Math.floor(scs && subSkl.points > 0 ? (subSkl.points || 0) : (subSkl.points || 0) / 2) +
+          Math.floor(scs && subSkl.points > 0 ? subSkl.points || 0 : (subSkl.points || 0) / 2) +
           ablMod +
           specificSkillBonus -
           acpPenalty -
           energyDrainPenalty;
         linkData(data, updateData, `system.skills.${sklKey}.subSkills.${subSklKey}.mod`, sklValue);
+        linkData(data, updateData, `system.skills.${sklKey}.subSkills.${subSklKey}.acpPenalty`, acpPenalty);
+        linkData(
+          data,
+          updateData,
+          `system.skills.${sklKey}.subSkills.${subSklKey}.energyDrainPenalty`,
+          energyDrainPenalty
+        );
+        linkData(data, updateData, `system.skills.${sklKey}.subSkills.${subSklKey}.abilityModifier`, ablMod);
         linkData(
           data,
           updateData,
