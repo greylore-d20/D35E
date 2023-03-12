@@ -1989,7 +1989,7 @@ export class ActorPF extends Actor {
         optionalFeatRanges
       );
 
-      let modifiersList = skillSourceDetails;
+      let modifiersList = duplicate(skillSourceDetails);
       modifiersList.unshift({ value: roll.terms[0].results[0].result, name: "Skill Roll" });
       if (skillManualBonus) modifiersList.push({ value: skillManualBonus, name: "Situational Modifier" });
       modifiersList.push(...(rollData.featSkillBonusList || []));
