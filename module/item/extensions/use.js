@@ -1201,7 +1201,11 @@ export class ItemUse {
         "base",
       ]);
       rollData.powerAttackPenalty = -rollData.powerAttackBonus;
-      attackExtraParts.push("@powerAttackPenalty");
+      attackExtraParts.push({
+        part: "@powerAttackPenalty",
+        value: rollData.powerAttackPenalty,
+        source: game.i18n.localize("D35E.PowerAttack"),
+      });
       if (rollData.powerAttackBonus > 0)
         rollModifiers.push(`${game.i18n.localize("D35E.PowerAttack")} ${rollData.powerAttackBonus}`);
     }
@@ -1209,7 +1213,11 @@ export class ItemUse {
       manyshot = true;
       manyshotCount = parseInt(form.find('[name="manyshot-count"]').val());
       rollData.manyshotPenalty = -manyshotCount * 2;
-      attackExtraParts.push("@manyshotPenalty");
+      attackExtraParts.push({
+        part: "@manyshotPenalty",
+        value: rollData.manyshotPenalty,
+        source: game.i18n.localize("D35E.FeatManyshot"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.FeatManyshot")}`);
     }
 
@@ -1219,7 +1227,11 @@ export class ItemUse {
     const itemNonLethal = getProperty(this.item.system, "nonLethal") || false;
     if (nonLethal !== itemNonLethal) {
       rollData.nonLethalPenalty = -4;
-      attackExtraParts.push("@nonLethalPenalty");
+      attackExtraParts.push({
+        part: "@nonLethalPenalty",
+        value: rollData.nonLethalPenalty,
+        source: game.i18n.localize("D35E.WeaponPropNonLethal"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.WeaponPropNonLethal")}`);
     }
 
@@ -1227,49 +1239,77 @@ export class ItemUse {
       rollData.pronePenalty = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.prone = true;
-      attackExtraParts.push("@pronePenalty");
+      attackExtraParts.push({
+        part: "@pronePenalty",
+        value: rollData.pronePenalty,
+        source: game.i18n.localize("D35E.Prone"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Prone")}`);
     }
     if (form.find('[name="squeezing"]').prop("checked")) {
       rollData.squeezingPenalty = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.squeezing = true;
-      attackExtraParts.push("@squeezingPenalty");
+      attackExtraParts.push({
+        part: "@squeezingPenalty",
+        value: rollData.squeezingPenalty,
+        source: game.i18n.localize("D35E.Squeezing"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Squeezing")}`);
     }
     if (form.find('[name="highground"]').prop("checked")) {
       rollData.highground = 1;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.highGround = true;
-      attackExtraParts.push("@highground");
+      attackExtraParts.push({
+        part: "@highground",
+        value: rollData.highground,
+        source: game.i18n.localize("D35E.HighGround"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.HighGround")}`);
     }
     if (form.find('[name="defensive"]').prop("checked")) {
       rollData.defensive = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.defensive = true;
-      attackExtraParts.push("@defensive");
+      attackExtraParts.push({
+        part: "@defensive",
+        value: rollData.attackToggles.defensive,
+        source: game.i18n.localize("D35E.DefensiveFighting"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.DefensiveFighting")}`);
     }
     if (form.find('[name="charge"]').prop("checked")) {
       rollData.charge = 2;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.charge = true;
-      attackExtraParts.push("@charge");
+      attackExtraParts.push({
+        part: "@charge",
+        value: rollData.charge,
+        source: game.i18n.localize("D35E.Charge"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Charge")}`);
     }
     if (form.find('[name="ccshot"]').prop("checked")) {
       rollData.ccshot = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.closeQuartersShot = true;
-      attackExtraParts.push("@ccshot");
+      attackExtraParts.push({
+        part: "@closeQuartersShot",
+        value: rollData.ccshot,
+        source: game.i18n.localize("D35E.CloseQuartersShot"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.CloseQuartersShot")}`);
     }
     if (form.find('[name="flanking"]').prop("checked")) {
       rollData.flanking = 2;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.flanking = true;
-      attackExtraParts.push("@flanking");
+      attackExtraParts.push({
+        part: "@flanking",
+        value: rollData.flanking,
+        source: game.i18n.localize("D35E.Flanking"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Flanking")}`);
     }
 
@@ -1277,7 +1317,11 @@ export class ItemUse {
       greaterManyshotCount = parseInt(form.find('[name="greater-manyshot-count"]').val());
       greaterManyshot = true;
       rollData.greaterManyshotPenalty = -greaterManyshotCount * 2;
-      attackExtraParts.push("@greaterManyshotPenalty");
+      attackExtraParts.push({
+        part: "@greaterManyshotPenalty",
+        value: rollData.greaterManyshotPenalty,
+        source: game.i18n.localize("D35E.FeatGreaterManyshot"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.FeatGreaterManyshot")}`);
     }
     if (form.find('[name="rapid-shot"]').prop("checked")) {
@@ -1310,23 +1354,39 @@ export class ItemUse {
         rollData.twoWeaponPenalty = -4;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -2;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -2;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
       } else if (twoWeaponMode === "main-offhand-normal") {
         rollData.twoWeaponPenalty = -6;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -4;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -4;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
       } else if (twoWeaponMode === "offhand-light") {
         rollData.twoWeaponPenalty = -8;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -2;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -2;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
         twoWeaponFightingOffhand = true;
       } else if (twoWeaponMode === "offhand-normal") {
         rollData.twoWeaponPenalty = -10;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -4;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -4;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
         twoWeaponFightingOffhand = true;
       } else if (twoWeaponMode === "two-handed") {
         rollData.weaponHands = 2;
