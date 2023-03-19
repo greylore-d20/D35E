@@ -1139,7 +1139,11 @@ export class ItemUse {
   ) {
     rollData.attackBonus = form.find('[name="attack-bonus"]').val();
     if (rollData.attackBonus) {
-      attackExtraParts.push("@attackBonus");
+      attackExtraParts.push({
+        part: "@attackBonus",
+        value: rollData.attackBonus,
+        source: game.i18n.localize("D35E.AttackRollBonus"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.AttackRollBonus")} ${rollData.attackBonus}`);
     }
     rollData.damageBonus = form.find('[name="damage-bonus"]').val();
@@ -1181,7 +1185,12 @@ export class ItemUse {
         damageExtraParts.push([useAmmoDamage, useAmmoDamageType, useAmmoDamageUid]);
       }
       if (useAmmoAttack !== "") {
-        attackExtraParts.push(useAmmoAttack);
+        rollData.useAmmoAttack = parseInt(useAmmoAttack);
+        attackExtraParts.push({
+          part: "@useAmmoAttack",
+          value: rollData.useAmmoAttack,
+          source: `${useAmmoName} ${game.i18n.localize("D35E.Bonus")}`,
+        });
       }
       if (useAmmoEnhancement !== undefined && useAmmoEnhancement !== "") {
         ammoEnh = new Roll35e(useAmmoEnhancement, {}).roll().total;
