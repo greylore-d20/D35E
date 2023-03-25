@@ -21,9 +21,9 @@ function getActor(source) {
 function isCorrectAlliance(source, target, auraTarget) {
   switch (auraTarget) {
     case "enemy":
-      return source.disposition !== target.disposition;
+      return source.document.disposition !== target.document.disposition;
     case "ally":
-      return source.disposition === target.disposition;
+      return source.document.disposition === target.document.disposition;
     default:
       return true;
   }

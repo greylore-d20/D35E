@@ -58,6 +58,7 @@ export class ItemCombatChanges {
         );
       })
       .map((c) => {
+        let hasAction = false;
         if (typeof c["formula"] === "string") {
           c["formula"] = c["formula"].replace(/@range1/g, combatChangesRollData.range1);
           c["formula"] = c["formula"].replace(/@range2/g, combatChangesRollData.range2);
@@ -67,6 +68,7 @@ export class ItemCombatChanges {
           for (const match of c["formula"].matchAll(regexpSource)) {
             c["formula"] = c["formula"].replace(`@source.${match[1]}`, getProperty(this.item.system, match[1]) || 0);
           }
+          if (c["formula"] !== "" && c["formula"] !== undefined) hasAction = true;
         }
         // We do not pre-roll things that have a roll inside, we assume they will be rolled later
         if (c["formula"].indexOf("d") === -1 && c["field"].indexOf("&") === -1) {
@@ -74,9 +76,9 @@ export class ItemCombatChanges {
             if (c["formula"].toString().indexOf("@") !== -1) {
               c["formula"] = new Roll35e(`${c["formula"]}`, combatChangesRollData).roll().total;
             }
+            hasAction = true;
           } else {
             c["formula"] = 0;
-            ui.notifications.warn(game.i18n.localize("D35E.EmptyCombatChange").format(this.item.name));
           }
         }
         if (c.length === 6 || c.length === 7) {
@@ -92,11 +94,15 @@ export class ItemCombatChanges {
                 getProperty(this.item.system, match[1]) || 0
               );
             }
+            hasAction = true;
           }
           c["itemId"] = this.item.id;
           c["itemName"] = this.item.name;
           c["itemImg"] = this.item.img;
           c["applyActionsOnlyOnce"] = getProperty(this.item.system, "applyActionsOnlyOnce") || false;
+        }
+        if (!hasAction) {
+          ui.notifications.warn(game.i18n.localize("D35E.EmptyCombatChange").format(this.item.name));
         }
         c["sourceName"] = this.item.name;
         return CombatChange.fromObject(c);

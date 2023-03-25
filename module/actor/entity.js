@@ -26,9 +26,8 @@ export class ActorPF extends Actor {
   /* -------------------------------------------- */
   static LOG_V10_COMPATIBILITY_WARNINGS = false;
   API_URI = "https://companion.legaciesofthedragon.com/";
+  // API_URI = "http://localhost:5000";
   static SPELL_AUTO_HIT = -1337;
-
-  //API_URI = 'http://localhost:5000';
 
   constructor(...args) {
     super(...args);
@@ -3145,6 +3144,7 @@ export class ActorPF extends Actor {
         }
 
         let actions = [];
+        finalAc.rollData = {};
         finalAc.rollData.hit = hit;
         if (finalAc.allCombatChanges && finalAc.allCombatChanges.length > 0) {
           actions = await a.getAndApplyCombatChangesSpecialActions(
