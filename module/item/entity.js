@@ -114,6 +114,7 @@ export class Item35E extends ItemBase35E {
 
   get displayName() {
     let name = null;
+    if (this.system.identified === undefined) return this.name;
     if (this.showUnidentifiedData)
       name = getProperty(this.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
     else name = getProperty(this.system, "identifiedName") || this.originalName;
@@ -1320,12 +1321,12 @@ export class Item35E extends ItemBase35E {
       system: shapechangeData,
     };
 
-    shapechangeData.system.shapechange = { source: origData, type: type };
+    shapechangeData.system.shapechange = { source: origData.toObject(false), type: type };
     shapechangeData.system.buffType = "shapechange";
     shapechangeData.system.sizeOverride = origData.system.traits.size;
 
     shapechangeData.system.changes = [];
-    shapechangeData.system.changes.push(...(origData.items.find((i) => i.type === "class")?.data?.changes || []));
+    shapechangeData.system.changes.push(...(origData.items.find((i) => i.type === "class")?.system?.changes || []));
     if (type === "polymorph" || type === "wildshape") {
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [

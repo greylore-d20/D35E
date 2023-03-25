@@ -130,9 +130,7 @@ export class ActorSheetPF extends ActorSheet {
       i.showUnidentifiedData = item.showUnidentifiedData;
       i.unmetRequirements =
         item.type === "feat" || item.type === "class" ? item.hasUnmetRequirements(featRollData) : false;
-      if (i.showUnidentifiedData)
-        i.name = getProperty(item.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
-      else i.name = getProperty(item.system, "identifiedName") || item.name;
+      i.name = item.displayName;
       return i;
     });
     sheetData.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
@@ -1955,7 +1953,7 @@ export class ActorSheetPF extends ActorSheet {
 
       for (const i of metamagicFeats) {
         if (optionalFeatIds.indexOf(i._id) !== -1) {
-          await eval("(async () => {" + i.system.metamagic.code + "})()");
+          await eval("(async () => {" + i.system.metamagic.code.replaceAll(".data", ".system") + "})()");
         }
       }
       let x = await this.actor.createEmbeddedEntity("Item", newSpell, { ignoreSpellbookAndLevel: true });
