@@ -1202,3 +1202,15 @@ Hooks.on("getSceneControlButtons", (controls) => {
     activeTool: "select",
   });
 });
+
+Hooks.on("renderItemSheet", (app, html) => {
+  if (!app?.object?.system.uniqueId) return;
+  const copyUidButton = $(
+    `<a class="document-uid-link" alt="Copy document UID" data-tooltip="Item UID: ${app?.object?.system.uniqueId}" data-tooltip-direction="UP"><i class="fa-solid fa-anchor"></i></a>`
+  );
+  copyUidButton.on("click", async () => {
+    navigator.clipboard.writeText(app?.object?.system.uniqueId);
+  });
+  const div = html.find("h4.window-title");
+  div.append(copyUidButton);
+});

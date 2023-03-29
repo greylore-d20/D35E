@@ -92,10 +92,7 @@
 
                     {{#if isGM}}
                     <h3 class="form-header">System Properties</h3>
-                    <div class="form-group">
-                        <label>UID</label>
-                        <input type="text" name="system.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
-                    </div>
+                    {{> "systems/D35E/templates/items/components/uid-input.html"}}
                     {{/if}}
                 </div>
             </div>

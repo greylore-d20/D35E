@@ -169,10 +169,15 @@ export class ItemSheetPF extends ItemSheet {
     sheetData.availableContainers = {};
     sheetData.availableContainers["none"] = "None";
 
-    sheetData.enriched = {}
-    sheetData.enriched.description = {}
-    sheetData.enriched.description.value = await TextEditor.enrichHTML(await this.item.getDescription(), {async: true});
-    sheetData.enriched.description.unidentified = await TextEditor.enrichHTML(await this.item.getUnidentifiedDescription(), {async: true});
+    sheetData.enriched = {};
+    sheetData.enriched.description = {};
+    sheetData.enriched.description.value = await TextEditor.enrichHTML(await this.item.getDescription(), {
+      async: true,
+    });
+    sheetData.enriched.description.unidentified = await TextEditor.enrichHTML(
+      await this.item.getUnidentifiedDescription(),
+      { async: true }
+    );
 
     sheetData.material = this.item.system.material?.system || this.item.system.material?.data;
     sheetData.materialMetadata = {
@@ -964,6 +969,8 @@ export class ItemSheetPF extends ItemSheet {
     // Conditional Dropping
     html.find('div[data-tab="conditionals"]').on("drop", this._onConditionalDrop.bind(this));
 
+    html.find(".generate-uid").click((event) => this._onGenerateUid(event));
+
     this.sheetComponents.forEach((component) => {
       component.activateListeners(html);
     });
@@ -1426,7 +1433,7 @@ export class ItemSheetPF extends ItemSheet {
     } catch (err) {
       return false;
     }
-    let droppedItem = await fromUuid(droppedData.uuid)
+    let droppedItem = await fromUuid(droppedData.uuid);
     if (droppedItem.parent.uuid !== this.actor.uuid) {
       return ui.notifications.warn(game.i18n.localize("D35E.FullAttackNeedDropFromActor"));
     }
@@ -1437,7 +1444,7 @@ export class ItemSheetPF extends ItemSheet {
       updateData[`system.attacks.${attackId}.img`] = droppedItem.img;
       updateData[`system.attacks.${attackId}.count`] = 1;
       updateData[`system.attacks.${attackId}.primary`] =
-          droppedItem.system.attackType === "natural" && droppedItem.system.primaryAttack;
+        droppedItem.system.attackType === "natural" && droppedItem.system.primaryAttack;
       updateData[`system.attacks.${attackId}.isWeapon`] = droppedItem.system.attackType === "weapon";
       this.item.update(updateData);
     }
@@ -1486,14 +1493,16 @@ export class ItemSheetPF extends ItemSheet {
       return false;
     }
 
-    let droppedItem = await fromUuid(droppedData.uuid)
+    let droppedItem = await fromUuid(droppedData.uuid);
     if (droppedItem.parent.uuid !== this.actor.uuid) {
       return ui.notifications.warn(game.i18n.localize("D35E.FullAttackNeedDropFromActor"));
     }
     if (droppedData.type === "Item" && droppedItem?.system?.uses?.canBeLinked && droppedItem?.system?.uses?.max) {
       let updateData = {};
 
-      updateData[`system.linkedChargeItem.id`] = droppedItem.system.uniqueId ? droppedItem.system.uniqueId : droppedItem._id;
+      updateData[`system.linkedChargeItem.id`] = droppedItem.system.uniqueId
+        ? droppedItem.system.uniqueId
+        : droppedItem._id;
       updateData[`system.linkedChargeItem.name`] = droppedItem.name;
       updateData[`system.linkedChargeItem.img`] = droppedItem.img;
       this.item.update(updateData);
@@ -1516,7 +1525,7 @@ export class ItemSheetPF extends ItemSheet {
     let dataType = "";
     if (droppedData.type === "RollTable") {
       let itemData = {};
-      let droppedItem = await fromUuid(droppedData.uuid)
+      let droppedItem = await fromUuid(droppedData.uuid);
       if (droppedItem.pack) {
         let updateData = {};
         dataType = "compendium";
@@ -1555,7 +1564,7 @@ export class ItemSheetPF extends ItemSheet {
       return false;
     }
 
-    let droppedItem = await fromUuid(droppedData.uuid)
+    let droppedItem = await fromUuid(droppedData.uuid);
     if (!droppedItem.pack) {
       return ui.notifications.warn(game.i18n.localize("D35E.ResourceNeedDropFromCompendium"));
     }
@@ -1585,10 +1594,16 @@ export class ItemSheetPF extends ItemSheet {
     if (droppedData.type === "Item") {
       let itemData = {};
 
-      let droppedItem = await fromUuid(droppedData.uuid)
+      let droppedItem = await fromUuid(droppedData.uuid);
       if (droppedItem.pack) {
         if (droppedItem != null) {
-          let spell = { id: droppedItem.id, pack: droppedItem.pack, name: droppedItem.name, img: droppedItem.img, uuid: droppedData.uuid };
+          let spell = {
+            id: droppedItem.id,
+            pack: droppedItem.pack,
+            name: droppedItem.name,
+            img: droppedItem.img,
+            uuid: droppedData.uuid,
+          };
           this.item.addSpellToClassSpellbook(spellLevel, spell);
         }
       }
@@ -1645,7 +1660,7 @@ export class ItemSheetPF extends ItemSheet {
     let dataType = "";
 
     if (droppedData.type === "Item") {
-      let droppedItem = await fromUuid(droppedData.uuid)
+      let droppedItem = await fromUuid(droppedData.uuid);
       let itemData = {};
       if (droppedItem.pack) {
         let updateData = {};
@@ -1674,8 +1689,7 @@ export class ItemSheetPF extends ItemSheet {
     let target = "target";
     if (this.item.system?.target?.value === "self") target = "self";
     if (droppedData.type === "Item") {
-
-      let droppedItem = await fromUuid(droppedData.uuid)
+      let droppedItem = await fromUuid(droppedData.uuid);
       if (droppedItem.pack) {
         const packItem = droppedItem;
         if (packItem != null && packItem.data.type === "buff") {
@@ -1785,5 +1799,10 @@ export class ItemSheetPF extends ItemSheet {
       conditionals[Number(li.dataset.conditional)].modifiers.splice(Number(li.dataset.modifier), 1);
       return this.item.update({ "system.conditionals": conditionals });
     }
+  }
+
+  async _onGenerateUid(event) {
+    await this.item.update({ "system.uniqueId": this.item.tag + "-" + Math.random().toString(36).slice(-6) });
+    this.render(true);
   }
 }

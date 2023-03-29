@@ -61,7 +61,7 @@ export class TemplateLayerPF extends TemplateLayer {
   }
 
   _onDragLeftMove(event) {
-    if (!game.settings.get("pf1", "measureStyle")) return super._onDragLeftMove(event);
+    if (!game.settings.get("D35E", "measureStyle")) return super._onDragLeftMove(event);
 
     const { destination, createState, preview, origin } = event.data;
     if (createState === 0) return;

@@ -2405,6 +2405,11 @@
   /*  Loot Sheet (No Tabs)                     */
   /* ----------------------------------------- */
 }
+.D35E.sheet.item .document-uid-link {
+  margin-left: 0.25rem;
+  opacity: 0.5;
+  cursor: pointer;
+}
 .D35E.sheet.item .sheet-header-small {
   flex: 0 0 40px;
   width: 40px;
@@ -3438,6 +3443,13 @@
   padding: 9px;
   font-size: 16px;
   color: #6d2c2c;
+}
+.D35E.sheet.item .generate-uid {
+  flex: 0 100px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  margin-left: 4px;
 }
 /* ----------------------------------------- */
 /*  Chat Cards

@@ -189,20 +189,10 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
     });
   }
 
-  getHighlightLayer() {
-    return canvas.grid.getHighlightLayer(`Template.${this.id}`) ?? canvas.grid.addHighlightLayer(`Template.${this.id}`);
-  }
-
   refresh() {
     if (!this.template) return;
     if (!canvas.scene) return;
 
-    super.refresh();
-
-    if (this.active) {
-      this.highlightGrid();
-    }
-
-    return this;
+    return super.refresh();
   }
 }
