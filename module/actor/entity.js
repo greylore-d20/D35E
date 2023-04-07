@@ -4454,6 +4454,7 @@ export class ActorPF extends Actor {
           let messageType = action.parameters.shift();
           let chatTemplateData = {
             name: this.name,
+            actor: this,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             rollMode: cleanParam(messageType),
             text: action.parameters.join(" "),
@@ -5276,6 +5277,12 @@ export class ActorPF extends Actor {
     }
   }
 
+  async deactivateBuffs(itemIds) {
+    for (let itemId of itemIds) {
+      await this.items.find((item) => item._id === itemId).update({ "data.active": false }, { forceDeactivate: true });
+    }
+  }
+
   async renderBuffEndChatCard(items) {
     const chatTemplate = "systems/D35E/templates/chat/roll-ext.html";
 
@@ -5548,6 +5555,7 @@ export class ActorPF extends Actor {
         itemsEnding: [],
         itemsOnRound: [],
         itemsToDelete: [],
+        itemsDeactivating: [],
         itemResourcesData: {},
         buffsToDelete: [],
         deletedOrChanged: false,
@@ -5561,19 +5569,23 @@ export class ActorPF extends Actor {
        */
       let i = this.items.get(buffId);
       if (!i) {
-        bu.buffsToDelete.push(buffId);
+        bu.itemsToDelete.push(buffId);
         bu.deletedOrChanged = true;
       } else {
         this.getItemResourcesUpdate(i, bu.itemResourcesData);
         let elapsedTimeUpdateData = i.getElapsedTimeUpdateData(roundDelta);
-        if (elapsedTimeUpdateData && elapsedTimeUpdateData["data.active"] === false) bu.itemsEnding.push(i);
+        if (elapsedTimeUpdateData && elapsedTimeUpdateData["system.active"] === false) {
+          bu.itemsEnding.push(i);
+          bu.itemsDeactivating.push(elapsedTimeUpdateData._id);
+        }
         if ((i.system.perRoundActions || []).length && !elapsedTimeUpdateData.delete) bu.itemsOnRound.push(i);
         if (elapsedTimeUpdateData && !elapsedTimeUpdateData.delete && !elapsedTimeUpdateData.ignore) {
           bu.itemUpdateData.push(elapsedTimeUpdateData);
           bu.deletedOrChanged = true;
         } else if (elapsedTimeUpdateData && elapsedTimeUpdateData.delete === true) {
-          bu.itemUpdateData.push({ _id: elapsedTimeUpdateData._id, "data.active": false });
-          bu.buffsToDelete.push(elapsedTimeUpdateData._id);
+          bu.itemUpdateData.push({ _id: elapsedTimeUpdateData._id, "system.active": false });
+          bu.itemsDeactivating.push(elapsedTimeUpdateData._id);
+          bu.itemsToDelete.push(elapsedTimeUpdateData._id);
           bu.deletedOrChanged = true;
         }
       }

@@ -288,7 +288,7 @@ export class CombatD35E extends Combat {
           for (let [actorUuid, update] of this.roundBuffUpdates.entries()) {
             let _actor = await this.getActorFromTokenOrActorUuid(actorUuid);
             if (Object.keys(update.itemResourcesData).length > 0 || update.deletedOrChanged) {
-              await _actor.update(update.itemResourcesData);
+              promises.push(_actor.update(update.itemResourcesData));
             }
             if (update.itemsEnding.length) _actor.renderBuffEndChatCard(update.itemsEnding);
             if (update.itemsOnRound.length) _actor.applyOnRoundBuffActions(update.itemsOnRound);
@@ -296,11 +296,28 @@ export class CombatD35E extends Combat {
           await Promise.all(promises);
 
           let buffsToDelete = new Set();
+
+          for (let [actorUuid, update] of this.roundBuffUpdates.entries()) {
+            let _actor = await this.getActorFromTokenOrActorUuid(actorUuid);
+            if (update.itemsDeactivating.length) {
+              promises.push(_actor.deactivateBuffs(update.itemsDeactivating));
+              buffsToDelete.add(update.itemsDeactivating);
+            }
+          }
+
           for (let [actorUuid, update] of this.roundBuffUpdates.entries()) {
             let _actor = await this.getActorFromTokenOrActorUuid(actorUuid);
             if (update.itemsToDelete.length > 0) {
-              promises.push(_actor.deleteEmbeddedDocuments("Item", update.itemsToDelete));
-              buffsToDelete.add(update.buffsToDelete);
+              let existingItems = update.itemsToDelete.filter((id) => actor.items.has(id));
+              let missingItems = update.itemsToDelete.filter((id) => !actor.items.has(id));
+              let missingCombatants = [];
+              for (let missingBuff of missingItems) {
+                let missingCombatantId = game.combat.combatants.find((c) => c.flags.D35E.buffId === missingBuff)?.id;
+                if (missingCombatantId) missingCombatants.push(missingCombatantId);
+              }
+              promises.push(this.deleteEmbeddedDocuments("Combatant", missingCombatants));
+              promises.push(_actor.deleteEmbeddedDocuments("Item", existingItems));
+              buffsToDelete.add(update.itemsToDelete);
             }
           }
           await Promise.all(promises);

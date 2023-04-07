@@ -570,6 +570,7 @@ export class Item35E extends ItemBase35E {
     let activateBuff = updated["system.active"] && updated["system.active"] !== getProperty(this.system, "active");
     let deactivateBuff =
       getProperty(this.system, "active") && updated["system.active"] !== undefined && !updated["system.active"];
+    deactivateBuff = deactivateBuff || options.forceDeactivate;
     // Update description
 
     // Set weapon subtype
