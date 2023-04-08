@@ -683,6 +683,7 @@ export class Item35E extends ItemBase35E {
     }
     updated["system.index.subType"] = this.updateGetSubtype(updated);
     updated["system.index.uniqueId"] = updated["uniqueId"] || getProperty(this.system, "uniqueId");
+
     let updateData = await super.update(updated, options);
     if (this.actor !== null && !options.massUpdate) {
       if (activateBuff) {

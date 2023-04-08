@@ -733,7 +733,7 @@ export class ItemSheetPF extends ItemSheet {
         arr[i].modifiers[j][k] = entry[1];
         // Target dependent keys
         if (["subTarget", "critical", "type"].includes(k)) {
-          const target = (conditionals.find((o) => o[0] === `data.conditionals.${i}.${j}.target`) || [])[1];
+          const target = (conditionals.find((o) => o[0] === `system.conditionals.${i}.${j}.target`) || [])[1];
           const val = entry[1];
           if (typeof target === "string") {
             let keys;
