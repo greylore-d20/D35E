@@ -159,6 +159,10 @@
 
             {{#if isFeat}}
             <div class="form-group">
+                <label>{{localize "D35E.FeatAddedLevel"}}</label>
+                <input type="text" name="system.addedLevel" value="{{data.system.addedLevel}}" data-dtype="Number"/>
+            </div>
+            <div class="form-group">
                 <label>{{localize "D35E.FeatPool"}}</label>
                 <select name="system.classSource" data-dtype="String">
                     {{#select data.system.classSource}}

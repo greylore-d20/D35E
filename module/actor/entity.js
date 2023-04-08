@@ -3545,7 +3545,11 @@ export class ActorPF extends Actor {
     createData.push(...linkedItems);
 
     for (let obj of createData) {
-      delete obj.effects;
+      try {
+        delete obj.effects;
+      } catch (e) {
+        console.warn(e);
+      }
       // Don't auto-equip transferred items
       if (obj._id != null && ["weapon", "equipment"].includes(obj.type)) {
         if (obj.document) obj.document.data.update({ "data.equipped": false });
@@ -3675,6 +3679,11 @@ export class ActorPF extends Actor {
             }
             ui.notifications.warn(`Spell added despite not being in a spell list for class.`);
           }
+        }
+      }
+      if (["feat"].includes(obj.type)) {
+        if (!obj.system.addedLevel || obj.system.addedLevel === 0) {
+          obj.system.addedLevel = this.system.details.level.value;
         }
       }
       if (obj.system?.creationChanges && obj.system.creationChanges.length) {

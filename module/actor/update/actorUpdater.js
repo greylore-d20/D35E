@@ -2066,6 +2066,7 @@ export class ActorUpdater {
                 delete eItem._id;
                 eItem.system.uniqueId = uniqueId;
                 eItem.system.source = `${raceObject.name}`;
+                eItem.system.addedLevel = 1;
                 eItem.system.userNonRemovable = true;
                 if (e.type === "spell") {
                   eItem.system.spellbook = "spelllike";
@@ -2109,6 +2110,7 @@ export class ActorUpdater {
                 Item35E.setMaxUses(eItem, this.actor.getRollData());
                 eItem.system.uniqueId = uniqueId;
                 eItem.system.source = `${raceObject.name}`;
+                eItem.system.addedLevel = 1;
                 eItem.system.userNonRemovable = true;
                 if (e.type === "spell") {
                   eItem.system.spellbook = "spelllike";
@@ -2179,6 +2181,7 @@ export class ActorUpdater {
           eItem.system.uniqueId = uniqueId;
           delete eItem._id;
           eItem.system.source = `${classInfo[0]} ${level}`;
+          eItem.system.addedLevel = level;
           eItem.system.userNonRemovable = true;
           if (e.type === "spell") {
             eItem.system.spellbook = "spelllike";

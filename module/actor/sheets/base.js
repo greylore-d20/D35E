@@ -2547,13 +2547,13 @@ export class ActorSheetPF extends ActorSheet {
     for (let f of feats) {
       let k = f.system.featType;
 
-      if (f.system.source) {
+      if (f.system.source && f.system.source !== "") {
         let className = f.system.source.split(" ");
         className.pop();
         let sourceClassName = className.join(" ");
         if (!classFeaturesMap.has(sourceClassName)) classFeaturesMap.set(sourceClassName, []);
         classFeaturesMap.get(sourceClassName).push(f);
-        if (!!game.settings.get("D35E", "classFeaturesInTabs") || k === "racial") {
+        if (sourceClassName === "" || !!game.settings.get("D35E", "classFeaturesInTabs") || k === "racial") {
           features[k].items.push(f);
         }
       } else {
