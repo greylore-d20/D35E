@@ -1021,7 +1021,10 @@ export class ActorUpdater {
     // Add dex mod to AC
     if (updateData["system.abilities.dex.mod"] < 0 || !flags.loseDexToAC) {
       const maxDexBonus =
-        updateData["system.attributes.maxDexBonus"] || getProperty(this.actor.system, "attributes.maxDexBonus") || null;
+        updateData["system.attributes.maxDexBonus"] !== null &&
+        updateData["system.attributes.maxDexBonus"] !== undefined
+          ? updateData["system.attributes.maxDexBonus"]
+          : getProperty(this.actor.system, "attributes.maxDexBonus") || null;
       const dexBonus =
         maxDexBonus != null
           ? Math.min(maxDexBonus, updateData["system.abilities.dex.mod"])

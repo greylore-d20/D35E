@@ -411,7 +411,10 @@ export class ActorSheetPF extends ActorSheet {
 
     sheetData.maxDexBonus.sourceDetails.push({
       name: game.i18n.localize("D35E.Gear"),
-      value: this.actor.system.attributes?.maxDex?.gear || game.i18n.localize("D35E.NotLimited"),
+      value:
+        this.actor.system.attributes?.maxDex?.gear !== null
+          ? this.actor.system.attributes?.maxDex?.gear
+          : game.i18n.localize("D35E.NotLimited"),
     });
     sheetData.maxDexUnlimited = this.actor.system.attributes?.maxDex?.total === 999;
 
