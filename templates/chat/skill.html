@@ -65,10 +65,8 @@
             <div class="dice-result">
                 <h4 class="dice-total{{#if atk.attack.isCrit}} success{{/if}}{{#if atk.attack.isFumble}} failure{{/if}}">
                     {{total}}</h4>
-                {{#if ownerOrGM}}
-                {{#if revealed}}
+                {{#if ownerOrGMAndNotBlind}}
                 {{{tooltip}}}
-                {{/if}}
                 {{/if}}
             </div>
         </div>

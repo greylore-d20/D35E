@@ -1093,7 +1093,8 @@ export class ActorPF extends Actor {
       if (bonusFormula !== undefined && bonusFormula !== null && bonusFormula.length)
         attackData["system.attackBonus"] = bonusFormula;
     }
-
+    attackData["system.attackNotes"] = "";
+    attackData["system.effectNotes"] = "";
     // Add things from Enhancements
     let conditionals = [];
     if (identified) {
@@ -1136,11 +1137,11 @@ export class ActorPF extends Actor {
         if (conditional.modifiers.length > 0) {
           conditionals.push(conditional);
         }
-        if (enhancementData.attackNotes !== "") {
+        if (enhancementData.effectNotes && enhancementData.attackNotes !== "") {
           attackData["system.attackNotes"] += "\n" + enhancementData.attackNotes;
           attackData["system.attackNotes"] = attackData["system.attackNotes"].trim();
         }
-        if (enhancementData.effectNotes !== "") {
+        if (enhancementData.effectNotes && enhancementData.effectNotes !== "") {
           attackData["system.effectNotes"] += "\n" + enhancementData.effectNotes;
           attackData["system.effectNotes"] = attackData["system.effectNotes"].trim();
         }
@@ -1151,11 +1152,11 @@ export class ActorPF extends Actor {
     }
 
     if (identified) {
-      if (item.system.attackNotes !== "") {
+      if (item.system.attackNotes && item.system.attackNotes !== "") {
         attackData["system.attackNotes"] += "\n" + item.system.attackNotes;
         attackData["system.attackNotes"] = attackData["system.attackNotes"].trim();
       }
-      if (item.system.effectNotes !== "") {
+      if (item.system.attackNotes && item.system.effectNotes !== "") {
         attackData["system.effectNotes"] += "\n" + item.system.effectNotes;
         attackData["system.effectNotes"] = attackData["system.effectNotes"].trim();
       }

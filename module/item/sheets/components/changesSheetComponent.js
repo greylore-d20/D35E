@@ -81,7 +81,7 @@ export class ChangesSheetComponent extends ItemSheetComponent {
         }
       });
     }
-    sheetData.data.system.combatChanges.forEach((change) => {
+    (sheetData.data.system.combatChanges || []).forEach((change) => {
       if (change[4] && change[4].indexOf("@") !== -1 && change[3] && change[3].indexOf("&") === -1) {
         change.errorNoDynamicChange = true;
       }
