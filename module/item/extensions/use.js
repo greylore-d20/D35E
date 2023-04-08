@@ -716,6 +716,13 @@ export class ItemUse {
       let hasBoxInfo = this.item.hasAttack || this.item.hasDamage || this.item.hasEffect;
       let attackNotes = [];
       const noteObjects = actor.getContextNotes("attacks.attack");
+      if (typeof this.itemData.attackNotes === "string" && this.itemData.attackNotes.length) {
+        noteObjects.push({ notes: [this.itemData.attackNotes] });
+      }
+
+      if (useAmmoNote !== "") {
+        noteObjects.push({ notes: [useAmmoNote] });
+      }
       for (let noteObj of noteObjects) {
         rollData.item = {};
         if (noteObj.item != null) rollData.item = duplicate(noteObj.item.system);
@@ -731,13 +738,6 @@ export class ItemUse {
             attackNotes.push(attackNote);
           }
         }
-      }
-      if (typeof this.itemData.attackNotes === "string" && this.itemData.attackNotes.length) {
-        attackNotes.push(...this.itemData.attackNotes.split(/[\n\r]+/));
-      }
-
-      if (useAmmoNote !== "") {
-        attackNotes.push(...useAmmoNote.split(/[\n\r]+/));
       }
       let attackStr = "";
       for (let an of attackNotes) {

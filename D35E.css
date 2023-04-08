@@ -5112,6 +5112,20 @@ h3 {
 .toggle input[type=checkbox] {
   display: none;
 }
+.checkbox span.checkmark.right {
+  right: 0 !important;
+  left: unset !important;
+}
+.checkbox span.label-left {
+  margin-left: 24px;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-14);
+}
+.checkbox span.label-right {
+  margin-right: 24px;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-14);
+}
 .toggle input[type=checkbox] + label {
   margin: 2px;
   cursor: pointer;
