@@ -429,11 +429,6 @@ export class ItemUse {
       }
     }
 
-    let dc = this.#_getSpellDC(rollData);
-    rollData.dc = dc;
-    rollData.spellPenetration = rollData.cl + (rollData.featSpellPenetrationBonus || 0);
-    this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
-
     let manyshotAttacks = [];
     if (greaterManyshot) {
       allAttacks.forEach((attack) => {
@@ -455,7 +450,14 @@ export class ItemUse {
       );
       rollData.powerPointsUsed = rollData.useAmount + parseInt(getProperty(this.item.system, "powerPointsCost"));
       rollData.additionalPowerPointsUsed = rollData.useAmount;
+      rollData.augmentation = rollData.useAmount;
     }
+
+    let dc = this.#_getSpellDC(rollData);
+    rollData.dc = dc;
+    rollData.spellPenetration = rollData.cl + (rollData.featSpellPenetrationBonus || 0);
+    this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
+
     let attacks = [];
     if (this.item.hasAttack) {
       let attackId = 0;
