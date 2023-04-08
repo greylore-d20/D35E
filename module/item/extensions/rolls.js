@@ -123,6 +123,8 @@ export class ItemRolls {
     }
     if (rollData.featAttackBonusList) {
       for (let [i, bonus] of rollData.featAttackBonusList.entries()) {
+        if (typeof bonus["value"] === "string" || bonus["value"] instanceof String)
+          bonus["value"] = new Roll35e(bonus["value"], rollData).roll().total;
         parts.push("${this.featAttackBonusList[" + i + "].value}");
         descriptionParts.push({ name: bonus["sourceName"], value: bonus["value"] });
       }

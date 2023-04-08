@@ -1655,9 +1655,10 @@ export class ActorPF extends Actor {
       let savingThrowBonus = getProperty(this.system, `attributes.savingThrows.${saveType}.total`) || 0,
         optionalFeatIds = [],
         optionalFeatRanges = new Map(),
-        rollMode = null;
+        rollMode = null,
+        saveFieldName = `system.attributes.savingThrows.${saveType}.total`;
       savingThrowBonus -= getProperty(this.system, `abilities.${baseAbility}.mod`) || 0;
-      savingThrowBonus += getProperty(this.system, `abilities.${ability}.mod`) || 0;
+      let savingThrowAbilityBonus = getProperty(this.system, `abilities.${ability}.mod`) || 0;
       let savingThrowManualBonus = 0;
       // Get data from roll form
       if (form) {
@@ -1702,12 +1703,31 @@ export class ActorPF extends Actor {
           value: rollModifiers,
         });
 
+      let savingThrowSourceDetails = this.sourceDetails[saveFieldName] || [];
+
       this._addCombatChangesToRollData(allCombatChanges, rollData);
-      rollData.featSavingThrow = rollData.featSavingThrow || 0;
+      let saveRollFormula = "1d20";
+      for (let detail of savingThrowSourceDetails) {
+        saveRollFormula += `+ ${detail.value}`;
+      }
+      if (rollData.featSavingThrowList) {
+        for (let [i, bonus] of rollData.featSavingThrowList.entries()) {
+          if (typeof bonus["value"] === "string" || bonus["value"] instanceof String)
+            bonus["value"] = new Roll35e(bonus["value"], rollData).roll().total;
+          saveRollFormula += `+ ${bonus["value"]}`;
+          bonus["name"] = bonus["sourceName"];
+        }
+      }
       rollData.savingThrowBonus = savingThrowBonus;
       rollData.savingThrowManualBonus = savingThrowManualBonus;
+      rollData.savingThrowAbilityBonus = savingThrowAbilityBonus;
 
-      let roll = new Roll35e("1d20 + @savingThrowBonus + @savingThrowManualBonus + @featSavingThrow", rollData).roll();
+      let roll = new Roll35e(saveRollFormula, rollData).roll();
+
+      let modifiersList = duplicate(savingThrowSourceDetails);
+      modifiersList.unshift({ value: roll.terms[0].results[0].result, name: "Skill Roll" });
+      if (savingThrowManualBonus) modifiersList.push({ value: savingThrowManualBonus, name: "Situational Modifier" });
+      modifiersList.push(...(rollData.featSavingThrowList || []));
 
       rollData.rollTotal = roll.total;
       rollData.success = target ? roll.total >= target : true;
@@ -1718,7 +1738,16 @@ export class ActorPF extends Actor {
         optionalFeatIds,
         optionalFeatRanges
       );
-
+      let tooltip = "";
+      for (let descriptionPart of modifiersList) {
+        tooltip += `<tr>
+                <td><b>${descriptionPart.name}</b></td>
+                <td><b>${descriptionPart.value}</b></td>
+                </tr>
+                `;
+      }
+      var tooltips = `<div class="dice-formula" style="margin-bottom: 8px">${roll.formula}</div><div class="table-container"><table>${tooltip}</table></div>`;
+      let renderedTooltip = $(await roll.getTooltip()).prepend(tooltips)[0].outerHTML;
       // Set chat data
       let chatData = {
         speaker: options.speaker ? options.speaker : ChatMessage.getSpeaker({ actor: this.data }),
@@ -1741,7 +1770,7 @@ export class ActorPF extends Actor {
           total: roll.total,
           result: roll.result,
           target: target,
-          tooltip: $(await roll.getTooltip()).prepend(`<div class="dice-formula">${roll.formula}</div>`)[0].outerHTML,
+          tooltip: renderedTooltip,
           success: target && roll.total >= target,
           properties: props,
           hasProperties: props.length > 0,
@@ -1967,17 +1996,22 @@ export class ActorPF extends Actor {
       this._addCombatChangesToRollData(allCombatChanges, rollData);
 
       rollData.skillModTotal = 0;
+      skillRollFormula = skillRollFormula + " + @skillModTotal + @skillManualBonus";
       let skillSourceDetails = this.sourceDetails[sourceSkillId] || [];
       for (let skillDetail of skillSourceDetails) {
-        rollData.skillModTotal += skillDetail.value;
+        skillRollFormula += `+ ${skillDetail.value}`;
       }
-      rollData.featSkillBonus = rollData.featSkillBonus || 0;
+      if (rollData.featSkillBonusList) {
+        for (let [i, bonus] of rollData.featSkillBonusList.entries()) {
+          if (typeof bonus["value"] === "string" || bonus["value"] instanceof String)
+            bonus["value"] = new Roll35e(bonus["value"], rollData).roll().total;
+          skillRollFormula += `+ ${bonus["value"]}`;
+          bonus["name"] = bonus["sourceName"];
+        }
+      }
       rollData.skillManualBonus = skillManualBonus;
 
-      let roll = new Roll35e(
-        skillRollFormula + " + @skillModTotal + @skillManualBonus + @featSkillBonus",
-        rollData
-      ).roll();
+      let roll = new Roll35e(skillRollFormula, rollData).roll();
 
       rollData.rollTotal = roll.total;
       rollData.success = target ? roll.total >= target : true;

@@ -11,6 +11,7 @@ export class ChatMessagePF extends ChatMessage {
       chatTemplateData.revealed = this.getFlag("D35E", "revealed") || false;
       chatTemplateData.shouldDisplayTarget = chatTemplateData.revealed || game.user.isGM;
       chatTemplateData.isGM = game.user.isGM;
+      chatTemplateData.ownerOrGM = game.actors.get(chatTemplateData.actor._id).isOwner;
       this.content = await renderTemplate(this.getFlag("D35E", "template"), chatTemplateData);
     }
     return super.getHTML();
