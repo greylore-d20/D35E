@@ -1599,16 +1599,21 @@ export class ActorPF extends Actor {
         },
       };
       await new Promise((resolve) => {
-        new Dialog({
-          title: `${game.i18n.localize("D35E.ResRollResistance")}`,
-          content: html,
-          buttons: buttons,
-          classes: ["custom-dialog", "wide"],
-          default: "normal",
-          close: (html) => {
-            return resolve(roll);
+        new Dialog(
+          {
+            title: `${game.i18n.localize("D35E.ResRollResistance")}`,
+            content: html,
+            buttons: buttons,
+            classes: ["custom-dialog", "wide"],
+            default: "normal",
+            close: (html) => {
+              return resolve(roll);
+            },
           },
-        }).render(true);
+          {
+            width: 400,
+          }
+        ).render(true);
       });
     } else {
       _roll.call(this, type, null, props);
@@ -2172,16 +2177,21 @@ export class ActorPF extends Actor {
       },
     };
     await new Promise((resolve) => {
-      new Dialog({
-        title: sklName + " - " + this.name,
-        content: html,
-        buttons: buttons,
-        classes: ["custom-dialog", "wide"],
-        default: "normal",
-        close: (html) => {
-          return resolve(roll);
+      new Dialog(
+        {
+          title: sklName + " - " + this.name,
+          content: html,
+          buttons: buttons,
+          classes: ["custom-dialog", "wide"],
+          default: "normal",
+          close: (html) => {
+            return resolve(roll);
+          },
         },
-      }).render(true);
+        {
+          width: 400,
+        }
+      ).render(true);
     });
   }
 
@@ -2354,16 +2364,21 @@ export class ActorPF extends Actor {
       },
     };
     await new Promise((resolve) => {
-      new Dialog({
-        title: `${game.i18n.localize("D35E.GRRollGrapple")}`,
-        content: html,
-        buttons: buttons,
-        classes: ["custom-dialog", "wide"],
-        default: "normal",
-        close: (html) => {
-          return resolve(roll);
+      new Dialog(
+        {
+          title: `${game.i18n.localize("D35E.GRRollGrapple")}`,
+          content: html,
+          buttons: buttons,
+          classes: ["custom-dialog", "wide"],
+          default: "normal",
+          close: (html) => {
+            return resolve(roll);
+          },
         },
-      }).render(true);
+        {
+          width: 400,
+        }
+      ).render(true);
     });
   }
 
@@ -2891,7 +2906,7 @@ export class ActorPF extends Actor {
         },
         {
           classes: ["roll-defense", "dialog", dialogData.hasFeats ? "twocolumn" : "single"],
-          width: dialogData.hasFeats ? 700 : 350,
+          width: dialogData.hasFeats ? 800 : 400,
         }
       ).render(true);
     });

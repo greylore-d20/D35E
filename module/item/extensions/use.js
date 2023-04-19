@@ -1092,7 +1092,7 @@ export class ItemUse {
         },
         {
           classes: ["roll-defense", "dialog", dialogData.hasFeatsOrSummons ? "twocolumn" : "single"],
-          width: dialogData.hasFeatsOrSummons ? 700 : 350,
+          width: dialogData.hasFeatsOrSummons ? 800 : 400,
         }
       ).render(true);
     });

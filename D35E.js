@@ -72,6 +72,7 @@ import { Equipment35E } from "./module/item/equipment.js";
 import { ItemBase35E } from "./module/item/base.js";
 import { Spell35E } from "./module/item/spell.js";
 import { Feat35E } from "./module/item/feat.js";
+import { Sockets } from "./module/sockets/sockets.js";
 
 // Add String.format
 if (!String.prototype.format) {
@@ -111,6 +112,7 @@ Hooks.once("init", async function () {
     migrateWorld: migrations.migrateWorld,
     migrateCompendium: migrations.migrateCompendium,
     createdMeasureTemplates: new Set(),
+    sockets: new Sockets(),
   };
 
   if (!isMinimumCoreVersion("10.0")) {
@@ -277,7 +279,7 @@ Hooks.once("init", async function () {
   await preloadHandlebarsTemplates();
   applyConfigModifications();
   // Register sheet application classes
-
+  game.D35E.sockets.init();
   // Enable skin
   $("body").toggleClass("d35ecustom", game.settings.get("D35E", "customSkin"));
   $("body").toggleClass("color-blind", game.settings.get("D35E", "colorblindColors"));

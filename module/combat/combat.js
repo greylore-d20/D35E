@@ -5,6 +5,7 @@ import { ActorSheetPFNPCCombat } from "../actor/sheets/npc-combat.js";
 import { TokenPF } from "../token/token.js";
 import { TokenDocumentPF } from "../token/tokenDocument.js";
 import { LogHelper } from "../helpers/LogHelper.js";
+import { Sockets } from "../sockets/sockets.js";
 
 export class CombatantD35E extends Combatant {
   constructor(...args) {
@@ -378,11 +379,22 @@ export class CombatD35E extends Combat {
    * @returns {Promise<Combat>}
    */
   async nextRound() {
-    const combat = await super.nextRound();
-    await this._resetPerRoundCounter();
-    // TODO: Process skipped turns.
-    await this._processCurrentCombatant();
-    return combat;
+    if (!game.user.isGM) {
+      let gmId = game.users.find((u) => u.isGM).id;
+      game.socket.emit(
+        Sockets.ID,
+        { type: Sockets.PROGRESS_COMBAT_ROUND, payload: { combatId: this.id, gmId: gmId } },
+        (response) => {}
+      );
+      LogHelper.log("D35E | Skipping Round on non-GM Client");
+      return combat;
+    } else {
+      const combat = await super.nextRound();
+      await this._resetPerRoundCounter();
+      // TODO: Process skipped turns.
+      await this._processCurrentCombatant();
+      return combat;
+    }
   }
 
   updateCombatCharacterSheet() {
@@ -403,9 +415,20 @@ export class CombatD35E extends Combat {
    * @returns {Promise<Combat>}
    */
   async nextTurn() {
-    const combat = await super.nextTurn();
-    await this._processCurrentCombatant();
-    return combat;
+    if (!game.user.isGM) {
+      let gmId = game.users.find((u) => u.isGM).id;
+      game.socket.emit(
+        Sockets.ID,
+        { type: Sockets.PROGRESS_COMBAT_TURN, payload: { combatId: this.id, gmId: gmId } },
+        (response) => {}
+      );
+      LogHelper.log("D35E | Skipping Turn on non-GM Client");
+      return combat;
+    } else {
+      const combat = await super.nextTurn();
+      await this._processCurrentCombatant();
+      return combat;
+    }
   }
 
   async addBuffsToCombat(buffs) {
