@@ -1323,7 +1323,7 @@ export class ItemSheetPF extends ItemSheet {
       .forEach((i) => {
         i.level = value;
       });
-    updateData[`data.addedAbilities`] = _addedAbilities;
+    updateData[`system.addedAbilities`] = _addedAbilities;
     this.item.update(updateData);
   }
 
@@ -1337,7 +1337,7 @@ export class ItemSheetPF extends ItemSheet {
     let updateData = {};
     let _addedAbilities = duplicate(getProperty(this.item.system, `addedAbilities`) || []);
     _addedAbilities.push({ uid: uid, level: 0 });
-    updateData[`data.addedAbilities`] = _addedAbilities;
+    updateData[`system.addedAbilities`] = _addedAbilities;
     await this.item.update(updateData);
   }
 
@@ -1353,7 +1353,7 @@ export class ItemSheetPF extends ItemSheet {
     _addedAbilities = _addedAbilities.filter(function (obj) {
       return !(obj.uid === uid && (level === "" || parseInt(obj.level) === parseInt(level)));
     });
-    updateData[`data.addedAbilities`] = _addedAbilities;
+    updateData[`system.addedAbilities`] = _addedAbilities;
     await this.item.update(updateData);
   }
   async _onEnableAbility(event) {
@@ -1368,7 +1368,7 @@ export class ItemSheetPF extends ItemSheet {
     _disabledAbilities = _disabledAbilities.filter(function (obj) {
       return !(obj.uid === uid && (level === "" || parseInt(obj.level) === parseInt(level)));
     });
-    updateData[`data.disabledAbilities`] = _disabledAbilities;
+    updateData[`system.disabledAbilities`] = _disabledAbilities;
     await this.item.update(updateData);
   }
 
@@ -1381,7 +1381,7 @@ export class ItemSheetPF extends ItemSheet {
     let updateData = {};
     let _disabledAbilities = duplicate(getProperty(this.item.system, `disabledAbilities`) || []);
     _disabledAbilities.push({ uid: uid, level: level });
-    updateData[`data.disabledAbilities`] = _disabledAbilities;
+    updateData[`system.disabledAbilities`] = _disabledAbilities;
     await this.item.update(updateData);
   }
 
