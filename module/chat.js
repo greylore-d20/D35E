@@ -38,11 +38,13 @@ export const displayChatActionButtons = function (message, html, data) {
 /* -------------------------------------------- */
 
 function cleanChatTemplateData(chatTemplateData) {
-  chatTemplateData.actor = {
-    _id: chatTemplateData.actor._id,
-    name: chatTemplateData.actor.name,
-    img: chatTemplateData.actor.img,
-  };
+  if (chatTemplateData.actor) {
+    chatTemplateData.actor = {
+      _id: chatTemplateData.actor._id,
+      name: chatTemplateData.actor.name,
+      img: chatTemplateData.actor.img,
+    };
+  }
   if (chatTemplateData.item) {
     chatTemplateData.item = {
       _id: chatTemplateData.item._id,

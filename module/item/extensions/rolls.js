@@ -33,7 +33,7 @@ export class ItemRolls {
       actor: actor,
       name: this.item.displayName,
       tokenId: token ? `${token.parent.id}.${token.id}` : null,
-      item: this.item.data,
+      item: this.item,
       data: await this.item.getChatData(),
       labels: this.item.labels,
       hasAttack: this.item.hasAttack,

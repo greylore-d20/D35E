@@ -703,7 +703,8 @@ export class ItemUse {
 
     // Post message
     if (this.item.data.type === "spell" || getProperty(this.item.system, "isFromSpell")) {
-      if (!game.settings.get("D35E", "hideSpellDescriptionsIfHasAction")) await this.item.roll({ rollMode: rollMode });
+      if (!game.settings.get("D35E", "hideSpellDescriptionsIfHasAction"))
+        await this.item.roll({ rollMode: rollMode }, actor);
     }
     let rolled = false;
     if (
@@ -960,7 +961,7 @@ export class ItemUse {
     let dialogData = {
       data: rollData,
       id: this.item.id,
-      item: this.item.system,
+      item: this.item,
       targets: Array.from(game.user.targets) || [],
       hasTargets: (game.user.targets || new Set()).size,
       rollMode: rollModeOverride
