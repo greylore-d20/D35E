@@ -9,6 +9,7 @@ import { D35E } from "../../config.js";
 import { ItemSpellHelper as ItemSpellHelper } from "../helpers/itemSpellHelper.js";
 import { ItemCombatChangesHelper } from "../helpers/itemCombatChangesHelper.js";
 import { Item35E } from "../entity.js";
+import { ItemActiveHelper } from "../helpers/itemActiveHelper.js";
 
 export class ItemUse {
   /**
@@ -304,7 +305,7 @@ export class ItemUse {
 
     let isHasted =
       (actor?.items || []).filter(
-        (o) => o.type === "buff" && o.system.active && (o.name === "Haste" || o.system.changeFlags.hasted)
+        (o) => ItemActiveHelper.isActive(o) && (o.name === "Haste" || o.system.changeFlags.hasted)
       ).length > 0;
     if (
       (fullAttack || actor.system.attributes.bab.total < 6) &&

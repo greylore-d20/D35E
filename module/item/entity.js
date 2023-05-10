@@ -1144,7 +1144,7 @@ export class Item35E extends ItemBase35E {
     if (customData) result = mergeObject(_base, customData.system);
     else result = _base;
 
-    if (this.type === "buff") result.level = result.level;
+    if (this.type === "buff" || this.type === "aura") result.level = result.level;
     if (this.type === "enhancement") result.enhancement = result.enh;
     if (this.type === "enhancement") result.enhIncrease = result.enhIncrease;
     if (this.type === "spell") result.name = this.name;

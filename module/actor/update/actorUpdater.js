@@ -426,6 +426,7 @@ export class ActorUpdater {
       .filter((obj) => {
         let z = obj.type;
         if (obj.type === "buff") return obj.system.active;
+        if (obj.type === "aura") return obj.system.active;
         if (obj.type === "equipment" || obj.type === "weapon")
           return obj.system.equipped && !obj.system.melded && !obj.broken;
         return true;
@@ -2897,7 +2898,12 @@ export class ActorUpdater {
             lightAngle = i.system.light.lightAngle;
             animationSpeed = i.system.light.animationSpeed;
           }
-        } else if (i.type === "race" || i.type === "class" || (i.type === "buff" && i.system.active)) {
+        } else if (
+          i.type === "race" ||
+          i.type === "class" ||
+          (i.type === "buff" && i.system.active) ||
+          (i.type === "aura" && i.system.active)
+        ) {
           if (i.system.light?.emitLight) {
             dimLight = i.system.light.dimRadius ? i.system.light.dimRadius : Math.floor(2 * i.system.light.radius);
             brightLight = Math.floor(i.system.light.radius);

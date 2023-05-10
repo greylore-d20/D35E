@@ -18,6 +18,7 @@ import { ActorMinionsHelper } from "./helpers/actorMinionsHelper.js";
 import { ItemEnhancementHelper } from "../item/helpers/itemEnhancementHelper.js";
 import { ActorCRHelper } from "./helpers/actorCRHelper.js";
 import { CombatChange } from "../item/extensions/combatChange.js";
+import { ItemActiveHelper } from "../item/helpers/itemActiveHelper.js";
 
 /**
  * Extend the base Actor class to implement additional logic specialized for D&D5e.
@@ -337,10 +338,7 @@ export class ActorPF extends Actor {
     preparedData.shieldType = "none";
     this.items
       .filter((obj) => {
-        if (obj.type === "buff") return obj.system.active;
-        if (obj.type === "equipment" || obj.type === "weapon")
-          return obj.system.equipped && !obj.system.melded && !obj.broken;
-        return true;
+        ItemActiveHelper.isActive(obj);
       })
       .forEach((_obj) => {
         ItemPrepareDataHelper.prepareResistancesForItem(_obj, erDrRollData, preparedData);
@@ -396,7 +394,8 @@ export class ActorPF extends Actor {
         (i.system.equipped && !i.system.melded && !i.broken) ||
         i.type === "race" ||
         i.type === "class" ||
-        (i.type === "buff" && i.system.active)
+        (i.type === "buff" && i.system.active) ||
+        (i.type === "aura" && i.system.active)
       ) {
         for (let [k, label] of Object.entries(CONFIG.D35E.senses)) {
           if (preparedData.senses[k] !== Math.max(preparedData.senses[k], i.system.senses[k] || 0)) {
@@ -1876,7 +1875,7 @@ export class ActorPF extends Actor {
   isCombatChangeItemType(o) {
     return (
       o.type === "feat" ||
-      o.type === "aura" ||
+      (o.type === "aura" && o.system.active) ||
       (o.type === "buff" && o.system.active) ||
       (o.type === "equipment" && o.system.equipped === true && !o.system.melded && !o.broken)
     );
@@ -3389,6 +3388,7 @@ export class ActorPF extends Actor {
 
     for (let o of noteItems) {
       if (o.type === "buff" && !o.system.active) continue;
+      if (o.type === "aura" && !o.system.active) continue;
       if ((o.type === "equipment" || o.type === "weapon") && !o.system.equipped) continue;
       if (!o.system.contextNotes || o.system.contextNotes.length === 0) continue;
       result.push({ notes: o.system.contextNotes, item: o });
