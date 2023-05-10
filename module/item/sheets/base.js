@@ -354,7 +354,7 @@ export class ItemSheetPF extends ItemSheet {
 
     // Prepare class specific stuff
     if (this.item.type === "class") {
-      for (let [a, s] of Object.entries(this.item.system.savingThrows)) {
+      for (let [a, s] of Object.entries(sheetData.data.system.savingThrows)) {
         s.label = CONFIG.D35E.savingThrows[a];
       }
       for (let [a, s] of Object.entries(this.item.system.fc)) {
