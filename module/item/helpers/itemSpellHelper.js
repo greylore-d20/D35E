@@ -207,14 +207,14 @@ export class ItemSpellHelper {
     if (!needRounds || !durationData.value) {
       durationLabel = CONFIG.D35E.timePeriodsSpells[durationData.units];
     } else {
-      let isPerLevel = durationData.value.indexOf("@cl") !== -1;
+      let isPerLevel = (durationData.value?.toString() ?? "").indexOf("@cl") !== -1;
       if (isPerLevel) {
         durationLabel =
           Roll35e.safeRoll(durationData.value, { cl: level }).total +
           " " +
           CONFIG.D35E.timePeriodsSpells[durationData.units];
       } else {
-        let isSpecial = !["spec"].includes(durationData.units);
+        let isSpecial = ["spec"].includes(durationData.units);
         if (isSpecial) durationLabel = durationData.value;
         else durationLabel = durationData.value + " " + CONFIG.D35E.timePeriodsSpells[durationData.units];
       }
