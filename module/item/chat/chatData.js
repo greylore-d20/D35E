@@ -11,11 +11,11 @@ export class ItemChatData {
 
   async getChatData(htmlOptions, rollData) {
     if (!htmlOptions) htmlOptions = {};
-    const data = duplicate(this.item.system);
+    const itemChatData = duplicate(this.item.system);
     const labels = this.item.labels;
     if (!rollData) {
       rollData = this.item.actor ? this.item.actor.getRollData(null, true) : {};
-      rollData.item = data;
+      rollData.item = itemChatData;
       if (this.item.actor) {
         let allCombatChanges = [];
         let attackType = this.item.type;
@@ -37,35 +37,35 @@ export class ItemChatData {
     let cl = 0;
     let sl = 0;
     if (this.item.type === "spell") {
-      spellbookIndex = data.spellbook;
+      spellbookIndex = itemChatData.spellbook;
       spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
       spellAbility = spellbook.ability;
       if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
 
       cl += getProperty(spellbook, "cl.total") || 0;
-      cl += data.clOffset || 0;
+      cl += itemChatData.clOffset || 0;
       cl += rollData.featClBonus || 0;
       cl -= this.item.actor.system.attributes.energyDrain || 0;
 
-      sl += data.level;
-      sl += data.slOffset || 0;
+      sl += itemChatData.level;
+      sl += itemChatData.slOffset || 0;
 
       rollData.cl = cl;
       rollData.sl = sl;
       rollData.ablMod = ablMod;
     } else if (this.item.type === "card") {
-      let deckIndex = data.deck;
+      let deckIndex = itemChatData.deck;
       let deck = getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
       spellAbility = deck.ability;
       if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
 
       cl += getProperty(deck, "cl.total") || 0;
-      cl += data.clOffset || 0;
+      cl += itemChatData.clOffset || 0;
       cl += rollData.featClBonus || 0;
       cl -= this.item.actor.system.attributes.energyDrain || 0;
 
-      sl += data.level;
-      sl += data.slOffset || 0;
+      sl += itemChatData.level;
+      sl += itemChatData.slOffset || 0;
 
       rollData.cl = cl;
       rollData.sl = sl;
@@ -74,15 +74,15 @@ export class ItemChatData {
 
     htmlOptions.async = true;
     // Rich text description
-    data.description.value = await TextEditor.enrichHTML(
+    itemChatData.description.value = await TextEditor.enrichHTML(
       await this.item.getDescription(this.item.showUnidentifiedData),
       htmlOptions
     );
 
     // General equipment properties
     const props = [];
-    if (data.hasOwnProperty("equipped") && ["weapon", "equipment"].includes(this.item.data.type)) {
-      props.push(data.equipped ? game.i18n.localize("D35E.Equipped") : game.i18n.localize("D35E.NotEquipped"));
+    if (itemChatData.hasOwnProperty("equipped") && ["weapon", "equipment"].includes(this.item.data.type)) {
+      props.push(itemChatData.equipped ? game.i18n.localize("D35E.Equipped") : game.i18n.localize("D35E.NotEquipped"));
     }
     if (this.item.broken) {
       props.push(game.i18n.localize("D35E.Broken"));
@@ -95,93 +95,109 @@ export class ItemChatData {
       dynamicLabels.level = labels.sl || "";
       let rangeModifier = rollData.spellEnlarged ? 2 : 1;
       // Range
-      if (data.range != null) {
-        if (data.range.units === "close")
+      if (itemChatData.range != null) {
+        if (itemChatData.range.units === "close")
           dynamicLabels.range = game.i18n
             .localize("D35E.RangeNote")
             .format(rangeModifier * 25 + rangeModifier * Math.floor(cl / 2) * 5);
-        else if (data.range.units === "medium")
+        else if (itemChatData.range.units === "medium")
           dynamicLabels.range = game.i18n
             .localize("D35E.RangeNote")
             .format(rangeModifier * 100 + rangeModifier * cl * 10);
-        else if (data.range.units === "long")
+        else if (itemChatData.range.units === "long")
           dynamicLabels.range = game.i18n
             .localize("D35E.RangeNote")
             .format(rangeModifier * 400 + rangeModifier * cl * 40);
-        else if (["ft", "mi", "spec"].includes(data.range.units) && typeof data.range.value === "string") {
-          let range = new Roll35e(data.range.value.length > 0 ? data.range.value : "0", rollData).roll().total;
+        else if (
+          ["ft", "mi", "spec"].includes(itemChatData.range.units) &&
+          typeof itemChatData.range.value === "string"
+        ) {
+          let range = new Roll35e(itemChatData.range.value.length > 0 ? itemChatData.range.value : "0", rollData).roll()
+            .total;
           dynamicLabels.range = [
             range > 0 ? "Range:" : null,
             range,
-            CONFIG.D35E.distanceUnits[data.range.units],
+            CONFIG.D35E.distanceUnits[itemChatData.range.units],
           ].filterJoin(" ");
         }
       }
       // Duration
-      if (data.duration != null) {
-        if (!["inst", "perm"].includes(data.duration.units) && typeof data.duration.value === "string") {
-          let duration = new Roll35e(data.duration.value.length > 0 ? data.duration.value : "0", rollData).roll().total;
-          dynamicLabels.duration = [duration, CONFIG.D35E.timePeriods[data.duration.units]].filterJoin(" ");
+      if (itemChatData.duration != null) {
+        if (
+          !["inst", "perm"].includes(itemChatData.duration.units) &&
+          typeof itemChatData.duration.value === "string"
+        ) {
+          let duration = new Roll35e(
+            itemChatData.duration.value.length > 0 ? itemChatData.duration.value : "0",
+            rollData
+          ).roll().total;
+          dynamicLabels.duration = [duration, CONFIG.D35E.timePeriods[itemChatData.duration.units]].filterJoin(" ");
         }
       }
 
       // Duration
-      if (data.spellDurationData != null) {
-        let isPerLevel = ["hourPerLevel", "minutePerLevel", "roundPerLevel"].includes(data.spellDurationData.units);
+      if (itemChatData.spellDurationData != null) {
+        let isPerLevel = ["hourPerLevel", "minutePerLevel", "roundPerLevel"].includes(
+          itemChatData.spellDurationData.units
+        );
         if (
-          !["inst", "perm"].includes(data.spellDurationData.units) &&
-          typeof data.spellDurationData.value === "string"
+          !["inst", "perm"].includes(itemChatData.spellDurationData.units) &&
+          typeof itemChatData.spellDurationData.value === "string"
         ) {
-          let rollString = data.spellDurationData.value.length > 0 ? data.spellDurationData.value : "0";
-          let duration = data.spellDurationData.value;
+          let rollString = itemChatData.spellDurationData.value.length > 0 ? itemChatData.spellDurationData.value : "0";
+          let duration = itemChatData.spellDurationData.value;
           if (rollString.indexOf("@cl") !== -1) {
             duration = new Roll35e(rollString, rollData).roll().total;
             let multiplier = 0;
-            if (data.spellDurationData.units === "hourPerLevel") {
+            if (itemChatData.spellDurationData.units === "hourPerLevel") {
               multiplier = 600;
-            } else if (data.spellDurationData.units === "minutePerLevel") {
+            } else if (itemChatData.spellDurationData.units === "minutePerLevel") {
               multiplier = 10;
-            } else if (data.spellDurationData.units === "roundPerLevel") {
+            } else if (itemChatData.spellDurationData.units === "roundPerLevel") {
               multiplier = 1;
             }
             rollData.spellDuration = duration * multiplier;
           }
-          if (data.spellDurationData.units === "spec") {
-            dynamicLabels.duration = duration;
-          } else {
-            dynamicLabels.duration = [
-              duration,
-              CONFIG.D35E.timePeriodsSpells[data.spellDurationData.units.replace("PerRound", "")],
-            ].filterJoin(" ");
+          if (!!itemChatData.spellDurationData.units) {
+            if (itemChatData.spellDurationData.units === "spec") {
+              dynamicLabels.duration = duration;
+            } else {
+              dynamicLabels.duration = [
+                duration,
+                CONFIG.D35E.timePeriodsSpells[itemChatData.spellDurationData.units.replace("PerRound", "")],
+              ].filterJoin(" ");
+            }
           }
         }
       }
 
       // Item type specific properties
       const fn = this[`_${this.item.data.type}ChatData`];
-      if (fn) fn.bind(this)(data, labels, props);
+      if (fn) fn.bind(this)(itemChatData, labels, props);
 
       // Ability activation properties
-      if (data.hasOwnProperty("activation")) {
+      if (itemChatData.hasOwnProperty("activation")) {
         props.push(labels.target, labels.activation, dynamicLabels.range, dynamicLabels.duration);
       }
 
       rollData.powerAbl = 0;
-      if (data.school === "bol") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.str.mod`);
-      if (data.school === "kin") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.con.mod`);
-      if (data.school === "por") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.dex.mod`);
-      if (data.school === "met") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.int.mod`);
-      if (data.school === "cla") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.wis.mod`);
-      if (data.school === "tel") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.cha.mod`);
+      if (itemChatData.school === "bol") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.str.mod`);
+      if (itemChatData.school === "kin") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.con.mod`);
+      if (itemChatData.school === "por") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.dex.mod`);
+      if (itemChatData.school === "met") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.int.mod`);
+      if (itemChatData.school === "cla") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.wis.mod`);
+      if (itemChatData.school === "tel") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.cha.mod`);
 
       // Add save DC
       if (
-        data.hasOwnProperty("actionType") &&
-        (getProperty(data, "save.description") || getProperty(data, "save.type")) &&
-        getProperty(data, "save.description") !== "None"
+        itemChatData.hasOwnProperty("actionType") &&
+        (getProperty(itemChatData, "save.description") || getProperty(itemChatData, "save.type")) &&
+        getProperty(itemChatData, "save.description") !== "None"
       ) {
-        let saveDC = new Roll35e(data.save.dc.length > 0 ? data.save.dc : "0", rollData).roll().total;
-        let saveType = data.save.type ? CONFIG.D35E.savingThrowTypes[data.save.type] : data.save.description;
+        let saveDC = new Roll35e(itemChatData.save.dc.length > 0 ? itemChatData.save.dc : "0", rollData).roll().total;
+        let saveType = itemChatData.save.type
+          ? CONFIG.D35E.savingThrowTypes[itemChatData.save.type]
+          : itemChatData.save.description;
         if (this.item.type === "spell") {
           saveDC += new Roll35e(spellbook.baseDCFormula || "", rollData).roll().total;
         }
@@ -198,16 +214,16 @@ export class ItemChatData {
 
     // Add SR reminder
     if (this.item.type === "spell") {
-      if (data.sr) {
+      if (itemChatData.sr) {
         props.push(game.i18n.localize("D35E.SpellResistance"));
       }
-      if (data.pr) {
+      if (itemChatData.pr) {
         props.push(game.i18n.localize("D35E.PowerResistance"));
       }
     }
 
     // Filter properties and return
-    data.properties = props.filter((p) => !!p);
-    return data;
+    itemChatData.properties = props.filter((p) => !!p);
+    return itemChatData;
   }
 }
