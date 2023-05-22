@@ -248,6 +248,15 @@ export const sizeInt = function (targetSize = "M") {
   return `${targetSize}`;
 };
 
+export const applyCritToFormula = function (crit, formula) {
+  if (crit !== 1 && formula.match(/^([0-9]+)d([0-9]+)(.*)/)) {
+    const count = parseInt(RegExp.$1);
+    const sides = parseInt(RegExp.$2);
+    formula = `${count * crit}d${sides}${RegExp.$3}`;
+  }
+  return formula;
+};
+
 export const sizeDie = function (origCount, origSides, targetSize = "M", crit = 1) {
   if (typeof targetSize === "string")
     targetSize = Object.values(CONFIG.D35E.sizeChart).indexOf(targetSize.toUpperCase());
@@ -312,11 +321,7 @@ export const sizeDie = function (origCount, origSides, targetSize = "M", crit = 
     formula = sizeDieMap[index];
   }
 
-  if (crit !== 1 && formula.match(/^([0-9]+)d([0-9]+)(.*)/)) {
-    const count = parseInt(RegExp.$1);
-    const sides = parseInt(RegExp.$2);
-    formula = `${count * crit}d${sides}${RegExp.$3}`;
-  }
+  formula = applyCritToFormula(crit, formula);
   if (index === -1) {
     ui.notifications.warn(game.i18n.localize("D35E.WarningNoSizeDie").format(mediumDie, formula));
   }
@@ -325,32 +330,95 @@ export const sizeDie = function (origCount, origSides, targetSize = "M", crit = 
 };
 
 export const sizeMonkDamageDie = function (level, targetSize = "M", crit = 1) {
-  let monkLevelDamageDies = [
-    [1, 6],
-    [1, 6],
-    [1, 6],
-    [1, 6],
-    [1, 8],
-    [1, 8],
-    [1, 8],
-    [1, 8],
-    [1, 10],
-    [1, 10],
-    [1, 10],
-    [1, 10],
-    [2, 6],
-    [2, 6],
-    [2, 6],
-    [2, 6],
-    [2, 8],
-    [2, 8],
-    [2, 8],
-    [2, 8],
-    [2, 10],
-  ];
+  if (typeof targetSize === "number") {
+    targetSize = Math.max(
+      0,
+      Math.min(
+        Object.values(CONFIG.D35E.sizeChart).length - 1,
+        Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize
+      )
+    );
+    targetSize = Object.values(CONFIG.D35E.sizeChart)[targetSize];
+  }
+  let monkLevelDamageDies = {
+    S: [
+      [1, 4],
+      [1, 4],
+      [1, 4],
+      [1, 4],
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 8],
+    ],
+    M: [
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [2, 10],
+    ],
+    L: [
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [3, 6],
+      [3, 6],
+      [3, 6],
+      [3, 6],
+      [3, 8],
+      [3, 8],
+      [3, 8],
+      [3, 8],
+      [4, 8],
+    ],
+  };
+  if (monkLevelDamageDies[targetSize]) {
+    let diceCount = monkLevelDamageDies[targetSize][Math.max(Math.min(level, 20), 1)][0];
+    let dice = monkLevelDamageDies[targetSize][Math.max(Math.min(level, 20), 1)][1];
+    return applyCritToFormula(crit, `${diceCount}d${dice}`);
+  }
   return sizeDie(
-    monkLevelDamageDies[Math.max(Math.min(level, 20), 1)][0],
-    monkLevelDamageDies[Math.max(Math.min(level, 20), 1)][1],
+    monkLevelDamageDies["M"][Math.max(Math.min(level, 20), 1)][0],
+    monkLevelDamageDies["M"][Math.max(Math.min(level, 20), 1)][1],
     targetSize,
     crit
   );
