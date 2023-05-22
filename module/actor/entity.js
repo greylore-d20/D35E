@@ -4706,7 +4706,7 @@ export class ActorPF extends Actor {
 
     const curQuantity = getProperty(item.system, "quantity") || 0;
     const newQuantity = Math.max(0, curQuantity + add);
-    await item.update({ "data.quantity": newQuantity });
+    await item.update({ "system.quantity": newQuantity });
   }
 
   //
