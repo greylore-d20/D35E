@@ -84,7 +84,7 @@ export class ItemDrawerHelper {
     $(`.items-add-${this.sheet.randomUuid}-openCompendium`).mouseup((ev) => {
       sessionStorage.setItem(`D35E-opened-${this.sheet.id}`, false);
       $(`.item-add-${this.sheet.randomUuid}-overlay`).hide();
-      CompendiumDirectoryPF.browseCompendium(entityType);
+      CompendiumDirectoryPF.browseCompendium(entityType, "Item");
     });
     $(`.items-add-${this.sheet.randomUuid}-working-item`).hide();
     $(`.items-add-${this.sheet.randomUuid}-list`).show();

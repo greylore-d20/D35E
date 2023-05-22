@@ -2582,7 +2582,7 @@ export class ActorSheetPF extends ActorSheet {
     const buffSections = {
       temp: {
         label: game.i18n.localize("D35E.Temporary"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -2590,7 +2590,7 @@ export class ActorSheetPF extends ActorSheet {
       },
       perm: {
         label: game.i18n.localize("D35E.Permanent"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -2598,7 +2598,7 @@ export class ActorSheetPF extends ActorSheet {
       },
       item: {
         label: game.i18n.localize("D35E.Item"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -2606,7 +2606,7 @@ export class ActorSheetPF extends ActorSheet {
       },
       misc: {
         label: game.i18n.localize("D35E.Misc"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -3083,7 +3083,7 @@ export class ActorSheetPF extends ActorSheet {
     let div = $(event.currentTarget),
       pack = div.attr("data-pack");
     if (pack.startsWith("browser")) {
-      CompendiumDirectoryPF.browseCompendium(pack.split(":")[1]);
+      CompendiumDirectoryPF.browseCompendium(pack.split(":")[1], pack.split(":")[2]);
     } else if (pack.startsWith("inline")) {
       await this.loadData(
         pack.split(":")[1],

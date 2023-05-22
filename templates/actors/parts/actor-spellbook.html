@@ -222,7 +222,7 @@
 
         <div class="item-controls">
             {{#if spellbook.canCreate}}
-            <a class="open-compendium-pack" data-pack="browser:spells" title="{{ localize 'D35E.CreateItem' }}"
+            <a class="open-compendium-pack" data-pack="browser:spells:Item" title="{{ localize 'D35E.CreateItem' }}"
                data-type="spell" data-level="1" data-spellbook="spelllike">
             <i class="fas fa-atlas"></i> {{ localize 'D35E.Add' }}
             </a>
@@ -281,7 +281,7 @@
 
         <div class="item-controls">
             {{#if section.canCreate}}
-            <a class="open-compendium-pack" data-pack="browser:spells" title="{{ localize 'D35E.CreateItem' }}" {{#each
+            <a class="open-compendium-pack" data-pack="browser:spells:Item" title="{{ localize 'D35E.CreateItem' }}" {{#each
                section.dataset as |v k|}}data-{{k}}="{{v}}" {{/each}}>
             <i class="fas fa-atlas"></i> {{ localize 'D35E.Add' }}
             </a>
