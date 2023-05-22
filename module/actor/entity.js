@@ -4518,8 +4518,11 @@ export class ActorPF extends Actor {
             rollMode: cleanParam(messageType),
             text: action.parameters.join(" "),
           };
+          let chatData = {
+            rollMode: cleanParam(messageType),
+          };
           // Create message
-          await createCustomChatMessage("systems/D35E/templates/chat/gm-message.html", chatTemplateData, {}, {});
+          await createCustomChatMessage("systems/D35E/templates/chat/gm-message.html", chatTemplateData, chatData, {});
         } else
           ui.notifications.error(
             game.i18n.format("D35E.ErrorActionFormula", {
