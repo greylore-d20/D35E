@@ -1304,12 +1304,12 @@ export class ItemUse {
       rollModifiers.push(`${game.i18n.localize("D35E.Charge")}`);
     }
     if (form.find('[name="ccshot"]').prop("checked")) {
-      rollData.ccshot = -4;
+      rollData.closeQuartersShot = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.closeQuartersShot = true;
       attackExtraParts.push({
         part: "@closeQuartersShot",
-        value: rollData.ccshot,
+        value: rollData.closeQuartersShot,
         source: game.i18n.localize("D35E.CloseQuartersShot"),
       });
       rollModifiers.push(`${game.i18n.localize("D35E.CloseQuartersShot")}`);
