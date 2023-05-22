@@ -2816,7 +2816,7 @@ export class ActorPF extends Actor {
         acModifiers: rollData.featACList || [],
       };
     };
-    let rollData = this.getRollData();
+    let rollData = this.getRollData(null, true);
     // Render modal dialog
     let template = "systems/D35E/templates/apps/defense-roll-dialog.html";
     let totalBonus = "+4";
