@@ -75,11 +75,6 @@ export class ItemEnhancements extends ItemExtension {
       .forEach((i) => {
         let enhancementData = ItemEnhancementHelper.getEnhancementData(i);
         enhancementData.uses.value = enhancementData.uses.value + charges;
-        if (i.system) {
-          i.system.uses.value = i.system.uses.value + charges;
-        }
-        // Clean up old data, as we use system now
-        delete i.data;
       });
     updateData[`system.enhancements.items`] = _enhancements;
     await this.item.update(updateData);
@@ -379,7 +374,7 @@ export class ItemEnhancements extends ItemExtension {
 
     enhancements.forEach(function (obj) {
       let objEnhancement = ItemEnhancementHelper.getEnhancementData(obj);
-      if (objEnhancement.weaponData.alignment) {
+      if (objEnhancement?.weaponData?.alignment) {
         alignment.good = objEnhancement.weaponData.alignment.good || alignment.good;
         alignment.evil = objEnhancement.weaponData.alignment.evil || alignment.evil;
         alignment.lawful = objEnhancement.weaponData.alignment.lawful || alignment.lawful;

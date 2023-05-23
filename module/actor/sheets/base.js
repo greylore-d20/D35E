@@ -1827,16 +1827,10 @@ export class ActorSheetPF extends ActorSheet {
         if (itemData.enhancements && itemData.enhancements && itemData.enhancements.items) {
           let enhItems = duplicate(itemData.enhancements.items);
           for (let _item of enhItems) {
-            if (_item.system.uses.rechargeFormula) {
-              _item.system.uses.value = Math.min(
-                _item.system.uses.value + new Roll35e(_item.system.uses.rechargeFormula, _item.system).roll().total,
-                _item.system.uses.max
-              );
-            } else {
-              _item.system.uses.value = _item.system.uses.max;
-            }
+            let enhancementData = ItemEnhancementHelper.getEnhancementData(_item);
+            ItemEnhancementHelper.restoreEnhancementUses(enhancementData, false);
           }
-          itemUpdate[`data.enhancements.items`] = enhItems;
+          itemUpdate[`system.enhancements.items`] = enhItems;
         }
         this.actor.updateOwnedItem(itemUpdate);
         button.disabled = false;

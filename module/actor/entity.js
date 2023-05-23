@@ -5084,17 +5084,8 @@ export class ActorPF extends Actor {
         if (itemData.enhancements && itemData.enhancements && itemData.enhancements.items) {
           let enhItems = duplicate(itemData.enhancements.items);
           for (let _item of enhItems) {
-            if (_item.data.uses.per === "day" && _item.data.uses.value !== _item.data.uses.max) {
-              if (_item.data.uses.rechargeFormula) {
-                _item.data.uses.value = Math.min(
-                  _item.data.uses.value + new Roll35e(_item.data.uses.rechargeFormula, _item.data).roll().total,
-                  _item.data.uses.max
-                );
-              } else {
-                _item.data.uses.value = _item.data.uses.max;
-              }
-              hasItemUpdates = true;
-            }
+            let enhancementData = ItemEnhancementHelper.getEnhancementData(_item);
+            hasItemUpdates = hasItemUpdates || ItemEnhancementHelper.restoreEnhancementUses(enhancementData, true);
           }
           itemUpdate["_id"] = item.id;
           itemUpdate[`system.enhancements.items`] = enhItems;
