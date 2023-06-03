@@ -88,7 +88,7 @@ if not args.icons_only:
 if os.path.exists("dnd35e-icons.tbz2"):
     os.remove("dnd35e-icons.tbz2")
 p = subprocess.run(["tar", "-cvjSf", "dnd35e-icons.tbz2","icons"])
-subprocess.run(["scp", "dnd35e-icons.tbz2", f"{user}@{server}:/home/dragonsh/special/"])
+subprocess.run(["scp", "dnd35e-icons.tbz2", f"{user}@{server}:/home/dragonsh/lotd/D35E/"])
 
 if not args.icons_only and not args.no_push:
     origin = repo.remote(name='origin')
