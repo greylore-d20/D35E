@@ -1,0 +1,222 @@
+{
+  "_id": "Buwe4x2w6biDtuH0",
+  "name": "Hail of Crystals",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/met.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;metacreativity&nbsp;(creation);\n    <br>\n    <strong>Level:</strong>&nbsp;Shaper 5;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Auditory and visual\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;medium (100 ft. + 10 ft./level)<br>\n    \n    <strong>Target:</strong>&nbsp;living creature touched<br>\n    \n    <strong>Duration:</strong>&nbsp;Instantaneous\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;9<br>\n        <strong>Saving Throw:</strong>&nbsp;Reflex half\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>A tiny ectoplasmic crystal emanates from your outstretched hand and rapidly expands to a 2-foot-diameter ball of crystal as it speeds toward the location you designate. You can choose to aim this crystal at a single target or at a specific point in space (a grid intersection).\n</p><p>If you aim the crystal at a single target, you must make a ranged touch attack to strike the target. Any creature or object struck by the ball of crystal takes 5d4 points of bludgeoning damage.\n</p><p>Whether the crystal hits its target, misses, or was aimed at a point in space, it explodes upon arrival at the location you designated. Anyone within 20 feet of the explosion takes 9d4 points of slashing damage from the thousands of crystal shards that spray forth.\n</p><p><b>Augment:</b> For every additional power point you spend, this power’s damage from the explosion of the crystal increases by 1d4 points.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "living creature touched"
+    },
+    "range": {
+      "value": null,
+      "units": "medium",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Reflex half\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": true,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Shaper",
+          5
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 5,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "met",
+    "subschool": "creation",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 9,
+    "display": "Auditory and visual\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>A tiny ectoplasmic crystal emanates from your outstretched hand and rapidly expands to a 2-foot-diameter ball of crystal as it speeds toward the location you designate. You can choose to aim this crystal at a single target or at a specific point in space (a grid intersection).\n</p><p>If you aim the crystal at a single target, you must make a ranged touch attack to strike the target. Any creature or object struck by the ball of crystal takes 5d4 points of bludgeoning damage.\n</p><p>Whether the crystal hits its target, misses, or was aimed at a point in space, it explodes upon arrival at the location you designated. Anyone within 20 feet of the explosion takes 9d4 points of slashing damage from the thousands of crystal shards that spray forth.\n</p><p><b>Augment:</b> For every additional power point you spend, this power’s damage from the explosion of the crystal increases by 1d4 points.\n</p>\n<hr/>\n\n\n",
+    "snip": "A crystal explodes in an area, dealing 9d4 slashing damage.",
+    "spellDuration": "Instantaneous\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Hail of Crystals",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394287539,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!Buwe4x2w6biDtuH0"
+}

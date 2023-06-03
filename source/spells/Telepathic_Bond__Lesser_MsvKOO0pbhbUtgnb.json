@@ -1,0 +1,259 @@
+{
+  "_id": "MsvKOO0pbhbUtgnb",
+  "name": "Telepathic Bond, Lesser",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/telepathic-bond-lesser.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.yf6PB6146oyPc3ra"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "MsvKOO0pbhbUtgnb",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;divination&nbsp;[mind-affecting];\n    <br>\n    <strong>Level:</strong>&nbsp;Cleric 3, Sorcerer 3, Wizard 3;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;30 feet<br>\n    \n    <strong>Target:</strong>&nbsp;you and one willing creature within 30 ft.<br>\n    \n    <strong>Duration:</strong>&nbsp;10 Minute/Level<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;5<br>\n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nYou forge a telepathic bond with another creature with an Intelligence score of 6 or higher. The bond can be established only with a willing subject. You can communicate telepathically through the bond regardless of language. No special power or influence is established as a result of the bond. Once the bond is formed, it works over any distance (although not from one plane to another).\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "you and one willing creature within 30 ft."
+    },
+    "range": {
+      "value": "30",
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 30,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Telepathic Bond",
+        "action": "Create unique \"Telepathic Bond\" from \"D35E.commonbuffs\" on target;Set buff \"Telepathic Bond\" field data.level to max(1,(@cl)) on target;Set buff \"Telepathic Bond\" field data.timeline.enabled to true on target;Set buff \"Telepathic Bond\" field data.timeline.formula to 100*(@cl) on target;Set buff \"Telepathic Bond\" field data.timeline.deleteOnExpiry to true on target;Activate buff \"Telepathic Bond\" on target",
+        "condition": "",
+        "img": "systems/D35E/icons/spells/named-spells/telepathic-bond.png"
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Cleric",
+          3
+        ],
+        [
+          "Wizard",
+          3
+        ],
+        [
+          "Sorcerer",
+          3
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 3,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "div",
+    "subschool": "",
+    "types": "mind-affecting",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 5,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nYou forge a telepathic bond with another creature with an Intelligence score of 6 or higher. The bond can be established only with a willing subject. You can communicate telepathically through the bond regardless of language. No special power or influence is established as a result of the bond. Once the bond is formed, it works over any distance (although not from one plane to another).\n</p>\n<hr/>\n\n\n",
+    "snip": "",
+    "spellDuration": "10 min./level",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Telepathic Bond, Lesser",
+    "changes": [],
+    "combatChanges": [],
+    "resistances": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "requirements": [],
+    "creationChanges": [],
+    "damageReduction": [],
+    "perRoundActions": [],
+    "spellDurationData": {
+      "value": "10*@cl",
+      "units": "minutePerLevel",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846677605,
+    "modifiedTime": 1678394293012,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!MsvKOO0pbhbUtgnb"
+}

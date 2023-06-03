@@ -1,0 +1,310 @@
+{
+  "name": "Madness Domain",
+  "type": "feat",
+  "flags": {
+    "core": {
+      "sourceId": "Item.ei1cQezkDDDOvCKD"
+    }
+  },
+  "img": "systems/D35E/icons/spells/domain/madness.png",
+  "effects": [],
+  "_id": "M9o0Z3yH5JPtHFvO",
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>The character gains an Insanity score equal to half his or her class level. For spellcasting (determining bonus spells and DCs), the character uses his or her Wisdom score plus his or her Insanity score in place of Wisdom alone.</p>\n<p>For all other purposes, such as skills and saves, use Wisdom minus Insanity in place of Wisdom.</p>\n<p>Once per day, the character can see and act with the clarity of true madness. Use the character&rsquo;s Insanity score as a positive rather than a negative modifier on a single roll involving Wisdom. Choose to use this power before the roll is made.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0,
+      "value": null,
+      "charged": false,
+      "_deprecated": true
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "featType": "spellSpecialization",
+    "abilityType": "",
+    "associations": {
+      "classes": []
+    },
+    "crOffset": "",
+    "spellSpecializationName": "madness",
+    "spellSpecializationForbiddenNames": "",
+    "linkedItems": [],
+    "metamagic": {
+      "enabled": false,
+      "shortDesc": "",
+      "code": ""
+    },
+    "spellSpecialization": {
+      "isDomain": true,
+      "spells": {
+        "level1": {
+          "level": 1,
+          "name": "Confusion, Lesser",
+          "img": "systems/D35E/icons/spells/named-spells/confusion-lesser.png",
+          "pack": "D35E.spells",
+          "id": "bjIXmooF6vHFysYO"
+        },
+        "level2": {
+          "level": 2,
+          "name": "Touch Of Madness",
+          "img": "systems/D35E/icons/spells/named-spells/touch-of-madness.png",
+          "pack": "D35E.spells",
+          "id": "GpXQQBtAeLz8GepF"
+        },
+        "level3": {
+          "level": 3,
+          "name": "Rage",
+          "img": "systems/D35E/icons/classfeatures/rage.png",
+          "pack": "D35E.spells",
+          "id": "3HYqrdyreOVyTEfJ"
+        },
+        "level4": {
+          "level": 4,
+          "name": "Confusion",
+          "img": "systems/D35E/icons/spells/named-spells/confusion.png",
+          "pack": "D35E.spells",
+          "id": "aTksZx8GiMbeWzMf"
+        },
+        "level5": {
+          "level": 5,
+          "name": "Bolts of Bedevilment",
+          "img": "systems/D35E/icons/spells/named-spells/bolts-of-bedevilment.png",
+          "pack": "D35E.spells",
+          "id": "zkLXuk8VBjs7kkp8"
+        },
+        "level6": {
+          "level": 6,
+          "name": "Phantasmal Killer",
+          "img": "systems/D35E/icons/spells/named-spells/phantasmal-killer.png",
+          "pack": "D35E.spells",
+          "id": "TzIsycztcEfDEvvk"
+        },
+        "level7": {
+          "level": 7,
+          "name": "Insanity",
+          "img": "systems/D35E/icons/spells/named-spells/insanity.png",
+          "pack": "D35E.spells",
+          "id": "scgFFZYADaG8j5Go"
+        },
+        "level8": {
+          "level": 8,
+          "name": "Maddening Scream",
+          "img": "systems/D35E/icons/spells/named-spells/maddening-scream.png",
+          "pack": "D35E.spells",
+          "id": "vhP8ZAAdfl8N10an"
+        },
+        "level9": {
+          "level": 9,
+          "name": "Weird",
+          "img": "systems/D35E/icons/spells/named-spells/weird.png",
+          "pack": "D35E.spells",
+          "id": "h6uHHdqvWwPESHjA"
+        }
+      }
+    },
+    "showInQuickbar": false,
+    "links": {
+      "charges": []
+    },
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": "spellSpecialization",
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394277493,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!M9o0Z3yH5JPtHFvO"
+}

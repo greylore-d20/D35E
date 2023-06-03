@@ -1,0 +1,226 @@
+{
+  "_id": "3r8FJOBHIFZ76DiI",
+  "name": "Locate Object",
+  "type": "spell",
+  "data": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;divination;\n    <br>\n    <strong>Level:</strong>&nbsp;Bard 2, Cleric 3, Sorcerer 2, Wizard 2;\n    <strong>Domain:</strong>&nbsp;Travel 2;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, F/DF (a forked twig)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;long (400 ft. + 40 ft./level)<br>\n    <strong>Area:</strong>&nbsp;circle, centered on you, with a radius of 400 ft. + 40 ft./level<br>\n    \n    \n    <strong>Duration:</strong>&nbsp;1 min./level<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nYou sense the direction of a well-known or clearly visualized object. You can search for general items, in which case you locate the nearest one of its kind if more than one is within range. Attempting to find a certain item requires a specific and accurate mental image; if the image is not close enough to the actual object, the spell fails. You cannot specify a unique item unless you have observed that particular item firsthand (not through divination).\n</p><p>The spell is blocked by even a thin sheet of lead. Creatures cannot be found by this spell. <i>Polymorph any object</i> fools it.\n</p><p><i>Arcane Focus: </i>A forked twig.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "long",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "circle",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Bard",
+          2
+        ],
+        [
+          "Cleric",
+          3
+        ],
+        [
+          "Wizard",
+          2
+        ],
+        [
+          "Sorcerer",
+          2
+        ]
+      ],
+      "domain": [
+        [
+          "Travel",
+          2
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 2,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "div",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": true,
+      "divineFocus": 3
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": "a forked twig"
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "spelllike",
+    "preparation": {
+      "preparedAmount": 1,
+      "maxAmount": 1,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nYou sense the direction of a well-known or clearly visualized object. You can search for general items, in which case you locate the nearest one of its kind if more than one is within range. Attempting to find a certain item requires a specific and accurate mental image; if the image is not close enough to the actual object, the spell fails. You cannot specify a unique item unless you have observed that particular item firsthand (not through divination).\n</p><p>The spell is blocked by even a thin sheet of lead. Creatures cannot be found by this spell. <i>Polymorph any object</i> fools it.\n</p><p><i>Arcane Focus: </i>A forked twig.\n</p>\n<hr/>\n\n\n",
+    "snip": "Senses direction toward object (specific or type).",
+    "spellDuration": "1 min./level",
+    "spellEffect": "",
+    "spellArea": "circle, centered on you, with a radius of 400 ft. + 40 ft./level",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "customReferenceId": "",
+    "attack": {
+      "parts": []
+    }
+  },
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/spells/named-spells/locate-object.png",
+  "effects": [],
+  "folder": null,
+  "permission": {
+    "default": 0
+  },
+  "_key": "!actors.items!FpVpOkdGhBQkc1V5.3r8FJOBHIFZ76DiI"
+}

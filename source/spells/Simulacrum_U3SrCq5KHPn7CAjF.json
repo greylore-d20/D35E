@@ -1,0 +1,241 @@
+{
+  "_id": "U3SrCq5KHPn7CAjF",
+  "name": "Simulacrum",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/school/ill.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {},
+  "system": {
+    "originVersion": 109,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;illusion&nbsp;(shadow);\n    <br>\n    <strong>Level:</strong>&nbsp;Sorcerer 7, Wizard 7;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (the spell is cast over the rough snow or ice form, and some piece of the creature to be duplicated (hair, nail, or the like) must be placed inside the snow or ice  additionally, the spell requires powdered ruby worth 100 gp per hd of the simulacrum to be created)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;12 hours<br>\n    <strong>Range:</strong>&nbsp;0 feet<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;One duplicate creature<br>\n    <strong>Duration:</strong>&nbsp;Instantaneous<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\n<i>Simulacrum </i>creates an illusory duplicate of any creature. The duplicate creature is partially real and formed from ice or snow. It appears to be the same as the original, but it has only one-half of the real creature’s levels or Hit Dice (and the appropriate hit points, feats, skill ranks, and special abilities for a creature of that level or HD). You can’t create a simulacrum of a creature whose Hit Dice or levels exceed twice your caster level. You must make a Disguise check when you cast the spell to determine how good the likeness is. A creature familiar with the original might detect the ruse with a successful Spot check (opposed by the caster’s Disguise check) or a DC 20 Sense Motive check.\n</p><p>At all times the simulacrum remains under your absolute command. No special telepathic link exists, so command must be exercised in some other manner. A simulacrum has no ability to become more powerful. It cannot increase its level or abilities. If reduced to 0 hit points or otherwise destroyed, it reverts to snow and melts instantly into nothingness. A complex process requiring at least 24 hours, 100 gp per hit point, and a fully equipped magical laboratory can repair damage to a simulacrum.\n</p><p><i>Material Component: </i>The spell is cast over the rough snow or ice form, and some piece of the creature to be duplicated (hair, nail, or the like) must be placed inside the snow or ice. Additionally, the spell requires powdered ruby worth 100 gp per HD of the simulacrum to be created.\n</p><p><i>XP Cost: </i>100 XP per HD of the simulacrum to be created (minimum 1,000 XP).\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 12,
+      "type": "hour"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "0",
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Wizard",
+          7
+        ],
+        [
+          "Sorcerer",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "ill",
+    "subschool": "shadow",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "the spell is cast over the rough snow or ice form, and some piece of the creature to be duplicated (hair, nail, or the like) must be placed inside the snow or ice  additionally, the spell requires powdered ruby worth 100 gp per hd of the simulacrum to be created",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\n<i>Simulacrum </i>creates an illusory duplicate of any creature. The duplicate creature is partially real and formed from ice or snow. It appears to be the same as the original, but it has only one-half of the real creature’s levels or Hit Dice (and the appropriate hit points, feats, skill ranks, and special abilities for a creature of that level or HD). You can’t create a simulacrum of a creature whose Hit Dice or levels exceed twice your caster level. You must make a Disguise check when you cast the spell to determine how good the likeness is. A creature familiar with the original might detect the ruse with a successful Spot check (opposed by the caster’s Disguise check) or a DC 20 Sense Motive check.\n</p><p>At all times the simulacrum remains under your absolute command. No special telepathic link exists, so command must be exercised in some other manner. A simulacrum has no ability to become more powerful. It cannot increase its level or abilities. If reduced to 0 hit points or otherwise destroyed, it reverts to snow and melts instantly into nothingness. A complex process requiring at least 24 hours, 100 gp per hit point, and a fully equipped magical laboratory can repair damage to a simulacrum.\n</p><p><i>Material Component: </i>The spell is cast over the rough snow or ice form, and some piece of the creature to be duplicated (hair, nail, or the like) must be placed inside the snow or ice. Additionally, the spell requires powdered ruby worth 100 gp per HD of the simulacrum to be created.\n</p><p><i>XP Cost: </i>100 XP per HD of the simulacrum to be created (minimum 1,000 XP).\n</p>\n<hr/>\n\n\n",
+    "snip": "Creates partially real double of a creature.",
+    "spellDuration": "Instantaneous",
+    "spellEffect": "One duplicate creature",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Simulacrum",
+    "changes": [],
+    "combatChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "spellDurationData": {
+      "value": "",
+      "units": "inst",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846678468,
+    "modifiedTime": 1678394295361,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!U3SrCq5KHPn7CAjF"
+}

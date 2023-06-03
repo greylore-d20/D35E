@@ -1,0 +1,257 @@
+{
+  "_id": "CuZml5sBYIzUiIcr",
+  "name": "Sympathy",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/sympathy.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.UQNnxeASpNf0DRL6"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "CuZml5sBYIzUiIcr",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;enchantment&nbsp;(compulsion)&nbsp;[mind-affecting];\n    <br>\n    <strong>Level:</strong>&nbsp;Druid 9, Sorcerer 8, Wizard 8;\n    <strong>Domain:</strong>&nbsp;Community 8;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (1,500 gp worth of crushed pearls and a drop of honey)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 hour<br>\n    <strong>Range:</strong>&nbsp;close (25 ft. + 5 ft./2 levels)<br>\n    \n    <strong>Target:</strong>&nbsp;one location (up to a 10-ft. cube/level) or one object<br>\n    \n    <strong>Duration:</strong>&nbsp;2 Hours/Level (D)<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;15<br>\n        <strong>Saving Throw:</strong>&nbsp;Will Negates\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nYou cause an object or location to emanate magical vibrations that attract either a specific kind of intelligent creature or creatures of a particular alignment, as defined by you. The particular kind of creature to be affected must be named specifically. A creature subtype is not specific enough. Likewise, the specific alignment must be named.\n</p><p>Creatures of the specified kind or alignment feel elated and pleased to be in the area or desire to touch or to possess the object. The compulsion to stay in the area or touch the object is overpowering. If the save is successful, the creature is released from the enchantment, but a subsequent save must be made 1d6x10 minutes later. If this save fails, the affected creature attempts to return to the area or object.\n</p><p><i>Sympathy </i>counters and dispels <i>antipathy</i>.\n</p><p><i>Material Component: </i>1,500 gp worth of crushed pearls and a drop of honey.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "hour"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "one location (up to a 10-ft. cube/level) or one object"
+    },
+    "range": {
+      "value": null,
+      "units": "close",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "",
+      "description": "Will negates; see text",
+      "ability": "",
+      "type": "willnegates",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "Creatures of the specified kind or alignment feel elated and pleased to be in the area or desire to touch or to possess the object. The compulsion to stay in the area or touch the object is overpowering.",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Druid",
+          9
+        ],
+        [
+          "Wizard",
+          8
+        ],
+        [
+          "Sorcerer",
+          8
+        ]
+      ],
+      "domain": [
+        [
+          "Community",
+          8
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 8,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "enc",
+    "subschool": "compulsion",
+    "types": "mind-affecting",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "1,500 gp worth of crushed pearls and a drop of honey",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 15,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nYou cause an object or location to emanate magical vibrations that attract either a specific kind of intelligent creature or creatures of a particular alignment, as defined by you. The particular kind of creature to be affected must be named specifically. A creature subtype is not specific enough. Likewise, the specific alignment must be named.\n</p><p>Creatures of the specified kind or alignment feel elated and pleased to be in the area or desire to touch or to possess the object. The compulsion to stay in the area or touch the object is overpowering. If the save is successful, the creature is released from the enchantment, but a subsequent save must be made 1d6x10 minutes later. If this save fails, the affected creature attempts to return to the area or object.\n</p><p><i>Sympathy </i>counters and dispels <i>antipathy</i>.\n</p><p><i>Material Component: </i>1,500 gp worth of crushed pearls and a drop of honey.\n</p>\n<hr/>\n\n\n",
+    "snip": "Object or location attracts certain creatures.",
+    "spellDuration": "2 hours/level (D)",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Sympathy",
+    "changes": [],
+    "combatChanges": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "perRoundActions": [],
+    "spellDurationData": {
+      "value": "2*@cl",
+      "units": "hourPerLevel",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846676372,
+    "modifiedTime": 1678394289747,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!CuZml5sBYIzUiIcr"
+}

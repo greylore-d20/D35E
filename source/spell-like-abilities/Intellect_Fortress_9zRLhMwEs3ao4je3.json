@@ -1,0 +1,236 @@
+{
+  "_id": "9zRLhMwEs3ao4je3",
+  "name": "Intellect Fortress",
+  "type": "spell",
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.powers.rTydwtqJ30KjzTLT"
+    }
+  },
+  "img": "systems/D35E/icons/powers/discipline/kin.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;psychokinesis;\n    <br>\n    <strong>Level:</strong>&nbsp;Wilder 4;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Auditory<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 immediate<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;living creature touched<br>\n    \n    <strong>Duration:</strong>&nbsp;1 round<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;7<br>\n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>You encase yourself and your allies in a shimmering fortress of telekinetic force. All damage from powers and psi-like abilities taken by subjects inside the area of the <i>intellect fortress, </i>including ability damage, is halved. This lowering takes place prior to the effects of other powers or abilities that lessen damage, such as damage reduction and evasion.\n</p><p>Powers that are not subject to power resistance are not affected by an <i>intellect fortress.</i>\n</p><p>You can manifest this power instantly, quickly enough to gain its benefits in an emergency. Manifesting the power is an immediate action. You can use this power even when it’s not your turn.\n</p><p><b>Augment:</b> For every additional power point you spend, this power’s duration increases by 1 round.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "template-psi-intelelct-fortress",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "immediate"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "living creature touched"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": true,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Wilder",
+          4
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "kin",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 7,
+    "display": "Auditory",
+    "isPower": true,
+    "shortDescription": "\n\n<p>You encase yourself and your allies in a shimmering fortress of telekinetic force. All damage from powers and psi-like abilities taken by subjects inside the area of the <i>intellect fortress, </i>including ability damage, is halved. This lowering takes place prior to the effects of other powers or abilities that lessen damage, such as damage reduction and evasion.\n</p><p>Powers that are not subject to power resistance are not affected by an <i>intellect fortress.</i>\n</p><p>You can manifest this power instantly, quickly enough to gain its benefits in an emergency. Manifesting the power is an immediate action. You can use this power even when it’s not your turn.\n</p><p><b>Augment:</b> For every additional power point you spend, this power’s duration increases by 1 round.\n</p>\n<hr/>\n\n\n",
+    "snip": "",
+    "spellDuration": "1 round",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "changes": [],
+    "combatChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Intellect Fortress",
+    "index": {
+      "subType": null,
+      "uniqueId": "template-psi-intelelct-fortress"
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394276050,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!9zRLhMwEs3ao4je3"
+}

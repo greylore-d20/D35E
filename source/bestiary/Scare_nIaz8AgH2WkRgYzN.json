@@ -1,0 +1,217 @@
+{
+  "_id": "nIaz8AgH2WkRgYzN",
+  "name": "Scare",
+  "type": "spell",
+  "data": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;necromancy&nbsp;[fear, mind-affecting];\n    <br>\n    <strong>Level:</strong>&nbsp;Bard 2, Sorcerer 2, Wizard 2;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (a bit of bone from an undead skeleton, zombie, ghoul, ghast, or mummy)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;medium (100 ft. + 10 ft./level)<br>\n    \n    <strong>Target:</strong>&nbsp;one living creature per three levels, no two of which can be more than 30 ft. apart\n<br>\n    \n    <strong>Duration:</strong>&nbsp;1 round/level or 1 round; see text for cause fear\n<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;Will partial\n\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nThis spell functions like <i>cause fear, </i>except that it causes all targeted creatures of less than 6 HD to become frightened.\n</p><p><i>Material Component: </i>A bit of bone from an undead skeleton, zombie, ghoul, ghast, or mummy.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "one living creature per three levels, no two of which can be more than 30 ft. apart\n"
+    },
+    "range": {
+      "value": null,
+      "units": "medium",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will partial\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Bard",
+          2
+        ],
+        [
+          "Wizard",
+          2
+        ],
+        [
+          "Sorcerer",
+          2
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 2,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "nec",
+    "subschool": "",
+    "types": "fear, mind-affecting",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "a bit of bone from an undead skeleton, zombie, ghoul, ghast, or mummy",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "spelllike",
+    "preparation": {
+      "preparedAmount": 1,
+      "maxAmount": 1,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nThis spell functions like <i>cause fear, </i>except that it causes all targeted creatures of less than 6 HD to become frightened.\n</p><p><i>Material Component: </i>A bit of bone from an undead skeleton, zombie, ghoul, ghast, or mummy.\n</p>\n<hr/>\n\n\n",
+    "snip": "Panics creatures of less than 6 HD.",
+    "spellDuration": "1 round/level or 1 round; see text for cause fear\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "customReferenceId": "",
+    "attack": {
+      "parts": []
+    }
+  },
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/spells/named-spells/scare.png",
+  "effects": [],
+  "folder": null,
+  "permission": {
+    "default": 0
+  },
+  "_key": "!actors.items!kfQrvoaEIgBNVK2N.nIaz8AgH2WkRgYzN"
+}

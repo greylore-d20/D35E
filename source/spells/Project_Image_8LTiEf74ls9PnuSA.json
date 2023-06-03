@@ -1,0 +1,262 @@
+{
+  "_id": "8LTiEf74ls9PnuSA",
+  "name": "Project Image",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/project-image.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.U3gUVpzEJpqhuJZc"
+    },
+    "cf": {
+      "id": "temp_u74z4lctcql"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "8LTiEf74ls9PnuSA",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;illusion&nbsp;(shadow);\n    <br>\n    <strong>Level:</strong>&nbsp;Bard 6, Sorcerer 7, Wizard 7;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (a small replica of you (a doll), which costs 5 gp to create)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;medium (100 ft. + 10 ft./level)<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;One shadow duplicate<br>\n    <strong>Duration:</strong>&nbsp;1 Round/Level (D)<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;13<br>\n        <strong>Saving Throw:</strong>&nbsp;Will Negates\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nYou tap energy from the Plane of Shadow to create a quasi-real, illusory version of yourself. The projected image looks, sounds, and smells like you but is intangible. The projected image mimics your actions (including speech) unless you direct it to act differently (which is a move action).\n</p><p>You can see through its eyes and hear through its ears as if you were standing where it is, and during your turn you can switch from using its senses to using your own, or back again, as a free action. While you are using its senses, your body is considered blinded and deafened.\n</p><p>If you desire, any spell you cast whose range is touch or greater can originate from the projected image instead of from you. The projected image can’t cast any spells on itself except for illusion spells. The spells affect other targets normally, despite originating from the projected image.\n</p><p>Objects are affected by the projected image as if they had succeeded on their Will save.\n</p><p>You must maintain line of effect to the projected image at all times. If your line of effect is obstructed, the spell ends. If you use <i>dimension door, teleport, plane shift, </i>or a similar spell that breaks your line of effect, even momentarily, the spell ends.\n</p><p><i>Material Component: </i>A small replica of you (a doll), which costs 5 gp to create.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "medium",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "spellsave",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will disbelief (if interacted with)",
+      "ability": "",
+      "type": "willnegates",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "Will negates if interacted with",
+    "specialActions": [
+      {
+        "name": "Project Image",
+        "action": "Create unique \"Project Image\" from \"D35E.commonbuffs\" on self;Set buff \"Project Image\" field data.level to max(1,(@cl)) on self;Activate buff \"Project Image\" on self",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Bard",
+          6
+        ],
+        [
+          "Wizard",
+          7
+        ],
+        [
+          "Sorcerer",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "ill",
+    "subschool": "shadow",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "a small replica of you (a doll), which costs 5 gp to create",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 13,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nYou tap energy from the Plane of Shadow to create a quasi-real, illusory version of yourself. The projected image looks, sounds, and smells like you but is intangible. The projected image mimics your actions (including speech) unless you direct it to act differently (which is a move action).\n</p><p>You can see through its eyes and hear through its ears as if you were standing where it is, and during your turn you can switch from using its senses to using your own, or back again, as a free action. While you are using its senses, your body is considered blinded and deafened.\n</p><p>If you desire, any spell you cast whose range is touch or greater can originate from the projected image instead of from you. The projected image can’t cast any spells on itself except for illusion spells. The spells affect other targets normally, despite originating from the projected image.\n</p><p>Objects are affected by the projected image as if they had succeeded on their Will save.\n</p><p>You must maintain line of effect to the projected image at all times. If your line of effect is obstructed, the spell ends. If you use <i>dimension door, teleport, plane shift, </i>or a similar spell that breaks your line of effect, even momentarily, the spell ends.\n</p><p><i>Material Component: </i>A small replica of you (a doll), which costs 5 gp to create.\n</p>\n<hr/>\n\n\n",
+    "snip": "Illusory double can talk and cast spells.",
+    "spellDuration": "1 round/level (D)",
+    "spellEffect": "One shadow duplicate",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Project Image",
+    "customReferenceId": "",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "spellDurationData": {
+      "value": "1*@cl",
+      "units": "roundPerLevel",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846676003,
+    "modifiedTime": 1678394287839,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!8LTiEf74ls9PnuSA"
+}

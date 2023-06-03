@@ -1,0 +1,316 @@
+{
+  "name": "Divination Spell School",
+  "type": "feat",
+  "flags": {
+    "core": {
+      "sourceId": "Item.L2VAprJxQEEXmkrP"
+    }
+  },
+  "img": "systems/D35E/icons/spells/school/div.png",
+  "effects": [],
+  "_id": "sBNaHgWGlgUvHPTj",
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>Divination spells enable you to learn secrets long forgotten, to predict the future, to find hidden things, and to foil deceptive spells.</p>\n<p>Many divination spells have cone-shaped areas. These move with you and extend in the direction you look. The cone defines the area that you can sweep each round. If you study the same area for multiple rounds, you can often gain additional information, as noted in the descriptive text for the spell.</p>\n<p><strong>Scrying</strong></p>\n<p>A scrying spell creates an invisible magical sensor that sends you information. Unless noted otherwise, the sensor has the same powers of sensory acuity that you possess. This level of acuity includes any spells or effects that target you, but not spells or effects that emanate from you. However, the sensor is treated as a separate, independent sensory organ of yours, and thus it functions normally even if you have been blinded, deafened, or otherwise suffered sensory impairment.</p>\n<p>Any creature with an Intelligence score of 12 or higher can notice the sensor by making a DC 20 Intelligence check. The sensor can be dispelled as if it were an active spell.</p>\n<p>Lead sheeting or magical protection blocks a scrying spell, and you sense that the spell is so blocked.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0,
+      "value": null,
+      "charged": false,
+      "_deprecated": true
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [
+      [
+        "[[+2]] to learn spells from Divination school",
+        "skill",
+        "skill.spl"
+      ]
+    ],
+    "featType": "spellSpecialization",
+    "abilityType": "",
+    "associations": {
+      "classes": []
+    },
+    "crOffset": "",
+    "spellSpecializationName": "div",
+    "spellSpecializationForbiddenNames": "",
+    "linkedItems": [],
+    "metamagic": {
+      "enabled": false,
+      "shortDesc": "",
+      "code": ""
+    },
+    "spellSpecialization": {
+      "isDomain": false,
+      "spells": {
+        "level1": {
+          "level": 1,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level2": {
+          "level": 2,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level3": {
+          "level": 3,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level4": {
+          "level": 4,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level5": {
+          "level": 5,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level6": {
+          "level": 6,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level7": {
+          "level": 7,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level8": {
+          "level": 8,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        },
+        "level9": {
+          "level": 9,
+          "name": "",
+          "img": "",
+          "pack": "",
+          "id": ""
+        }
+      }
+    },
+    "showInQuickbar": false,
+    "links": {
+      "charges": []
+    },
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": "spellSpecialization",
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394278799,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!sBNaHgWGlgUvHPTj"
+}

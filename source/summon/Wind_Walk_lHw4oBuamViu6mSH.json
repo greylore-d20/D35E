@@ -1,0 +1,221 @@
+{
+  "_id": "lHw4oBuamViu6mSH",
+  "name": "Wind Walk",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/spells/school/trs.png",
+  "effects": [],
+  "folder": null,
+  "system": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;transmutation&nbsp;[air];\n    <br>\n    <strong>Level:</strong>&nbsp;Cleric 6, Druid 7;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, F, DF<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;you and one touched creature per three levels\n<br>\n    \n    <strong>Duration:</strong>&nbsp;1 hour/level (D); see text\n<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;No and Will negates (harmless)\n\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nYou alter the substance of your body to a cloudlike vapor (as the <i>gaseous form </i>spell) and move through the air, possibly at great speed. You can take other creatures with you, each of which acts independently.\n</p><p>Normally, a <i>wind walker </i>flies at a speed of 10 feet with perfect maneuverability. If desired by the subject, a magical wind wafts a <i>wind walker </i>along at up to 600 feet per round (60 mph) with poor maneuverability. <i>Wind walkers </i>are not invisible but rather appear misty and translucent. If fully clothed in white, they are 80% likely to be mistaken for clouds, fog, vapors, or the like.\n</p><p>A <i>wind walker </i>can regain its physical form as desired and later resume the cloud form. Each change to and from vaporous form takes 5 rounds, which counts toward the duration of the spell (as does any time spent in physical form). As noted above, you can dismiss the spell, and you can even dismiss it for individual wind walkers and not others.\n</p><p>For the last minute of the spell’s duration, a <i>wind walker </i>in cloud form automatically descends 60 feet per round (for a total of 600 feet), though it may descend faster if it wishes. This descent serves as a warning that the spell is about to end.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "you and one touched creature per three levels\n"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "No and Will negates (harmless)\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Cleric",
+          6
+        ],
+        [
+          "Druid",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "trs",
+    "subschool": "",
+    "types": "air",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": true,
+      "divineFocus": 1
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "spelllike",
+    "preparation": {
+      "preparedAmount": 1,
+      "maxAmount": 1,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nYou alter the substance of your body to a cloudlike vapor (as the <i>gaseous form </i>spell) and move through the air, possibly at great speed. You can take other creatures with you, each of which acts independently.\n</p><p>Normally, a <i>wind walker </i>flies at a speed of 10 feet with perfect maneuverability. If desired by the subject, a magical wind wafts a <i>wind walker </i>along at up to 600 feet per round (60 mph) with poor maneuverability. <i>Wind walkers </i>are not invisible but rather appear misty and translucent. If fully clothed in white, they are 80% likely to be mistaken for clouds, fog, vapors, or the like.\n</p><p>A <i>wind walker </i>can regain its physical form as desired and later resume the cloud form. Each change to and from vaporous form takes 5 rounds, which counts toward the duration of the spell (as does any time spent in physical form). As noted above, you can dismiss the spell, and you can even dismiss it for individual wind walkers and not others.\n</p><p>For the last minute of the spell’s duration, a <i>wind walker </i>in cloud form automatically descends 60 feet per round (for a total of 600 feet), though it may descend faster if it wishes. This descent serves as a warning that the spell is about to end.\n</p>\n<hr/>\n\n\n",
+    "snip": "You and your allies turn vaporous and travel fast.",
+    "spellDuration": "1 hour/level (D); see text\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "customReferenceId": "",
+    "attack": {
+      "parts": []
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": null,
+    "systemVersion": null,
+    "coreVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!actors.items!TnegZIKvBgRoCCdP.lHw4oBuamViu6mSH"
+}

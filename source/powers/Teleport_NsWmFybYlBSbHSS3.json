@@ -1,0 +1,221 @@
+{
+  "_id": "NsWmFybYlBSbHSS3",
+  "name": "Teleport",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/por.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n    <strong>Discipline</strong>&nbsp;psychoportation&nbsp;(dex)&nbsp;[teleportation];\n    <strong>Level</strong>&nbsp;Psion 5;\n    \n    \n    \n    \n  </p>\n  <p>\n    <strong>Manifesting Time</strong>&nbsp;1 round<br>\n    \n  </p>\n  <p>\n    <strong>Power Display</strong>&nbsp;Vi\n<br>\n    <strong>Range</strong>&nbsp;touch<br>\n    \n    <strong>Targets</strong>&nbsp;you and touched objects or other touched willing creatures weighing up to 50 lb./level\n<br>\n    \n    <strong>Duration</strong>&nbsp;Instantaneous\n<br>\n    <strong>Power Points/Spell Points Cost</strong>&nbsp;9<br>\n    <strong>Saving Throw</strong>&nbsp;None and Will negates (object)\n;&nbsp;<strong>Power Resistance</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>This power instantly transports the manifester to a designated destination. Distance is not a factor, but interplanar travel is not possible. The manifester can bring along objects and willing creatures totaling up to 50 pounds per manifester level. Only objects held or in use (attended) by another person receive saving throws and power resistance.\n</p><p>The manifester must have some clear idea of the location and layout of the destination. The clearer the mental image, the more likely the teleportation works. Areas of strong physical, psionic, or magical energies may make teleportation more hazardous or even impossible.\n</p><p>Note: Teleportation is instantaneous travel through the Astral Plane. Anything that blocks astral travel also blocks teleportation.\n</p><p>To see how well the teleportation works, roll d% and consult the table below.\n</p><p> On Off Similar\n</p><p>Familiarity Target Target Area Mishap\n</p><p>Very familiar 0197 9899 100\n</p><p>Studied carefully\t0194 9597 9899 100\n</p><p>Seen casually 0188 8994 9598 99100\n</p><p>Viewed once 0176 7788 8996 97100\n</p><p>Description 0152 5376 7792 93100\n</p><p>False destination 8192 93100\n</p>\n<pre> (1d20+80)\n</pre>\n<p>Familiarity: Very familiar is a place where the manifester has been very often and where he or she feels at home. Studied carefully is a place known well, either because the manifester has been there often or has used other means to study the place. Seen casually is a place that the manifester has seen more than once but with which he or she is not very familiar. Viewed once is a place that the manifester has seen once, possibly using psionics. Description is a place whose location and appearance are know through someone else's description, perhaps even from a precise map.\n</p><p>False destination is a place that doesn't exist. When traveling to a false destination, roll 1d20+80 to obtain results on the table, rather than rolling d%, since there is no real destination for the manifester to arrive at or even be off target from.\n</p><p>On Target: The manifester appears where he or she wants to be.\n</p><p>Off Target: The manifester appears safely a random distance away from the destination in a random direction. Distance off target is 1d10x1d10% of the distance that was to be traveled.\n</p><p>Similar Area: The manifester winds up in an area that's visually or thematically similar to the target area. Generally, the manifester appears in the closest similar place, but since the power has no range limit, he or she could conceivably wind up somewhere else across the globe.\n</p><p>Mishap: The manifester and anyone else teleporting with him or her have gotten scrambled. Each character suffers 1d10 points of damage, and reroll on the chart to see where the characters wind up. For these rerolls, roll 1d20+80. Each time Mishap comes up, the characters suffer more damage and must reroll.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "you and touched objects or other touched willing creatures weighing up to 50 lb./level\n"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None and Will negates (object)\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          5
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 5,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "por",
+    "subschool": "dex",
+    "types": "teleportation",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 9,
+    "display": "Vi\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>This power instantly transports the manifester to a designated destination. Distance is not a factor, but interplanar travel is not possible. The manifester can bring along objects and willing creatures totaling up to 50 pounds per manifester level. Only objects held or in use (attended) by another person receive saving throws and power resistance.\n</p><p>The manifester must have some clear idea of the location and layout of the destination. The clearer the mental image, the more likely the teleportation works. Areas of strong physical, psionic, or magical energies may make teleportation more hazardous or even impossible.\n</p><p>Note: Teleportation is instantaneous travel through the Astral Plane. Anything that blocks astral travel also blocks teleportation.\n</p><p>To see how well the teleportation works, roll d% and consult the table below.\n</p><p> On Off Similar\n</p><p>Familiarity Target Target Area Mishap\n</p><p>Very familiar 0197 9899 100\n</p><p>Studied carefully\t0194 9597 9899 100\n</p><p>Seen casually 0188 8994 9598 99100\n</p><p>Viewed once 0176 7788 8996 97100\n</p><p>Description 0152 5376 7792 93100\n</p><p>False destination 8192 93100\n</p>\n<pre> (1d20+80)\n</pre>\n<p>Familiarity: Very familiar is a place where the manifester has been very often and where he or she feels at home. Studied carefully is a place known well, either because the manifester has been there often or has used other means to study the place. Seen casually is a place that the manifester has seen more than once but with which he or she is not very familiar. Viewed once is a place that the manifester has seen once, possibly using psionics. Description is a place whose location and appearance are know through someone else's description, perhaps even from a precise map.\n</p><p>False destination is a place that doesn't exist. When traveling to a false destination, roll 1d20+80 to obtain results on the table, rather than rolling d%, since there is no real destination for the manifester to arrive at or even be off target from.\n</p><p>On Target: The manifester appears where he or she wants to be.\n</p><p>Off Target: The manifester appears safely a random distance away from the destination in a random direction. Distance off target is 1d10x1d10% of the distance that was to be traveled.\n</p><p>Similar Area: The manifester winds up in an area that's visually or thematically similar to the target area. Generally, the manifester appears in the closest similar place, but since the power has no range limit, he or she could conceivably wind up somewhere else across the globe.\n</p><p>Mishap: The manifester and anyone else teleporting with him or her have gotten scrambled. Each character suffers 1d10 points of damage, and reroll on the chart to see where the characters wind up. For these rerolls, roll 1d20+80. Each time Mishap comes up, the characters suffer more damage and must reroll.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "",
+    "spellDuration": "Instantaneous\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394290872,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!NsWmFybYlBSbHSS3"
+}

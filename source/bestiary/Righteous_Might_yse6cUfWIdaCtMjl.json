@@ -1,0 +1,214 @@
+{
+  "_id": "yse6cUfWIdaCtMjl",
+  "name": "Righteous Might",
+  "type": "spell",
+  "data": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;transmutation;\n    <br>\n    <strong>Level:</strong>&nbsp;Cleric 5;\n    <strong>Domain:</strong>&nbsp;Strength 5;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, F, DF<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;personal<br>\n    \n    <strong>Target:</strong>&nbsp;you<br>\n    \n    <strong>Duration:</strong>&nbsp;1 round/level (D)<br>\n    \n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\n <span class=\"errata\">This spell causes you to grow, doubling your height and multiplying your weight by 8.</span> This increase changes your size category to the next larger one, and you gain a  <span class=\"errata\">+4</span> size bonus to Strength and a  <span class=\"errata\">+2</span> size bonus to Constitution. You gain a  <span class=\"errata\">+2</span> enhancement bonus to your natural armor. You gain damage reduction  <span class=\"errata\">3/evil</span> (if you normally channel positive energy) or damage reduction  <span class=\"errata\">3/good</span> (if you normally channel negative energy). At 12th level this damage reduction becomes  <span class=\"errata\">6/evil</span> or  <span class=\"errata\">6/good</span>, and at 15th level it becomes  <span class=\"errata\">9/evil</span> or  <span class=\"errata\">9/good</span> (the maximum). Your size modifier for AC and attacks changes as appropriate to your new size category. This spell doesn’t change your speed. Determine space and reach as appropriate to your new size.\n</p><p>If insufficient room is available for the desired growth, you attain the maximum possible size and may make a Strength check (using your increased Strength) to burst any enclosures in the process. If you fail, you are constrained without harm by the materials enclosing you— the spell cannot crush you by increasing your size.\n</p><p>All equipment you wear or carry is similarly enlarged by the spell. Melee and projectile weapons deal more damage. Other magical properties are not affected by this spell. Any enlarged item that leaves your possession (including a projectile or thrown weapon) instantly returns to its normal size. This means that thrown weapons deal their normal damage (projectiles deal damage based on the size of the weapon that fired them).\n</p><p>Multiple magical effects that increase size do not stack.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "you"
+    },
+    "range": {
+      "value": null,
+      "units": "personal",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Cleric",
+          5
+        ]
+      ],
+      "domain": [
+        [
+          "Strength",
+          5
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 5,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "trs",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": true,
+      "divineFocus": 1
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\n <span class=\"errata\">This spell causes you to grow, doubling your height and multiplying your weight by 8.</span> This increase changes your size category to the next larger one, and you gain a  <span class=\"errata\">+4</span> size bonus to Strength and a  <span class=\"errata\">+2</span> size bonus to Constitution. You gain a  <span class=\"errata\">+2</span> enhancement bonus to your natural armor. You gain damage reduction  <span class=\"errata\">3/evil</span> (if you normally channel positive energy) or damage reduction  <span class=\"errata\">3/good</span> (if you normally channel negative energy). At 12th level this damage reduction becomes  <span class=\"errata\">6/evil</span> or  <span class=\"errata\">6/good</span>, and at 15th level it becomes  <span class=\"errata\">9/evil</span> or  <span class=\"errata\">9/good</span> (the maximum). Your size modifier for AC and attacks changes as appropriate to your new size category. This spell doesn’t change your speed. Determine space and reach as appropriate to your new size.\n</p><p>If insufficient room is available for the desired growth, you attain the maximum possible size and may make a Strength check (using your increased Strength) to burst any enclosures in the process. If you fail, you are constrained without harm by the materials enclosing you— the spell cannot crush you by increasing your size.\n</p><p>All equipment you wear or carry is similarly enlarged by the spell. Melee and projectile weapons deal more damage. Other magical properties are not affected by this spell. Any enlarged item that leaves your possession (including a projectile or thrown weapon) instantly returns to its normal size. This means that thrown weapons deal their normal damage (projectiles deal damage based on the size of the weapon that fired them).\n</p><p>Multiple magical effects that increase size do not stack.\n</p>\n<hr/>\n\n\n",
+    "snip": "Your size increases, and you gain combat bonuses.",
+    "spellDuration": "1 round/level (D)",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "customReferenceId": "",
+    "attack": {
+      "parts": []
+    }
+  },
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/spells/named-spells/righteous-might.png",
+  "effects": [],
+  "folder": null,
+  "permission": {
+    "default": 0
+  },
+  "_key": "!actors.items!pjlwOBLsdc4O3896.yse6cUfWIdaCtMjl"
+}

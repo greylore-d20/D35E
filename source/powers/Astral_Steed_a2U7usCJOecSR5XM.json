@@ -1,0 +1,221 @@
+{
+  "_id": "a2U7usCJOecSR5XM",
+  "name": "Astral Steed",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/por.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n    <strong>Discipline</strong>&nbsp;psychoportation&nbsp;(dex);\n    <strong>Level</strong>&nbsp;Psion 3;\n    \n    \n    \n    \n  </p>\n  <p>\n    <strong>Manifesting Time</strong>&nbsp;1 round<br>\n    \n  </p>\n  <p>\n    <strong>Power Display</strong>&nbsp;Ma\n<br>\n    <strong>Range</strong>&nbsp;touch<br>\n    \n    <strong>Targets</strong>&nbsp;living creature touched<br>\n    \n    <strong>Duration</strong>&nbsp;1 hour/level\n<br>\n    <strong>Power Points/Spell Points Cost</strong>&nbsp;5<br>\n    <strong>Saving Throw</strong>&nbsp;None\n;&nbsp;<strong>Power Resistance</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The manifester calls a quasi-real, horselike creature from the Astral Plane. The steed can be ridden only by the manifester or by the one person for whom the manifester specifically calls the mount. An astral steed does not fight, but all normal animals shun it and refuse to attack it.\n</p><p>The mount has an Armor Class of 18 (1 size, +4 natural armor, +5 Dex) and 7 hit points +1 hit point per manifester level. If it loses all its hit points, the steed disappears. A astral steed has a speed of 20 feet per manifester level, to a maximum of 240 feet. It can bear its rider's weight plus up to 10 pounds per manifester level.\n</p><p>These mounts gain certain powers according to manifester level. A mount's abilities include those of mounts of lower manifester levels.\n</p><p>8th Level: The mount can ride over sandy, muddy, or even swampy ground without difficulty or decrease in speed.\n</p><p>10th Level: The mount can ride over water as if it were firm, dry ground.\n</p><p>12th Level: The mount can ride in the air as if it were firm land, so chasms and the like can be crossed without benefit of a bridge. The mount cannot simply take off and fly. It can only ride horizontally across the air. After 1 round in the air, the mount falls.\n</p><p>14th Level: The mount can fly at its speed. It has a maneuverability rating of average.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "living creature touched"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          3
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 3,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "por",
+    "subschool": "dex",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 5,
+    "display": "Ma\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The manifester calls a quasi-real, horselike creature from the Astral Plane. The steed can be ridden only by the manifester or by the one person for whom the manifester specifically calls the mount. An astral steed does not fight, but all normal animals shun it and refuse to attack it.\n</p><p>The mount has an Armor Class of 18 (1 size, +4 natural armor, +5 Dex) and 7 hit points +1 hit point per manifester level. If it loses all its hit points, the steed disappears. A astral steed has a speed of 20 feet per manifester level, to a maximum of 240 feet. It can bear its rider's weight plus up to 10 pounds per manifester level.\n</p><p>These mounts gain certain powers according to manifester level. A mount's abilities include those of mounts of lower manifester levels.\n</p><p>8th Level: The mount can ride over sandy, muddy, or even swampy ground without difficulty or decrease in speed.\n</p><p>10th Level: The mount can ride over water as if it were firm, dry ground.\n</p><p>12th Level: The mount can ride in the air as if it were firm land, so chasms and the like can be crossed without benefit of a bridge. The mount cannot simply take off and fly. It can only ride horizontally across the air. After 1 round in the air, the mount falls.\n</p><p>14th Level: The mount can fly at its speed. It has a maneuverability rating of average.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "",
+    "spellDuration": "1 hour/level\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394293712,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!a2U7usCJOecSR5XM"
+}

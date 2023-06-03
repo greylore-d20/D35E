@@ -1,0 +1,279 @@
+{
+  "_id": "dC4yecInATydpbC6",
+  "name": "Power Word Blind",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/power-word-blind.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.1CpufI45mGe4D59J"
+    },
+    "cf": {
+      "id": "temp_u74z4lctcql"
+    }
+  },
+  "system": {
+    "originVersion": 108,
+    "originPack": "D35E.spells",
+    "originId": "dC4yecInATydpbC6",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;enchantment&nbsp;(compulsion)&nbsp;[mind-affecting];\n    <br>\n    <strong>Level:</strong>&nbsp;Sorcerer 7, Wizard 7;\n    <strong>Domain:</strong>&nbsp;Darkness 8, War 7;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;close (25 ft. + 5 ft./2 levels)<br>\n    \n    <strong>Target:</strong>&nbsp;one creature with 200 hp or less<br>\n    \n    <strong>Duration:</strong>&nbsp;See Text<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;13<br>\n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  <p>You utter a single word of power that causes one creature of your choice to become blinded, whether the creature can hear the word or not. The duration of the spell depends on the target&rsquo;s current hit point total. Any creature that currently has 201 or more hit points is unaffected by <em>power word blind</em>.</p>\n<table class=\"right\" cellspacing=\"0\">\n<tbody>\n<tr>\n<th align=\"left\">Hit Points</th>\n<th align=\"left\">Duration</th>\n</tr>\n<tr>\n<td style=\"text-align: left;\">50 or less</td>\n<td style=\"text-align: left;\">Permanent</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">51-100</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4+1</a> minutes</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">101-200</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4+1</a> rounds</td>\n</tr>\n</tbody>\n</table>\n<hr />\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "one creature with 200 hp or less"
+    },
+    "range": {
+      "value": null,
+      "units": "close",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Blind (<50 hp)",
+        "action": "Condition set blind to true on target;",
+        "condition": "",
+        "img": ""
+      },
+      {
+        "name": "Blind (51-100 hp)",
+        "action": "Create unique \"Blind\" from \"D35E.commonbuffs\" on target;Set buff \"Blind\" field data.level to 1d4+1 on target;Activate buff \"Blind\" on target",
+        "condition": "",
+        "img": ""
+      },
+      {
+        "name": "Blind (101-200 hp)",
+        "action": "Create unique \"Blind\" from \"D35E.commonbuffs\" on target;Set buff \"Blind\" field data.level to (1d4+1)*10 on target;Activate buff \"Blind\" on target",
+        "condition": "",
+        "img": ""
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Wizard",
+          7
+        ],
+        [
+          "Sorcerer",
+          7
+        ]
+      ],
+      "domain": [
+        [
+          "Darkness",
+          8
+        ],
+        [
+          "War",
+          7
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "enc",
+    "subschool": "compulsion",
+    "types": "mind-affecting",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 13,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "<p>You utter a single word of power that causes one creature of your choice to become blinded, whether the creature can hear the word or not. The duration of the spell depends on the target&rsquo;s current hit point total. Any creature that currently has 201 or more hit points is unaffected by <em>power word blind</em>.</p>\n<table class=\"right\" cellspacing=\"0\">\n<tbody>\n<tr>\n<th align=\"left\">Hit Points</th>\n<th align=\"left\">Duration</th>\n</tr>\n<tr>\n<td style=\"text-align: left;\">50 or less</td>\n<td style=\"text-align: left;\">Permanent</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">51-100</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4+1</a> minutes</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">101-200</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4+1</a> rounds</td>\n</tr>\n</tbody>\n</table>\n<hr />",
+    "snip": "Blinds creature with 200 hp or less.",
+    "spellDuration": "See text",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Power Word Blind",
+    "changes": [],
+    "combatChanges": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "perRoundActions": [],
+    "spellDurationData": {
+      "value": "",
+      "units": "seeText",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846679799,
+    "modifiedTime": 1678394298287,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!dC4yecInATydpbC6"
+}

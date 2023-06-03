@@ -1,0 +1,225 @@
+{
+  "_id": "Tp5UjJyGXDyHYPo6",
+  "name": "Sunbeam",
+  "type": "attack",
+  "img": "systems/D35E/icons/spells/named-spells/sunbeam.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.r1DsHgi0pqSxki9D"
+    }
+  },
+  "system": {
+    "originVersion": 2,
+    "originPack": "D35E.commonbuffs",
+    "originId": "39HUHBgOztvjeMaE",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>Beam blinds and deals 4d6 damage.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": false,
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "60",
+      "units": "ft"
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 4,
+      "per": "charges",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "min(6,max(1,floor(@item.baseCl/3)))",
+      "rechargeFormula": "",
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "ray",
+      "size": "60",
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "spellsave",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "4d6",
+          "",
+          ""
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": "",
+      "damageMult": 1,
+      "critRange": "20",
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "reflexhalf",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "13",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "Targets are blinded (Reflex negates)\nAny creatures to which sunlight is harmful or unnatural take double damage  (Reflex half)\nUndead targets specifically harmed by bright light are destroyed (Reflex negates)",
+    "attackNotes": "Use alternative damage [[min(20,max(1,(@cl)))d6]] for undead, fungi, mold, oozes and slime creatures (Reflex half)",
+    "specialActions": [
+      {
+        "name": "Blinded",
+        "action": "Condition set blind to true on target",
+        "condition": "",
+        "img": "systems/D35E/icons/conditions/blind.png"
+      }
+    ],
+    "favorite": true,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "material": {
+      "data": null
+    },
+    "associations": {
+      "classes": []
+    },
+    "attackType": "racialAbility",
+    "autoScaleOption": "never",
+    "weaponSubtype": "ranged",
+    "masterwork": false,
+    "threatRangeExtended": false,
+    "finesseable": false,
+    "enh": null,
+    "incorporeal": false,
+    "proficient": true,
+    "primaryAttack": true,
+    "showInQuickbar": true,
+    "melded": false,
+    "baseWeaponType": "",
+    "nonLethal": false,
+    "originalWeaponCreated": false,
+    "originalWeaponId": null,
+    "originalWeaponName": "",
+    "originalWeaponImg": "",
+    "originalWeaponProperties": {},
+    "conditionals": [],
+    "thrown": false,
+    "returning": false,
+    "magic": false,
+    "alignment": {
+      "good": false,
+      "evil": false,
+      "lawful": false,
+      "chaotic": false
+    },
+    "selectedMaterial": "none",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Sunbeam",
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "XSGi1UY5kAehVomp": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394272831,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!Tp5UjJyGXDyHYPo6"
+}

@@ -1,0 +1,262 @@
+{
+  "_id": "aNXHFbKvAo9UmrYy",
+  "name": "Held",
+  "type": "buff",
+  "img": "systems/D35E/icons/buffs/imprisoned.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.ddQCOifccJJOWN6y"
+    },
+    "cf": {
+      "id": "temp_0b5fizi5atqg"
+    }
+  },
+  "system": {
+    "originVersion": 4,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>The subject becomes <a href=\"https://www.d20srd.org/srd/conditionSummary.htm#paralyzed\">paralyzed</a> and freezes in place. It is aware and breathes normally but cannot take any actions, even speech. Each round on its turn, the subject may attempt a new <a href=\"https://www.d20srd.org/srd/combat/combatStatistics.htm#savingThrows\">saving throw</a> to end the effect. (This is a <a href=\"https://www.d20srd.org/srd/combat/actionsInCombat.htm#fullRoundActions\">full-round action</a> that does not provoke <a href=\"https://www.d20srd.org/srd/combat/attacksOfOpportunity.htm\">attacks of opportunity</a>.)</p>\n<p>A winged creature who is <a href=\"https://www.d20srd.org/srd/conditionSummary.htm#paralyzed\">paralyzed</a> cannot flap its wings and falls. A swimmer can&rsquo;t swim and may <a href=\"https://www.d20srd.org/srd/environment.htm#drowning\">drown</a>.&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "changes": [
+      [
+        "-@attributes.speed.land.total",
+        "speed",
+        "landSpeed",
+        "untyped"
+      ],
+      [
+        "-@attributes.speed.climb.total",
+        "speed",
+        "climbSpeed",
+        "untyped"
+      ],
+      [
+        "-@attributes.speed.swim.total",
+        "speed",
+        "swimSpeed",
+        "untyped"
+      ],
+      [
+        "-@attributes.speed.burrow.total",
+        "speed",
+        "burrowSpeed",
+        "untyped"
+      ],
+      [
+        "-@attributes.speed.fly.total",
+        "speed",
+        "flySpeed",
+        "untyped"
+      ]
+    ],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": ""
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "light": {
+      "color": "",
+      "radius": 0,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "buffType": "temp",
+    "active": true,
+    "level": "",
+    "timeline": {
+      "elapsed": 0,
+      "total": 0,
+      "formula": "@item.level",
+      "enabled": true,
+      "deleteOnExpiry": true,
+      "tickOnEnd": false
+    },
+    "damagePool": {
+      "current": 0,
+      "max": 0,
+      "formula": "",
+      "enabled": false,
+      "deleteOnDamagePoolEmpty": false
+    },
+    "shapechange": {
+      "source": {},
+      "type": "polymorph"
+    },
+    "activateActions": [
+      {
+        "name": "",
+        "action": "Condition set paralyzed to true on target;",
+        "condition": "",
+        "img": ""
+      }
+    ],
+    "deactivateActions": [
+      {
+        "name": "",
+        "action": "Condition set paralyzed to false on target;",
+        "condition": "",
+        "img": ""
+      }
+    ],
+    "perRoundActions": [],
+    "hideFromToken": false,
+    "senses": {
+      "lowLight": false,
+      "lowLightMultiplier": null,
+      "blindsight": null,
+      "darkvision": null,
+      "tremorsense": null,
+      "truesight": null
+    },
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "attackParts": [],
+    "conditionals": [],
+    "specialActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Held",
+    "summon": [],
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "XSGi1UY5kAehVomp": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394280290,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!aNXHFbKvAo9UmrYy"
+}

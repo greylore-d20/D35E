@@ -1,0 +1,266 @@
+{
+  "_id": "3wSpzWLleO4AYlA1",
+  "name": "Rod of Absorption",
+  "type": "equipment",
+  "img": "systems/D35E/icons/items/magic/staff/Wand_v2_37.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "exportSource": {
+      "world": "test",
+      "system": "D35E",
+      "coreVersion": "0.6.5",
+      "systemVersion": 0.82
+    },
+    "core": {
+      "sourceId": "Compendium.D35E.magicitems.3wSpzWLleO4AYlA1"
+    }
+  },
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "\n      <div topic='Absorption' level='8'><p><b>Absorption:</b> This rod acts as a magnet, drawing spells or spell-like abilities into itself. The magic absorbed must be a single-target spell or a ray directed at either the character possessing the rod or her gear. The rod then nullifies the spell's effect and stores its potential until the wielder releases this energy in the form of spells of her own. She can instantly detect a spell's level as the rod absorbs that spell's energy. Absorption requires no action on the part of the user if the rod is in hand at the time.</p><p>A running total of absorbed (and used) spell levels should be kept. The wielder of the rod can use captured spell energy to cast any spell she has prepared, without expending the preparation itself. The only restrictions are that the levels of spell energy stored in the rod must be equal to or greater than the level of the spell the wielder wants to cast, that any material components required for the spell be present, and that the rod be in hand when casting. For casters such as bards or sorcerers who do not prepare spells, the rod's energy can be used to cast any spell of the appropriate level or levels that they know.</p><p>A <i>rod of absorption</i> absorbs a maximum of fifty spell levels and can thereafter only discharge any remaining potential it might have. The rod cannot be recharged. The wielder knows the rod's remaining absorbing potential and current amount of stored energy.</p><p>To determine the absorption potential remaining in a newly found rod, roll d% and divide the result by 2. Then roll d% again: On a result of 71-100, half the levels already absorbed by the rod are still stored within.</p><p>Strong abjuration; CL 15th; Craft Rod, <i>spell turning</i>; Price 50,000 gp.</p>\n</div>\n    ",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "quantity": 1,
+    "weight": 0,
+    "constantWeight": true,
+    "price": 50000,
+    "resalePrice": "",
+    "brokenResalePrice": "",
+    "fullResalePrice": false,
+    "identified": true,
+    "identifiedCurse": false,
+    "cursed": false,
+    "curseActive": false,
+    "hp": {
+      "max": 10,
+      "value": 10
+    },
+    "hardness": 0,
+    "carried": true,
+    "unidentified": {
+      "price": 0,
+      "name": ""
+    },
+    "identifiedName": "Rod of Absorption",
+    "container": "None",
+    "containerId": "none",
+    "containerWeightless": false,
+    "equippedWeightless": false,
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "contextNotes": [],
+    "enhancements": {
+      "uses": {
+        "value": 0,
+        "max": 0,
+        "per": null,
+        "rechargeFormula": null,
+        "autoDeductCharges": true,
+        "allowMultipleUses": false,
+        "commonPool": false
+      },
+      "automation": {
+        "updateName": false,
+        "updatePrice": false
+      },
+      "clFormula": "",
+      "spellcastingAbility": "",
+      "items": []
+    },
+    "light": {
+      "color": "",
+      "radius": 0,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "material": {
+      "data": null
+    },
+    "equipped": true,
+    "equipmentType": "misc",
+    "equipmentSubtype": "wondrous",
+    "armor": {
+      "value": 0,
+      "dex": null,
+      "acp": 0,
+      "enh": 0
+    },
+    "masterwork": false,
+    "melded": false,
+    "linkedItems": [],
+    "armorType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "spellFailure": 0,
+    "slot": "slotless",
+    "activation": {
+      "cost": null,
+      "type": ""
+    },
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394279318,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!3wSpzWLleO4AYlA1"
+}

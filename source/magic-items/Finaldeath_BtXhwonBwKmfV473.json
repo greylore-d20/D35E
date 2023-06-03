@@ -1,0 +1,615 @@
+{
+  "_id": "BtXhwonBwKmfV473",
+  "name": "Finaldeath",
+  "type": "weapon",
+  "img": "systems/D35E/icons/items/magic/weapons/named/finaldeath.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.magicitems.BtXhwonBwKmfV473"
+    }
+  },
+  "system": {
+    "originVersion": 100,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><strong>Finaldeath:</strong>&nbsp;This +<em>5 undead dread ghost touch morningstar</em>&nbsp;also grants its wielder immunity to energy drain attacks. Furthermore, if its wielder is capable of turning undead, he or she gains the Positive Energy Aura feat.</p>\n<p><em>Caster Level:</em>&nbsp;22nd;&nbsp;<em>Prerequisites:</em>&nbsp;Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor,&nbsp;<em>death ward</em>,&nbsp;<em>plane shift</em>,&nbsp;<em>summon monster IX</em>, creator must be able to turn undead;&nbsp;<em>Market Price:</em>&nbsp;3,580,308 gp;&nbsp;<em>Cost to Create:</em>&nbsp;1,790,308 gp + 45,800 XP.</p>",
+      "chat": "",
+      "unidentified": "<p>A morningstar deals both piercing and bludgeoning damage.</p>"
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "quantity": 1,
+    "weight": 6,
+    "constantWeight": true,
+    "price": 1790308,
+    "resalePrice": "",
+    "brokenResalePrice": "",
+    "fullResalePrice": false,
+    "identified": true,
+    "identifiedCurse": false,
+    "cursed": false,
+    "curseActive": false,
+    "hp": {
+      "max": 20,
+      "value": 20
+    },
+    "hardness": 10,
+    "carried": true,
+    "unidentified": {
+      "price": 8,
+      "name": "Morningstar"
+    },
+    "identifiedName": "Finaldeath",
+    "container": "None",
+    "containerId": "none",
+    "containerWeightless": false,
+    "equippedWeightless": false,
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "enhancements": {
+      "uses": {
+        "value": 0,
+        "max": 0,
+        "per": null,
+        "rechargeFormula": null,
+        "autoDeductCharges": true,
+        "allowMultipleUses": false,
+        "commonPool": false
+      },
+      "automation": {
+        "updateName": false,
+        "updatePrice": false
+      },
+      "clFormula": "",
+      "spellcastingAbility": "",
+      "items": [
+        {
+          "_id": "BtXhwonBwKmfV473-Ng5AlRupmkMOgqQi",
+          "name": "+1 Weapon Enhancement",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p>Magic weapons have enhancement bonuses ranging from +1 to +5. They apply these bonuses to both attack and damage rolls when used in combat. All magic weapons are also masterwork weapons, but their masterwork bonus on attack rolls does not stack with their enhancement bonus on attack rolls.</p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": ""
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": ""
+            },
+            "range": {
+              "value": null,
+              "units": "",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": null,
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "",
+              "size": 0,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": null,
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": 0,
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "weapon",
+            "properties": {},
+            "nameExtension": {
+              "prefix": "",
+              "suffix": ""
+            },
+            "enh": 5,
+            "enhIncreaseFormula": "@enhancement",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 5,
+            "requirements": "",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            },
+            "activateActions": [],
+            "deactivateActions": [],
+            "container": "None",
+            "containerWeightless": false,
+            "identifiedName": "+1 Weapon Enhancement"
+          },
+          "flags": {},
+          "img": "systems/D35E/icons/crafting-station/enhancements/enhancement-weapon.png",
+          "hasAction": false,
+          "incorrect": false,
+          "hasUses": false,
+          "calcPrice": "+5",
+          "isCharged": false
+        },
+        {
+          "_id": "BtXhwonBwKmfV473-JwWLdIDaE8RtQDr2",
+          "name": "Ghost Touch, Weapon",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p>A ghost touch weapon deals damage normally against incorporeal creatures, regardless of its bonus. (An incorporeal creature&rsquo;s 50% chance to avoid damage does not apply to attacks with ghost touch weapons.) The weapon can be picked up and moved by an incorporeal creature at any time. A manifesting ghost can wield the weapon against corporeal foes. Essentially, a ghost touch weapon counts as either corporeal or incorporeal at any given time, whichever is more beneficial to the wielder.</p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": ""
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": ""
+            },
+            "range": {
+              "value": null,
+              "units": "",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": null,
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "",
+              "size": 0,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": null,
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": 0,
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "weapon",
+            "properties": {
+              "thr": false,
+              "kee": false,
+              "dis": false,
+              "mnk": false,
+              "spd": false,
+              "def": false
+            },
+            "nameExtension": {
+              "prefix": "",
+              "suffix": "Ghost Touch"
+            },
+            "enh": 0,
+            "enhIsLevel": false,
+            "enhIncreaseFormula": "1",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 1,
+            "requirements": "CL 9th; Craft Magic Arms and Armor, plane shift",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            }
+          },
+          "flags": {},
+          "img": "systems/D35E/icons/crafting-station/enhancements/weapons/ghost-touch.png",
+          "hasAction": false,
+          "incorrect": false,
+          "hasUses": false,
+          "calcPrice": "+1",
+          "isCharged": false
+        },
+        {
+          "_id": "BtXhwonBwKmfV473-Sw3cKIQLLVhhFHjQ",
+          "name": "Dread of Undead",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p>A dread weapon excels at attacking one type of creature. Against its designated foe, its effective enhancement bonus is +4 better than its normal enhancement bonus. Further, it deals +4d6 points of bonus damage against the foe, and if it scores a successful critical hit against the foe, that creature must make a Fortitude save (DC 27) or be destroyed instantly and turned to dust. (This even affects creatures immune to critical hits or death magic.)&nbsp;</p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": ""
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": ""
+            },
+            "range": {
+              "value": null,
+              "units": "",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": null,
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "",
+              "size": 0,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "other",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": "",
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": "0",
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "",
+            "attackNotes": "[[/r 4d6 #Dread Damage]] Damage against Undead\r\n[[+4]] Attack against Undead\r\nDC [[27]] Fortitude or destroyed on Critical Hit",
+            "specialActions": [],
+            "enhancementType": "weapon",
+            "properties": {
+              "thr": false,
+              "kee": false,
+              "dis": false,
+              "mnk": false,
+              "spd": false,
+              "def": false
+            },
+            "nameExtension": {
+              "prefix": "",
+              "suffix": "Undead Dread"
+            },
+            "enh": 0,
+            "enhIsLevel": false,
+            "enhIncreaseFormula": "7",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 7,
+            "requirements": "Caster Level: 22nd; Prerequisites: Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, summon monster IX",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            }
+          },
+          "flags": {},
+          "img": "systems/D35E/icons/crafting-station/enhancements/weapons/dread.png"
+        }
+      ]
+    },
+    "light": {
+      "color": "#000000",
+      "radius": null,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "material": {
+      "data": null
+    },
+    "equipped": true,
+    "masterwork": false,
+    "weaponType": "simple",
+    "weaponSubtype": "1h",
+    "weaponBaseType": "",
+    "properties": {
+      "blc": false,
+      "brc": false,
+      "dbl": false,
+      "dis": false,
+      "fin": false,
+      "frg": false,
+      "imp": false,
+      "mnk": false,
+      "nnl": false,
+      "prf": false,
+      "rch": false,
+      "thr": false,
+      "trp": false,
+      "grp": false,
+      "snd": false
+    },
+    "linkedItems": [],
+    "enh": 5,
+    "melded": false,
+    "weaponData": {
+      "damageRoll": "1d8",
+      "damageType": "B and P",
+      "damageTypeId": "",
+      "critRange": "20",
+      "critMult": "2",
+      "range": null,
+      "attackFormula": "",
+      "damageFormula": "",
+      "size": "med",
+      "alignment": {
+        "good": false,
+        "evil": false,
+        "lawful": false,
+        "chaotic": false
+      }
+    },
+    "attackNotes": "",
+    "effectNotes": "",
+    "bonus": {
+      "value": 0,
+      "_deprecated": true
+    },
+    "damageType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2Type": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage": {
+      "parts": []
+    },
+    "index": {
+      "uniqueId": "",
+      "subType": "simple"
+    },
+    "baseWeaponType": "Morningstar"
+  },
+  "ownership": {
+    "default": 0,
+    "MxZnThH5hu8xEaNd": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.2.0",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1680105231365,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!BtXhwonBwKmfV473"
+}

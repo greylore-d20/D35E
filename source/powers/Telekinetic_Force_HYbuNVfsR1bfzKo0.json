@@ -1,0 +1,222 @@
+{
+  "_id": "HYbuNVfsR1bfzKo0",
+  "name": "Telekinetic Force",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/kin.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;psychokinesis&nbsp;[force];\n    <br>\n    <strong>Level:</strong>&nbsp;Wilder 3;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Visual\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;medium (100 ft. + 10 ft./level)<br>\n    \n    <strong>Target:</strong>&nbsp;one object at a time\n<br>\n    \n    <strong>Duration:</strong>&nbsp;Concentration, up to 1 round/level\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;5<br>\n        <strong>Saving Throw:</strong>&nbsp;Will negates (object); see text\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>You move an object by concentrating your mind upon its current location and then the location you desire, creating a sustained force. You can move an object weighing no more than 250 pounds up to 20 feet per round. A creature can negate the effect on an object it possesses with a successful Will save or with power resistance. The weight can be moved across the ground or through the air. This power ends if the object is forced out of range. If you cease concentration, the object falls or stops.\n</p><p>You can drop a weight and pick up another during the power’s duration, as long as you don’t stop concentrating on maintaining the power. An object can be telekinetically manipulated as if you were moving it with one hand.\n</p><p>If you spend at least 5 rounds concentrating on an unattended object, you can attempt to break or burst it as if making a Strength check, except that you apply your key ability modifier to the check instead of your Strength modifier.\n</p><p><b>Augment:</b> For every additional power point you spend, the weight limit of the target increases by 25 pounds.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "one object at a time\n"
+    },
+    "range": {
+      "value": null,
+      "units": "medium",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will negates (object); see text\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": true,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Wilder",
+          3
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 3,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "kin",
+    "subschool": "",
+    "types": "force",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 5,
+    "display": "Visual\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>You move an object by concentrating your mind upon its current location and then the location you desire, creating a sustained force. You can move an object weighing no more than 250 pounds up to 20 feet per round. A creature can negate the effect on an object it possesses with a successful Will save or with power resistance. The weight can be moved across the ground or through the air. This power ends if the object is forced out of range. If you cease concentration, the object falls or stops.\n</p><p>You can drop a weight and pick up another during the power’s duration, as long as you don’t stop concentrating on maintaining the power. An object can be telekinetically manipulated as if you were moving it with one hand.\n</p><p>If you spend at least 5 rounds concentrating on an unattended object, you can attempt to break or burst it as if making a Strength check, except that you apply your key ability modifier to the check instead of your Strength modifier.\n</p><p><b>Augment:</b> For every additional power point you spend, the weight limit of the target increases by 25 pounds.\n</p>\n<hr/>\n\n\n",
+    "snip": "Move an object with the sustained force of your mind.",
+    "spellDuration": "Concentration, up to 1 round/level\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Telekinetic Force",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394289426,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!HYbuNVfsR1bfzKo0"
+}

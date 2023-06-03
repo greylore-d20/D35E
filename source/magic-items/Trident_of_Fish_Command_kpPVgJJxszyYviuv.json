@@ -1,0 +1,494 @@
+{
+  "_id": "kpPVgJJxszyYviuv",
+  "name": "Trident of Fish Command",
+  "type": "weapon",
+  "img": "systems/D35E/icons/items/magic/weapons/named/trident-of-fish-command.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.magicitems.kpPVgJJxszyYviuv"
+    }
+  },
+  "system": {
+    "originVersion": 100,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><strong>Trident of Fish Command:</strong>&nbsp;The magical properties of this&nbsp;<em>+1 trident</em>&nbsp;with a 6-foot-long haft enable its wielder to&nbsp;<em>charm</em>&nbsp;up to 14 HD of aquatic animals (Will DC 16 negates, animals get a +5 bonus if currently under attack by the wielder or his allies), no two of which can be more than 30 feet apart. The wielder can use this effect up to three times per day. The wielder can communicate with the animals as if using a&nbsp;<em>speak with animals</em>&nbsp;spell. Animals making their saving throw are free of control, but they will not approach within 10 feet of the trident. The trident can be used up to three times per day.</p>\n<p>Moderate enchantment; CL 7th; Craft Magic Arms and Armor,&nbsp;<em>speak with animals</em>; Price 18,650 gp; Cost 9,325 gp + 746 XP.</p>",
+      "chat": "",
+      "unidentified": "<p>This three-tined piercing weapon can be thrown just as a shortspear or spear can be, but its range increment is shorter because it’s not as aerodynamic as those other weapons. If you use a ready action to set a trident against a charge, you deal double damage on a successful hit against a charging character.</p>"
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "quantity": 1,
+    "weight": 4,
+    "constantWeight": true,
+    "price": 18650,
+    "resalePrice": "",
+    "brokenResalePrice": "",
+    "fullResalePrice": false,
+    "identified": true,
+    "identifiedCurse": false,
+    "cursed": false,
+    "curseActive": false,
+    "hp": {
+      "max": 5,
+      "value": 5
+    },
+    "hardness": 5,
+    "carried": true,
+    "unidentified": {
+      "price": 15,
+      "name": "Trident"
+    },
+    "identifiedName": "Trident of Fish Command",
+    "container": "None",
+    "containerId": "none",
+    "containerWeightless": false,
+    "equippedWeightless": false,
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "enhancements": {
+      "uses": {
+        "value": 0,
+        "max": 0,
+        "per": null,
+        "rechargeFormula": null,
+        "autoDeductCharges": true,
+        "allowMultipleUses": false,
+        "commonPool": false
+      },
+      "automation": {
+        "updateName": false,
+        "updatePrice": false
+      },
+      "clFormula": "",
+      "spellcastingAbility": "",
+      "items": [
+        {
+          "_id": "kpPVgJJxszyYviuv-Ng5AlRupmkMOgqQi",
+          "name": "+1 Weapon Enhancement",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p>Magic weapons have enhancement bonuses ranging from +1 to +5. They apply these bonuses to both attack and damage rolls when used in combat. All magic weapons are also masterwork weapons, but their masterwork bonus on attack rolls does not stack with their enhancement bonus on attack rolls.</p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": ""
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": ""
+            },
+            "range": {
+              "value": null,
+              "units": "",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": null,
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "",
+              "size": 0,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": null,
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": 0,
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "weapon",
+            "properties": {},
+            "nameExtension": {
+              "prefix": "",
+              "suffix": ""
+            },
+            "enh": 1,
+            "enhIncreaseFormula": "@enhancement",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 1,
+            "requirements": "",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            },
+            "activateActions": [],
+            "deactivateActions": [],
+            "container": "None",
+            "containerWeightless": false,
+            "identifiedName": "+1 Weapon Enhancement"
+          },
+          "flags": {},
+          "img": "systems/D35E/icons/crafting-station/enhancements/enhancement-weapon.png",
+          "hasAction": false,
+          "incorrect": false,
+          "hasUses": false,
+          "calcPrice": "+1",
+          "isCharged": false
+        },
+        {
+          "name": "Command Fish",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p><span style=\"color: #191813; font-size: 13px;\">@Compendium[D35E.spells.rD8aBYtxgP73TWu9]{Charm Animal} up to 14 HD of aquatic animals (Will DC 16 negates, animals get a +5 bonus if currently under attack by the wielder or his allies), no two of which can be more than 30 feet apart. The wielder can use this effect up to three times per day.</span></p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": "swift"
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": "Up do 14 HD of aquatic animals"
+            },
+            "range": {
+              "value": "30",
+              "units": "ft",
+              "long": null
+            },
+            "uses": {
+              "value": 3,
+              "max": 3,
+              "per": "day",
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1,
+              "maxFormula": "3"
+            },
+            "measureTemplate": {
+              "type": "circle",
+              "size": 15,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "save",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": "",
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": "16",
+              "originVersion": 97,
+              "description": "Will negates"
+            },
+            "effectNotes": "@Compendium[D35E.spells.rD8aBYtxgP73TWu9]{Charm Animal} up to 14 HD of aquatic animals ",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "misc",
+            "properties": {
+              "thr": false,
+              "kee": false,
+              "dis": false,
+              "mnk": false,
+              "spd": false,
+              "def": false
+            },
+            "nameExtension": {
+              "prefix": "",
+              "suffix": ""
+            },
+            "enh": 0,
+            "enhIsLevel": false,
+            "enhIncreaseFormula": "0",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 0,
+            "requirements": "",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            },
+            "activateActions": [],
+            "deactivateActions": [],
+            "container": "None",
+            "containerWeightless": false,
+            "identifiedName": "Command Fish"
+          },
+          "sort": 100001,
+          "flags": {},
+          "_id": "kpPVgJJxszyYviuv-KPv3q7R82dmyHW9g",
+          "img": "systems/D35E/icons/crafting-station/enhancements/specific-items/command-fish.png"
+        }
+      ]
+    },
+    "light": {
+      "color": "#000000",
+      "radius": "",
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "material": {
+      "data": null
+    },
+    "equipped": true,
+    "masterwork": false,
+    "weaponType": "martial",
+    "weaponSubtype": "1h",
+    "weaponBaseType": "",
+    "properties": {
+      "blc": false,
+      "brc": true,
+      "dbl": false,
+      "dis": false,
+      "fin": false,
+      "frg": false,
+      "imp": false,
+      "mnk": false,
+      "nnl": false,
+      "prf": false,
+      "rch": false,
+      "thr": true,
+      "trp": false,
+      "grp": false,
+      "snd": false
+    },
+    "linkedItems": [],
+    "enh": 1,
+    "melded": false,
+    "weaponData": {
+      "damageRoll": "1d8",
+      "damageType": "P",
+      "damageTypeId": "",
+      "critRange": "20",
+      "critMult": "2",
+      "range": 10,
+      "attackFormula": "",
+      "damageFormula": "",
+      "size": "med",
+      "alignment": {
+        "good": false,
+        "evil": false,
+        "lawful": false,
+        "chaotic": false
+      }
+    },
+    "attackNotes": "",
+    "effectNotes": "",
+    "bonus": {
+      "value": 0,
+      "_deprecated": true
+    },
+    "damageType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2Type": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage": {
+      "parts": []
+    },
+    "index": {
+      "uniqueId": "",
+      "subType": "martial"
+    },
+    "baseWeaponType": "Trident"
+  },
+  "ownership": {
+    "default": 0,
+    "MxZnThH5hu8xEaNd": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.2.0",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1680105231835,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!kpPVgJJxszyYviuv"
+}

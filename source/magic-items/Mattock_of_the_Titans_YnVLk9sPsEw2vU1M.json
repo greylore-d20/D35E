@@ -1,0 +1,406 @@
+{
+  "_id": "YnVLk9sPsEw2vU1M",
+  "name": "Mattock of the Titans",
+  "type": "weapon",
+  "img": "systems/D35E/icons/items/magic/weapons/named/mattoc-of-titans.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.magicitems.YnVLk9sPsEw2vU1M"
+    }
+  },
+  "system": {
+    "originVersion": 100,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><strong>Mattock of the Titans:</strong>&nbsp;This digging tool is 10 feet long. Any creature of at least Huge size can use it to loosen or tumble earth or earthen ramparts (a 10-foot cube every 10 minutes). It also smashes rock (a 10-foot cube per hour). If used as a weapon, it is the equivalent of a Gargantuan&nbsp;<em>+3 adamantine warhammer</em>, dealing 4d6 points of base damage.</p>\n<p>Strong transmutation; CL 16th; Craft Wondrous Item, Craft Magic Arms and Armor,&nbsp;<em>move earth</em>; Price 23,348 gp; Cost 13,348 gp + 800 XP; Weight 120 lb.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "quantity": 1,
+    "weight": 5,
+    "constantWeight": true,
+    "price": 23348,
+    "resalePrice": "",
+    "brokenResalePrice": "",
+    "fullResalePrice": false,
+    "identified": true,
+    "identifiedCurse": false,
+    "cursed": false,
+    "curseActive": false,
+    "hp": {
+      "max": 5,
+      "value": 5
+    },
+    "hardness": 5,
+    "carried": true,
+    "unidentified": {
+      "price": 12,
+      "name": ""
+    },
+    "identifiedName": "Mattock of the Titans",
+    "container": "None",
+    "containerId": "none",
+    "containerWeightless": false,
+    "equippedWeightless": false,
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "enhancements": {
+      "uses": {
+        "value": 0,
+        "max": 0,
+        "per": null,
+        "rechargeFormula": null,
+        "autoDeductCharges": true,
+        "allowMultipleUses": false,
+        "commonPool": false
+      },
+      "automation": {
+        "updateName": false,
+        "updatePrice": false
+      },
+      "clFormula": "",
+      "spellcastingAbility": "",
+      "items": [
+        {
+          "_id": "YnVLk9sPsEw2vU1M-Ng5AlRupmkMOgqQi",
+          "name": "+1 Weapon Enhancement",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p>Magic weapons have enhancement bonuses ranging from +1 to +5. They apply these bonuses to both attack and damage rolls when used in combat. All magic weapons are also masterwork weapons, but their masterwork bonus on attack rolls does not stack with their enhancement bonus on attack rolls.</p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": ""
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": ""
+            },
+            "range": {
+              "value": null,
+              "units": "",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": null,
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "",
+              "size": 0,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": null,
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": 0,
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "weapon",
+            "properties": {},
+            "nameExtension": {
+              "prefix": "",
+              "suffix": ""
+            },
+            "enh": 3,
+            "enhIncreaseFormula": "@enhancement",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 3,
+            "requirements": "",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            },
+            "activateActions": [],
+            "deactivateActions": [],
+            "container": "None",
+            "containerWeightless": false,
+            "identifiedName": "+1 Weapon Enhancement"
+          },
+          "flags": {},
+          "img": "systems/D35E/icons/crafting-station/enhancements/enhancement-weapon.png",
+          "hasAction": false,
+          "incorrect": false,
+          "hasUses": false,
+          "calcPrice": "+1",
+          "isCharged": false
+        }
+      ]
+    },
+    "light": {
+      "color": "#000000",
+      "radius": null,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "material": {
+      "data": {
+        "originVersion": 97,
+        "description": {
+          "value": "<p>This ultrahard metal adds to the quality of a weapon or suit of armor. Weapons fashioned from adamantine have a natural ability to bypass hardness when sundering weapons or attacking objects, ignoring hardness less than 20. Armor made from adamantine grants its wearer damage reduction of 1/&ndash; if it&rsquo;s light armor, 2/&ndash; if it&rsquo;s medium armor, and 3/&ndash; if it&rsquo;s heavy armor. Adamantine is so costly that weapons and armor made from it are always of masterwork quality; the masterwork cost is included in the prices given below. Thus, adamantine weapons and ammunition have a +1 enhancement bonus on attack rolls, and the armor check penalty of adamantine armor is lessened by 1 compared to ordinary armor of its type. Items without metal parts cannot be made from adamantine. An arrow could be made of adamantine, but a quarterstaff could not.</p>\n<p>Only weapons, armor, and shields normally made of metal can be fashioned from adamantine. Weapons, armor and shields normally made of steel that are made of adamantine have one-third more hit points than normal. Adamantine has 40 hit points per inch of thickness and hardness 20.</p>\n<table>\n<tbody>\n<tr>\n<th>Type of Adamantine Item</th>\n<th>Item Cost Modifier</th>\n</tr>\n<tr>\n<td align=\"left\">Ammunition</td>\n<td>+60 gp</td>\n</tr>\n<tr>\n<td align=\"left\">Light armor</td>\n<td>+5,000 gp</td>\n</tr>\n<tr>\n<td align=\"left\">Medium armor</td>\n<td>+10,000 gp</td>\n</tr>\n<tr>\n<td align=\"left\">Heavy armor</td>\n<td>+15,000 gp</td>\n</tr>\n<tr>\n<td align=\"left\">Shield</td>\n<td>+2,000 gp</td>\n</tr>\n<tr>\n<td align=\"left\">Weapon</td>\n<td>+3,000 gp</td>\n</tr>\n</tbody>\n</table>"
+        },
+        "uniqueId": "material-adamantine",
+        "slug": "damage",
+        "magicEquivalent": 0,
+        "identifiers": [],
+        "baseWeaponType": "3",
+        "damage": {
+          "parts": []
+        },
+        "attackParts": [],
+        "conditionals": [],
+        "changes": [],
+        "combatChanges": [],
+        "contextNotes": [],
+        "specialActions": [],
+        "activateActions": [],
+        "deactivateActions": [],
+        "container": "None",
+        "containerWeightless": false,
+        "identifiedName": "Adamantine",
+        "isAlchemicalSilverEquivalent": false,
+        "isAdamantineEquivalent": true,
+        "isColdIronEquivalent": false
+      },
+      "_id": "ajfPfFyCxeIKu74D",
+      "name": "Adamantine",
+      "permission": {
+        "default": 0,
+        "VIfT2pClvTXfstmc": 3
+      },
+      "type": "material",
+      "flags": {
+        "core": {
+          "sourceId": "Item.wlJiBNwrkK542FNe"
+        }
+      },
+      "img": "systems/D35E/icons/materials/adamantine.png",
+      "effects": [],
+      "custom": {}
+    },
+    "equipped": true,
+    "masterwork": false,
+    "weaponType": "martial",
+    "weaponSubtype": "1h",
+    "weaponBaseType": "",
+    "properties": {
+      "blc": false,
+      "brc": false,
+      "dbl": false,
+      "dis": false,
+      "fin": false,
+      "frg": false,
+      "imp": false,
+      "mnk": false,
+      "nnl": false,
+      "prf": false,
+      "rch": false,
+      "thr": false,
+      "trp": false,
+      "grp": false,
+      "snd": false
+    },
+    "linkedItems": [],
+    "enh": 3,
+    "melded": false,
+    "weaponData": {
+      "damageRoll": "4d6",
+      "damageType": "B",
+      "damageTypeId": "",
+      "critRange": "20",
+      "critMult": "3",
+      "range": null,
+      "attackFormula": "",
+      "damageFormula": "",
+      "size": "grg",
+      "alignment": {
+        "good": false,
+        "evil": false,
+        "lawful": false,
+        "chaotic": false
+      }
+    },
+    "attackNotes": "",
+    "effectNotes": "",
+    "bonus": {
+      "value": 0,
+      "_deprecated": true
+    },
+    "damageType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2Type": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage": {
+      "parts": []
+    },
+    "index": {
+      "uniqueId": "",
+      "subType": "martial"
+    },
+    "baseWeaponType": "Mattock of the Titans"
+  },
+  "ownership": {
+    "default": 0,
+    "MxZnThH5hu8xEaNd": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.2.0",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1680105231671,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!YnVLk9sPsEw2vU1M"
+}

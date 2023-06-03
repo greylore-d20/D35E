@@ -1,0 +1,221 @@
+{
+  "_id": "AUzly31jz27v19GJ",
+  "name": "Phase Door",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/por.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n    <strong>Discipline</strong>&nbsp;psychoportation&nbsp;(dex);\n    <strong>Level</strong>&nbsp;Psion 7;\n    \n    \n    \n    \n  </p>\n  <p>\n    <strong>Manifesting Time</strong>&nbsp;1 round<br>\n    \n  </p>\n  <p>\n    <strong>Power Display</strong>&nbsp;Vi\n<br>\n    <strong>Range</strong>&nbsp;touch<br>\n    \n    <strong>Targets</strong>&nbsp;living creature touched<br>\n    \n    <strong>Duration</strong>&nbsp;One usage/2 levels\n<br>\n    <strong>Power Points/Spell Points Cost</strong>&nbsp;13<br>\n    <strong>Saving Throw</strong>&nbsp;None\n;&nbsp;<strong>Power Resistance</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The manifester creates an ethereal passage through wooden, plaster, or stone walls, but not other materials. The phase door is invisible and inaccessible to all creatures except the manifester, and only the manifester can use the passage. The manifester disappears when he or she enters the phase door and appears when he or she exits. If the manifester desires, he or she can take one other creature (Medium-size or smaller) through the door. This counts as two uses of the door. The door does not allow light, sound, psionic effects, or spell effects through it, nor can the manifester see through it without using it. True seeing psionics or magical effects reveal a phase door but do not allow its use.\n</p><p>A phase door is subject to negate psionics. If anyone is within the passage when it is negated, he or she is harmlessly ejected out the nerest exit.\n</p><p>A phase door can be made permanent with an incarnate power. The manifester can allow other creatures to use the phase door by setting some triggering condition for the door. Such conditions can be as simple or elaborate as desired. They can be based on a creature's name, identity, or alignment, but otherwise must be based on observable actions or qualities. Intangibles such as level, class, HD, and hit points don't qualify.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "living creature touched"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "por",
+    "subschool": "dex",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 13,
+    "display": "Vi\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The manifester creates an ethereal passage through wooden, plaster, or stone walls, but not other materials. The phase door is invisible and inaccessible to all creatures except the manifester, and only the manifester can use the passage. The manifester disappears when he or she enters the phase door and appears when he or she exits. If the manifester desires, he or she can take one other creature (Medium-size or smaller) through the door. This counts as two uses of the door. The door does not allow light, sound, psionic effects, or spell effects through it, nor can the manifester see through it without using it. True seeing psionics or magical effects reveal a phase door but do not allow its use.\n</p><p>A phase door is subject to negate psionics. If anyone is within the passage when it is negated, he or she is harmlessly ejected out the nerest exit.\n</p><p>A phase door can be made permanent with an incarnate power. The manifester can allow other creatures to use the phase door by setting some triggering condition for the door. Such conditions can be as simple or elaborate as desired. They can be based on a creature's name, identity, or alignment, but otherwise must be based on observable actions or qualities. Intangibles such as level, class, HD, and hit points don't qualify.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "",
+    "spellDuration": "One usage/2 levels\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394287057,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!AUzly31jz27v19GJ"
+}

@@ -1,0 +1,274 @@
+{
+  "_id": "dJP4aTjLuNrPX0sW",
+  "name": "Blasphemy",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/blasphemy.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.spells.dJP4aTjLuNrPX0sW"
+    }
+  },
+  "system": {
+    "originVersion": 108,
+    "originPack": "world.srd-update-spells",
+    "originId": "18d9HoUiIDmeuZvJ",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;evocation&nbsp;[evil, sonic];\n    <br>\n    <strong>Level:</strong>&nbsp;Cleric 7;\n    <strong>Domain:</strong>&nbsp;Evil 7;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;40 feet<br>\n    <strong>Area:</strong>&nbsp;nonevil creatures in a 40-ft.-radius spread centered on you<br>\n    \n    \n    <strong>Duration:</strong>&nbsp;Instantaneous<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;13<br>\n        <strong>Saving Throw:</strong>&nbsp;Will Negates\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nAny nonevil creature within the area of a <i>blasphemy </i>spell suffers the following ill effects.\n</p>\n\n<p>The effects are cumulative and concurrent.\n</p><p>No saving throw is allowed against these effects.\n</p><p><i>Dazed: </i>The creature can take no actions for 1 round, though it defends itself normally.\n</p><p><i>Weakened: </i>The creature’s Strength score decreases by 2d6 points for 2d4 rounds.\n</p><p><i>Paralyzed: </i>The creature is paralyzed and helpless for 1d10 minutes.\n</p><p><i>Killed: </i>Living creatures die. Undead creatures are destroyed.\n</p><p>Furthermore, if you are on your home plane when you cast this spell, nonevil extraplanar creatures within the area are instantly banished back to their home planes. Creatures so banished cannot return for at least 24 hours. This effect takes place regardless of whether the creatures hear the <i>blasphemy. </i>The banishment effect allows a Will save (at a –4 penalty) to negate.\n</p><p>Creatures whose Hit Dice exceed your caster level are unaffected by <i>blasphemy.</i>\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "40",
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "circle",
+      "size": "40",
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "+4",
+      "description": "None or Will negates; see text",
+      "ability": "",
+      "type": "willnegates",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Weaken",
+        "action": "Create unique \"Weaken\" from \"D35E.commonbuffs\" on target; Set buff \"Weaken\" field data.timeline.formula to 2d4 on target; Set \"Weaken\" field data.level to 2d6 on target; Activate buff \"Weaken\" on target;",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      },
+      {
+        "name": "Dazed",
+        "action": "Condition set dazzled to true on target;",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      },
+      {
+        "name": "Paralyzed",
+        "action": "Condition set paralyzed to true on target;",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      },
+      {
+        "name": "Killed",
+        "action": "Condition set dead to true on target;",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Cleric",
+          7
+        ]
+      ],
+      "domain": [
+        [
+          "Evil",
+          7
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "evo",
+    "subschool": "",
+    "types": "evil, sonic",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 446,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 13,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nAny nonevil creature within the area of a <i>blasphemy </i>spell suffers the following ill effects.\n</p>\n\n<p>The effects are cumulative and concurrent.\n</p><p>No saving throw is allowed against these effects.\n</p><p><i>Dazed: </i>The creature can take no actions for 1 round, though it defends itself normally.\n</p><p><i>Weakened: </i>The creature’s Strength score decreases by 2d6 points for 2d4 rounds.\n</p><p><i>Paralyzed: </i>The creature is paralyzed and helpless for 1d10 minutes.\n</p><p><i>Killed: </i>Living creatures die. Undead creatures are destroyed.\n</p><p>Furthermore, if you are on your home plane when you cast this spell, nonevil extraplanar creatures within the area are instantly banished back to their home planes. Creatures so banished cannot return for at least 24 hours. This effect takes place regardless of whether the creatures hear the <i>blasphemy. </i>The banishment effect allows a Will save (at a –4 penalty) to negate.\n</p><p>Creatures whose Hit Dice exceed your caster level are unaffected by <i>blasphemy.</i>\n</p>\n<hr/>\n\n\n",
+    "snip": "Kills, paralyzes, weakens, or dazes nonevil subjects.",
+    "spellDuration": "Instantaneous",
+    "spellEffect": "",
+    "spellArea": "nonevil creatures in a 40-ft.-radius spread centered on you",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Blasphemy",
+    "customReferenceId": "",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "spellDurationData": {
+      "value": "",
+      "units": "inst",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846679809,
+    "modifiedTime": 1678394298307,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!dJP4aTjLuNrPX0sW"
+}

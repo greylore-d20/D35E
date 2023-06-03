@@ -1,0 +1,201 @@
+{
+  "_id": "KtXrgC8pPBeBaH9T",
+  "name": "Light Repeating Crossbow",
+  "type": "attack",
+  "data": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>The repeating crossbow (whether heavy or light) holds 5 crossbow bolts. As long as it holds bolts, you can reload it by pulling the reloading lever (a free action). Loading a new case of 5 bolts is a full-round action that provokes attacks of opportunity. You can fire a repeating crossbow with one hand or fire a repeating crossbow in each hand in the same manner as you would a normal crossbow of the same size. However, you must fire the weapon with two hands in order to use the reloading lever, and you must use two hands to load a new case of bolts.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": false,
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "attack"
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "80",
+      "units": "ft"
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "rwak",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "sizeRoll(1, 8, @size, @critMult)",
+          "P",
+          ""
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "dex",
+      "damage": null,
+      "damageMult": 1,
+      "critRange": "19",
+      "critMult": "2",
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": true,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "material": {
+      "data": null
+    },
+    "associations": {
+      "classes": []
+    },
+    "attackType": "weapon",
+    "autoScaleOption": "default",
+    "weaponSubtype": "light",
+    "masterwork": false,
+    "threatRangeExtended": false,
+    "finesseable": false,
+    "enh": null,
+    "incorporeal": false,
+    "proficient": true,
+    "primaryAttack": true,
+    "showInQuickbar": true,
+    "melded": false,
+    "baseWeaponType": "Light Repeating Crossbow",
+    "nonLethal": false,
+    "originalWeaponCreated": true,
+    "originalWeaponId": null,
+    "originalWeaponName": "Light Repeating Crossbow",
+    "originalWeaponImg": "systems/D35E/icons/items/weapons/Crossbow_04.png",
+    "originalWeaponProperties": {
+      "blc": false,
+      "brc": false,
+      "dbl": false,
+      "dis": false,
+      "fin": false,
+      "frg": false,
+      "imp": false,
+      "mnk": false,
+      "nnl": false,
+      "prf": false,
+      "rch": false,
+      "thr": false,
+      "trp": false,
+      "grp": false,
+      "snd": false
+    },
+    "conditionals": [],
+    "thrown": false,
+    "returning": false,
+    "magic": false,
+    "alignment": {
+      "good": false,
+      "evil": false,
+      "lawful": false,
+      "chaotic": false
+    },
+    "customReferenceId": ""
+  },
+  "sort": 1000000,
+  "flags": {},
+  "img": "systems/D35E/icons/items/weapons/Crossbow_04.png",
+  "effects": [],
+  "folder": null,
+  "permission": {
+    "default": 0
+  },
+  "_key": "!actors.items!XNImWIOLFlED7o5Z.KtXrgC8pPBeBaH9T"
+}

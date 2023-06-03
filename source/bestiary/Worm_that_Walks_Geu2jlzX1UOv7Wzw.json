@@ -1,0 +1,1970 @@
+{
+  "_id": "Geu2jlzX1UOv7Wzw",
+  "name": "Worm that Walks",
+  "type": "npc",
+  "img": "systems/D35E/icons/bestiary/token/aberration.png",
+  "data": {
+    "shapechangeImg": "icons/svg/mystery-man.svg",
+    "tokenImg": "systems/D35E/icons/bestiary/token/aberration.png",
+    "companionUuid": "",
+    "companionPublicId": "",
+    "companionUsePersonalKey": false,
+    "companionAutosync": false,
+    "companionLockGM": false,
+    "abilities": {
+      "str": {
+        "total": 10,
+        "mod": 0,
+        "value": 10,
+        "carryBonus": 0,
+        "carryMultiplier": 1,
+        "checkMod": 0,
+        "damage": 0,
+        "drain": 0,
+        "penalty": 0,
+        "userPenalty": 0,
+        "origMod": 0,
+        "origTotal": 10,
+        "isZero": false
+      },
+      "dex": {
+        "total": 14,
+        "mod": 2,
+        "value": 14,
+        "checkMod": 0,
+        "damage": 0,
+        "drain": 0,
+        "penalty": 0,
+        "userPenalty": 0,
+        "origMod": 2,
+        "origTotal": 14,
+        "isZero": false
+      },
+      "con": {
+        "total": 13,
+        "mod": 1,
+        "value": 13,
+        "checkMod": 0,
+        "damage": 0,
+        "drain": 0,
+        "penalty": 0,
+        "userPenalty": 0,
+        "origMod": 1,
+        "origTotal": 13,
+        "isZero": false
+      },
+      "int": {
+        "total": 20,
+        "mod": 5,
+        "value": 20,
+        "checkMod": 0,
+        "damage": 0,
+        "drain": 0,
+        "penalty": 0,
+        "userPenalty": 0,
+        "origMod": 5,
+        "origTotal": 20,
+        "isZero": false
+      },
+      "wis": {
+        "total": 12,
+        "mod": 1,
+        "value": 12,
+        "checkMod": 0,
+        "damage": 0,
+        "drain": 0,
+        "penalty": 0,
+        "userPenalty": 0,
+        "origMod": 1,
+        "origTotal": 12,
+        "isZero": false
+      },
+      "cha": {
+        "total": 8,
+        "mod": -1,
+        "value": 8,
+        "checkMod": 0,
+        "damage": 0,
+        "drain": 0,
+        "penalty": 0,
+        "userPenalty": 0,
+        "origMod": -1,
+        "origTotal": 8,
+        "isZero": false
+      }
+    },
+    "resources": {},
+    "attributes": {
+      "encumbrance": {
+        "level": 0,
+        "levels": {
+          "light": 33,
+          "medium": 66,
+          "heavy": 100,
+          "carry": 200,
+          "drag": 500
+        },
+        "carriedWeight": 0
+      },
+      "senses": {
+        "darkvision": 0,
+        "blindsight": 0,
+        "tremorsense": 0,
+        "truesight": 0,
+        "lowLight": false,
+        "lowLightMultiplier": 2,
+        "special": ""
+      },
+      "hd": {
+        "total": 23,
+        "max": {
+          "_deprecated": true,
+          "value": 0
+        },
+        "racialClass": 23
+      },
+      "naturalAC": 0,
+      "naturalACTotal": 0,
+      "fortification": {
+        "value": 0,
+        "total": 0
+      },
+      "ac": {
+        "normal": {
+          "value": 0,
+          "total": 32
+        },
+        "touch": {
+          "value": 0,
+          "total": 32
+        },
+        "flatFooted": {
+          "value": 0,
+          "total": 30
+        }
+      },
+      "concealment": {
+        "value": 0,
+        "total": 0
+      },
+      "bab": {
+        "value": 0,
+        "total": 17,
+        "base": 17
+      },
+      "cmd": {
+        "value": 0,
+        "total": 29,
+        "flatFootedTotal": 27
+      },
+      "cmb": {
+        "value": 0,
+        "total": 17
+      },
+      "sr": {
+        "formula": "",
+        "total": 36
+      },
+      "pr": {
+        "formula": "",
+        "total": 0
+      },
+      "hardness": {
+        "formula": "",
+        "total": 0
+      },
+      "cmbNotes": "",
+      "saveNotes": "",
+      "acNotes": "",
+      "cmdNotes": "",
+      "srNotes": "",
+      "attack": {
+        "general": 0,
+        "melee": 0,
+        "ranged": 0,
+        "sunder": 0,
+        "bullrush": 0
+      },
+      "damage": {
+        "general": 0,
+        "weapon": 0,
+        "spell": 0
+      },
+      "maxDexBonus": 999,
+      "maxDex": {
+        "gear": null,
+        "encumbrance": null,
+        "total": 999
+      },
+      "acp": {
+        "gear": 0,
+        "encumbrance": 0,
+        "total": 0
+      },
+      "energyDrain": 0,
+      "quadruped": false,
+      "savingThrows": {
+        "fort": {
+          "total": 8,
+          "base": 7
+        },
+        "ref": {
+          "total": 11,
+          "base": 7
+        },
+        "will": {
+          "total": 14,
+          "base": 13
+        }
+      },
+      "hp": {
+        "value": 129,
+        "min": -100,
+        "max": 129,
+        "temp": 0,
+        "nonlethal": 0
+      },
+      "turnUndeadHdTotal": 0,
+      "turnUndeadUsesBonusFormula": "",
+      "turnUndeadUses": 0,
+      "prestigeCl": {
+        "psionic": {
+          "max": 0,
+          "value": 0,
+          "total": 0
+        },
+        "arcane": {
+          "max": 0,
+          "value": 0,
+          "total": 0
+        },
+        "divine": {
+          "max": 0,
+          "value": 0,
+          "total": 0
+        },
+        "cards": {
+          "max": 0,
+          "value": 0
+        }
+      },
+      "turnUndeadUsesTotal": 0,
+      "sneakAttackDiceTotal": 0,
+      "minionClassLevels": {
+        "none": 0
+      },
+      "minionDistance": {},
+      "spellPointsTotal": [],
+      "powerPointsTotal": 0,
+      "arcaneSpellFailure": 0,
+      "psionicFocus": false,
+      "wounds": {
+        "min": 0,
+        "value": 26,
+        "max": 26
+      },
+      "vigor": {
+        "min": 0,
+        "value": 103,
+        "temp": 0,
+        "max": 103
+      },
+      "init": {
+        "value": 0,
+        "bonus": 0,
+        "total": 6
+      },
+      "prof": 2,
+      "speed": {
+        "land": {
+          "base": 30,
+          "total": 30,
+          "run": 120
+        },
+        "climb": {
+          "base": 0,
+          "total": 0,
+          "run": 0
+        },
+        "swim": {
+          "base": 0,
+          "total": 0,
+          "run": 0
+        },
+        "burrow": {
+          "base": 0,
+          "total": 0,
+          "run": 0
+        },
+        "fly": {
+          "base": 0,
+          "total": 0,
+          "run": 0,
+          "maneuverability": "average"
+        }
+      },
+      "conditions": {
+        "blind": false,
+        "dazzled": false,
+        "deaf": false,
+        "entangled": false,
+        "fatigued": false,
+        "exhausted": false,
+        "grappled": false,
+        "helpless": false,
+        "paralyzed": false,
+        "pinned": false,
+        "fear": false,
+        "sickened": false,
+        "stunned": false,
+        "shaken": false,
+        "polymorphed": false,
+        "wildshaped": false,
+        "prone": false,
+        "dead": false,
+        "dying": false,
+        "disabled": false,
+        "stable": false,
+        "staggered": false,
+        "unconscious": false,
+        "invisibility": false,
+        "banished": false
+      },
+      "spells": {
+        "concentration": {
+          "bonus": 0,
+          "context": ""
+        },
+        "spellbooks": {
+          "primary": {
+            "name": "Primary",
+            "class": "",
+            "cl": {
+              "base": 0,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "concentration": 0,
+            "bonusPrestigeCl": 0,
+            "concentrationFormula": "",
+            "concentrationNotes": "",
+            "clNotes": "",
+            "ability": "int",
+            "spellslotAbility": "",
+            "autoSpellLevels": true,
+            "usePowerPoints": false,
+            "autoSetup": true,
+            "spellcastingType": null,
+            "powerPointsFormula": "",
+            "dailyPowerPointsFormula": "",
+            "powerPoints": 0,
+            "powerPointsTotal": 0,
+            "maximumPowerPointLimit": "@cl",
+            "arcaneSpellFailure": true,
+            "baseDCFormula": "10 + @sl + @ablMod",
+            "spontaneous": false,
+            "hasSpecialSlot": false,
+            "showOnlyPrepared": false,
+            "specialSlots": {
+              "level1": null,
+              "level2": null,
+              "level3": null,
+              "level4": null,
+              "level5": null,
+              "level6": null,
+              "level7": null,
+              "level8": null,
+              "level9": null
+            },
+            "maxPrestigeCl": 0,
+            "allSpellsKnown": false,
+            "hasPrestigeCl": false,
+            "canAddPrestigeCl": false,
+            "canRemovePrestigeCl": false,
+            "powersKnown": 0,
+            "powersMaxLevel": 0,
+            "spells": {
+              "spell0": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell1": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell2": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell3": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell4": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell5": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell6": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell7": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell8": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell9": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              }
+            },
+            "powerPointsValue": {
+              "max": 0,
+              "value": 0
+            },
+            "spellcastingAbilityBonus": 0
+          },
+          "secondary": {
+            "name": "Secondary",
+            "class": "",
+            "cl": {
+              "base": 0,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "concentration": 0,
+            "bonusPrestigeCl": 0,
+            "concentrationFormula": "",
+            "concentrationNotes": "",
+            "clNotes": "",
+            "ability": "int",
+            "spellslotAbility": "",
+            "autoSpellLevels": true,
+            "usePowerPoints": false,
+            "autoSetup": true,
+            "spellcastingType": null,
+            "powerPointsFormula": "",
+            "powerPoints": 0,
+            "powerPointsTotal": 0,
+            "maximumPowerPointLimit": "@cl",
+            "dailyPowerPointsFormula": "",
+            "arcaneSpellFailure": true,
+            "baseDCFormula": "10 + @sl + @ablMod",
+            "spontaneous": false,
+            "hasSpecialSlot": false,
+            "showOnlyPrepared": false,
+            "specialSlots": {
+              "level1": null,
+              "level2": null,
+              "level3": null,
+              "level4": null,
+              "level5": null,
+              "level6": null,
+              "level7": null,
+              "level8": null,
+              "level9": null
+            },
+            "maxPrestigeCl": 0,
+            "allSpellsKnown": false,
+            "hasPrestigeCl": false,
+            "canAddPrestigeCl": false,
+            "canRemovePrestigeCl": false,
+            "powersKnown": 0,
+            "powersMaxLevel": 0,
+            "spells": {
+              "spell0": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell1": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell2": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell3": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell4": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell5": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell6": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell7": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell8": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell9": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              }
+            },
+            "powerPointsValue": {
+              "max": 0,
+              "value": 0
+            },
+            "spellcastingAbilityBonus": 0
+          },
+          "tertiary": {
+            "name": "Tertiary",
+            "class": "",
+            "cl": {
+              "base": 0,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "concentration": 0,
+            "bonusPrestigeCl": 0,
+            "concentrationFormula": "",
+            "concentrationNotes": "",
+            "clNotes": "",
+            "ability": "int",
+            "spellslotAbility": "",
+            "autoSpellLevels": true,
+            "usePowerPoints": false,
+            "autoSetup": true,
+            "spellcastingType": null,
+            "powerPointsFormula": "",
+            "powerPoints": 0,
+            "powerPointsTotal": 0,
+            "maximumPowerPointLimit": "@cl",
+            "dailyPowerPointsFormula": "",
+            "arcaneSpellFailure": true,
+            "baseDCFormula": "10 + @sl + @ablMod",
+            "spontaneous": false,
+            "hasSpecialSlot": false,
+            "showOnlyPrepared": false,
+            "specialSlots": {
+              "level1": null,
+              "level2": null,
+              "level3": null,
+              "level4": null,
+              "level5": null,
+              "level6": null,
+              "level7": null,
+              "level8": null,
+              "level9": null
+            },
+            "maxPrestigeCl": 0,
+            "allSpellsKnown": false,
+            "hasPrestigeCl": false,
+            "canAddPrestigeCl": false,
+            "canRemovePrestigeCl": false,
+            "powersKnown": 0,
+            "powersMaxLevel": 0,
+            "spells": {
+              "spell0": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell1": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell2": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell3": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell4": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell5": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell6": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell7": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell8": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell9": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              }
+            },
+            "powerPointsValue": {
+              "max": 0,
+              "value": 0
+            },
+            "spellcastingAbilityBonus": 0
+          },
+          "spelllike": {
+            "name": "Spell-likes",
+            "class": "_hd",
+            "cl": {
+              "base": 0,
+              "value": 0,
+              "total": 23,
+              "formula": ""
+            },
+            "concentration": 0,
+            "bonusPrestigeCl": 0,
+            "concentrationFormula": "",
+            "concentrationNotes": "",
+            "clNotes": "",
+            "ability": "cha",
+            "spellslotAbility": "",
+            "autoSpellLevels": true,
+            "usePowerPoints": false,
+            "autoSetup": false,
+            "spellcastingType": "None",
+            "powerPointsFormula": "",
+            "powerPoints": 0,
+            "powerPointsTotal": 0,
+            "maximumPowerPointLimit": "@cl",
+            "dailyPowerPointsFormula": "",
+            "arcaneSpellFailure": true,
+            "baseDCFormula": "10 + @sl + @ablMod",
+            "spontaneous": false,
+            "hasSpecialSlot": false,
+            "showOnlyPrepared": false,
+            "specialSlots": {
+              "level1": null,
+              "level2": null,
+              "level3": null,
+              "level4": null,
+              "level5": null,
+              "level6": null,
+              "level7": null,
+              "level8": null,
+              "level9": null
+            },
+            "maxPrestigeCl": 0,
+            "allSpellsKnown": false,
+            "hasPrestigeCl": false,
+            "canAddPrestigeCl": false,
+            "canRemovePrestigeCl": false,
+            "powersKnown": 0,
+            "powersMaxLevel": 0,
+            "spells": {
+              "spell0": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell1": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell2": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell3": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell4": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell5": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell6": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell7": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell8": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              },
+              "spell9": {
+                "value": 0,
+                "max": 0,
+                "base": 0,
+                "known": 0,
+                "maxKnown": 0,
+                "bonus": 0,
+                "classBase": 0
+              }
+            },
+            "powerPointsValue": {
+              "max": 0,
+              "value": 0
+            },
+            "spellcastingAbilityBonus": 0
+          }
+        }
+      },
+      "cards": {
+        "concentration": {
+          "bonus": 0,
+          "context": ""
+        },
+        "decks": {
+          "primary": {
+            "name": "Primary",
+            "class": "",
+            "cl": {
+              "base": null,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "autoHandSize": false,
+            "handSize": {
+              "base": 0,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "drawRandom": false,
+            "deckSize": {
+              "base": 0,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "clNotes": "",
+            "ability": "int",
+            "spellslotAbility": "",
+            "addHalfOtherLevels": false,
+            "autoSetup": true,
+            "baseDCFormula": "10 + @sl + @ablMod",
+            "maxPrestigeCl": 0,
+            "hasPrestigeCl": false,
+            "canAddPrestigeCl": false,
+            "canRemovePrestigeCl": false
+          },
+          "secondary": {
+            "name": "Secondary",
+            "class": "",
+            "cl": {
+              "base": null,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "autoHandSize": false,
+            "handSize": {
+              "base": 0,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "drawRandom": false,
+            "deckSize": {
+              "base": 0,
+              "value": 0,
+              "total": 0,
+              "formula": ""
+            },
+            "clNotes": "",
+            "ability": "int",
+            "spellslotAbility": "",
+            "addHalfOtherLevels": false,
+            "autoSetup": true,
+            "baseDCFormula": "10 + @sl + @ablMod",
+            "maxPrestigeCl": 0,
+            "hasPrestigeCl": false,
+            "canAddPrestigeCl": false,
+            "canRemovePrestigeCl": false
+          }
+        }
+      },
+      "spellcasting": {
+        "_deprecated": true
+      },
+      "spelldc": {
+        "_deprecated": true
+      },
+      "damageReduction": {
+        "any": 0,
+        "types": []
+      },
+      "energyResistance": [],
+      "spellLevel": 0,
+      "creatureType": "aberration",
+      "mods": {
+        "skills": {}
+      },
+      "runSpeedMultiplierModifier": 0,
+      "speedMultiplier": 0
+    },
+    "details": {
+      "level": {
+        "value": 23,
+        "min": 0,
+        "max": 40,
+        "available": 1
+      },
+      "breakDC": {
+        "base": 0,
+        "total": 0
+      },
+      "levelUpData": [
+        {
+          "level": 1,
+          "id": "_level1",
+          "classId": null,
+          "class": null,
+          "classImage": null,
+          "skills": {},
+          "hp": 0,
+          "hasFeat": true,
+          "hasAbility": false
+        }
+      ],
+      "alignment": "Any evil",
+      "biography": {
+        "value": "",
+        "public": ""
+      },
+      "notes": {
+        "value": "<div topic='Worm that Walks' level='2'><p>A worm that walks rarely speaks, although it retains knowledge of all languages it knew in life, as well as any it has learned since.</p><div topic='Combat' level='5'><p><h2>Combat</h2></p><div topic='Spells' level='8'><p><b>Spells:</b> A worm that walks can cast any spells it could cast as a character. This sample worm was a 23rd-level wizard (spells per day: 4/12/6/6/6/5/5/5/5/4/1/1). The last spell slots are 10th-level and 11th-level slots, respectively, and are available for 0-9th level meta-magic spells.</p></div><div topic='Spell-Like Abilities' level='8'><p><b>Spell-Like Abilities:</b> 1/day-<i>animal growth</i> (vermin), <i>animal messenger</i> (vermin), <i>animal shapes</i> (vermin), <i>animal trance</i> (vermin), <i>colossal vermin</i> (as <i>giant vermin</i>, but it can increase the creature's size from Large to Gargantuan and from Huge to Colossal), <i>creeping doom</i>,  <i>giant vermin</i>,  <i>summon swarm</i> (vermin), <i>summon vermin</i> (as <i>summon nature's ally</i>,  except it summons 10 HD of vermin per level), and <i>vermin plague</i> (as <i>insect plague</i>). Caster level 20th; save DC 9 + spell level. The save DCs are Charisma-based.</p></div><div topic='Engulf' level='8'><p><b>Engulf (Ex):</b> A worm that walks can choose to engulf an opponent who is no more than one size category larger than itself. The worm attempts to embrace its victim, and with a successful melee touch attack, the victim is immediately swallowed up and surrounded by a mass of vermin, taking 100 points of damage. A victim who spends a full-round action can break free of the embrace and move up to half its speed away from the worm if desired, but can do nothing else. Otherwise, each round a victim remains embraced, it takes another 100 points of Damage. Constructs are immune to this attack.</p></div><div topic='Spells' level='8'><p><b>Spells:</b> The worm that walks can cast any spells it could cast when a living character. It also gains several related abilities.</p></div><div topic='Frightful Presence' level='8'><p><b>Frightful Presence (Su):</b> When a worm that walks engulfs a victim, witnesses must make a Will save (DC 10 + 1/2 the worm's HD + the worm's Cha modifier). Those who make the save are shaken. Those who fail by 5 or fewer points are frightened. Those who fail by 6 to<sup><b>10</b></sup> points are panicked. Those who fail by 11 or more points are cowering. All these conditions last for 1d4 rounds. Those who have seen a worm use this attack before gain a +5 bonus on their saving throws. The victim of the worm's engulf attack has a -5 penalty on his or her saving throw.</p></div><div topic='Discorporate' level='8'><p><b>Discorporate (Ex):</b> If gravely threatened, a worm can discorporate as a free action, simply falling into a pile of individual vermin that slither quickly away. So long as any of the component vermin survive, they can breed and create a new body to house the wizard's intelligence and personality. Discorporating is a dangerous tactic, because once separated, the vermin are treated no differently than other vermin. Also, the worm stands a good chance of losing all its equipment. However, discorporation almost assures that at least one maggot (if not dozens) will manage to crawl away, and so provide for the worm's continued existence.</p></div><div topic='Immunities' level='8'><p><b>Immunities (Ex):</b> A worm that walks has no discernable anatomy, so it is not subject to critical hits or flanking.</p></div><div topic='Possessions' level='8'><p><b>Possessions:</b> Scrolls of <i>fireball</i> (10th-level caster), greater <i>teleport</i>,  <i>acid fog</i>,  <i>incendiary cloud</i>,  <i>shapechange</i>,  <i>wail of the</i> <i>banshee</i>,  <i>clenched fist</i>,  <i>horrid wilting</i>,  <i>maze</i>,  <i>summon monster IX</i>; <i>potions of cure serious wounds</i>,  <i>alter self</i>,  <i>haste</i>,  <i>fly</i>. Other magic gear: <i>amulet of natural armor +2</i>,  <i>bracers of armor +8</i>,  <i>ring of protection +3</i>,  <i>+4 staff</i>, <i>rod of absorption</i>,  <i>gloves of Dexterity +4</i>,  <i>headband of intellect +6</i>,  <i>pink Ioun stone</i>,  <i>wings of flying</i>.</p><p/></div></div><div topic='Creating A Worm that Walks' level='3'><p><h4>Creating A Worm that Walks</h4></p><p>'Worm that walks' is a template that can be added to any evil wizard or sorcerer. It uses all the original character's statistics, special abilities, and equipment, except as noted here.</p><div topic='Type' level='8'><p><b>Type:</b> The character's type changes to aberration (it is a creature composed of hundreds of discrete crawling worms).</p></div><div topic='Hit Dice' level='8'><p><b>Hit Dice:</b> Increase to d8.</p><p><b>AC:</b> The mass of worms that make up this creature, each looking out for danger, in sum provide a +20 insight bonus to AC.</p></div><div topic='Special Attack' level='8'><p><b>Special Attack:</b> A worm that walks retains all the character's special attacks. It also gains one special attack, engulf.</p></div><div topic='Engulf' level='8'><p><b>Engulf (Ex)</b>: A worm that walks can choose to engulf an opponent who is no more than one size category larger than itself. The worm attempts to embrace its victim, and with a successful melee touch attack, the victim is immediately swallowed up and surrounded by a mass of vermin, taking 100 points of Damage as the biting vermin nibble away. A victim who spends a full-round action can break free of the embrace and move up to half its speed away from the worm if desired, but can do nothing else. Otherwise, each round a victim remains embraced, it takes another 100 points of Damage. Constructs are immune to this attack.</p></div><div topic='Spells' level='8'><p><b>Spells:</b> A worm that walks can cast any spells it could cast as a living character.</p></div><div topic='Spell-Like Abilities' level='8'><p><b>Spell-Like Abilities:</b> 1/day- <i>animal growth</i> (vermin), <i>animal messenger</i> (vermin), <i>animal shapes</i> (vermin), <i>animal trance</i> (vermin), <i>colossal vermin</i> (as <i>giant vermin</i>, but it can increase the creature's size from Large to Gargantuan and from Huge to Colossal), <i>creeping doom</i>,  <i>giant vermin</i>,  <i>summon swarm</i> (vermin), <i>summon vermin</i> (as <i>summon nature's ally</i>,  except it summons 10 HD of vermin per level), and <i>vermin plague</i> (as <i>insect plague</i>). Caster level 20th.</p></div><div topic='Special Qualities' level='8'><p><b>Special Qualities:</b> A worm that walks retains any special abilities it had in life and gains those mentioned below.</p></div><div topic='Blindsight' level='8'><p><b><i>Blindsight (Ex):</i></b> Worms that walk have blindsight 300 ft.</p></div><div topic='Spell Resistance' level='8'><p><b><i>Spell Resistance (Ex):</i></b> A worm that walks has spell resistance equal to its Challenge Rating +10.</p></div><div topic='Frightful Presence' level='8'><p><b><i>Frightful Presence (Su):</i></b> When a worm that walks engulfs a victim, witnesses must make a Will save (DC 10 + 1/2 the worm's HD + the worm's Cha modifier). Those who make the save are shaken. Those who fail by 5 or fewer points are frightened. Those who fail by 6 to 10 points are panicked. Those who fail by 11 or more points are cowering. All these conditions last for 1d4 rounds. Those who have seen a worm use this attack before gain a +5 bonus on their saving throws. The victim of the worm's engulf attack has a -5 penalty on his or her saving throw.</p></div><div topic='Discorporate' level='8'><p><b><i>Discorporate (Ex):</i></b> If gravely threatened, a worm can discorporate as a free action, simply falling into a pile of individual vermin that slither quickly away. So long as any of the component vermin survive, they can breed and create a new body to house the wizard's intelligence and personality. Discorporating is a dangerous tactic, because once separated, the vermin are treated no differently than other vermin. Also, the worm stands a good chance of losing all its equipment. However, discorporation almost assures that at least one maggot (if not dozens) will manage to crawl away, and so provide for the worm's continued existence.</p></div><div topic='Immunities' level='8'><p><b>Immunities (Ex):</b> A worm that walks has no discernable anatomy, so it is not subject to critical hits or flanking.</p></div><div topic='Saves' level='8'><p><b>Saves:</b> Same as the character.</p></div><div topic='Abilities' level='8'><p><b>Abilities:</b> Same as the character.</p></div><div topic='Skills' level='8'><p><b>Skills:</b> Same as the character, except that a worm that walks receives a +20 racial bonus on Hide, Intuit Direction, Listen, and Move Silently checks.</p></div><div topic='Feats' level='8'><p><b>Feats:</b> Same as the character.</p></div><div topic='Epic Feats' level='8'><p><b>Epic Feats:</b> Same as the character.</p></div><div topic='Environment' level='8'><p><b>Environment:</b> Any.</p></div><div topic='Organization' level='8'><p><b>Organization:</b> Solitary, occasionally with minions or master.</p></div><div topic='Challenge Rating' level='8'><p><b>Challenge Rating:</b> Same as the character + 3.</p></div><div topic='Treasure' level='8'><p><b>Treasure:</b> Same as the character.</p></div><div topic='Alignment' level='8'><p><b>Alignment:</b> Any evil.</p></div><div topic='Advancement' level='8'><p><b>Advancement:</b> By character class.</p><p/></div><div topic='Worm that Walks Characters' level='4'><p><h4>Worm that Walks Characters</h4></p><p>By making eldritch preparations on a burial plot, a powerful spellcaster can improve the likelihood of a worm that walks emerging from the ground. The body is buried in an elaborate ritual that, the spellcaster hopes, will attract a critical mass of worms or maggots. The spellcaster performing the ritual must spend 10,000 gp in rare reagents for the ceremony. Furthermore, the ritual drains 2,000 XP from the spell-caster and requires the following spells: <i>limited wish</i>,  <i>polymorph any object</i>,  <i>summon swarm</i> (heightened to 7th level), and <i>sympathy</i>. Even if the ritual is performed correctly, there is only a chance that the deceased spellcaster will arise as a worm that walks. For each prepared but uncast arcane spell the deceased had at the moment of death (or unused spell slots if a spontaneous caster), there's a 1% chance that a worm that walks will slither from the grave soil in 1d4 days. Some worms that walk arise spontaneously from ordinary burial plots, but such an event is exceedingly rare. And an epic spell can create worms that walk every time without fail.</p><p/><div topic='Gathering of Maggots' level='5'><p><h2>Gathering of Maggots</h2></p><p>When this spell is cast, worms or maggots slither and crawl their way inexorably toward the corpse touched. Over the course of the next week, they consume the flesh of the corpse, and when the last bit of the corpse is devoured, the creature is returned to a semblance of life as a worm that walks.</p><p/></div></div></div></div>    ",
+        "public": ""
+      },
+      "bonusSkillRankFormula": "",
+      "type": "None",
+      "environment": "",
+      "cr": 26,
+      "totalCr": 26,
+      "xp": {
+        "value": 10
+      },
+      "levelUpProgression": false,
+      "advancement": {
+        "hd": [],
+        "byClass": true,
+        "none": false,
+        "originalHD": 0
+      }
+    },
+    "skills": {
+      "apr": {
+        "value": 0,
+        "ability": "int",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "blc": {
+        "value": 0,
+        "ability": "dex",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "blf": {
+        "value": 0,
+        "ability": "cha",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "clm": {
+        "value": 0,
+        "ability": "str",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 0,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 0
+      },
+      "coc": {
+        "value": 0,
+        "ability": "con",
+        "rt": false,
+        "acp": false,
+        "rank": 21,
+        "notes": "",
+        "mod": 22,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 21
+      },
+      "crf": {
+        "value": 0,
+        "ability": "int",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "subSkills": {},
+        "namedSubSkills": {},
+        "points": 0
+      },
+      "dsc": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "dip": {
+        "value": 0,
+        "ability": "cha",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "dev": {
+        "value": 0,
+        "ability": "dex",
+        "rt": true,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "dis": {
+        "value": 0,
+        "ability": "cha",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "esc": {
+        "value": 0,
+        "ability": "dex",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 0
+      },
+      "fog": {
+        "value": 0,
+        "ability": "int",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "gif": {
+        "value": 0,
+        "ability": "cha",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "han": {
+        "value": 0,
+        "ability": "cha",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "hea": {
+        "value": 0,
+        "ability": "wis",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "hid": {
+        "value": 0,
+        "ability": "dex",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "int": {
+        "value": 0,
+        "ability": "cha",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 0
+      },
+      "jmp": {
+        "value": 0,
+        "ability": "str",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 0,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "kar": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "kdu": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "ken": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "kge": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "khi": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "klo": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "kna": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "kno": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": true,
+        "cs": false,
+        "points": 0
+      },
+      "kpl": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "kre": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "lis": {
+        "value": 0,
+        "ability": "wis",
+        "rt": false,
+        "acp": false,
+        "rank": 20,
+        "notes": "",
+        "mod": 21,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 20
+      },
+      "mos": {
+        "value": 0,
+        "ability": "dex",
+        "rt": false,
+        "acp": true,
+        "rank": 22,
+        "notes": "",
+        "mod": 24,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 22
+      },
+      "opl": {
+        "value": 0,
+        "ability": "dex",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "prf": {
+        "value": 0,
+        "ability": "cha",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "subSkills": {},
+        "namedSubSkills": {},
+        "points": 0
+      },
+      "pro": {
+        "value": 0,
+        "ability": "wis",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "subSkills": {},
+        "namedSubSkills": {},
+        "points": 0
+      },
+      "rid": {
+        "value": 0,
+        "ability": "dex",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "src": {
+        "value": 0,
+        "ability": "int",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "sen": {
+        "value": 0,
+        "ability": "wis",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "slt": {
+        "value": 0,
+        "ability": "dex",
+        "rt": true,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "spk": {
+        "value": 0,
+        "ability": "",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 0,
+        "background": false,
+        "visibility": "default",
+        "points": 0,
+        "cs": false
+      },
+      "spl": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 23,
+        "notes": "",
+        "mod": 28,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 23
+      },
+      "spt": {
+        "value": 0,
+        "ability": "wis",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "sur": {
+        "value": 0,
+        "ability": "wis",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 1,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 0
+      },
+      "swm": {
+        "value": 0,
+        "ability": "str",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 0,
+        "background": false,
+        "visibility": "default",
+        "cs": true,
+        "points": 0
+      },
+      "tmb": {
+        "value": 0,
+        "ability": "dex",
+        "rt": false,
+        "acp": true,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "umd": {
+        "value": 0,
+        "ability": "cha",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "uro": {
+        "value": 0,
+        "ability": "dex",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 2,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "kps": {
+        "value": 0,
+        "ability": "int",
+        "rt": false,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "aut": {
+        "value": 0,
+        "ability": "wis",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 3,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "changeBonus": 2,
+        "points": 0
+      },
+      "psi": {
+        "value": 0,
+        "ability": "int",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": 5,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      },
+      "upd": {
+        "value": 0,
+        "ability": "cha",
+        "rt": true,
+        "acp": false,
+        "rank": 0,
+        "notes": "",
+        "mod": -1,
+        "background": false,
+        "visibility": "default",
+        "cs": false,
+        "points": 0
+      }
+    },
+    "customSkills": {},
+    "traits": {
+      "size": "med",
+      "tokensize": "actor",
+      "senses": "",
+      "dr": "",
+      "incorporeal": false,
+      "eres": "",
+      "cres": "",
+      "languages": {
+        "value": [],
+        "custom": ""
+      },
+      "di": {
+        "value": [],
+        "custom": ""
+      },
+      "dv": {
+        "value": [],
+        "custom": ""
+      },
+      "ci": {
+        "value": [],
+        "custom": ""
+      },
+      "perception": {
+        "_deprecated": true
+      },
+      "actualSize": "med"
+    },
+    "currency": {
+      "pp": 0,
+      "gp": 0,
+      "sp": 0,
+      "cp": 0
+    },
+    "altCurrency": {
+      "pp": 0,
+      "gp": 0,
+      "sp": 0,
+      "cp": 0
+    },
+    "customCurrency": {},
+    "noLightOverride": false,
+    "noTokenOverride": false,
+    "noSkillSynergy": false,
+    "noBuffDisplay": false,
+    "lockEditingByPlayers": false,
+    "showCardSheet": false,
+    "showSpellcastingSheet": true,
+    "staticBonus": {
+      "hp": 0,
+      "ac": 0
+    },
+    "jumpSkillAdjust": false,
+    "master": {
+      "id": null,
+      "img": null,
+      "name": null,
+      "data": {},
+      "distance": 0
+    },
+    "noVisionOverride": true,
+    "counters": {
+      "feat": {
+        "base": {
+          "value": 8,
+          "counted": 12
+        }
+      }
+    },
+    "classes": {
+      "aberration": {
+        "level": 23,
+        "_id": "LWj8IHUkQmOdwlRf",
+        "name": "Aberration*",
+        "hd": 8,
+        "bab": "med",
+        "hp": false,
+        "maxLevel": 20,
+        "skillsPerLevel": 2,
+        "isSpellcaster": false,
+        "isPsionSpellcaster": false,
+        "hasSpecialSlot": false,
+        "isSpellcastingSpontaneus": false,
+        "isArcane": false,
+        "spellcastingType": null,
+        "spellcastingAbility": "int",
+        "allSpellsKnown": false,
+        "savingThrows": {
+          "fort": 7,
+          "ref": 7,
+          "will": 13
+        },
+        "fc": {
+          "hp": 0,
+          "skill": 0,
+          "alt": 0
+        },
+        "spellsKnownPerLevel": [],
+        "powersKnown": [],
+        "powersMaxLevel": [],
+        "spellslotAbility": "",
+        "halfCasterLevel": false,
+        "deckHandSizeFormula": "0",
+        "knownCardsSizeFormula": "0",
+        "deckPrestigeClass": false,
+        "hasSpellbook": false,
+        "spelllist": {}
+      }
+    },
+    "damage": {
+      "nonlethal": {
+        "value": 0,
+        "max": 129
+      }
+    },
+    "senses": {
+      "darkvision": 0,
+      "blindsight": 0,
+      "tremorsense": 0,
+      "truesight": 0,
+      "lowLight": false,
+      "special": "",
+      "modified": {},
+      "lowLightMultiplier": 2
+    },
+    "totalNonEclLevels": 23,
+    "classLevels": 0,
+    "combinedResistances": [],
+    "combinedDR": [],
+    "shieldType": "none",
+    "canLevelUp": false
+  },
+  "token": {
+    "flags": {
+      "D35E": {
+        "lowLightVision": false
+      }
+    },
+    "name": "Worm that Walks",
+    "displayName": 20,
+    "img": "systems/D35E/icons/bestiary/token/aberration.png",
+    "tint": null,
+    "width": 1,
+    "height": 1,
+    "scale": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "vision": true,
+    "dimSight": 0,
+    "brightSight": 0,
+    "dimLight": 0,
+    "brightLight": 0,
+    "sightAngle": 0,
+    "lightAngle": 0,
+    "lightAlpha": 0,
+    "lightAnimation": {
+      "speed": 5,
+      "intensity": 5
+    },
+    "actorId": "Geu2jlzX1UOv7Wzw",
+    "actorLink": false,
+    "disposition": -1,
+    "displayBars": 40,
+    "bar1": {
+      "attribute": "attributes.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "randomImg": false,
+    "mirrorX": false,
+    "mirrorY": false,
+    "alpha": 1,
+    "lightColor": "#000000",
+    "light": {
+      "alpha": 0.5,
+      "angle": 0,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "gradual": true,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    }
+  },
+  "items": [
+    "LWj8IHUkQmOdwlRf",
+    "vW3bOMQsMuSoIJ0Z",
+    "U7ShyvATbLHTueh6",
+    "e1cvvvpUEq0r3CUE",
+    "z8bGOf1XMgT48thh",
+    "cTShapLtjpHJHPEr",
+    "jP2iNCrdCDh1FFJP",
+    "vekgt5LuaMyaYou2",
+    "TggLBiKQoXx5xRAN",
+    "NSx43omKbnos0OG0",
+    "gpxw2ppDc0DxvTHj",
+    "2qEYadxVjylVCY4b",
+    "u2CrnsuDw4NU3dBd",
+    "XOVgYDqprkJuq8Mi",
+    "OjiDB9m11MQq2MJF",
+    "etN2tBz6B0K7Ed6l",
+    "KmsupxvvggyZgQ66",
+    "eLBTQCe0MKjILmLL",
+    "vhCDZUbrw1XlBV4U",
+    "TQWIVenstgmVVuLR",
+    "KjYRjEpZwF7LhU8B",
+    "CgnSxmTP2BB3SDAr",
+    "CkfkInE5MitBOWJl",
+    "QcySK7oc9GFvIPZr",
+    "EYluPeqJk4vphBmF",
+    "vkuDpL0U8iZLqZSU",
+    "wuRKxkitTCKy1R8D",
+    "Mv1Umt7mfjOnIy0J",
+    "IjQbixgv3n8eVCi8",
+    "yFQNAJ2kwOuPLOOz",
+    "ZtAe0XO2m3i0m7iH",
+    "EvADmBdo53cEW6n8",
+    "jjxmKZGYOJbnBkAY",
+    "5A4Nl1AXEQXtIPZV",
+    "r9xcr3hrrw0jLsbT",
+    "taOqlNc9rKjFZYK2",
+    "rLpndhPZazEnHcbK",
+    "csi8zyNXfUwpRx5X",
+    "LKWa6AZGdt0hPIZT",
+    "OWHLDFUgPYQyBQbF",
+    "D8n99soZVS1ZyKrn",
+    "sCCzR2egLr7nVf1U",
+    "JZsWwWpMLwZ1m5IN"
+  ],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "permission": {
+    "default": 0,
+    "gvVvJrAyZKOZnAuP": 3
+  },
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.bestiary.Geu2jlzX1UOv7Wzw"
+    }
+  },
+  "_key": "!actors!Geu2jlzX1UOv7Wzw"
+}

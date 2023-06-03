@@ -1,0 +1,364 @@
+{
+  "_id": "iOMeOjoLiLEzGbPn",
+  "name": "Dwarven Thrower",
+  "type": "weapon",
+  "img": "systems/D35E/icons/items/magic/weapons/named/dwarven-thrower.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.magicitems.iOMeOjoLiLEzGbPn"
+    }
+  },
+  "system": {
+    "originVersion": 100,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><strong>Dwarven Thrower:</strong>&nbsp;This weapon commonly functions as a&nbsp;<em>+2 warhammer</em>. In the hands of a dwarf, the warhammer gains an additional +1 enhancement bonus (for a total enhancement bonus of +3) and gains the returning special ability. It can be hurled with a 30-foot range increment. When hurled, it deals an extra 2d8 points of damage against giants or an extra 1d8 points of damage against any other target.</p>\n<p>Moderate evocation; CL 10th; Craft Magic Arms and Armor, creator must be a dwarf of at least 10th level; Price 60,312 gp; Cost 30,312 gp + 2,400 XP.</p>",
+      "chat": "",
+      "unidentified": "<p>This weapon, favored by dwarves, is a one-handed sledge or maul with a large, heavy head.</p>"
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "quantity": 1,
+    "weight": 5,
+    "constantWeight": true,
+    "price": 60312,
+    "resalePrice": "",
+    "brokenResalePrice": "",
+    "fullResalePrice": false,
+    "identified": true,
+    "identifiedCurse": false,
+    "cursed": false,
+    "curseActive": false,
+    "hp": {
+      "max": 5,
+      "value": 5
+    },
+    "hardness": 5,
+    "carried": true,
+    "unidentified": {
+      "price": 12,
+      "name": "Warhammer"
+    },
+    "identifiedName": "Dwarven Thrower",
+    "container": "None",
+    "containerId": "none",
+    "containerWeightless": false,
+    "equippedWeightless": false,
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "enhancements": {
+      "uses": {
+        "value": 0,
+        "max": 0,
+        "per": null,
+        "rechargeFormula": null,
+        "autoDeductCharges": true,
+        "allowMultipleUses": false,
+        "commonPool": false
+      },
+      "automation": {
+        "updateName": false,
+        "updatePrice": false
+      },
+      "clFormula": "",
+      "spellcastingAbility": "",
+      "items": [
+        {
+          "_id": "iOMeOjoLiLEzGbPn-Ng5AlRupmkMOgqQi",
+          "name": "+1 Weapon Enhancement",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p>Magic weapons have enhancement bonuses ranging from +1 to +5. They apply these bonuses to both attack and damage rolls when used in combat. All magic weapons are also masterwork weapons, but their masterwork bonus on attack rolls does not stack with their enhancement bonus on attack rolls.</p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": ""
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": ""
+            },
+            "range": {
+              "value": null,
+              "units": "",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": null,
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "",
+              "size": 0,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": null,
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": 0,
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "weapon",
+            "properties": {},
+            "nameExtension": {
+              "prefix": "",
+              "suffix": ""
+            },
+            "enh": 2,
+            "enhIncreaseFormula": "@enhancement",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 2,
+            "requirements": "",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            },
+            "activateActions": [],
+            "deactivateActions": [],
+            "container": "None",
+            "containerWeightless": false,
+            "identifiedName": "+1 Weapon Enhancement"
+          },
+          "flags": {},
+          "img": "systems/D35E/icons/crafting-station/enhancements/enhancement-weapon.png",
+          "hasAction": false,
+          "incorrect": false,
+          "hasUses": false,
+          "calcPrice": "+1",
+          "isCharged": false
+        }
+      ]
+    },
+    "light": {
+      "color": "#000000",
+      "radius": null,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "material": {
+      "data": null
+    },
+    "equipped": true,
+    "masterwork": true,
+    "weaponType": "martial",
+    "weaponSubtype": "light",
+    "weaponBaseType": "",
+    "properties": {
+      "blc": false,
+      "brc": false,
+      "dbl": false,
+      "dis": false,
+      "fin": false,
+      "frg": false,
+      "imp": false,
+      "mnk": false,
+      "nnl": false,
+      "prf": false,
+      "rch": false,
+      "thr": true,
+      "trp": false,
+      "grp": false,
+      "snd": false
+    },
+    "linkedItems": [],
+    "enh": 2,
+    "melded": false,
+    "weaponData": {
+      "damageRoll": "1d4",
+      "damageType": "B",
+      "damageTypeId": "",
+      "critRange": "20",
+      "critMult": "2",
+      "range": 30,
+      "attackFormula": "",
+      "damageFormula": "1d8",
+      "size": "med",
+      "alignment": {
+        "good": false,
+        "evil": false,
+        "lawful": false,
+        "chaotic": false
+      }
+    },
+    "attackNotes": "[[+1]] Attack and Damage in hands of a Dwarf\r\n[[/r 1d8 #Bonus Damage against Giants]] bonus Damage against Giants",
+    "effectNotes": "",
+    "bonus": {
+      "value": 0,
+      "_deprecated": true
+    },
+    "damageType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2Type": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage": {
+      "parts": []
+    },
+    "index": {
+      "uniqueId": "",
+      "subType": "martial"
+    },
+    "baseWeaponType": "Warhammer"
+  },
+  "ownership": {
+    "default": 0,
+    "MxZnThH5hu8xEaNd": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.2.0",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1680105231766,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!iOMeOjoLiLEzGbPn"
+}

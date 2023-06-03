@@ -1,0 +1,203 @@
+{
+  "_id": "G9JaVahv4LSsjWli",
+  "name": "Breath Weapon",
+  "type": "attack",
+  "img": "systems/D35E/icons/attack/monster/breath.png",
+  "data": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>Cloud of superheated steam 20 feet high, 25 feet wide, and 50 feet long, once every 1d4 rounds, damage 12d6 fire, Reflex DC 21 half; effective both on the surface and underwater. The save DC is Constitution-based.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": false,
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "",
+      "units": "ft"
+    },
+    "recharge": {
+      "enabled": true,
+      "formula": "1d4",
+      "current": 0
+    },
+    "uses": {
+      "value": 1,
+      "max": 1,
+      "per": "charges",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "1",
+      "rechargeFormula": "",
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "cube",
+      "size": 25,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "save",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "12d6",
+          null,
+          "energy-fire"
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "21",
+      "description": "",
+      "ability": "con",
+      "type": "reflexhalf",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": true,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "material": {
+      "data": null
+    },
+    "associations": {
+      "classes": []
+    },
+    "attackType": "misc",
+    "autoScaleOption": "default",
+    "weaponSubtype": "light",
+    "masterwork": false,
+    "threatRangeExtended": false,
+    "finesseable": false,
+    "enh": null,
+    "incorporeal": false,
+    "proficient": true,
+    "primaryAttack": true,
+    "showInQuickbar": true,
+    "melded": false,
+    "baseWeaponType": "",
+    "nonLethal": false,
+    "originalWeaponCreated": false,
+    "originalWeaponId": null,
+    "originalWeaponName": "",
+    "originalWeaponImg": "",
+    "originalWeaponProperties": {},
+    "conditionals": [],
+    "thrown": false,
+    "returning": false,
+    "magic": false,
+    "alignment": {
+      "good": false,
+      "evil": false,
+      "lawful": false,
+      "chaotic": false
+    },
+    "attack": {
+      "parts": []
+    },
+    "selectedMaterial": "none",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Breath Weapon"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "permission": {
+    "default": 0,
+    "gvVvJrAyZKOZnAuP": 3,
+    "XSGi1UY5kAehVomp": 3
+  },
+  "flags": {},
+  "_key": "!actors.items!qxE0SDGF1xUZQ9PQ.G9JaVahv4LSsjWli"
+}

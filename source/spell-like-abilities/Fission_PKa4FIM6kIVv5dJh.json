@@ -1,0 +1,236 @@
+{
+  "_id": "PKa4FIM6kIVv5dJh",
+  "name": "Fission",
+  "type": "spell",
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.powers.eAprj4LHLowQJYGc"
+    }
+  },
+  "img": "systems/D35E/icons/powers/discipline/bol.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;psychometabolism;\n    <br>\n    <strong>Level:</strong>&nbsp;Egoist 7;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Olfactory<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;duplicate of yourself<br>\n    \n    <strong>Duration:</strong>&nbsp;1 round/level (D)<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;13<br>\n        <strong>Saving Throw:</strong>&nbsp;none\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>You can divide yourself, creating a duplicate that comes into existence 5 feet away. Your duplicate thinks and acts exactly as you do and follows your orders, although it will not do anything you wouldn’t do yourself. Your duplicate has all your abilities but none of your psionic or magical equipment (it does possess a duplicate of all your mundane equipment, clothing, armor, and implements, as well as mundane versions of any psionic or magical equipment you have). You and your duplicate evenly split your power points, your remaining usages of pertinent special abilities for the day, and so on. You retain your psionic focus, if you maintain such when this power is manifested. Treat your duplicate as yourself with two negative levels for the purpose of determining the powers to which the duplicate has access (while the duration of this power lasts, those negative levels cannot be removed by any means). Your duplicate has all other physical traits you had at the time you manifest this power. Powers, spells, or other effects affecting you when you manifest this power do not transfer to your duplicate.\n</p><p>When the duration expires or when you dismiss the power, you and your duplicate rejoin, no matter how far from each other you are. You gain back any power points the duplicate has not spent. At the time of rejoining, you take half of the damage your duplicate has taken since this power was manifested. This damage could potentially leave you with negative hit points, but it can’t reduce your hit points to less than –9.\n</p><p>If your duplicate dies before the duration expires, no rejoining occurs, and you gain one negative level. If you die, your duplicate remains in existence, and is for all intents you, but with two negative levels. (Once the duration expires, one of the negative levels immediately converts to one lost level; the other negative level can be removed by standard means.)\n</p><p>You can have only one <i>fissioned </i>duplicate in existence at one time; your duplicate cannot use this power. You cannot use <i>fusion </i>or <i>metaconcert </i>with a duplicate, or share any other power or effect that pools abilities (the sum of you and you is still just you). Similarly, attempting to use powers such as <i>claws of the vampire </i>or <i>vampiric blade </i>to hurt your duplicate only damages your duplicate; these powers do not heal you. <i>Empathic transfer </i>and similar powers are likewise ineffective (transferring wounds to yourself isn’t a good healing strategy).\n</p><p>All powers affecting a <i>fissioned </i>creature, either the original or the duplicate, end when the <i>fission </i>ends. All damage, including hit point damage, ability damage, ability drain, and ability burn damage, is added together.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "template-psi-fission",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "duplicate of yourself"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Egoist",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "bol",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 13,
+    "display": "Olfactory",
+    "isPower": true,
+    "shortDescription": "\n\n<p>You can divide yourself, creating a duplicate that comes into existence 5 feet away. Your duplicate thinks and acts exactly as you do and follows your orders, although it will not do anything you wouldn’t do yourself. Your duplicate has all your abilities but none of your psionic or magical equipment (it does possess a duplicate of all your mundane equipment, clothing, armor, and implements, as well as mundane versions of any psionic or magical equipment you have). You and your duplicate evenly split your power points, your remaining usages of pertinent special abilities for the day, and so on. You retain your psionic focus, if you maintain such when this power is manifested. Treat your duplicate as yourself with two negative levels for the purpose of determining the powers to which the duplicate has access (while the duration of this power lasts, those negative levels cannot be removed by any means). Your duplicate has all other physical traits you had at the time you manifest this power. Powers, spells, or other effects affecting you when you manifest this power do not transfer to your duplicate.\n</p><p>When the duration expires or when you dismiss the power, you and your duplicate rejoin, no matter how far from each other you are. You gain back any power points the duplicate has not spent. At the time of rejoining, you take half of the damage your duplicate has taken since this power was manifested. This damage could potentially leave you with negative hit points, but it can’t reduce your hit points to less than –9.\n</p><p>If your duplicate dies before the duration expires, no rejoining occurs, and you gain one negative level. If you die, your duplicate remains in existence, and is for all intents you, but with two negative levels. (Once the duration expires, one of the negative levels immediately converts to one lost level; the other negative level can be removed by standard means.)\n</p><p>You can have only one <i>fissioned </i>duplicate in existence at one time; your duplicate cannot use this power. You cannot use <i>fusion </i>or <i>metaconcert </i>with a duplicate, or share any other power or effect that pools abilities (the sum of you and you is still just you). Similarly, attempting to use powers such as <i>claws of the vampire </i>or <i>vampiric blade </i>to hurt your duplicate only damages your duplicate; these powers do not heal you. <i>Empathic transfer </i>and similar powers are likewise ineffective (transferring wounds to yourself isn’t a good healing strategy).\n</p><p>All powers affecting a <i>fissioned </i>creature, either the original or the duplicate, end when the <i>fission </i>ends. All damage, including hit point damage, ability damage, ability drain, and ability burn damage, is added together.\n</p>\n<hr/>\n\n\n",
+    "snip": "",
+    "spellDuration": "1 round/level (D)",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "changes": [],
+    "combatChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Fission",
+    "index": {
+      "subType": null,
+      "uniqueId": "template-psi-fission"
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394277253,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!PKa4FIM6kIVv5dJh"
+}

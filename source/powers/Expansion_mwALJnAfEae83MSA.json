@@ -1,0 +1,222 @@
+{
+  "_id": "mwALJnAfEae83MSA",
+  "name": "Expansion",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/bol.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;psychometabolism;\n    <br>\n    <strong>Level:</strong>&nbsp;Psychic Warrior 1;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Olfactory\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;you\n<br>\n    \n    <strong>Duration:</strong>&nbsp;1 round./level (D)\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;1<br>\n        <strong>Saving Throw:</strong>&nbsp;none\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>This power causes instant growth, doubling your height, length, and width and multiplying your weight by 8. This increase changes your size category to the next larger one. You gain a +2 size bonus to Strength, a –2 size penalty to Dexterity (to a minimum effective Dexterity score of 1), a –1 size penalty on attack rolls, and a –1 size penalty to Armor Class due to your increased size.\n</p><p>If your new size is Large or larger, you have a space of at least 10 feet and a natural reach of at least 10 feet. This power doesn’t change your speed. If insufficient room is available for the desired growth, you attain the maximum possible size and can make a Strength check (using your increased Strength score) to burst any enclosures in the process. If you fail, you are constrained without harm by the materials enclosing you—you cannot crush yourself to death by increasing your size.\n</p><p>All your equipment, worn or carried, is similarly expanded by this power. Melee and projectile weapons deal more damage.\n</p><p>Other psionic or magical properties are not affected by this power. Any affected item that leaves your possession (including a projectile or thrown weapon) instantly returns to its normal size. This means that thrown weapons deal their normal damage (projectiles deal damage based on the size of the weapon that fired them). Multiple effects that increase size do not stack, which means (among other things) that you can’t use a second manifestation of this power to further expand yourself.\n</p><p><b>Augment:</b> You can augment this power in one or more of the following ways.\n</p><p>1. If you spend 6 additional power points, this power increases your size by two size categories instead of one. You gain a +4 size bonus to Strength, a –4 size penalty to Dexterity (to a minimum effective Dexterity score of 1), a –2 size penalty on attack rolls, and a –2 size penalty to Armor Class due to your increased size.\n</p><p>2. If you spend 6 additional power points, you can manifest this power as a swift action instead of a standard action.\n</p><p>3. If you spend 2 additional power points, this power’s duration is <span class=\"errata\">10 minutes</span> per level rather than 1 round per level.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "you\n"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psychic Warrior",
+          1
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "bol",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 1,
+    "display": "Olfactory\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>This power causes instant growth, doubling your height, length, and width and multiplying your weight by 8. This increase changes your size category to the next larger one. You gain a +2 size bonus to Strength, a –2 size penalty to Dexterity (to a minimum effective Dexterity score of 1), a –1 size penalty on attack rolls, and a –1 size penalty to Armor Class due to your increased size.\n</p><p>If your new size is Large or larger, you have a space of at least 10 feet and a natural reach of at least 10 feet. This power doesn’t change your speed. If insufficient room is available for the desired growth, you attain the maximum possible size and can make a Strength check (using your increased Strength score) to burst any enclosures in the process. If you fail, you are constrained without harm by the materials enclosing you—you cannot crush yourself to death by increasing your size.\n</p><p>All your equipment, worn or carried, is similarly expanded by this power. Melee and projectile weapons deal more damage.\n</p><p>Other psionic or magical properties are not affected by this power. Any affected item that leaves your possession (including a projectile or thrown weapon) instantly returns to its normal size. This means that thrown weapons deal their normal damage (projectiles deal damage based on the size of the weapon that fired them). Multiple effects that increase size do not stack, which means (among other things) that you can’t use a second manifestation of this power to further expand yourself.\n</p><p><b>Augment:</b> You can augment this power in one or more of the following ways.\n</p><p>1. If you spend 6 additional power points, this power increases your size by two size categories instead of one. You gain a +4 size bonus to Strength, a –4 size penalty to Dexterity (to a minimum effective Dexterity score of 1), a –2 size penalty on attack rolls, and a –2 size penalty to Armor Class due to your increased size.\n</p><p>2. If you spend 6 additional power points, you can manifest this power as a swift action instead of a standard action.\n</p><p>3. If you spend 2 additional power points, this power’s duration is <span class=\"errata\">10 minutes</span> per level rather than 1 round per level.\n</p>\n<hr/>\n\n\n",
+    "snip": "Become one size category larger.",
+    "spellDuration": "1 round./level (D)\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Expansion",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394295681,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!mwALJnAfEae83MSA"
+}

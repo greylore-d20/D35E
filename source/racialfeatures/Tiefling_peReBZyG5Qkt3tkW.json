@@ -1,0 +1,177 @@
+{
+  "_id": "peReBZyG5Qkt3tkW",
+  "name": "Tiefling",
+  "type": "race",
+  "img": "systems/D35E/icons/races/tiefling.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.racialfeatures.peReBZyG5Qkt3tkW"
+    }
+  },
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "Many tieflings are indistinguishable from humans. Others have small horns, pointed teeth, red eyes, a whiff of brimstone about them, or even cloven feet. No two tieflings are the same.\n<ul>\n<li>+2 Dexterity, +2 Intelligence, –2 Charisma.\n<li>Outsider (Native)\n<li>Medium size.\n<li>A tiefling’s base land speed is 30 feet.\n<li>Darkvision: Tieflings can see in the dark up to 60 feet.\n<li>Weapon and Armor Proficiency: A tiefling is automatically proficient with all simple and martial weapons, light armor, and shields.\n<li>Resistance to cold 5, electricity 5, and fire 5.\n<li>Spell-Like Ability: 1/day—darkness. Caster level equals the tiefling’s class levels.\n<li>+2 racial bonus on Bluff and Hide checks.\n<li>Automatic Languages: Common, Infernal. Bonus Languages: Draconic, Dwarven, Elven, Gnome, Goblin, Halfling, Orc.\n<li>Favored Class: Rogue.\n<li>Level Adjustment: +1.\n</ul>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "changes": [
+      [
+        "2",
+        "skill",
+        "skill.blf",
+        "racial"
+      ],
+      [
+        "2",
+        "skill",
+        "skill.hid",
+        "racial"
+      ],
+      [
+        "-2",
+        "ability",
+        "cha",
+        "racial"
+      ],
+      [
+        "2",
+        "ability",
+        "int",
+        "racial"
+      ],
+      [
+        "2",
+        "ability",
+        "dex",
+        "racial"
+      ]
+    ],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "hasted": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [
+      [
+        "5",
+        "energy-electric",
+        false,
+        false
+      ],
+      [
+        "5",
+        "energy-fire",
+        false,
+        false
+      ],
+      [
+        "5",
+        "energy-cold",
+        false,
+        false
+      ]
+    ],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "links": {
+      "children": []
+    },
+    "creatureType": "outsider",
+    "la": 1,
+    "subTypes": [],
+    "addedAbilities": [],
+    "disabledAbilities": [],
+    "damage": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394275456,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!peReBZyG5Qkt3tkW"
+}

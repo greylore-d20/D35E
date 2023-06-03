@@ -1,0 +1,461 @@
+{
+  "_id": "z2dsNjXL6eihJKkF",
+  "name": "Greater Weapon Specialization (No Weapon Selected)",
+  "type": "feat",
+  "img": "systems/D35E/icons/feats/weapon-specialization-greater.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.feats.z2dsNjXL6eihJKkF"
+    }
+  },
+  "system": {
+    "originVersion": 103,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "\n\n\n<p>Choose one type of weapon for which you have already selected Weapon Specialization. You can also choose unarmed strike or grapple as your weapon for purposes of this feat.\n</p>\n<h3><span class=\"mw-headline\" id=\"Prerequisites\">Prerequisites</span></h3>\n<p>Proficiency with selected weapon, Greater Weapon Focus with selected weapon, Weapon Focus with selected weapon, Weapon Specialization with selected weapon, fighter level 12th.\n</p>\n<h3><span class=\"mw-headline\" id=\"Benefit\">Benefit</span></h3>\n<p>You gain a +2 bonus on all damage rolls you make using the selected weapon. This bonus stacks with other bonuses on damage rolls, including the one from Weapon Specialization.\n</p>\n<h3><span class=\"mw-headline\" id=\"Special\">Special</span></h3>\n<p>You can gain Greater Weapon Specialization multiple times. Its effects do not stack. Each time you take the feat, it applies to a new type of weapon.\n</p><p>A fighter may select Greater Weapon Specialization as one of his fighter bonus feats.\n</p><p><br/>\n</p>\n<hr/>\n\n\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "Greater Weapon Specialization (${this.custom.weaponname})",
+    "nameFromFormula": true,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {
+      "_u1sa92inv": {
+        "id": "_u1sa92inv",
+        "name": "Weapon Name",
+        "value": "No Weapon Selected",
+        "selectList": "No Weapon Selected|Armor Spikes|Bastard Sword|Battleaxe|Bayonet|Blowgun|Bolas|Club|Dagger|Dart|Dire Flail|Dwarven Urgrosh|Dwarven Waraxe|Falchion|Flail|Gauntlet|Glaive|Gnome Hooked Hammer|Grappling Hook|Greataxe|Greatclub|Greatsword|Guisarme|Halberd|Hand Crossbow|Handaxe|Heavy Crossbow|Heavy Flail|Heavy Mace|Heavy Pick|Heavy Repeating Crossbow|Javelin|Kama|Kukri|Lance|Light Crossbow|Light Hammer|Light Mace|Light Pick|Light Repeating Crossbow|Longbow|Longspear|Longsword|Morningstar|Net|Nunchaku|Orc Double Axe|Punching Dagger|Quarterstaff|Ranseur|Rapier|Repeating Crossbow Bolt|Sai|Sap|Scimitar|Scythe|Shield Spikes (Heavy)|Shield Spikes (Light)|Shortbow|Shortspear|Shortsword|Shuriken|Siangham|Sickle|Sling|Spear|Spiked Chain|Spiked Gauntlet|Throwing Axe|Trident|Two-Bladed Sword|Unarmed Strike|Warhammer|Whip|Simple Light|Dagger, disguised|Flute, steel|Muspelrule|Poison ring|Sickle, heavy|Fauchard|Simple Ranged|Blowgun|Cutlass|Cutlass|Lancet, Gehennan|Razored armor|Razored shield, light|Stabaxe|Straightblade|Wakizashi|Cloak, weighted|Razored shield, heavy|Saber|Swordcane|Truncheon|Bardiche|Duom|Lucerne hammer|Lucerne hammer|Maquahuitl|Maul|Nagamaki|Naginata|Partisan|Pick, dire|Pilum|Spetum|Voulge|Warmace|Ripper|Atlatl|Dart Thruster|Longbow, aquatic|Lute-bow|Pilum",
+        "showOnDetails": true,
+        "selectListArray": {
+          "No Weapon Selected": "No Weapon Selected",
+          "Armor Spikes": "Armor Spikes",
+          "Bastard Sword": "Bastard Sword",
+          "Battleaxe": "Battleaxe",
+          "Bayonet": "Bayonet",
+          "Blowgun": "Blowgun",
+          "Bolas": "Bolas",
+          "Club": "Club",
+          "Dagger": "Dagger",
+          "Dart": "Dart",
+          "Dire Flail": "Dire Flail",
+          "Dwarven Urgrosh": "Dwarven Urgrosh",
+          "Dwarven Waraxe": "Dwarven Waraxe",
+          "Falchion": "Falchion",
+          "Flail": "Flail",
+          "Gauntlet": "Gauntlet",
+          "Glaive": "Glaive",
+          "Gnome Hooked Hammer": "Gnome Hooked Hammer",
+          "Grappling Hook": "Grappling Hook",
+          "Greataxe": "Greataxe",
+          "Greatclub": "Greatclub",
+          "Greatsword": "Greatsword",
+          "Guisarme": "Guisarme",
+          "Halberd": "Halberd",
+          "Hand Crossbow": "Hand Crossbow",
+          "Handaxe": "Handaxe",
+          "Heavy Crossbow": "Heavy Crossbow",
+          "Heavy Flail": "Heavy Flail",
+          "Heavy Mace": "Heavy Mace",
+          "Heavy Pick": "Heavy Pick",
+          "Heavy Repeating Crossbow": "Heavy Repeating Crossbow",
+          "Javelin": "Javelin",
+          "Kama": "Kama",
+          "Kukri": "Kukri",
+          "Lance": "Lance",
+          "Light Crossbow": "Light Crossbow",
+          "Light Hammer": "Light Hammer",
+          "Light Mace": "Light Mace",
+          "Light Pick": "Light Pick",
+          "Light Repeating Crossbow": "Light Repeating Crossbow",
+          "Longbow": "Longbow",
+          "Longspear": "Longspear",
+          "Longsword": "Longsword",
+          "Morningstar": "Morningstar",
+          "Net": "Net",
+          "Nunchaku": "Nunchaku",
+          "Orc Double Axe": "Orc Double Axe",
+          "Punching Dagger": "Punching Dagger",
+          "Quarterstaff": "Quarterstaff",
+          "Ranseur": "Ranseur",
+          "Rapier": "Rapier",
+          "Repeating Crossbow Bolt": "Repeating Crossbow Bolt",
+          "Sai": "Sai",
+          "Sap": "Sap",
+          "Scimitar": "Scimitar",
+          "Scythe": "Scythe",
+          "Shield Spikes (Heavy)": "Shield Spikes (Heavy)",
+          "Shield Spikes (Light)": "Shield Spikes (Light)",
+          "Shortbow": "Shortbow",
+          "Shortspear": "Shortspear",
+          "Shortsword": "Shortsword",
+          "Shuriken": "Shuriken",
+          "Siangham": "Siangham",
+          "Sickle": "Sickle",
+          "Sling": "Sling",
+          "Spear": "Spear",
+          "Spiked Chain": "Spiked Chain",
+          "Spiked Gauntlet": "Spiked Gauntlet",
+          "Throwing Axe": "Throwing Axe",
+          "Trident": "Trident",
+          "Two-Bladed Sword": "Two-Bladed Sword",
+          "Unarmed Strike": "Unarmed Strike",
+          "Warhammer": "Warhammer",
+          "Whip": "Whip",
+          "Simple Light": "Simple Light",
+          "Dagger, disguised": "Dagger, disguised",
+          "Flute, steel": "Flute, steel",
+          "Muspelrule": "Muspelrule",
+          "Poison ring": "Poison ring",
+          "Sickle, heavy": "Sickle, heavy",
+          "Fauchard": "Fauchard",
+          "Simple Ranged": "Simple Ranged",
+          "Cutlass": "Cutlass",
+          "Lancet, Gehennan": "Lancet, Gehennan",
+          "Razored armor": "Razored armor",
+          "Razored shield, light": "Razored shield, light",
+          "Stabaxe": "Stabaxe",
+          "Straightblade": "Straightblade",
+          "Wakizashi": "Wakizashi",
+          "Cloak, weighted": "Cloak, weighted",
+          "Razored shield, heavy": "Razored shield, heavy",
+          "Saber": "Saber",
+          "Swordcane": "Swordcane",
+          "Truncheon": "Truncheon",
+          "Bardiche": "Bardiche",
+          "Duom": "Duom",
+          "Lucerne hammer": "Lucerne hammer",
+          "Maquahuitl": "Maquahuitl",
+          "Maul": "Maul",
+          "Nagamaki": "Nagamaki",
+          "Naginata": "Naginata",
+          "Partisan": "Partisan",
+          "Pick, dire": "Pick, dire",
+          "Pilum": "Pilum",
+          "Spetum": "Spetum",
+          "Voulge": "Voulge",
+          "Warmace": "Warmace",
+          "Ripper": "Ripper",
+          "Atlatl": "Atlatl",
+          "Dart Thruster": "Dart Thruster",
+          "Longbow, aquatic": "Longbow, aquatic",
+          "Lute-bow": "Lute-bow"
+        }
+      }
+    },
+    "customAttributesLocked": true,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0,
+      "value": null,
+      "charged": false,
+      "_deprecated": true
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [
+      [
+        "attack",
+        "",
+        "'@item.baseWeaponType' === '@self.custom.weaponname'",
+        "featDamageBonus",
+        "2",
+        ""
+      ]
+    ],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "featType": "feat",
+    "abilityType": "",
+    "associations": {
+      "classes": []
+    },
+    "crOffset": "",
+    "spellSpecializationName": "",
+    "spellSpecializationForbiddenNames": "",
+    "linkedItems": [],
+    "metamagic": {
+      "enabled": false,
+      "shortDesc": "",
+      "code": ""
+    },
+    "spellSpecialization": {
+      "isDomain": false,
+      "spells": {
+        "level1": {
+          "level": 1,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level2": {
+          "level": 2,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level3": {
+          "level": 3,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level4": {
+          "level": 4,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level5": {
+          "level": 5,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level6": {
+          "level": 6,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level7": {
+          "level": 7,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level8": {
+          "level": 8,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level9": {
+          "level": 9,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        }
+      }
+    },
+    "showInQuickbar": false,
+    "links": {
+      "charges": []
+    },
+    "time": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damageType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "attack": {
+      "parts": []
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "constantWeight": false,
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Greater Weapon Specialization (No Weapon Selected)",
+    "index": {
+      "subType": "feat",
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "0AZr2hADCJgHCg73": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394296705,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!z2dsNjXL6eihJKkF"
+}

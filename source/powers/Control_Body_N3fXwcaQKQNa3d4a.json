@@ -1,0 +1,222 @@
+{
+  "_id": "N3fXwcaQKQNa3d4a",
+  "name": "Control Body",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/kin.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;psychokinesis&nbsp;(con);\n    <br>\n    <strong>Level:</strong>&nbsp;Psion 2;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Ma\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 round<br>\n    <strong>Range:</strong>&nbsp;medium (100 ft. + 10 ft./level)<br>\n    \n    <strong>Target:</strong>&nbsp;one humanoid of medium-size or smaller\n<br>\n    \n    <strong>Duration:</strong>&nbsp;Concentration, up to 1 minute/level\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;3<br>\n        <strong>Saving Throw:</strong>&nbsp;Fortitude negates\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The manifester controls the actions of any humanoid that is Medium-size or smaller. Control body doesn't require mental contact with the subject. The manifester can force the subject to perform, although the manifester has only rudimentary control over the subject's limbs. The manifester can make the subject stand up, sit down, walk, turn around, and so on, but operating the vocal cords is too difficult, and power manifestation is not possible.\n</p><p>The manifester can force the subject to engage in combat, but its attack roll and AC are not its own. The controlled subject's attack bonus is equal to the manifester's base attack bonus + the subject's Strength modifier (or Dexterity modifier if a ranged attack) with a 4 circumstance penalty applied. The controlled subject cannot make attacks of opportunity against creatures the subject threatens. The controlled subject's AC gains no benefit from his or her Dexterity score, but he or she does gain a positive benefit, if any, equal to half the manifester's Dexterity modifier.\n</p><p>Subjects resist this control, and those forced to take actions against their natures receive one new saving throw with a morale bonus of +2. The manifester needs to see the subject to control it.\n</p><p>While the subject's body is under control, the subject's mind is not. Creatures that can trigger abilities by an act of will alone can continue to do so. Attempting to manifest powers in this fashion requires a Concentration check for each power manifested against a DC of 10 + the level of the power the subject attempts to manifest.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "one humanoid of medium-size or smaller\n"
+    },
+    "range": {
+      "value": null,
+      "units": "medium",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Fortitude negates\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          2
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 2,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "kin",
+    "subschool": "con",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 3,
+    "display": "Ma\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The manifester controls the actions of any humanoid that is Medium-size or smaller. Control body doesn't require mental contact with the subject. The manifester can force the subject to perform, although the manifester has only rudimentary control over the subject's limbs. The manifester can make the subject stand up, sit down, walk, turn around, and so on, but operating the vocal cords is too difficult, and power manifestation is not possible.\n</p><p>The manifester can force the subject to engage in combat, but its attack roll and AC are not its own. The controlled subject's attack bonus is equal to the manifester's base attack bonus + the subject's Strength modifier (or Dexterity modifier if a ranged attack) with a 4 circumstance penalty applied. The controlled subject cannot make attacks of opportunity against creatures the subject threatens. The controlled subject's AC gains no benefit from his or her Dexterity score, but he or she does gain a positive benefit, if any, equal to half the manifester's Dexterity modifier.\n</p><p>Subjects resist this control, and those forced to take actions against their natures receive one new saving throw with a morale bonus of +2. The manifester needs to see the subject to control it.\n</p><p>While the subject's body is under control, the subject's mind is not. Creatures that can trigger abilities by an act of will alone can continue to do so. Attempting to manifest powers in this fashion requires a Concentration check for each power manifested against a DC of 10 + the level of the power the subject attempts to manifest.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "Take rudimentary control of your foe’s limbs.",
+    "spellDuration": "Concentration, up to 1 minute/level\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Control Body",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394290451,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!N3fXwcaQKQNa3d4a"
+}

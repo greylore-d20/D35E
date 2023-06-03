@@ -1,0 +1,548 @@
+{
+  "_id": "DX6NyLEnI1ecclNo",
+  "name": "Holy Avenger",
+  "type": "weapon",
+  "img": "systems/D35E/icons/items/magic/weapons/named/holy-avenger.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.magicitems.DX6NyLEnI1ecclNo"
+    }
+  },
+  "system": {
+    "originVersion": 100,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><strong>Holy Avenger:</strong>&nbsp;This&nbsp;<em>+2 cold iron longsword</em>&nbsp;becomes a&nbsp;<em>+5 holy cold iron longsword</em>&nbsp;in the hands of a paladin.</p>\n<p>It provides spell resistance of 5 + the paladin's level to the wielder and anyone adjacent to her. It also enables the wielder to use&nbsp;<em>greater dispel magic</em>&nbsp;(once per round as a standard action) at the class level of the paladin. (Only the area dispel is possible, not the targeted dispel or counterspell versions of&nbsp;<em>greater dispel magic</em>.)</p>\n<p>Strong abjuration; CL 18th; Craft Magic Arms and Armor,&nbsp;<em>holy aura</em>, creator must be good; Price 120,630 gp; Cost 60,630 gp + 4,800 XP.</p>",
+      "chat": "",
+      "unidentified": "<p>This classic, straight blade is the weapon of knighthood and valor. It is a favorite weapon of many paladins.</p>"
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "quantity": 1,
+    "weight": 4,
+    "constantWeight": true,
+    "price": 120630,
+    "resalePrice": "",
+    "brokenResalePrice": "",
+    "fullResalePrice": false,
+    "identified": true,
+    "identifiedCurse": false,
+    "cursed": false,
+    "curseActive": false,
+    "hp": {
+      "max": 5,
+      "value": 5
+    },
+    "hardness": 10,
+    "carried": true,
+    "unidentified": {
+      "price": 15,
+      "name": "Longsword"
+    },
+    "identifiedName": "Holy Avenger",
+    "container": "None",
+    "containerId": "none",
+    "containerWeightless": false,
+    "equippedWeightless": false,
+    "changes": [
+      [
+        "5 + @classes.paladin.level",
+        "misc",
+        "spellResistance",
+        "untyped"
+      ]
+    ],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [
+      [
+        "[[5 + @classes.paladin.level]] to adjacent Characters",
+        "misc",
+        "sr"
+      ]
+    ],
+    "enhancements": {
+      "uses": {
+        "value": 0,
+        "max": 0,
+        "per": null,
+        "rechargeFormula": null,
+        "autoDeductCharges": true,
+        "allowMultipleUses": false,
+        "commonPool": false
+      },
+      "automation": {
+        "updateName": false,
+        "updatePrice": false
+      },
+      "clFormula": "",
+      "spellcastingAbility": "",
+      "items": [
+        {
+          "_id": "DX6NyLEnI1ecclNo-Ng5AlRupmkMOgqQi",
+          "name": "+1 Weapon Enhancement",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p>Magic weapons have enhancement bonuses ranging from +1 to +5. They apply these bonuses to both attack and damage rolls when used in combat. All magic weapons are also masterwork weapons, but their masterwork bonus on attack rolls does not stack with their enhancement bonus on attack rolls.</p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": ""
+            },
+            "duration": {
+              "value": null,
+              "units": ""
+            },
+            "target": {
+              "value": ""
+            },
+            "range": {
+              "value": null,
+              "units": "",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": null,
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "",
+              "size": 0,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": null,
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": 0,
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "weapon",
+            "properties": {},
+            "nameExtension": {
+              "prefix": "",
+              "suffix": ""
+            },
+            "enh": 2,
+            "enhIncreaseFormula": "@enhancement",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 2,
+            "requirements": "",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            },
+            "activateActions": [],
+            "deactivateActions": [],
+            "container": "None",
+            "containerWeightless": false,
+            "identifiedName": "+1 Weapon Enhancement"
+          },
+          "flags": {},
+          "img": "systems/D35E/icons/crafting-station/enhancements/enhancement-weapon.png",
+          "hasAction": false,
+          "incorrect": false,
+          "hasUses": false,
+          "calcPrice": "+2",
+          "isCharged": false
+        },
+        {
+          "name": "Greater Dispel Magic",
+          "permission": {
+            "default": 0,
+            "wbFPpmVfPG23MbMC": 3
+          },
+          "type": "enhancement",
+          "data": {
+            "originVersion": 97,
+            "description": {
+              "value": "<p><span style=\"color: #191813; font-size: 13px;\">Use @Compendium[D35E.spells.CvZsZBYyEmKtZgBf]{Dispel Magic, Greater} </span><span style=\"color: #191813; font-size: 13px;\">(once per round as a standard action) at the class level of the paladin. (Only the area dispel is possible, not the targeted dispel or counterspell versions of&nbsp;</span><em style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">greater dispel magic</em><span style=\"color: #191813; font-size: 13px;\">.)</span></p>",
+              "chat": "",
+              "unidentified": ""
+            },
+            "tags": [],
+            "changes": [],
+            "changeFlags": {
+              "loseDexToAC": false,
+              "noStr": false,
+              "noDex": false,
+              "oneInt": false,
+              "oneWis": false,
+              "oneCha": false,
+              "noEncumbrance": false,
+              "mediumArmorFullSpeed": false,
+              "heavyArmorFullSpeed": false
+            },
+            "conditionFlags": {
+              "dazzled": false,
+              "wildshaped": false,
+              "polymorphed": false
+            },
+            "sizeOverride": "",
+            "contextNotes": [],
+            "activation": {
+              "cost": 1,
+              "type": "standard"
+            },
+            "duration": {
+              "value": null,
+              "units": "inst"
+            },
+            "target": {
+              "value": "20-ft.-radius burst"
+            },
+            "range": {
+              "value": null,
+              "units": "personal",
+              "long": null
+            },
+            "uses": {
+              "value": 0,
+              "max": 0,
+              "per": "",
+              "autoDeductCharges": true,
+              "allowMultipleUses": false,
+              "chargesPerUse": 1
+            },
+            "measureTemplate": {
+              "type": "circle",
+              "size": 20,
+              "overrideColor": false,
+              "customColor": "",
+              "overrideTexture": false,
+              "customTexture": ""
+            },
+            "actionType": "other",
+            "attackBonus": "",
+            "critConfirmBonus": "",
+            "damage": {
+              "parts": []
+            },
+            "attackParts": [],
+            "formula": "",
+            "ability": {
+              "attack": null,
+              "damage": "",
+              "damageMult": 1,
+              "critRange": 20,
+              "critMult": 2
+            },
+            "save": {
+              "dc": "0",
+              "originVersion": 97,
+              "description": ""
+            },
+            "effectNotes": "@Compendium[D35E.spells.CvZsZBYyEmKtZgBf]{Dispel Magic, Greater} as spell of the same name",
+            "attackNotes": "",
+            "specialActions": [],
+            "enhancementType": "misc",
+            "properties": {
+              "thr": false,
+              "kee": false,
+              "dis": false,
+              "mnk": false,
+              "spd": false,
+              "def": false
+            },
+            "nameExtension": {
+              "prefix": "",
+              "suffix": ""
+            },
+            "enh": 0,
+            "enhIsLevel": false,
+            "enhIncreaseFormula": "0",
+            "priceFormula": "",
+            "price": 0,
+            "enhIncrease": 0,
+            "requirements": "",
+            "weaponData": {
+              "damageRoll": "",
+              "damageType": ""
+            },
+            "weaponAttackNotes": [],
+            "allowedTypes": [],
+            "attack": {
+              "parts": []
+            },
+            "activateActions": [],
+            "deactivateActions": [],
+            "container": "None",
+            "containerWeightless": false,
+            "identifiedName": "Greater Dispel Magic"
+          },
+          "sort": 100001,
+          "flags": {},
+          "_id": "DX6NyLEnI1ecclNo-MwG7NFb50gMXV8SA",
+          "img": "systems/D35E/icons/crafting-station/enhancements/specific-items/dispel.png"
+        }
+      ]
+    },
+    "light": {
+      "color": "#000000",
+      "radius": null,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "material": {
+      "data": {
+        "originVersion": 97,
+        "description": {
+          "value": "<p>This iron, mined deep underground, known for its effectiveness against fey creatures, is forged at a lower temperature to preserve its delicate properties. Weapons made of cold iron cost twice as much to make as their normal counterparts. Also, any magical enhancements cost an additional 2,000 gp.</p>\n<p>Items without metal parts cannot be made from cold iron. An arrow could be made of cold iron, but a quarterstaff could not.</p>\n<p>A double weapon that has only half of it made of cold iron increases its cost by 50%.</p>\n<p>Cold iron has 30 hit points per inch of thickness and hardness 10.</p>"
+        },
+        "uniqueId": "material-cold-iron",
+        "slug": "damage",
+        "magicEquivalent": 0,
+        "identifiers": [],
+        "baseWeaponType": "2",
+        "damage": {
+          "parts": []
+        },
+        "attackParts": [],
+        "conditionals": [],
+        "changes": [],
+        "combatChanges": [],
+        "contextNotes": [],
+        "specialActions": [],
+        "activateActions": [],
+        "deactivateActions": [],
+        "container": "None",
+        "containerWeightless": false,
+        "identifiedName": "Cold Iron",
+        "isAlchemicalSilverEquivalent": false,
+        "isAdamantineEquivalent": false,
+        "isColdIronEquivalent": true
+      },
+      "_id": "iRQM9GBYLlJ3ErBg",
+      "name": "Cold Iron",
+      "permission": {
+        "default": 0,
+        "VIfT2pClvTXfstmc": 3
+      },
+      "type": "material",
+      "flags": {
+        "core": {
+          "sourceId": "Item.wlJiBNwrkK542FNe"
+        }
+      },
+      "img": "systems/D35E/icons/materials/cold-iron.png",
+      "effects": [],
+      "custom": {}
+    },
+    "equipped": true,
+    "masterwork": true,
+    "weaponType": "martial",
+    "weaponSubtype": "1h",
+    "weaponBaseType": "",
+    "properties": {
+      "blc": false,
+      "brc": false,
+      "dbl": false,
+      "dis": false,
+      "fin": false,
+      "frg": false,
+      "imp": false,
+      "mnk": false,
+      "nnl": false,
+      "prf": false,
+      "rch": false,
+      "thr": false,
+      "trp": false,
+      "grp": false,
+      "snd": false
+    },
+    "linkedItems": [],
+    "enh": 2,
+    "melded": false,
+    "weaponData": {
+      "damageRoll": "1d8",
+      "damageType": "S",
+      "damageTypeId": "",
+      "critRange": "19",
+      "critMult": "2",
+      "range": null,
+      "attackFormula": "(@classes.paladin.level > 0 ? 3 : 0)",
+      "damageFormula": "(@classes.paladin.level > 0 ? 3 : 0)",
+      "size": "med",
+      "alignment": {
+        "good": false,
+        "evil": false,
+        "lawful": false,
+        "chaotic": false
+      }
+    },
+    "attackNotes": "",
+    "effectNotes": "",
+    "bonus": {
+      "value": 0,
+      "_deprecated": true
+    },
+    "damageType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2Type": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage": {
+      "parts": []
+    },
+    "index": {
+      "uniqueId": "",
+      "subType": "martial"
+    },
+    "baseWeaponType": "Longsword"
+  },
+  "ownership": {
+    "default": 0,
+    "MxZnThH5hu8xEaNd": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.2.0",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1680105231377,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!DX6NyLEnI1ecclNo"
+}

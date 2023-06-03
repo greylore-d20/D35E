@@ -1,0 +1,194 @@
+{
+  "_id": "k3FO7XTtu05SKGmB",
+  "name": "Goblin, Blue",
+  "type": "race",
+  "img": "systems/D35E/icons/races/goblin-blue.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.racialfeatures.k3FO7XTtu05SKGmB"
+    }
+  },
+  "system": {
+    "originVersion": 100,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "Blues are a subrace of goblins with an innate knack for psionics. A blue is often smaller than an average goblin, standing just about 3 feet tall and weighing about 40 pounds. Blues have noticeably blue-tinged skin, and their eyes are less dull than those of a common goblin. Otherwise, they resemble their kin. They generally dress in short leather robes, dyed black.\n<ul>\n<li>+2 Intelligence, –2 Strength, –2 Charisma.\n<li>Humanoid (Goblinoid, Psionic)\n<li>Small size: +1 bonus to Armor Class, +1 bonus on attack rolls, +4 bonus on Hide checks, –4 penalty on grapple checks, lifting and carrying limits 3/4 of those of Medium characters.\n<li>Blue base land speed is 30 feet.\n<li>Darkvision out to 60 feet.\n<li>Naturally Psionic: Blues gain 1 bonus power point at 1st level.\n<li>+4 racial bonus on Move Silently checks and Ride checks.\n<li>Automatic Languages: Common, Goblin. Bonus Languages: Draconic, Elven, Giant, Gnoll, Orc.\n<li>Favored Class: Psion.\n<li>Level Adjustment: +1.\n</ul>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "changes": [
+      [
+        "4",
+        "skill",
+        "skill.rid",
+        "racial"
+      ],
+      [
+        "4",
+        "skill",
+        "skill.mos",
+        "racial"
+      ],
+      [
+        "-2",
+        "ability",
+        "str",
+        "racial"
+      ],
+      [
+        "2",
+        "ability",
+        "int",
+        "racial"
+      ],
+      [
+        "-2",
+        "ability",
+        "cha",
+        "racial"
+      ],
+      [
+        "1",
+        "psionic",
+        "powerPoints",
+        "racial"
+      ]
+    ],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "sm",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "links": {
+      "children": []
+    },
+    "creatureType": "humanoid",
+    "la": 1,
+    "subTypes": [],
+    "addedAbilities": [],
+    "disabledAbilities": [],
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "data": {
+      "senses": {
+        "lowLight": false
+      }
+    },
+    "senses": {
+      "blindsight": null,
+      "darkvision": 60,
+      "tremorsense": null,
+      "truesight": null,
+      "lowLight": false,
+      "lowLightMultiplier": null
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "attackParts": [],
+    "conditionals": [],
+    "specialActions": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Goblin, Blue",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "kowljhpAAAuoOaJG": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394275258,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!k3FO7XTtu05SKGmB"
+}

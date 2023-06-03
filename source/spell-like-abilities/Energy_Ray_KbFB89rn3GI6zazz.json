@@ -1,0 +1,238 @@
+{
+  "_id": "KbFB89rn3GI6zazz",
+  "name": "Energy Ray",
+  "type": "spell",
+  "flags": {},
+  "img": "systems/D35E/icons/spells/beam-red-2.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;psychokinesis;\n    <br>\n    \n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Auditory<br>\n      \n    \n    \n    \n    <strong>Effect:</strong>&nbsp;ray of energy<br>\n    \n    \n        <strong>Saving Throw:</strong>&nbsp;none\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  <p>Upon manifesting this power, you choose cold, electricity, fire, or sonic. You create a ray of energy of the chosen type that shoots forth from your fingertip and strikes a target within range, dealing 1d6 points of damage, if you succeed on a ranged touch attack with the ray.</p>\n<p>&nbsp;</p>\n<p>Cold: A ray of this energy type deals +1 point of damage per die.</p>\n<p>Electricity: Manifesting a ray of this energy type provides a +3 bonus on your attack roll if the target is wearing metal armor and a +2 bonus on manifester level checks for the purpose of overcoming power resistance.</p>\n<p>Fire: A ray of this energy type deals +1 point of damage per die.</p>\n<p><span style=\"color: #191813; font-size: 13px;\">Sonic: A ray of this energy type deals –1 point of damage per die and ignores an object’s hardness.</span></p>\n<p><strong>A dromite </strong>always deals the kind of energy damage that its chitin has resistance to (for example, a dromite who has resistance to cold 5 deals cold damage with its energy ray). Manifester level is equal to 1/2 Hit Dice (minimum 1st).&nbsp;</p>\n<p><strong>A maenad </strong>always deals the sonic damage. Manifester level is equal to 1/2 Hit Dice (minimum 1st).&nbsp;</p>\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [
+      [
+        "Dromite"
+      ],
+      [
+        "Maenad"
+      ]
+    ],
+    "uniqueId": "rac-spell-energy-ray",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "rsak",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "1d6",
+          "",
+          ""
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": true,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 1,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "kin",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 1,
+      "maxAmount": 1,
+      "autoDeductCharges": true
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "Auditory",
+    "isPower": true,
+    "shortDescription": "<p>Upon manifesting this power, you choose cold, electricity, fire, or sonic. You create a ray of energy of the chosen type that shoots forth from your fingertip and strikes a target within range, dealing 1d6 points of damage, if you succeed on a ranged touch attack with the ray.</p>\n<p>&nbsp;</p>\n<p>Cold: A ray of this energy type deals +1 point of damage per die.</p>\n<p>Electricity: Manifesting a ray of this energy type provides a +3 bonus on your attack roll if the target is wearing metal armor and a +2 bonus on manifester level checks for the purpose of overcoming power resistance.</p>\n<p>Fire: A ray of this energy type deals +1 point of damage per die.</p>\n<p><span style=\"color: #191813; font-size: 13px;\">Sonic: A ray of this energy type deals –1 point of damage per die and ignores an object’s hardness.</span></p>\n<p><strong>A dromite </strong>always deals the kind of energy damage that its chitin has resistance to (for example, a dromite who has resistance to cold 5 deals cold damage with its energy ray). Manifester level is equal to 1/2 Hit Dice (minimum 1st).&nbsp;</p>\n<p><strong>A maenad </strong>always deals the sonic damage. Manifester level is equal to 1/2 Hit Dice (minimum 1st).&nbsp;</p>",
+    "snip": "",
+    "spellDuration": "",
+    "spellEffect": "ray of energy",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "changes": [],
+    "contextNotes": [],
+    "identifiedName": "Energy Ray",
+    "combatChanges": [],
+    "resistances": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "index": {
+      "subType": null,
+      "uniqueId": "rac-spell-energy-ray"
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "wbFPpmVfPG23MbMC": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394276889,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!KbFB89rn3GI6zazz"
+}

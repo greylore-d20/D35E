@@ -1,0 +1,217 @@
+{
+  "_id": "W8KOs8hxiBqWBbk5",
+  "name": "Project Image",
+  "type": "buff",
+  "img": "systems/D35E/icons/spells/buffs/buff/project-image.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.n1EQmGH6Q83z9KuN"
+    },
+    "cf": {
+      "id": "temp_0b5fizi5atqg"
+    }
+  },
+  "system": {
+    "originVersion": 4,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><em>This buff only tracks the duration of the spell.</em></p>\n<hr />\n<p>The projected image looks, sounds, and smells like you but is intangible. The projected image mimics your actions (including speech) unless you direct it to act differently (which is a <a href=\"https://www.d20srd.org/srd/combat/actionsInCombat.htm#moveActions\">move action</a>).</p>\n<p>You can see through its eyes and hear through its ears as if you were standing where it is, and during your turn you can switch from using its senses to using your own, or back again, as a <a href=\"https://www.d20srd.org/srd/combat/actionsInCombat.htm#freeActions\">free action</a>. While you are using its senses, your body is considered <a href=\"https://www.d20srd.org/srd/conditionSummary.htm#blinded\">blinded</a> and <a href=\"https://www.d20srd.org/srd/conditionSummary.htm#deafened\">deafened</a>.</p>\n<p>If you desire, any spell you cast whose range is touch or greater can originate from the projected image instead of from you. The projected image can&rsquo;t cast any spells on itself except for illusion spells. The spells affect other targets normally, despite originating from the projected image.</p>\n<p>Objects are affected by the projected image as if they had succeeded on their <a href=\"https://www.d20srd.org/srd/combat/combatStatistics.htm#will\">Will save</a>.</p>\n<p>You must maintain line of effect to the projected image at all times. If your line of effect is obstructed, the spell ends. If you use <a href=\"https://www.d20srd.org/srd/spells/dimensionDoor.htm\">dimension door</a>, <a href=\"https://www.d20srd.org/srd/spells/teleport.htm\">teleport</a>, <a href=\"https://www.d20srd.org/srd/spells/planeShift.htm\">plane shift</a>, or a similar spell that breaks your line of effect, even momentarily, the spell ends.&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": ""
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "light": {
+      "color": "",
+      "radius": 0,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "buffType": "temp",
+    "active": false,
+    "level": "",
+    "timeline": {
+      "elapsed": 0,
+      "total": 0,
+      "formula": "@item.level",
+      "enabled": true,
+      "deleteOnExpiry": true,
+      "tickOnEnd": false
+    },
+    "damagePool": {
+      "current": 0,
+      "max": 0,
+      "formula": "",
+      "enabled": false,
+      "deleteOnDamagePoolEmpty": false
+    },
+    "shapechange": {
+      "source": {},
+      "type": "polymorph"
+    },
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "hideFromToken": false,
+    "senses": {
+      "lowLight": false,
+      "lowLightMultiplier": null,
+      "blindsight": null,
+      "darkvision": null,
+      "tremorsense": null,
+      "truesight": null
+    },
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "attackParts": [],
+    "conditionals": [],
+    "specialActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Project Image",
+    "summon": [],
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "XSGi1UY5kAehVomp": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394279042,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!W8KOs8hxiBqWBbk5"
+}

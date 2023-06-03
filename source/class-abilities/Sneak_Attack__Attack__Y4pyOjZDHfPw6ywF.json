@@ -1,0 +1,206 @@
+{
+  "_id": "Y4pyOjZDHfPw6ywF",
+  "name": "Sneak Attack (Attack)",
+  "type": "attack",
+  "img": "systems/D35E/icons/classfeatures/sneak-attack.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.class-abilities.Y4pyOjZDHfPw6ywF"
+    }
+  },
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div>\n<div>If rogue can catch an opponent when he is unable to defend himself effectively from her attack, she can strike a vital spot for extra damage.</div>\n<br />\n<div>The rogue&rsquo;s attack deals extra damage any time her target would be denied a Dexterity bonus to AC (whether the target actually has a Dexterity bonus or not), or when the rogue flanks her target. This extra damage is 1d6 at 1st level, and it increases by 1d6 every two rogue levels thereafter. Should the rogue score a critical hit with a sneak attack, this extra damage is not multiplied.</div>\n<br />\n<div>Ranged attacks can count as sneak attacks only if the target is within 30 feet.</div>\n</div>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": false,
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "sna",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "@attributes.sneakAttackDiceTotal",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "(@attributes.sneakAttackDiceTotal)d6",
+          "Sneak Attack",
+          ""
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": true,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "material": {
+      "data": null
+    },
+    "associations": {
+      "classes": []
+    },
+    "attackType": "ability",
+    "autoScaleOption": "default",
+    "weaponSubtype": "light",
+    "masterwork": false,
+    "threatRangeExtended": false,
+    "finesseable": false,
+    "enh": null,
+    "incorporeal": false,
+    "proficient": true,
+    "primaryAttack": true,
+    "showInQuickbar": true,
+    "melded": false,
+    "baseWeaponType": "",
+    "nonLethal": false,
+    "originalWeaponCreated": false,
+    "originalWeaponId": null,
+    "originalWeaponName": "",
+    "originalWeaponImg": "",
+    "originalWeaponProperties": {},
+    "conditionals": [],
+    "thrown": false,
+    "returning": false,
+    "magic": false,
+    "alignment": {
+      "good": false,
+      "evil": false,
+      "lawful": false,
+      "chaotic": false
+    },
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": "sna"
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "MxZnThH5hu8xEaNd": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394280217,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!Y4pyOjZDHfPw6ywF"
+}

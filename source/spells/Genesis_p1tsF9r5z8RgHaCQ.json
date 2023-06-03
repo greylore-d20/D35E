@@ -1,0 +1,235 @@
+{
+  "_id": "p1tsF9r5z8RgHaCQ",
+  "name": "Genesis",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/genesis.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {},
+  "system": {
+    "originVersion": 108,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;conjuration&nbsp;(creation);\n    <br>\n    \n    <strong>Domain:</strong>&nbsp;Creation 9;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 hour<br>\n    <strong>Range:</strong>&nbsp;180 feet<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;A demiplane on the Ethereal Plane centered on your location<br>\n    <strong>Duration:</strong>&nbsp;Instantaneous<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nThis spell creates an immobile, finite plane with limited access—a demi-plane.\n</p><p>Demiplanes created by this power are very small, minor planes. A character can cast this spell only on the Ethereal Plane. When he or she casts it, a local density fluctuation precipitates the creation of a demiplane. At first, the demiplane grows at a rate of a 1-foot-radius per day to an initial maximum radius of 180 feet as the fledgling plane draws substance from surrounding ethereal vapors and protomatter or astral ectoplasm.\n</p><p>The character determines the environment in the demiplane when he or she first casts <i>genesi</i>s, reflecting most any desire he or she can visualize. The caster determines factors such as atmosphere, water, temperature, and the shape of the general terrain. However, the spell cannot create life, nor can it create construction. If desired, these must be brought in by some other fashion.\n</p><p>Once the basic demiplane reaches its maximum size, the character can continue to cast this spell to enlarge the demiplane if he or she is inside the boundaries of the demiplane. In such a case, the radius of the demiplane increases by 60 feet for each subsequent casting.\n</p><p>If the spell is cast again while outside an existing demi-plane, the casting creates a separate bubble that does not touch or overlap any previously created demiplane.\n</p><p><i>XP Cost: </i>5,000 XP.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "hour"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "180",
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 180,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [],
+      "domain": [
+        [
+          "Creation",
+          9
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 9,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "con",
+    "subschool": "creation",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nThis spell creates an immobile, finite plane with limited access—a demi-plane.\n</p><p>Demiplanes created by this power are very small, minor planes. A character can cast this spell only on the Ethereal Plane. When he or she casts it, a local density fluctuation precipitates the creation of a demiplane. At first, the demiplane grows at a rate of a 1-foot-radius per day to an initial maximum radius of 180 feet as the fledgling plane draws substance from surrounding ethereal vapors and protomatter or astral ectoplasm.\n</p><p>The character determines the environment in the demiplane when he or she first casts <i>genesi</i>s, reflecting most any desire he or she can visualize. The caster determines factors such as atmosphere, water, temperature, and the shape of the general terrain. However, the spell cannot create life, nor can it create construction. If desired, these must be brought in by some other fashion.\n</p><p>Once the basic demiplane reaches its maximum size, the character can continue to cast this spell to enlarge the demiplane if he or she is inside the boundaries of the demiplane. In such a case, the radius of the demiplane increases by 60 feet for each subsequent casting.\n</p><p>If the spell is cast again while outside an existing demi-plane, the casting creates a separate bubble that does not touch or overlap any previously created demiplane.\n</p><p><i>XP Cost: </i>5,000 XP.\n</p>\n<hr/>\n\n\n",
+    "snip": "",
+    "spellDuration": "Instantaneous",
+    "spellEffect": "A demiplane on the Ethereal Plane centered on your location",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Genesis",
+    "changes": [],
+    "combatChanges": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "spellDurationData": {
+      "value": "",
+      "units": "inst",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846681176,
+    "modifiedTime": 1678394301394,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!p1tsF9r5z8RgHaCQ"
+}

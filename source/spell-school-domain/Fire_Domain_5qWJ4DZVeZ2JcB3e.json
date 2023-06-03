@@ -1,0 +1,310 @@
+{
+  "name": "Fire Domain",
+  "type": "feat",
+  "flags": {
+    "core": {
+      "sourceId": "Item.ilQoBkH72TYtG6GO"
+    }
+  },
+  "img": "systems/D35E/icons/spells/domain/fire.png",
+  "effects": [],
+  "_id": "5qWJ4DZVeZ2JcB3e",
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>Turn or destroy water creatures as a good cleric turns undead. Rebuke, command, or bolster fire creatures as an evil cleric rebukes undead. Use these abilities a total number of times per day equal to 3 + your Charisma modifier. This granted power is a supernatural ability.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0,
+      "value": null,
+      "charged": false,
+      "_deprecated": true
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "featType": "spellSpecialization",
+    "abilityType": "",
+    "associations": {
+      "classes": []
+    },
+    "crOffset": "",
+    "spellSpecializationName": "fire",
+    "spellSpecializationForbiddenNames": "",
+    "linkedItems": [],
+    "metamagic": {
+      "enabled": false,
+      "shortDesc": "",
+      "code": ""
+    },
+    "spellSpecialization": {
+      "isDomain": true,
+      "spells": {
+        "level1": {
+          "level": 1,
+          "name": "Burning Hands",
+          "img": "systems/D35E/icons/spells/named-spells/burning-hands.png",
+          "pack": "D35E.spells",
+          "id": "Rn7g1pzZCkMLAlw0"
+        },
+        "level2": {
+          "level": 2,
+          "name": "Produce Flame",
+          "img": "systems/D35E/icons/spells/named-spells/produce-flame.png",
+          "pack": "D35E.spells",
+          "id": "sERXgl8pphczLobe"
+        },
+        "level3": {
+          "level": 3,
+          "name": "Resist Energy",
+          "img": "systems/D35E/icons/spells/named-spells/resist-energy.png",
+          "pack": "D35E.spells",
+          "id": "cwOdOxFDzabOOxnW"
+        },
+        "level4": {
+          "level": 4,
+          "name": "Wall of Fire",
+          "img": "systems/D35E/icons/spells/named-spells/wall-of-fire.png",
+          "pack": "D35E.spells",
+          "id": "PNZc3amjAdlurJsq"
+        },
+        "level5": {
+          "level": 5,
+          "name": "Fire Shield",
+          "img": "systems/D35E/icons/spells/named-spells/fire-shield.png",
+          "pack": "D35E.spells",
+          "id": "yT2GoqIuPRJP3R7w"
+        },
+        "level6": {
+          "level": 6,
+          "name": "Fire Seeds",
+          "img": "systems/D35E/icons/spells/named-spells/fire-seeds.png",
+          "pack": "D35E.spells",
+          "id": "zjP5diRPaLjmtujc"
+        },
+        "level7": {
+          "level": 7,
+          "name": "Fire Storm",
+          "img": "systems/D35E/icons/spells/named-spells/fire-storm.png",
+          "pack": "D35E.spells",
+          "id": "I55KnqaEXhS1lPjE"
+        },
+        "level8": {
+          "level": 8,
+          "name": "Incendiary Cloud",
+          "img": "systems/D35E/icons/spells/named-spells/incendiary-cloud.png",
+          "pack": "D35E.spells",
+          "id": "ev6r7Ud5hagQNraA"
+        },
+        "level9": {
+          "level": 9,
+          "name": "Elemental Swarm",
+          "img": "systems/D35E/icons/spells/named-spells/elemental-swarm.png",
+          "pack": "D35E.spells",
+          "id": "gl974KOYdXBh6ics"
+        }
+      }
+    },
+    "showInQuickbar": false,
+    "links": {
+      "charges": []
+    },
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": "spellSpecialization",
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394276179,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!5qWJ4DZVeZ2JcB3e"
+}

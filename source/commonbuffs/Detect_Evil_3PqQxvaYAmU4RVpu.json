@@ -1,0 +1,214 @@
+{
+  "_id": "3PqQxvaYAmU4RVpu",
+  "name": "Detect Evil",
+  "type": "buff",
+  "img": "systems/D35E/icons/spells/buffs/buff/detect-evil.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.408GFAiAsNNuuegA"
+    }
+  },
+  "system": {
+    "originVersion": 4,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">You can sense the presence of evil. The amount of information revealed depends on how long you study a particular area or subject.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><em style=\"box-sizing: border-box; user-select: text;\">1st Round:&nbsp;</em>Presence or absence of evil.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><em style=\"box-sizing: border-box; user-select: text;\">2nd Round:&nbsp;</em>Number of evil auras (creatures, objects, or spells) in the area and the power of the most potent evil aura present.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">If you are of good alignment, and the strongest evil aura&rsquo;s power is overwhelming (see below), and the HD or level of the aura&rsquo;s source is at least twice your character level, you are stunned for 1 round and the spell ends.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><em style=\"box-sizing: border-box; user-select: text;\">3rd Round:&nbsp;</em>The power and location of each aura. If an aura is outside your line of sight, then you discern its direction but not its exact location.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><em style=\"box-sizing: border-box; user-select: text;\">Aura Power:&nbsp;</em>An evil aura&rsquo;s power depends on the type of evil creature or object that you&rsquo;re detecting and its HD, caster level, or (in the case of a cleric) class level; see the accompanying table. If an aura falls into more than one strength category, the spell indicates the stronger of the two.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><em style=\"box-sizing: border-box; user-select: text;\">Lingering Aura:&nbsp;</em>An evil aura lingers after its original source dissipates (in the case of a spell) or is destroyed (in the case of a creature or magic item). If&nbsp;<em style=\"box-sizing: border-box; user-select: text;\">detect evil&nbsp;</em>is cast and directed at such a location, the spell indicates an aura strength of dim (even weaker than a faint aura). How long the aura lingers at this dim level depends on its original power:</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">Animals, traps, poisons, and other potential perils are not evil, and as such this spell does not detect them.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">Each round, you can turn to detect evil in a new area. The spell can penetrate barriers, but 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood or dirt blocks it.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": ""
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "light": {
+      "color": "",
+      "radius": 0,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "buffType": "temp",
+    "active": false,
+    "level": "1",
+    "timeline": {
+      "elapsed": 0,
+      "total": 100,
+      "formula": "max(1, @item.level)*100",
+      "enabled": true,
+      "deleteOnExpiry": true,
+      "tickOnEnd": false
+    },
+    "damagePool": {
+      "current": 0,
+      "max": 0,
+      "formula": "",
+      "enabled": false,
+      "deleteOnDamagePoolEmpty": false
+    },
+    "shapechange": {
+      "source": {},
+      "type": "polymorph"
+    },
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "hideFromToken": false,
+    "senses": {
+      "lowLight": false,
+      "lowLightMultiplier": null,
+      "blindsight": null,
+      "darkvision": null,
+      "tremorsense": null,
+      "truesight": null
+    },
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "attackParts": [],
+    "conditionals": [],
+    "specialActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Detect Evil",
+    "summon": [],
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "XSGi1UY5kAehVomp": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394272999,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!3PqQxvaYAmU4RVpu"
+}

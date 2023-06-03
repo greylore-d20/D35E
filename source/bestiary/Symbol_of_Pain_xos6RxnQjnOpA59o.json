@@ -1,0 +1,217 @@
+{
+  "_id": "xos6RxnQjnOpA59o",
+  "name": "Symbol of Pain",
+  "type": "spell",
+  "data": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;necromancy&nbsp;[evil];\n    <br>\n    <strong>Level:</strong>&nbsp;Cleric 5, Sorcerer 5, Wizard 5;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (mercury and phosphorus, plus powdered diamond and opal with a total value of at least 1,000 gp)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;10 minutes<br>\n    \n    \n    \n    <strong>Effect:</strong>&nbsp;One symbol\n<br>\n    <strong>Duration:</strong>&nbsp;See text\n<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;Fortitude negates\n\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nThis spell functions like <i>symbol of death</i>, except that each creature within the radius of a <i>symbol of pain </i>instead suffers wracking pains that impose a –4 penalty on attack rolls, skill checks, and ability checks. These effects last for 1 hour after the creature moves farther than 60 feet from the symbol.\n</p><p>Unlike <i>symbol of death</i>, <i>symbol of pain </i>has no hit point limit; once triggered, a <i>symbol of pain </i>simply remains active for 10 minutes per caster level.\n</p><p><i>Note: </i>Magic traps such as <i>symbol of pain </i>are hard to detect and disable. A rogue (only) can use the Search skill to find a <i>symbol of pain </i>and Disable Device to thwart it. The DC in each case is 25 + spell level, or 30 for <i>symbol of pain</i>.\n</p><p><i>Material Component: </i>Mercury and phosphorus, plus powdered diamond and opal with a total value of at least 1,000 gp.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 10,
+      "type": "minute"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": 0,
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Fortitude negates\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Cleric",
+          5
+        ],
+        [
+          "Wizard",
+          5
+        ],
+        [
+          "Sorcerer",
+          5
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 5,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "nec",
+    "subschool": "",
+    "types": "evil",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "mercury and phosphorus, plus powdered diamond and opal with a total value of at least 1,000 gp",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nThis spell functions like <i>symbol of death</i>, except that each creature within the radius of a <i>symbol of pain </i>instead suffers wracking pains that impose a –4 penalty on attack rolls, skill checks, and ability checks. These effects last for 1 hour after the creature moves farther than 60 feet from the symbol.\n</p><p>Unlike <i>symbol of death</i>, <i>symbol of pain </i>has no hit point limit; once triggered, a <i>symbol of pain </i>simply remains active for 10 minutes per caster level.\n</p><p><i>Note: </i>Magic traps such as <i>symbol of pain </i>are hard to detect and disable. A rogue (only) can use the Search skill to find a <i>symbol of pain </i>and Disable Device to thwart it. The DC in each case is 25 + spell level, or 30 for <i>symbol of pain</i>.\n</p><p><i>Material Component: </i>Mercury and phosphorus, plus powdered diamond and opal with a total value of at least 1,000 gp.\n</p>\n<hr/>\n\n\n",
+    "snip": "Triggered rune wracks nearby creatures with pain.",
+    "spellDuration": "See text\n",
+    "spellEffect": "One symbol\n",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "customReferenceId": "",
+    "attack": {
+      "parts": []
+    }
+  },
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/spells/named-spells/symbol-of-pain.png",
+  "effects": [],
+  "folder": null,
+  "permission": {
+    "default": 0
+  },
+  "_key": "!actors.items!rtZLpvXoHJJ3Xe88.xos6RxnQjnOpA59o"
+}

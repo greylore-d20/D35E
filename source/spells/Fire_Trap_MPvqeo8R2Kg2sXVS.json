@@ -1,0 +1,258 @@
+{
+  "_id": "MPvqeo8R2Kg2sXVS",
+  "name": "Fire Trap",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/fire-trap.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.Wue8caxvhbCsXe6p"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "MPvqeo8R2Kg2sXVS",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;abjuration&nbsp;[fire];\n    <br>\n    <strong>Level:</strong>&nbsp;Druid 2, Sorcerer 4, Wizard 4;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (a half-pound of gold dust (cost 25 gp) sprinkled on the warded object)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;10 minutes<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;object touched<br>\n    \n    <strong>Duration:</strong>&nbsp;Special (D)<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;7<br>\n        <strong>Saving Throw:</strong>&nbsp;Reflex half; see text\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\n<i>Fire trap </i>creates a fiery explosion when an intruder opens the item that the trap protects. A <i>fire trap </i>can ward any object that can be opened and closed.\n</p><p>When casting <i>fire trap, </i>you select a point on the object as the spell’s center. When someone other than you opens the object, a fiery explosion fills the area within a 5-foot radius around the spell’s center. The flames deal 1d4 points of fire damage +1 point per caster level (maximum +20). The item protected by the trap is not harmed by this explosion.\n</p><p>A <i>fire trapped </i>item cannot have a second closure or warding spell placed on it.\n</p><p>A <i>knock </i>spell does not bypass a <i>fire trap</i>. An unsuccessful <i>dispel magic </i>spell does not detonate the spell.\n</p><p>Underwater, this ward deals half damage and creates a large cloud of steam.\n</p><p>You can use the <i>fire trapped </i>object without discharging it, as can any individual to whom the object was specifically attuned when cast. Attuning a <i>fire trapped </i>object to an individual usually involves setting a password that you can share with friends.\n</p><p><i>Note: </i>Magic traps such as <i>fire trap </i>are hard to detect and disable. A rogue (only) can use the Search skill to find a <i>fire trap </i>and Disable Device to thwart it. The DC in each case is 25 + spell level (DC 27 for a druid’s <i>fire trap </i>or DC 29 for the arcane version).\n</p><p><i>Material Component: </i>A half-pound of gold dust (cost 25 gp) sprinkled on the warded object.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 10,
+      "type": "minute"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "object touched"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "1d4+(min(20, @cl))",
+          "",
+          "energy-fire"
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Reflex half; see text",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Druid",
+          2
+        ],
+        [
+          "Wizard",
+          4
+        ],
+        [
+          "Sorcerer",
+          4
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "abj",
+    "subschool": "",
+    "types": "fire",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "a half-pound of gold dust (cost 25 gp) sprinkled on the warded object",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 7,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\n<i>Fire trap </i>creates a fiery explosion when an intruder opens the item that the trap protects. A <i>fire trap </i>can ward any object that can be opened and closed.\n</p><p>When casting <i>fire trap, </i>you select a point on the object as the spell’s center. When someone other than you opens the object, a fiery explosion fills the area within a 5-foot radius around the spell’s center. The flames deal 1d4 points of fire damage +1 point per caster level (maximum +20). The item protected by the trap is not harmed by this explosion.\n</p><p>A <i>fire trapped </i>item cannot have a second closure or warding spell placed on it.\n</p><p>A <i>knock </i>spell does not bypass a <i>fire trap</i>. An unsuccessful <i>dispel magic </i>spell does not detonate the spell.\n</p><p>Underwater, this ward deals half damage and creates a large cloud of steam.\n</p><p>You can use the <i>fire trapped </i>object without discharging it, as can any individual to whom the object was specifically attuned when cast. Attuning a <i>fire trapped </i>object to an individual usually involves setting a password that you can share with friends.\n</p><p><i>Note: </i>Magic traps such as <i>fire trap </i>are hard to detect and disable. A rogue (only) can use the Search skill to find a <i>fire trap </i>and Disable Device to thwart it. The DC in each case is 25 + spell level (DC 27 for a druid’s <i>fire trap </i>or DC 29 for the arcane version).\n</p><p><i>Material Component: </i>A half-pound of gold dust (cost 25 gp) sprinkled on the warded object.\n</p>\n<hr/>\n\n\n",
+    "snip": "Opened object deals 1d4 damage +1/level.",
+    "spellDuration": "Permanent until discharged (D)",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Fire Trap",
+    "customReferenceId": "",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "spellDurationData": {
+      "value": "Permanent until discharged",
+      "units": "spec",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846677365,
+    "modifiedTime": 1678394292883,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!MPvqeo8R2Kg2sXVS"
+}

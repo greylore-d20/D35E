@@ -1,0 +1,315 @@
+{
+  "_id": "wfgI73wUJXlpmCSZ",
+  "name": "Wild Shape (Elemental)",
+  "type": "feat",
+  "img": "systems/D35E/icons/classfeatures/wild-shape-elemental.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.class-abilities.wfgI73wUJXlpmCSZ"
+    }
+  },
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>At 5th level, a druid gains the ability to turn herself into any Small or Medium animal and back again once per day. Her options for new forms include all creatures with the animal type. This ability functions like the&nbsp;polymorph&nbsp;spell, except as noted here. The effect lasts for 1 hour per druid level, or until she changes back. Changing form (to animal or back) is a standard action and doesn’t provoke an attack of opportunity.</p>\n<p>The form chosen must be that of an animal the druid is familiar with.&nbsp;</p>\n<p>A druid loses her ability to speak while in animal form because she is limited to the sounds that a normal, untrained animal can make, but she can communicate normally with other animals of the same general grouping as her new form. (The normal sound a wild parrot makes is a squawk, so changing to this form does not permit speech.)</p>\n<p>A druid can use this ability more times per day at 6th, 7th, 10th, 14th, and 18th level, as noted on Table: The Druid.&nbsp;In addition, she gains the ability to take the shape of a Large animal at 8th level, a Tiny animal at 11th level, and a Huge animal at 15th level.</p>\n<p>The new form’s Hit Dice can’t exceed the character’s druid level.</p>\n<p>At 12th level, a druid becomes able to use wild shape to change into a plant creature with the same size restrictions as for animal forms. (A druid can’t use this ability to take the form of a plant that isn’t a creature.)</p>\n<p>At 16th level, a druid becomes able to use wild shape to change into a Small, Medium, or Large elemental (air, earth, fire, or water) once per day. These elemental forms are in addition to her normal wild shape usage. In addition to the normal effects of wild shape, the druid gains all the elemental’s extraordinary, supernatural, and spell-like abilities. She also gains the elemental’s feats for as long as she maintains the wild shape, but she retains her own creature type.</p>\n<p>At 18th level, a druid becomes able to assume elemental form twice per day, and at 20th level she can do so three times per day. At 20th level, a druid may use this wild shape ability to change into a Huge elemental.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "wsp-ele",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": "@classes.druid.level",
+      "units": "hour"
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "personal",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0,
+      "value": null,
+      "charged": false,
+      "_deprecated": true
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "day",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": null,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "(@classes.druid.level > 15 ? 1 : 0) + (@classes.druid.level > 17 ? 1 : 0) + (@classes.druid.level == 20 ? 1 : 0) ",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "featType": "classFeat",
+    "abilityType": "",
+    "associations": {
+      "classes": [
+        [
+          "Druid",
+          16
+        ]
+      ]
+    },
+    "crOffset": "",
+    "spellSpecializationName": "",
+    "spellSpecializationForbiddenNames": "",
+    "linkedItems": [],
+    "metamagic": {
+      "enabled": false,
+      "shortDesc": "",
+      "code": ""
+    },
+    "spellSpecialization": {
+      "isDomain": false,
+      "spells": {
+        "level1": {
+          "level": 1,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level2": {
+          "level": 2,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level3": {
+          "level": 3,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level4": {
+          "level": 4,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level5": {
+          "level": 5,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level6": {
+          "level": 6,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level7": {
+          "level": 7,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level8": {
+          "level": 8,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        },
+        "level9": {
+          "level": 9,
+          "name": "",
+          "img": "",
+          "pack": null,
+          "id": null
+        }
+      }
+    },
+    "showInQuickbar": false,
+    "links": {
+      "charges": []
+    },
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": "classFeat",
+      "uniqueId": "wsp-ele"
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "wbFPpmVfPG23MbMC": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394283111,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!wfgI73wUJXlpmCSZ"
+}

@@ -1,0 +1,226 @@
+{
+  "_id": "DFlphtEKRMzv1SAT",
+  "name": "Astral Traveler",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/por.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;psychoportation;\n    <br>\n    <strong>Level:</strong>&nbsp;Psion/Wilder 1, Psychic Warrior 1;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;None\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 hour<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;creature touched\n<br>\n    \n    <strong>Duration:</strong>&nbsp;See text\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;1<br>\n        <strong>Saving Throw:</strong>&nbsp;Will negates (harmless)\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>This power allows you or a creature you touch to participate in an astral caravan created through use of the <i>astral caravan</i> power. While participating in a journey allowed by the <i>astral caravan</i> power, you must hold the hand of both your fellow passenger ahead of you (or the caravan leader) and your fellow passenger behind you (unless you happen to be the last in the hand-linked line). If you or any one of your fellow passengers breaks the hand-to-hand link for 2 consecutive rounds, the impetus through the Astral Plane provided by <i>astral caravan</i> fails. See the <i>astral caravan</i> power for more information.\n</p><p>All those who are part of the caravan who are capable of performing purely mental actions, such as manifesting a power, may do so while maintaining hand-to-hand contact with their fellow travelers. When astral travelers begin their journey, each one is connected to the Material Plane by an insubstantial silvery cord. Very few weapons exist that can damage a silvery cord.\n</p><p>The last creature in the line of those making up the caravan is sometimes referred to as the rear guard, because he or she has one hand free and can use it to wield a weapon without relinquishing his or her grip on the next traveler in line. The weightless, subjective environment of the Astral Plane allows the caravan to flex and bend as necessary to bring the rear guard’s weapon to bear.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "hour"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "creature touched\n"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will negates (harmless)\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": true,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion/Wilder",
+          1
+        ],
+        [
+          "Psychic Warrior",
+          1
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 1,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "por",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 1,
+    "display": "None\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>This power allows you or a creature you touch to participate in an astral caravan created through use of the <i>astral caravan</i> power. While participating in a journey allowed by the <i>astral caravan</i> power, you must hold the hand of both your fellow passenger ahead of you (or the caravan leader) and your fellow passenger behind you (unless you happen to be the last in the hand-linked line). If you or any one of your fellow passengers breaks the hand-to-hand link for 2 consecutive rounds, the impetus through the Astral Plane provided by <i>astral caravan</i> fails. See the <i>astral caravan</i> power for more information.\n</p><p>All those who are part of the caravan who are capable of performing purely mental actions, such as manifesting a power, may do so while maintaining hand-to-hand contact with their fellow travelers. When astral travelers begin their journey, each one is connected to the Material Plane by an insubstantial silvery cord. Very few weapons exist that can damage a silvery cord.\n</p><p>The last creature in the line of those making up the caravan is sometimes referred to as the rear guard, because he or she has one hand free and can use it to wield a weapon without relinquishing his or her grip on the next traveler in line. The weightless, subjective environment of the Astral Plane allows the caravan to flex and bend as necessary to bring the rear guard’s weapon to bear.\n</p>\n<hr/>\n\n\n",
+    "snip": "Enable yourself or another to join an astral caravan-enabled trip.",
+    "spellDuration": "See text\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Astral Traveler",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394287811,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!DFlphtEKRMzv1SAT"
+}

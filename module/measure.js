@@ -23,7 +23,7 @@ export class TemplateLayerPF extends TemplateLayer {
     if (!game.settings.get("D35E", "measureStyle")) return super._onDragLeftStart(event);
 
     // Call placeables layer super instead of templatelayer
-    const origin = duplicate(event.data.origin);
+    const origin = duplicate(event.interactionData.origin);
     await PlaceablesLayer.prototype._onDragLeftStart.call(this, event);
 
     // Create the new preview template
@@ -56,7 +56,7 @@ export class TemplateLayerPF extends TemplateLayer {
     // Create a preview template
     const doc = new CONFIG.MeasuredTemplate.documentClass(data, { parent: canvas.scene });
     const template = new CONFIG.MeasuredTemplate.objectClass(doc);
-    event.data.preview = this.preview.addChild(template);
+    event.interactionData.preview = this.preview.addChild(template);
     return template.draw();
   }
 
@@ -71,7 +71,7 @@ export class TemplateLayerPF extends TemplateLayer {
     // Snap the destination to the grid
     const snapToGrid = !originalEvent.shiftKey;
     if (snapToGrid) {
-      event.data.destination = canvas.grid.getSnappedPosition(destination.x, destination.y, 2);
+      event.interactionData.destination = canvas.grid.getSnappedPosition(destination.x, destination.y, 2);
     }
 
     // Compute the ray
@@ -102,7 +102,7 @@ export class TemplateLayerPF extends TemplateLayer {
     preview.refresh();
 
     // Confirm the creation state
-    event.data.createState = 2;
+    event.interactionData.createState = 2;
   }
 }
 

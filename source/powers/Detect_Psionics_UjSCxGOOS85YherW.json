@@ -1,0 +1,226 @@
+{
+  "_id": "UjSCxGOOS85YherW",
+  "name": "Detect Psionics",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/cla.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;clairsentience&nbsp;(wis);\n    <br>\n    <strong>Level:</strong>&nbsp;Psion 0, Psychic Warrior 1;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Vi, Au\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 round<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;living creature touched<br>\n    \n    <strong>Duration:</strong>&nbsp;Concentration, up to 1 minute/level (D)\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;1<br>\n        <strong>Saving Throw:</strong>&nbsp;None\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The manifester detects psionic auras. The amount of information revealed depends on how long he or she studies a particular area or subject:\n</p><p>1st Round: Presence or absence of psionic auras.\n</p><p>2nd Round: Number of different psionic auras and the strength of the strongest aura. An overwhelming aura stuns the manifester for 1 round and the power ends.\n</p><p>3rd Round: The strength and location of each aura. If the items or creatures bearing the auras are in line of sight, the manifester can make Psicraft checks to determine the discipline involved in each. (Make one check per aura; DC 15 + power level, or 15 + half manifester level for a nonpower effect.)\n</p><p>Psionic areas, multiple disciplines, or strong local psionic emanations may confuse or conceal weaker auras.\n</p><p>Aura Strength: An aura's psionic power and strength depend on a power's functioning power level or an item's manifester level.\n</p><p>Functioning Item Aura\n</p><p>Power Level\tManifester Level\tStrength\n</p><p>0-level Lingering aura Dim\n</p><p>or lingering aura\n</p><p>1st3rd\t1st5th Faint\n</p><p>4th6th\t6th11th Moderate\n</p><p>7th9th\t12th20th Strong\n</p><p>Artifact Beyond mortal Overwhelming\n</p><p>or deity-level\tpsionics manifester\n</p><p>If an aura falls into more than one category, detect psionics indicates the stronger of the two.\n</p><p>Time Aura Lingers: How long the aura lingers depends on its original strength:\n</p><p>Original Strength\tDuration\n</p><p>Faint 1d6 minutes\n</p><p>Moderate 1d6x10 minutes\n</p><p>Strong 1d6 hours\n</p><p>Overwhelming 1d6 days\n</p><p>Note: Each round, the manifester can turn to detect things in a new area. The manifester can tell the difference between magical and psionic auras. The power can penetrate barriers, but 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood or dirt blocks it.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "living creature touched"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          0
+        ],
+        [
+          "Psychic Warrior",
+          1
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 0,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "cla",
+    "subschool": "wis",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 1,
+    "display": "Vi, Au\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The manifester detects psionic auras. The amount of information revealed depends on how long he or she studies a particular area or subject:\n</p><p>1st Round: Presence or absence of psionic auras.\n</p><p>2nd Round: Number of different psionic auras and the strength of the strongest aura. An overwhelming aura stuns the manifester for 1 round and the power ends.\n</p><p>3rd Round: The strength and location of each aura. If the items or creatures bearing the auras are in line of sight, the manifester can make Psicraft checks to determine the discipline involved in each. (Make one check per aura; DC 15 + power level, or 15 + half manifester level for a nonpower effect.)\n</p><p>Psionic areas, multiple disciplines, or strong local psionic emanations may confuse or conceal weaker auras.\n</p><p>Aura Strength: An aura's psionic power and strength depend on a power's functioning power level or an item's manifester level.\n</p><p>Functioning Item Aura\n</p><p>Power Level\tManifester Level\tStrength\n</p><p>0-level Lingering aura Dim\n</p><p>or lingering aura\n</p><p>1st3rd\t1st5th Faint\n</p><p>4th6th\t6th11th Moderate\n</p><p>7th9th\t12th20th Strong\n</p><p>Artifact Beyond mortal Overwhelming\n</p><p>or deity-level\tpsionics manifester\n</p><p>If an aura falls into more than one category, detect psionics indicates the stronger of the two.\n</p><p>Time Aura Lingers: How long the aura lingers depends on its original strength:\n</p><p>Original Strength\tDuration\n</p><p>Faint 1d6 minutes\n</p><p>Moderate 1d6x10 minutes\n</p><p>Strong 1d6 hours\n</p><p>Overwhelming 1d6 days\n</p><p>Note: Each round, the manifester can turn to detect things in a new area. The manifester can tell the difference between magical and psionic auras. The power can penetrate barriers, but 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood or dirt blocks it.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "You detect the presence of psionics.",
+    "spellDuration": "Concentration, up to 1 minute/level (D)\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Detect Psionics",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394292325,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!UjSCxGOOS85YherW"
+}

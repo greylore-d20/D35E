@@ -1,0 +1,260 @@
+{
+  "_id": "gAFT7x9HWtGcj9D4",
+  "name": "Heat Metal",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/heat-metal.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.KmtYuqHKV1FZB6MF"
+    },
+    "cf": {
+      "id": "temp_u74z4lctcql"
+    }
+  },
+  "system": {
+    "originVersion": 104,
+    "originPack": "D35E.spells",
+    "originId": "gAFT7x9HWtGcj9D4",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;transmutation&nbsp;[fire];\n    <br>\n    <strong>Level:</strong>&nbsp;Druid 2;\n    <strong>Domain:</strong>&nbsp;Sun 2;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, F, DF<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;close (25 ft. + 5 ft./2 levels)<br>\n    \n    <strong>Target:</strong>&nbsp;metal equipment of one creature per two levels, no two of which can be more than 30 ft. apart; or 25 lb. of metal/level, all of which must be within a 30-ft. circle<br>\n    \n    <strong>Duration:</strong>&nbsp;0 undefined<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;3<br>\n        <strong>Saving Throw:</strong>&nbsp;Will negates (object)\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  <p><em>Heat metal </em>makes metal extremely warm. Unattended, nonmagical metal gets no saving throw. Magical metal is allowed a saving throw against the spell. An item in a creature&rsquo;s possession uses the creature&rsquo;s saving throw bonus unless its own is higher.</p>\n<p>A creature takes fire damage if its equipment is heated. It takes full damage if its armor is affected or if it is holding, touching, wearing, or carrying metal weighing one-fifth of its weight. The creature takes minimum damage (1 point or 2 points; see the table) if it&rsquo;s not wearing metal armor and the metal that it&rsquo;s carrying weighs less than one-fifth of its weight.</p>\n<p>On the first round of the spell, the metal becomes warm and uncomfortable to touch but deals no damage. The same effect also occurs on the last round of the spell&rsquo;s duration. During the second (and also the next-to-last) round, intense heat causes pain and damage. In the third, fourth, and fifth rounds, the metal is searing hot, causing more damage, as shown on the table below.</p>\n<table class=\"right\" cellspacing=\"0\">\n<tbody>\n<tr>\n<th style=\"text-align: center;\">Round</th>\n<th style=\"text-align: left;\" align=\"left\">Metal Temperature</th>\n<th style=\"text-align: left;\" align=\"left\">Damage</th>\n</tr>\n<tr>\n<td align=\"center\">1</td>\n<td style=\"text-align: left;\">Warm</td>\n<td style=\"text-align: left;\">None</td>\n</tr>\n<tr>\n<td align=\"center\">2</td>\n<td style=\"text-align: left;\">Hot</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4</a> points</td>\n</tr>\n<tr>\n<td align=\"center\">3-5</td>\n<td style=\"text-align: left;\">Searing</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">2d4</a> points</td>\n</tr>\n<tr>\n<td align=\"center\">6</td>\n<td style=\"text-align: left;\">Hot</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4</a> points</td>\n</tr>\n<tr>\n<td align=\"center\">7</td>\n<td style=\"text-align: left;\">Warm</td>\n<td style=\"text-align: left;\">None</td>\n</tr>\n</tbody>\n</table>\n<p>Any cold intense enough to damage the creature negates fire damage from the spell (and vice versa) on a point-for-point basis. If cast underwater, <em>heat metal </em>deals half damage and boils the surrounding water.</p>\n<p><em>Heat metal </em>counters and dispels <em>chill metal</em>.</p>\n<hr />\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "metal equipment of one creature per two levels, no two of which can be more than 30 ft. apart; or 25 lb. of metal/level, all of which must be within a 30-ft. circle"
+    },
+    "range": {
+      "value": null,
+      "units": "close",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "circle",
+      "size": "20",
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will negates (object)",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Heat Metal",
+        "action": "Create unique \"Heat Metal\" from \"D35E.commonbuffs\" on target;Set buff \"Heat Metal\" field data.level to max(1,(@cl)) on target;Activate buff \"Heat Metal\" on target",
+        "range": "",
+        "img": "icons/svg/item-bag.svg",
+        "condition": ""
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Druid",
+          2
+        ]
+      ],
+      "domain": [
+        [
+          "Sun",
+          2
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 2,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "trs",
+    "subschool": "",
+    "types": "fire",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": true,
+      "divineFocus": 1
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 3,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "<p><em>Heat metal </em>makes metal extremely warm. Unattended, nonmagical metal gets no saving throw. Magical metal is allowed a saving throw against the spell. An item in a creature&rsquo;s possession uses the creature&rsquo;s saving throw bonus unless its own is higher.</p>\n<p>A creature takes fire damage if its equipment is heated. It takes full damage if its armor is affected or if it is holding, touching, wearing, or carrying metal weighing one-fifth of its weight. The creature takes minimum damage (1 point or 2 points; see the table) if it&rsquo;s not wearing metal armor and the metal that it&rsquo;s carrying weighs less than one-fifth of its weight.</p>\n<p>On the first round of the spell, the metal becomes warm and uncomfortable to touch but deals no damage. The same effect also occurs on the last round of the spell&rsquo;s duration. During the second (and also the next-to-last) round, intense heat causes pain and damage. In the third, fourth, and fifth rounds, the metal is searing hot, causing more damage, as shown on the table below.</p>\n<table class=\"right\" cellspacing=\"0\">\n<tbody>\n<tr>\n<th style=\"text-align: center;\">Round</th>\n<th style=\"text-align: left;\" align=\"left\">Metal Temperature</th>\n<th style=\"text-align: left;\" align=\"left\">Damage</th>\n</tr>\n<tr>\n<td align=\"center\">1</td>\n<td style=\"text-align: left;\">Warm</td>\n<td style=\"text-align: left;\">None</td>\n</tr>\n<tr>\n<td align=\"center\">2</td>\n<td style=\"text-align: left;\">Hot</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4</a> points</td>\n</tr>\n<tr>\n<td align=\"center\">3-5</td>\n<td style=\"text-align: left;\">Searing</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">2d4</a> points</td>\n</tr>\n<tr>\n<td align=\"center\">6</td>\n<td style=\"text-align: left;\">Hot</td>\n<td style=\"text-align: left;\"><a class=\"diceRoller\" title=\"Roll the dice!\">1d4</a> points</td>\n</tr>\n<tr>\n<td align=\"center\">7</td>\n<td style=\"text-align: left;\">Warm</td>\n<td style=\"text-align: left;\">None</td>\n</tr>\n</tbody>\n</table>\n<p>Any cold intense enough to damage the creature negates fire damage from the spell (and vice versa) on a point-for-point basis. If cast underwater, <em>heat metal </em>deals half damage and boils the surrounding water.</p>\n<p><em>Heat metal </em>counters and dispels <em>chill metal</em>.</p>\n<hr />",
+    "snip": "Make metal so hot it damages those who touch it.",
+    "spellDuration": "7 rounds",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Heat Metal",
+    "changes": [],
+    "combatChanges": [],
+    "resistances": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "requirements": [],
+    "creationChanges": [],
+    "damageReduction": [],
+    "perRoundActions": [],
+    "spellDurationData": {
+      "value": 7,
+      "units": "rounds",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846680153,
+    "modifiedTime": 1678394299103,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!gAFT7x9HWtGcj9D4"
+}

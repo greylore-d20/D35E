@@ -1,0 +1,281 @@
+{
+  "_id": "5C4AIShsfP8hwL9A",
+  "name": "Summon Monster IV",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/summon-monster-iv.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {},
+  "system": {
+    "originVersion": 123,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;conjuration&nbsp;(summoning)&nbsp;[see text for summon monster i];\n    <br>\n    <strong>Level:</strong>&nbsp;Bard 4, Blackguard 4, Cleric 4, Sorcerer 4, Wizard 4;\n    \n    \n    \n    \n    <br>\n    \n    \n      <strong>Casting Time:</strong>&nbsp;1 round<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;One or more summoned creatures, no two of which can be more than 30 ft. apart<br>\n    <strong>Duration:</strong>&nbsp;Instantaneous<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;none\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  <p>This spell functions like @Compendium[D35E.spells.eEyDI6q41iGOabdX]{Summon Monster I}<em>&nbsp;</em>except that you can summon one creature from the 4th-level list, 1d3 creatures of the same kind from the 3rd-level list, or 1d4+1 creatures of the same kind from a lower-level list.</p>\n<h3><span id=\"Summon_Monster_Tables\" class=\"mw-headline\">Summon Monster Tables</span></h3>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.qLwD4yuvOMTUSxsH]{Summon Monster I}</span></p>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.eGFaIIrrtY72kLaa]{Summon Monster II}</span></p>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.EvlMyU1vcdEFVr6l]{Summon Monster III}</span></p>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.0KfoiuB1yPLo0TgW]{Summon Monster IV}</span></p>\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "circle",
+      "size": "5",
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "summon",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [
+      {
+        "name": "Summon Monster I",
+        "id": "qLwD4yuvOMTUSxsH",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1d4+1"
+      },
+      {
+        "name": "Summon Monster II",
+        "id": "eGFaIIrrtY72kLaa",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1d4+1"
+      },
+      {
+        "name": "Summon Monster III",
+        "id": "EvlMyU1vcdEFVr6l",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1d3"
+      },
+      {
+        "name": "Summon Monster IV",
+        "id": "0KfoiuB1yPLo0TgW",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1"
+      }
+    ],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Blackguard",
+          4
+        ],
+        [
+          "Bard",
+          4
+        ],
+        [
+          "Cleric",
+          4
+        ],
+        [
+          "Wizard",
+          4
+        ],
+        [
+          "Sorcerer",
+          4
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "con",
+    "subschool": "summoning",
+    "types": "see text for summon monster i",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "<p>This spell functions like @Compendium[D35E.spells.eEyDI6q41iGOabdX]{Summon Monster I}<em>&nbsp;</em>except that you can summon one creature from the 4th-level list, 1d3 creatures of the same kind from the 3rd-level list, or 1d4+1 creatures of the same kind from a lower-level list.</p>\n<h3><span id=\"Summon_Monster_Tables\" class=\"mw-headline\">Summon Monster Tables</span></h3>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.qLwD4yuvOMTUSxsH]{Summon Monster I}</span></p>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.eGFaIIrrtY72kLaa]{Summon Monster II}</span></p>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.EvlMyU1vcdEFVr6l]{Summon Monster III}</span></p>\n<p><span class=\"mw-headline\">@Compendium[D35E.summoning-roll-tables.0KfoiuB1yPLo0TgW]{Summon Monster IV}</span></p>",
+    "snip": "Calls extraplanar creature to fight for you.",
+    "spellDuration": "instantaneous",
+    "spellEffect": "One or more summoned creatures, no two of which can be more than 30 ft. apart",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Summon Monster IV",
+    "changes": [],
+    "combatChanges": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "perRoundActions": [],
+    "spellDurationData": {
+      "value": "",
+      "units": "inst",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846675653,
+    "modifiedTime": 1678394286730,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!5C4AIShsfP8hwL9A"
+}

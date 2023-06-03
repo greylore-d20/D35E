@@ -1,0 +1,221 @@
+{
+  "_id": "2tvGtRZ0dDkKMaTm",
+  "name": "Telekinetic Sphere",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/kin.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n    <strong>Discipline</strong>&nbsp;psychokinesis&nbsp;(con)&nbsp;[force];\n    <strong>Level</strong>&nbsp;Psion 8;\n    \n    \n    \n    \n  </p>\n  <p>\n    <strong>Manifesting Time</strong>&nbsp;1 round<br>\n    \n  </p>\n  <p>\n    <strong>Power Display</strong>&nbsp;Ma\n<br>\n    <strong>Range</strong>&nbsp;close (25 ft. + 5 ft./2 levels)<br>\n    \n    <strong>Targets</strong>&nbsp;living creature touched<br>\n    \n    <strong>Duration</strong>&nbsp;1 minute/level (D)\n<br>\n    <strong>Power Points/Spell Points Cost</strong>&nbsp;15<br>\n    <strong>Saving Throw</strong>&nbsp;Reflex negates (object)\n;&nbsp;<strong>Power Resistance</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>A globe of force encloses a creature or object, provided it is small enough to fit within the diameter of the sphere. The sphere contains its subject for the power's duration. The sphere is not subject to damage of any sort except from a third eye negate (or similar magical items), disintegrate, or a targeted negate psionics power. These destroy the sphere without harm to the subject. Nothing can pass through the sphere, inside or out, though the subjects can breathe normally.\n</p><p>Creatures or objects inside the globe are nearly weightless. Anything contained within a telekinetic sphere weighs only one-sixteenth of its normal weight. The manifester can telekinetically lift anything in the sphere that normally weighs up to 5,000 pounds. Telekinetic control extends to a maximum distance of medium range from the manifester (100 feet + 10 feet per manifester level) after the sphere has actually encapsulated its contents.\n</p><p>The manifester moves objects or creatures in the sphere by concentrating on them. The sphere begins moving the round after manifesting the power. A round's concentration (a standard action) moves the sphere up to 30 feet. If the manifester ceases concentrating, the sphere does not move that round (if on a level surface) or descends at its falling rate (if aloft) until it reaches a level surface, the power's duration ends, or the manifester begins concentrating again. Because of the reduced weight, the sphere falls at a rate of only 60 feet per round, which is not fast enough to cause damage to its contents. If the manifester ceases concentrating (voluntarily or due to failing a Concentration check), he or she can resume concentrating on his or her next turn or any later turn during the power's duration. The manifester can move the sphere telekinetically even if he or she is in it.\n</p><p>Note that even if more than 5,000 pounds of weight is englobed, the perceived weight is only one-sixteenth of the actual weight, so the sphere can be rolled without exceptional effort.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "living creature touched"
+    },
+    "range": {
+      "value": null,
+      "units": "close",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Reflex negates (object)\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          8
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 8,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "kin",
+    "subschool": "con",
+    "types": "force",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 15,
+    "display": "Ma\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>A globe of force encloses a creature or object, provided it is small enough to fit within the diameter of the sphere. The sphere contains its subject for the power's duration. The sphere is not subject to damage of any sort except from a third eye negate (or similar magical items), disintegrate, or a targeted negate psionics power. These destroy the sphere without harm to the subject. Nothing can pass through the sphere, inside or out, though the subjects can breathe normally.\n</p><p>Creatures or objects inside the globe are nearly weightless. Anything contained within a telekinetic sphere weighs only one-sixteenth of its normal weight. The manifester can telekinetically lift anything in the sphere that normally weighs up to 5,000 pounds. Telekinetic control extends to a maximum distance of medium range from the manifester (100 feet + 10 feet per manifester level) after the sphere has actually encapsulated its contents.\n</p><p>The manifester moves objects or creatures in the sphere by concentrating on them. The sphere begins moving the round after manifesting the power. A round's concentration (a standard action) moves the sphere up to 30 feet. If the manifester ceases concentrating, the sphere does not move that round (if on a level surface) or descends at its falling rate (if aloft) until it reaches a level surface, the power's duration ends, or the manifester begins concentrating again. Because of the reduced weight, the sphere falls at a rate of only 60 feet per round, which is not fast enough to cause damage to its contents. If the manifester ceases concentrating (voluntarily or due to failing a Concentration check), he or she can resume concentrating on his or her next turn or any later turn during the power's duration. The manifester can move the sphere telekinetically even if he or she is in it.\n</p><p>Note that even if more than 5,000 pounds of weight is englobed, the perceived weight is only one-sixteenth of the actual weight, so the sphere can be rolled without exceptional effort.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "",
+    "spellDuration": "1 minute/level (D)\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394283892,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!2tvGtRZ0dDkKMaTm"
+}

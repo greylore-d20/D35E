@@ -1,0 +1,222 @@
+{
+  "_id": "rpcG3K1vpFkirrzz",
+  "name": "Incarnate",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/met.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;metacreativity&nbsp;(int);\n    <br>\n    <strong>Level:</strong>&nbsp;Psion 5;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Ma\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 round<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;see text\n<br>\n    \n    <strong>Duration:</strong>&nbsp;Permanent (see text)\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;9<br>\n        <strong>Saving Throw:</strong>&nbsp;None\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The manifester invests other powers with self-sustaining energy so that they become permanent. The manifester must be at least the minimum level required to manifest the power. This power has no effect on powers that already create a permanent effect. A character can't incarnate a power with no duration or a duration of instantaneous. A character can't incarnate a power that has an XP cost of its own, nor can a character incarnate a power of level 6 or higher. The manifester must expend XP when manifesting this power. A character can never expend so much XP that doing so would drop the character one or more levels (though a character could forgo gaining a level in order to incarnate a particularly costly power). The XP costs vary depending on the target.\n</p><p>Incarnate can be negated by a higher-level psion who also manifests incarnate or by use of psychic chirurgery.\n</p><p>The GM may not allow some powers to become permanent through incarnate. The manifester knows before attempting to incarnate a power if it can or cannot be made permanent.\n</p><p>XP Cost: To make a power permanent in regard to the manifester's self, he or she must expend a number of XP equal to the power's level x 300. To make a power permanent in regard to another creature, the manifester must expend a number of XP equal to the power's level x 600. To make a power permanent on an object or location, the manifester must expend a number of XP equal to the power's level x 900.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "see text\n"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          5
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 5,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "met",
+    "subschool": "int",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 9,
+    "display": "Ma\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The manifester invests other powers with self-sustaining energy so that they become permanent. The manifester must be at least the minimum level required to manifest the power. This power has no effect on powers that already create a permanent effect. A character can't incarnate a power with no duration or a duration of instantaneous. A character can't incarnate a power that has an XP cost of its own, nor can a character incarnate a power of level 6 or higher. The manifester must expend XP when manifesting this power. A character can never expend so much XP that doing so would drop the character one or more levels (though a character could forgo gaining a level in order to incarnate a particularly costly power). The XP costs vary depending on the target.\n</p><p>Incarnate can be negated by a higher-level psion who also manifests incarnate or by use of psychic chirurgery.\n</p><p>The GM may not allow some powers to become permanent through incarnate. The manifester knows before attempting to incarnate a power if it can or cannot be made permanent.\n</p><p>XP Cost: To make a power permanent in regard to the manifester's self, he or she must expend a number of XP equal to the power's level x 300. To make a power permanent in regard to another creature, the manifester must expend a number of XP equal to the power's level x 600. To make a power permanent on an object or location, the manifester must expend a number of XP equal to the power's level x 900.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "Make some powers permanent.",
+    "spellDuration": "Permanent (see text)\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Incarnate",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394296694,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!rpcG3K1vpFkirrzz"
+}

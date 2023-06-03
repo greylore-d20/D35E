@@ -1,0 +1,189 @@
+{
+  "_id": "P3n6GXQAZWW5GcS8",
+  "name": "Trample",
+  "type": "attack",
+  "data": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>As a full-round action, a creature with this special attack can move up to twice its speed and literally run over any opponents at least one size category smaller than itself. The creature merely has to move over the opponents in its path; any creature whose space is completely covered by the trampling creature&rsquo;s space is subject to the trample attack. If a target&rsquo;s space is larger than 5 feet, it is only considered trampled if the trampling creature moves over all the squares it occupies. If the trampling creature moves over only some of a target&rsquo;s space, the target can make an attack of opportunity against the trampling creature at a &ndash;4 penalty. A trampling creature that accidentally ends its movement in an illegal space returns to the last legal position it occupied, or the closest legal position, if there&rsquo;s a legal position that&rsquo;s closer.</p>\n<p>A trample attack deals bludgeoning damage (the creature&rsquo;s slam damage + 1-1/2 times its Str modifier). The creature&rsquo;s descriptive text gives the exact amount.</p>\n<p>Trampled opponents can attempt attacks of opportunity, but these take a &ndash;4 penalty. If they do not make attacks of opportunity, trampled opponents can attempt Reflex saves to take half damage.</p>\n<p>The save DC against a creature&rsquo;s trample attack is 10 + 1/2 creature&rsquo;s HD + creature&rsquo;s Str modifier (the exact DC is given in the creature&rsquo;s descriptive text). A trampling creature can only deal trampling damage to each target once per round, no matter how many times its movement takes it over a target creature.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": false,
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "full"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "seeText",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "save",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "1d8",
+          null,
+          "damage-bludg"
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "str",
+      "damageMult": 1.5,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "10+@abilities.str.mod+floor(@attributes.hd.total/2)",
+      "description": "",
+      "ability": "",
+      "type": "reflexhalf",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": true,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "material": {
+      "data": null
+    },
+    "associations": {
+      "classes": []
+    },
+    "attackType": "misc",
+    "autoScaleOption": "default",
+    "weaponSubtype": "light",
+    "masterwork": false,
+    "threatRangeExtended": false,
+    "finesseable": false,
+    "enh": null,
+    "incorporeal": false,
+    "proficient": true,
+    "primaryAttack": true,
+    "showInQuickbar": true,
+    "melded": false,
+    "baseWeaponType": "",
+    "nonLethal": false,
+    "originalWeaponCreated": false,
+    "originalWeaponId": null,
+    "originalWeaponName": "",
+    "originalWeaponImg": "",
+    "originalWeaponProperties": {},
+    "conditionals": [],
+    "thrown": false,
+    "returning": false,
+    "magic": false,
+    "alignment": {
+      "good": false,
+      "evil": false,
+      "lawful": false,
+      "chaotic": false
+    },
+    "customReferenceId": "",
+    "attack": {
+      "parts": []
+    }
+  },
+  "sort": 300000,
+  "flags": {},
+  "img": "systems/D35E/icons/special-abilities/trample.png",
+  "effects": [],
+  "folder": null,
+  "permission": {
+    "default": 0
+  },
+  "_key": "!actors.items!OUKcCmSOCCd2yMPP.P3n6GXQAZWW5GcS8"
+}
