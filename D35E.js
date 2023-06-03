@@ -1082,6 +1082,12 @@ function rollDefenses({ actorName = null, actorId = null } = {}) {
   return actor.displayDefenses();
 }
 
+/**
+ * Roll Turn Undead
+ * @param actorName
+ * @param actorId
+ * @returns {*|void}
+ */
 function rollTurnUndead({ actorName = null, actorId = null } = {}) {
   const speaker = ChatMessage.getSpeaker();
   let actor = game.actors.contents.filter((o) => {
