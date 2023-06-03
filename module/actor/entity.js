@@ -338,7 +338,7 @@ export class ActorPF extends Actor {
     preparedData.shieldType = "none";
     this.items
       .filter((obj) => {
-        ItemActiveHelper.isActive(obj);
+        return ItemActiveHelper.isActive(obj);
       })
       .forEach((_obj) => {
         ItemPrepareDataHelper.prepareResistancesForItem(_obj, erDrRollData, preparedData);
