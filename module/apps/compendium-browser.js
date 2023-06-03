@@ -850,4 +850,10 @@ export class CompendiumBrowser extends Application {
     this.preset(link.dataset.type, link.dataset.entityType);
     this.refresh();
   }
+
+
+  static browseCompendium(type, entityType, filters = {}) {
+    game.D35E.compendiumBrowser.preset(type, entityType, filters);
+    game.D35E.compendiumBrowser._render(true);
+  }
 }

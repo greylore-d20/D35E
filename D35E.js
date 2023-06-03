@@ -17,7 +17,6 @@ import { ActorSheetPFNPCLoot } from "./module/actor/sheets/npc-loot.js";
 import { ActorSheetPFNPCMonster } from "./module/actor/sheets/npc-monster.js";
 import { Item35E } from "./module/item/entity.js";
 import { ItemSheetPF } from "./module/item/sheets/base.js";
-import { CompendiumDirectoryPF } from "./module/sidebar/compendium.js";
 import { TokenPF } from "./module/token/token.js";
 import { addLowLightVisionToLightConfig } from "./module/canvas/low-light-vision.js";
 import { PatchCore } from "./module/patch-core.js";
@@ -73,6 +72,7 @@ import { ItemBase35E } from "./module/item/base.js";
 import { Spell35E } from "./module/item/spell.js";
 import { Feat35E } from "./module/item/feat.js";
 import { Sockets } from "./module/sockets/sockets.js";
+import {CompendiumBrowser} from './module/apps/compendium-browser.js';
 
 // Add String.format
 if (!String.prototype.format) {
@@ -102,7 +102,6 @@ Hooks.once("init", async function () {
     rollItemMacro,
     rollDefenses,
     rollTurnUndead,
-    CompendiumDirectoryPF,
     rollPreProcess: {
       sizeRoll: sizeDie,
       sizeNaturalRoll: sizeNaturalDie,
@@ -146,7 +145,6 @@ Hooks.once("init", async function () {
   CONFIG.Item.compendiumIndexFields.push("system.index.uniqueId");
   CONFIG.ActiveEffect.documentClass = ActiveEffectD35E;
   CONFIG.MeasuredTemplate.objectClass = MeasuredTemplatePF;
-  CONFIG.ui.compendium = CompendiumDirectoryPF;
   CONFIG.ChatMessage.documentClass = ChatMessagePF;
   CONFIG.Combat.documentClass = CombatD35E;
   CONFIG.Combatant.documentClass = CombatantD35E;
@@ -280,6 +278,8 @@ Hooks.once("init", async function () {
   applyConfigModifications();
   // Register sheet application classes
   game.D35E.sockets.init();
+
+  game.D35E.compendiumBrowser = new CompendiumBrowser({ type: "spells", entityType: "Item" });
   // Enable skin
   $("body").toggleClass("d35ecustom", game.settings.get("D35E", "customSkin"));
   $("body").toggleClass("color-blind", game.settings.get("D35E", "colorblindColors"));
@@ -606,6 +606,25 @@ Hooks.on("renderSettings", (app, html) => {
     window.open("https://patreon.com/rughalt", "_blank");
   });
 });
+
+Hooks.on("renderSidebarTab", async (app, html) => {
+  if (game.user.isGM) {
+    if (app?.options?.id == "compendium" || app instanceof CompendiumDirectory) {
+      let style = "";
+      if (game.release.generation >= 11) {
+      }
+      html.find(".drgh-encounter-browser").remove();
+      let button = $(
+          `<button class='drgh-encounter-browser' style="${style}">Compendium Browser</button>`
+      );
+      button.on("click", () => {
+        game.D35E.compendiumBrowser.render(true);
+      });
+      html.find(".header-actions").append(button);
+    }
+  }
+});
+
 
 Hooks.on("renderActorSheet", function (sheet, window, data) {
   //sheet.object.refresh({render: false})

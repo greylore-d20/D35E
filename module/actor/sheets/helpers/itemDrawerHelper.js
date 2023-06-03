@@ -1,5 +1,6 @@
-import { CompendiumDirectoryPF } from "../../../sidebar/compendium.js";
+
 import { LogHelper } from "../../../helpers/LogHelper.js";
+import {CompendiumBrowser} from '../../../apps/compendium-browser.js';
 
 export class ItemDrawerHelper {
   constructor(sheet) {
@@ -84,7 +85,7 @@ export class ItemDrawerHelper {
     $(`.items-add-${this.sheet.randomUuid}-openCompendium`).mouseup((ev) => {
       sessionStorage.setItem(`D35E-opened-${this.sheet.id}`, false);
       $(`.item-add-${this.sheet.randomUuid}-overlay`).hide();
-      CompendiumDirectoryPF.browseCompendium(entityType, "Item");
+      CompendiumBrowser.browseCompendium(entityType, "Item");
     });
     $(`.items-add-${this.sheet.randomUuid}-working-item`).hide();
     $(`.items-add-${this.sheet.randomUuid}-list`).show();

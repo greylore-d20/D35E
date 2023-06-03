@@ -19,9 +19,9 @@ export class EncounterGeneratorDialog extends FormApplication {
     };
 
     loadCompendium() {//is the Bestiary compendium loaded?, No? Load it
-        if (game.D35E.CompendiumDirectoryPF.browser.compendiums.bestiary._data.loaded == false) {
+        if (game.D35E.compendiumBrowser.compendiums.bestiary._data.loaded == false) {
             ui.notifications.info("Loading Monster Compendiums for the first time...")
-            game.D35E.CompendiumDirectoryPF.browser.compendiums.bestiary.loadData()
+            game.D35E.compendiumBrowser.compendiums.bestiary.loadData()
         }
     }
     async getCompendiumTables(){
@@ -122,7 +122,7 @@ export class EncounterGeneratorDialog extends FormApplication {
                     let monsters = (await grabbedTables.find(t => t.data._id === val).roll()).results
                     testELArray = duplicate(monsterArray)
                     monsters.forEach(monster => {
-                        let monsterCR = game.D35E.CompendiumDirectoryPF.browser.compendiums.bestiary.items.find(x => x.item._id === monster.documentId)
+                        let monsterCR = game.D35E.compendiumBrowser.compendiums.bestiary.items.find(x => x.item._id === monster.documentId)
                         testELArray.push({
                             id: monster.documentId,
                             pack: monster.documentCollection,

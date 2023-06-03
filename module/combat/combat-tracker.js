@@ -34,7 +34,8 @@ export class D35ECombatTracker extends CombatTracker {
             /* super does not look at unlinked effects, do that here */
             turn.effects = new Set();
             if ( combatant.token ) {
-                combatant.token.actor.effects.forEach(e => turn.effects.add(e));
+                if (combatant.token.actor)
+                    combatant.token.actor.effects.forEach(e => turn.effects.add(e));
                 if ( combatant.token.overlayEffect ) turn.effects.add(combatant.token.overlayEffect);
             }
 
@@ -58,7 +59,7 @@ export class D35ECombatTracker extends CombatTracker {
                 turn.actorImage = combatant?.flags?.D35E?.actorImg
                 turn.actorName = combatant?.flags?.D35E?.actorName
                 if (combatant?.flags?.D35E?.actor) {
-                    if (game.actors.get(combatant?.flags?.D35E?.actor).testUserPermission(game.user, "OWNER"))
+                    if (game.actors.get(combatant?.flags?.D35E?.actor) && game.actors.get(combatant?.flags?.D35E?.actor).testUserPermission(game.user, "OWNER"))
                         acc["buff"].push(turn);
                 }
             }

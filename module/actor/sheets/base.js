@@ -11,7 +11,6 @@ import { DeckEditor } from "../../apps/deck-editor.js";
 import { D35E } from "../../config.js";
 import { PointBuyCalculator } from "../../apps/point-buy-calculator.js";
 import { Item35E } from "../../item/entity.js";
-import { CompendiumDirectoryPF } from "../../sidebar/compendium.js";
 import { DamageTypes } from "../../damage-types.js";
 import { Roll35e } from "../../roll.js";
 import ActorSensesConfig from "../../apps/senses-config.js";
@@ -23,6 +22,7 @@ import { ItemEnhancementHelper } from "../../item/helpers/itemEnhancementHelper.
 import { StatblockGenerator } from "../../utils/statblock-generator.js";
 import { LootSheetActions } from "../../lootsheet/actions.js";
 import { ItemDrawerHelper } from "./helpers/itemDrawerHelper.js";
+import {CompendiumBrowser} from '../../apps/compendium-browser.js';
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -3077,7 +3077,7 @@ export class ActorSheetPF extends ActorSheet {
     let div = $(event.currentTarget),
       pack = div.attr("data-pack");
     if (pack.startsWith("browser")) {
-      CompendiumDirectoryPF.browseCompendium(pack.split(":")[1], pack.split(":")[2]);
+      CompendiumBrowser.browseCompendium(pack.split(":")[1], pack.split(":")[2]);
     } else if (pack.startsWith("inline")) {
       await this.loadData(
         pack.split(":")[1],
