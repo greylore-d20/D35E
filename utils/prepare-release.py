@@ -81,7 +81,7 @@ if not args.icons_only:
     repo.git.add("changelogs/changelog.%s.md" % version)
     repo.git.add("templates/welcome-screen.html")
     repo.git.add("version.yaml")
-    os.system("git add source/*")
+    os.system("git add -A source/*")
 
     repo.git.commit('-m', 'Release %s' % version, author='rughalt@gmail.com')
 
