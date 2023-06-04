@@ -7,5 +7,7 @@ let system = JSON.parse(rawdata);
 for (let i = 0; i < system['packs'].length; i++) {
   let packPath = system['packs'][i]['path'];
   let packNameFromPath = packPath.replace('./packs/', '');
-  exec("fvtt package pack "+packNameFromPath+" --id source/"+packNameFromPath+" --od packs/")
+  console.log("Repacking "+packNameFromPath+"...")
+  exec("fvtt package pack "+packNameFromPath+" --input-directory source/"+packNameFromPath+" --output-directory packs/")
+  console.log("Repacking "+packNameFromPath+"...")
 }
