@@ -1,10 +1,10 @@
 'use strict';
-const { exec } = require("child_process");
+const { execSync  } = require("child_process");
 const fs = require('fs');
 
 let rawdata = fs.readFileSync('system.json');
 let system = JSON.parse(rawdata);
-let packdir = 'test'
+let packdir = 'packs'
 fs.rmSync(packdir, { recursive: true, force: true });
 for (let i = 0; i < system['packs'].length; i++) {
   let packPath = system['packs'][i]['path'];
@@ -12,7 +12,7 @@ for (let i = 0; i < system['packs'].length; i++) {
   if (fs.existsSync("source/"+packNameFromPath)) {
     let foundFiles = fs.readdirSync("source/" + packNameFromPath).length;
     console.log(`Repacking ${packNameFromPath}... (${foundFiles} files found)`)
-    exec(
+    let fvttProcess = execSync(
         `fvtt package pack ${packNameFromPath} --input-directory source/${packNameFromPath} --output-directory ${packdir}/`)
     console.log("Repacking " + packNameFromPath + " done")
   } else {
