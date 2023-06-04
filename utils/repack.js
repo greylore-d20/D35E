@@ -13,7 +13,7 @@ for (let i = 0; i < system['packs'].length; i++) {
     let foundFiles = fs.readdirSync("source/" + packNameFromPath).length;
     console.log(`Repacking ${packNameFromPath}... (${foundFiles} files found)`)
     let fvttProcess = execSync(
-        `fvtt package pack ${packNameFromPath} --input-directory source/${packNameFromPath} --output-directory ${packdir}/`)
+        `fvtt package pack ${packNameFromPath} --inputDirectory source/${packNameFromPath} --outputDirectory ${packdir}/`)
     console.log("Repacking " + packNameFromPath + " done")
   } else {
     console.log("Pack " + packNameFromPath + " not found, skipping repack")
