@@ -3,7 +3,61 @@
   "name": "Force Dragon, Young adult",
   "type": "npc",
   "img": "systems/D35E/icons/bestiary/token/force-dragon.png",
-  "data": {
+  "items": [
+    "xXKnaBBaQ9pHZxRh",
+    "CCvIi2SzRuVQFMuu",
+    "vbpNr9SC9LQIzn57",
+    "Qyf5BNUcoEkat0X6",
+    "dv2y235mSHNpsQMR",
+    "n23CZYy71y99SpwZ",
+    "4QoSx0yk7ZahMGT1",
+    "aeWegwWV9yMUONbl",
+    "7LcFRgaS5TOZ6Rmx",
+    "YQTYGWO3YDMP8cBm",
+    "eWZOwF0s2Cc3YrsM",
+    "LF3mW6w7cVdVJzuy",
+    "xzGKVeDfe6Qjk0S6",
+    "O3x4A0MhNqAXkmp6",
+    "6mfZmN3SCgMGM4DA",
+    "YSOC29cxww8RNs7j",
+    "2abEPhI64a6sdTmA",
+    "Z3RIhoaB3nwWKeD2",
+    "0lX8fteivPxAqGct",
+    "CqpspMcZRQMVTbn2",
+    "xBHKCQgeWQqVpCOD",
+    "zC2bHy5lRjs5F2cl",
+    "5jjMTuxMRQISGp6V",
+    "P7S2VTqzI42G3SWJ",
+    "0aQVnZ9vFxHeSa01",
+    "dfraRlLrNUurJt7J",
+    "IWOlPd5Yl2YQcN8t"
+  ],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.D35E.bestiary.kcPEnCjiBRLw3hOW"
+    },
+    "D35E": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "naturalAttackCount": 6
+    }
+  },
+  "system": {
     "shapechangeImg": "icons/svg/mystery-man.svg",
     "tokenImg": "systems/D35E/icons/bestiary/token/force-dragon.png",
     "companionUuid": "",
@@ -148,6 +202,10 @@
         "special": ""
       },
       "hd": {
+        "base": {
+          "_deprecated": true,
+          "value": 0
+        },
         "total": 40,
         "max": {
           "_deprecated": true,
@@ -252,6 +310,7 @@
       "hp": {
         "value": 700,
         "min": -100,
+        "base": 0,
         "max": 700,
         "temp": null,
         "nonlethal": null
@@ -357,10 +416,11 @@
         "dying": false,
         "disabled": false,
         "stable": false,
-        "staggered": false,
         "unconscious": false,
-        "invisibility": false,
-        "banished": false
+        "staggered": false,
+        "invisible": false,
+        "banished": false,
+        "invisibility": false
       },
       "spells": {
         "concentration": {
@@ -1116,7 +1176,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "blc": {
         "value": 0,
@@ -1129,7 +1192,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "blf": {
         "value": 0,
@@ -1142,7 +1208,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "clm": {
         "value": 0,
@@ -1155,7 +1224,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 18
       },
       "coc": {
         "value": 0,
@@ -1168,7 +1240,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 11
       },
       "crf": {
         "value": 0,
@@ -1183,7 +1258,10 @@
         "cs": true,
         "subSkills": {},
         "namedSubSkills": {},
-        "points": 0
+        "points": 0,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "dsc": {
         "value": 0,
@@ -1196,7 +1274,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "dip": {
         "value": 0,
@@ -1210,7 +1291,10 @@
         "visibility": "default",
         "cs": true,
         "changeBonus": 2,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "dev": {
         "value": 0,
@@ -1223,7 +1307,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "dis": {
         "value": 0,
@@ -1236,7 +1323,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "esc": {
         "value": 0,
@@ -1249,7 +1339,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "fog": {
         "value": 0,
@@ -1262,7 +1355,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "gif": {
         "value": 0,
@@ -1275,7 +1371,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "han": {
         "value": 0,
@@ -1288,7 +1387,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "hea": {
         "value": 0,
@@ -1301,7 +1403,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "hid": {
         "value": 0,
@@ -1315,7 +1420,10 @@
         "visibility": "default",
         "cs": false,
         "changeBonus": -12,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "int": {
         "value": 0,
@@ -1328,7 +1436,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "jmp": {
         "value": 0,
@@ -1341,7 +1452,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 18
       },
       "kar": {
         "value": 0,
@@ -1354,7 +1468,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "kdu": {
         "value": 0,
@@ -1367,7 +1484,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "ken": {
         "value": 0,
@@ -1380,7 +1500,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "kge": {
         "value": 0,
@@ -1393,7 +1516,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "khi": {
         "value": 0,
@@ -1406,7 +1532,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "klo": {
         "value": 0,
@@ -1419,7 +1548,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "kna": {
         "value": 0,
@@ -1432,7 +1564,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "kno": {
         "value": 0,
@@ -1445,7 +1580,10 @@
         "background": true,
         "cs": true,
         "visibility": "default",
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "kpl": {
         "value": 0,
@@ -1458,7 +1596,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "kre": {
         "value": 0,
@@ -1471,7 +1612,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "lis": {
         "value": 0,
@@ -1485,7 +1629,10 @@
         "visibility": "default",
         "cs": true,
         "changeBonus": 2,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "mos": {
         "value": 0,
@@ -1498,7 +1645,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "opl": {
         "value": 0,
@@ -1511,7 +1661,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "prf": {
         "value": 0,
@@ -1526,7 +1679,10 @@
         "cs": false,
         "subSkills": {},
         "namedSubSkills": {},
-        "points": 0
+        "points": 0,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "pro": {
         "value": 0,
@@ -1541,7 +1697,10 @@
         "cs": false,
         "subSkills": {},
         "namedSubSkills": {},
-        "points": 0
+        "points": 0,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "rid": {
         "value": 0,
@@ -1554,7 +1713,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "src": {
         "value": 0,
@@ -1567,7 +1729,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "sen": {
         "value": 0,
@@ -1580,7 +1745,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "slt": {
         "value": 0,
@@ -1593,7 +1761,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "spk": {
         "value": 0,
@@ -1606,7 +1777,10 @@
         "background": false,
         "visibility": "default",
         "points": 0,
-        "cs": false
+        "cs": false,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "spl": {
         "value": 0,
@@ -1619,7 +1793,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "spt": {
         "value": 0,
@@ -1633,7 +1810,10 @@
         "visibility": "default",
         "cs": true,
         "changeBonus": 2,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "sur": {
         "value": 0,
@@ -1646,7 +1826,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "swm": {
         "value": 0,
@@ -1659,7 +1842,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 18
       },
       "tmb": {
         "value": 0,
@@ -1672,7 +1858,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "umd": {
         "value": 0,
@@ -1685,7 +1874,10 @@
         "background": false,
         "visibility": "default",
         "cs": true,
-        "points": 43
+        "points": 43,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "uro": {
         "value": 0,
@@ -1698,7 +1890,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 0
       },
       "kps": {
         "value": 0,
@@ -1711,7 +1906,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "aut": {
         "value": 0,
@@ -1725,7 +1923,10 @@
         "visibility": "default",
         "cs": false,
         "changeBonus": 2,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "psi": {
         "value": 0,
@@ -1738,7 +1939,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       },
       "upd": {
         "value": 0,
@@ -1751,7 +1955,10 @@
         "background": false,
         "visibility": "default",
         "cs": false,
-        "points": null
+        "points": null,
+        "acpPenalty": 0,
+        "energyDrainPenalty": 0,
+        "abilityModifier": 12
       }
     },
     "customSkills": {},
@@ -1894,9 +2101,14 @@
     "combinedResistances": [],
     "combinedDR": [],
     "shieldType": "none",
-    "canLevelUp": false
+    "canLevelUp": false,
+    "naturalAttackCount": 6
   },
-  "token": {
+  "ownership": {
+    "default": 0,
+    "gvVvJrAyZKOZnAuP": 3
+  },
+  "prototypeToken": {
     "flags": {
       "D35E": {
         "lowLightVision": false
@@ -1904,26 +2116,10 @@
     },
     "name": "Force Dragon, Young adult",
     "displayName": 20,
-    "img": "systems/D35E/icons/bestiary/token/force-dragon.png",
-    "tint": null,
     "width": 4,
     "height": 4,
-    "scale": 1,
     "lockRotation": false,
     "rotation": 0,
-    "vision": true,
-    "dimSight": 0,
-    "brightSight": 120,
-    "dimLight": 0,
-    "brightLight": 0,
-    "sightAngle": 0,
-    "lightAngle": 0,
-    "lightAlpha": 0,
-    "lightAnimation": {
-      "speed": 5,
-      "intensity": 5
-    },
-    "actorId": "kcPEnCjiBRLw3hOW",
     "actorLink": false,
     "disposition": -1,
     "displayBars": 40,
@@ -1934,17 +2130,13 @@
       "attribute": null
     },
     "randomImg": false,
-    "mirrorX": false,
-    "mirrorY": false,
     "alpha": 1,
-    "lightColor": "#000000",
     "light": {
-      "alpha": 0.5,
-      "angle": 0,
+      "alpha": 0,
+      "angle": 360,
       "bright": 0,
       "coloration": 1,
       "dim": 0,
-      "gradual": true,
       "luminosity": 0.5,
       "saturation": 0,
       "contrast": 0,
@@ -1952,54 +2144,46 @@
       "animation": {
         "speed": 5,
         "intensity": 5,
+        "type": null,
         "reverse": false
       },
       "darkness": {
         "min": 0,
         "max": 1
-      }
-    }
+      },
+      "color": "#000000",
+      "attenuation": 0.5
+    },
+    "texture": {
+      "src": "systems/D35E/icons/bestiary/token/force-dragon.png",
+      "tint": null,
+      "scaleX": 1,
+      "scaleY": 1,
+      "offsetX": 0,
+      "offsetY": 0,
+      "rotation": 0
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": true,
+      "range": 120,
+      "brightness": 1,
+      "visionMode": "basic",
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "detectionModes": []
   },
-  "items": [
-    "xXKnaBBaQ9pHZxRh",
-    "CCvIi2SzRuVQFMuu",
-    "vbpNr9SC9LQIzn57",
-    "Qyf5BNUcoEkat0X6",
-    "dv2y235mSHNpsQMR",
-    "n23CZYy71y99SpwZ",
-    "4QoSx0yk7ZahMGT1",
-    "aeWegwWV9yMUONbl",
-    "7LcFRgaS5TOZ6Rmx",
-    "YQTYGWO3YDMP8cBm",
-    "eWZOwF0s2Cc3YrsM",
-    "LF3mW6w7cVdVJzuy",
-    "xzGKVeDfe6Qjk0S6",
-    "O3x4A0MhNqAXkmp6",
-    "6mfZmN3SCgMGM4DA",
-    "YSOC29cxww8RNs7j",
-    "2abEPhI64a6sdTmA",
-    "Z3RIhoaB3nwWKeD2",
-    "0lX8fteivPxAqGct",
-    "CqpspMcZRQMVTbn2",
-    "xBHKCQgeWQqVpCOD",
-    "zC2bHy5lRjs5F2cl",
-    "5jjMTuxMRQISGp6V",
-    "P7S2VTqzI42G3SWJ",
-    "0aQVnZ9vFxHeSa01",
-    "dfraRlLrNUurJt7J",
-    "IWOlPd5Yl2YQcN8t"
-  ],
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "gvVvJrAyZKOZnAuP": 3
-  },
-  "flags": {
-    "core": {
-      "sourceId": "Compendium.D35E.bestiary.kcPEnCjiBRLw3hOW"
-    }
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.0",
+    "coreVersion": "11.299",
+    "createdTime": 1686244371821,
+    "modifiedTime": 1686244372002,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
   },
   "_key": "!actors!kcPEnCjiBRLw3hOW"
 }

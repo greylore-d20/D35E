@@ -47,7 +47,7 @@ if not args.icons_only:
 
     for pack in packs:
         packPath = pack['path'].replace("./packs/","")
-        os.system("fvtt package unpack "+packPath+" --od source/"+packPath+" --id packs/")
+        os.system("fvtt package unpack "+packPath+" --outputDirectory source/"+packPath+" --inputDirectory packs/")
 
     headers = { 'PRIVATE-TOKEN':args.token}
     params = {'title': version}

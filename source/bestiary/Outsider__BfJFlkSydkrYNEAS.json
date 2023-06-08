@@ -3,8 +3,12 @@
   "name": "Outsider*",
   "type": "class",
   "img": "systems/D35E/icons/racialhd/outsider.png",
-  "data": {
-    "originVersion": 0,
+  "effects": [],
+  "folder": null,
+  "sort": 100000,
+  "flags": {},
+  "system": {
+    "originVersion": 1,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
@@ -19,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -86,7 +91,7 @@
     "damageReduction": [],
     "requirements": [],
     "creationChanges": [],
-    "classType": "base",
+    "classType": "racial",
     "levels": 9,
     "maxLevel": null,
     "prestigeLevels": 0,
@@ -339,15 +344,23 @@
     "nonActiveClassAbilities": [],
     "damage": {
       "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
     }
   },
-  "effects": [],
-  "folder": null,
-  "sort": 100000,
-  "permission": {
+  "ownership": {
     "default": 0,
     "XSGi1UY5kAehVomp": 3
   },
-  "flags": {},
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.0",
+    "coreVersion": "11.299",
+    "createdTime": null,
+    "modifiedTime": 1686244347965,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
   "_key": "!actors.items!eLevPakR72aLCwcq.BfJFlkSydkrYNEAS"
 }

@@ -2,8 +2,13 @@
   "_id": "MUqgfILHu3QUORlP",
   "name": "Plant*",
   "type": "class",
-  "data": {
-    "originVersion": 0,
+  "sort": 100000,
+  "flags": {},
+  "img": "systems/D35E/icons/racialhd/plant.png",
+  "effects": [],
+  "folder": null,
+  "system": {
+    "originVersion": 1,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -97,7 +103,7 @@
     "damageReduction": [],
     "requirements": [],
     "creationChanges": [],
-    "classType": "base",
+    "classType": "racial",
     "levels": 9,
     "maxLevel": null,
     "prestigeLevels": 0,
@@ -351,15 +357,22 @@
     "customReferenceId": "",
     "damage": {
       "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
     }
   },
-  "sort": 100000,
-  "flags": {},
-  "img": "systems/D35E/icons/racialhd/plant.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.0",
+    "coreVersion": "11.299",
+    "createdTime": null,
+    "modifiedTime": 1686244149089,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
   },
   "_key": "!actors.items!G825BjyVa3tIVitz.MUqgfILHu3QUORlP"
 }

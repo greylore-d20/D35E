@@ -2,8 +2,13 @@
   "_id": "0viKoZr6WPuwgKca",
   "name": "Undead*",
   "type": "class",
-  "data": {
-    "originVersion": 0,
+  "sort": 100000,
+  "flags": {},
+  "img": "systems/D35E/icons/racialhd/undead.png",
+  "effects": [],
+  "folder": null,
+  "system": {
+    "originVersion": 1,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -103,7 +109,7 @@
     "damageReduction": [],
     "requirements": [],
     "creationChanges": [],
-    "classType": "base",
+    "classType": "racial",
     "levels": 11,
     "maxLevel": null,
     "prestigeLevels": 0,
@@ -357,15 +363,22 @@
     "customReferenceId": "",
     "damage": {
       "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
     }
   },
-  "sort": 100000,
-  "flags": {},
-  "img": "systems/D35E/icons/racialhd/undead.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.0",
+    "coreVersion": "11.299",
+    "createdTime": null,
+    "modifiedTime": 1686244420334,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
   },
   "_key": "!actors.items!uj5XSciJ6IgfKdtY.0viKoZr6WPuwgKca"
 }
