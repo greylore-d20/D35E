@@ -348,12 +348,25 @@ export class ChatAttack {
     }, 0);
   }
 
+  #isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+  }
+
   async createTooltipsForRolls(rolls, totalDamage, damageTypeTotal, tooltips) {
     for (let roll of rolls) {
       const parts = roll.roll.dice.map((d) => d.getTooltipData());
       let formulas = [];
       for (let part of parts) {
         formulas.push(part.formula);
+      }
+      if (!!roll.base) {
+        for (let part of roll.base.split("+")) {
+          if (this.#isNumeric(part)) {
+            formulas.push(part);
+          }
+        }
       }
       let formulaText = "";
       if (formulas.length) {
