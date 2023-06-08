@@ -3263,6 +3263,10 @@ export class ActorSheetPF extends ActorSheet {
     };
     let template = "systems/D35E/templates/apps/advance-monster.html";
     console.log(JSON.stringify(advancement));
+    if (!this.actor.racialHD?.system) {
+      ui.notifications.error("No Racial HD found for this creature. Please add a Racial HD to this creature before advancing")
+      return;
+    }
     let dialogData = {
       advancement: JSON.stringify(advancement),
       hdData: this.actor.racialHD.system,

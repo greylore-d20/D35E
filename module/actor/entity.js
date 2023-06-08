@@ -672,23 +672,23 @@ export class ActorPF extends Actor {
         if (!classHP.has(_class._id)) classHP.set(_class._id, 0);
         classHP.set(_class._id, classHP.get(_class._id) + (lud.hp || 0));
         Object.keys(lud.skills).forEach((s) => {
-          updateData[`data.skills.${s}.points`] =
-            (lud.skills[s].points || 0) * (lud.skills[s].cls ? 1 : 0.5) + (updateData[`data.skills.${s}.points`] || 0);
+          updateData[`system.skills.${s}.points`] =
+            (lud.skills[s].points || 0) * (lud.skills[s].cls ? 1 : 0.5) + (updateData[`system.skills.${s}.points`] || 0);
           if (lud.skills[s].subskills) {
             Object.keys(lud.skills[s].subskills).forEach((sb) => {
-              updateData[`data.skills.${s}.subSkills.${sb}.points`] =
+              updateData[`system.skills.${s}.subSkills.${sb}.points`] =
                 lud.skills[s].subskills[sb].points * (lud.skills[s].subskills[sb].cls ? 1 : 0.5) +
-                (updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0);
+                (updateData[`system.skills.${s}.subSkills.${sb}.points`] || 0);
             });
           }
         });
       });
       Object.keys(levelUpData[0]?.skills || {}).forEach((s) => {
-        updateData[`data.skills.${s}.points`] = Math.floor(updateData[`data.skills.${s}.points`] || 0);
+        updateData[`system.skills.${s}.points`] = Math.floor(updateData[`system.skills.${s}.points`] || 0);
         if (levelUpData[0].skills[s].subskills) {
           Object.keys(levelUpData[0].skills[s].subskills).forEach((sb) => {
-            updateData[`data.skills.${s}.subSkills.${sb}.points`] = Math.floor(
-              updateData[`data.skills.${s}.subSkills.${sb}.points`] || 0
+            updateData[`system.skills.${s}.subSkills.${sb}.points`] = Math.floor(
+              updateData[`system.skills.${s}.subSkills.${sb}.points`] || 0
             );
           });
         }
@@ -697,21 +697,21 @@ export class ActorPF extends Actor {
       for (var _class of classes) {
         let itemUpdateData = {};
         itemUpdateData["_id"] = _class._id;
-        itemUpdateData["data.levels"] = classLevels.get(_class._id) || 0;
-        itemUpdateData["data.hp"] = classHP.get(_class._id) || 0;
+        itemUpdateData["system.levels"] = classLevels.get(_class._id) || 0;
+        itemUpdateData["system.hp"] = classHP.get(_class._id) || 0;
         await this.updateOwnedItem(itemUpdateData, { stopUpdates: true });
 
         //LogHelper.log(`D35E | ActorPF | updateClassProgressionLevel | Updated class item ${_class.name}`)
       }
 
-      for (let [k, s] of Object.entries(getProperty(data, "data.skills"))) {
-        linkData(data, globalUpdateData, `data.skills.${k}.points`, updateData[`data.skills.${k}.points`] || 0);
+      for (let [k, s] of Object.entries(getProperty(data, "system.skills"))) {
+        linkData(data, globalUpdateData, `system.skills.${k}.points`, updateData[`system.skills.${k}.points`] || 0);
         for (let k2 of Object.keys(getProperty(s, "subSkills") || {})) {
           linkData(
             data,
             globalUpdateData,
-            `data.skills.${k}.subSkills.${k2}.points`,
-            updateData[`data.skills.${k}.subSkills.${k2}.points`] || 0
+            `system.skills.${k}.subSkills.${k2}.points`,
+            updateData[`system.skills.${k}.subSkills.${k2}.points`] || 0
           );
         }
       }
@@ -749,13 +749,13 @@ export class ActorPF extends Actor {
 
       const updateData = {};
       if (this.system.resources[itemTag].value !== curUses.value) {
-        updateData[`data.resources.${itemTag}.value`] = curUses.value;
+        updateData[`system.resources.${itemTag}.value`] = curUses.value;
       }
       if (this.system.resources[itemTag].max !== curUses.max) {
-        updateData[`data.resources.${itemTag}.max`] = curUses.max;
+        updateData[`system.resources.${itemTag}.max`] = curUses.max;
       }
       if (this.system.resources[itemTag]._id !== item._id) {
-        updateData[`data.resources.${itemTag}._id`] = item._id;
+        updateData[`system.resources.${itemTag}._id`] = item._id;
       }
       if (itemCustomTag) {
         if (this.system.resources[itemCustomTag] == null)
@@ -766,13 +766,13 @@ export class ActorPF extends Actor {
           };
         const updateData = {};
         if (this.system.resources[itemCustomTag].value !== curUses.value) {
-          updateData[`data.resources.${itemCustomTag}.value`] = curUses.value;
+          updateData[`system.resources.${itemCustomTag}.value`] = curUses.value;
         }
         if (this.system.resources[itemCustomTag].max !== curUses.max) {
-          updateData[`data.resources.${itemCustomTag}.max`] = curUses.max;
+          updateData[`system.resources.${itemCustomTag}.max`] = curUses.max;
         }
         if (this.system.resources[itemCustomTag]._id !== item._id) {
-          updateData[`data.resources.${itemCustomTag}._id`] = item._id;
+          updateData[`system.resources.${itemCustomTag}._id`] = item._id;
         }
       }
 
@@ -801,13 +801,13 @@ export class ActorPF extends Actor {
           _id: "",
         };
       if (this.system.resources[itemTag].value !== curUses.value) {
-        updateData[`data.resources.${itemTag}.value`] = curUses.value;
+        updateData[`system.resources.${itemTag}.value`] = curUses.value;
       }
       if (this.system.resources[itemTag].max !== curUses.max) {
-        updateData[`data.resources.${itemTag}.max`] = curUses.max;
+        updateData[`system.resources.${itemTag}.max`] = curUses.max;
       }
       if (this.system.resources[itemTag]._id !== item._id) {
-        updateData[`data.resources.${itemTag}._id`] = item._id;
+        updateData[`system.resources.${itemTag}._id`] = item._id;
       }
     }
   }
@@ -852,8 +852,8 @@ export class ActorPF extends Actor {
       if (itemData._id) delete itemData._id;
       if (itemData.document)
         itemData.document.data.update({
-          "data.level": parseInt(level),
-          "data.-=spellbook": null,
+          "system.level": parseInt(level),
+          "system.-=spellbook": null,
         });
       else {
         itemData.data.level = parseInt(level);
@@ -868,7 +868,7 @@ export class ActorPF extends Actor {
     if (attribute === "attributes.hp") {
       let strValue = String(value);
       if (isDelta && value > 0) strValue = "+" + strValue;
-      return this.update({ "data.attributes.hp.value": strValue });
+      return this.update({ "system.attributes.hp.value": strValue });
     } else {
       return super.modifyTokenAttribute(attribute, value);
     }
@@ -1169,7 +1169,7 @@ export class ActorPF extends Actor {
       attackData["system.range.value"] = range.toString();
     }
 
-    if (hasProperty(attackData, "data.templates")) delete attackData["system.templates"];
+    if (hasProperty(attackData, "system.templates")) delete attackData["system.templates"];
 
     let attacks = [];
     attacks.push(expandObject(attackData));
@@ -1302,7 +1302,7 @@ export class ActorPF extends Actor {
 
     if (roll.total >= 20) {
       const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
-      const k = `data.attributes.psionicFocus`;
+      const k = `system.attributes.psionicFocus`;
       let updateData = {};
       updateData[k] = true;
       this.update(updateData);
@@ -2544,7 +2544,7 @@ export class ActorPF extends Actor {
 
     createCustomChatMessage("systems/D35E/templates/chat/turn-undead.html", data, chatData, { rolls: rolls });
     let updateData = {};
-    updateData[`data.attributes.turnUndeadUses`] = getProperty(this.system, "attributes.turnUndeadUses") - 1;
+    updateData[`system.attributes.turnUndeadUses`] = getProperty(this.system, "attributes.turnUndeadUses") - 1;
     this.update(updateData);
   }
 
@@ -2932,7 +2932,7 @@ export class ActorPF extends Actor {
 
     for (let t of tokensList) {
       let a = t.actor,
-        abilityField = `data.abilities.${ability}.damage`,
+        abilityField = `system.abilities.${ability}.damage`,
         abilityDamage = a.system.abilities[ability].damage || 0,
         updateData = {};
       updateData[abilityField] = abilityDamage + damage;
@@ -2957,7 +2957,7 @@ export class ActorPF extends Actor {
 
     for (let t of tokensList) {
       let a = t.actor,
-        abilityField = `data.abilities.${ability}.drain`,
+        abilityField = `system.abilities.${ability}.drain`,
         abilityDrain = a.system.abilities[ability].drain || 0,
         updateData = {};
       updateData[abilityField] = abilityDrain + damage;
@@ -2979,15 +2979,15 @@ export class ActorPF extends Actor {
       let item = this.items.get(possibleUpdate.id);
       let current = item.system.damagePool.current - possibleUpdate.value;
       if (current <= 0 && item.system.damagePool.deleteOnDamagePoolEmpty) {
-        itemUpdateData.push({ item: item, data: { "data.damagePool.current": 0, "data.active": false } });
+        itemUpdateData.push({ item: item, data: { "system.damagePool.current": 0, "system.active": false } });
         itemsToDelete.push(possibleUpdate.id);
         deletedOrChanged = true;
       } else {
         if (current <= 0) {
-          itemUpdateData.push({ item: item, data: { "data.damagePool.current": 0, "data.active": false } });
+          itemUpdateData.push({ item: item, data: { "system.damagePool.current": 0, "system.active": false } });
           deletedOrChanged = true;
         } else {
-          itemUpdateData.push({ item: item, data: { "data.damagePool.current": current } });
+          itemUpdateData.push({ item: item, data: { "system.damagePool.current": current } });
           deletedOrChanged = true;
         }
       }
@@ -3261,9 +3261,9 @@ export class ActorPF extends Actor {
         if (value < 0) nonLethalHeal = value;
         promises.push(
           t.actor.update({
-            "data.attributes.hp.nonlethal": Math.max(_nonLethal + nonLethal + nonLethalHeal, 0),
-            "data.attributes.hp.temp": tmp - dt,
-            "data.attributes.hp.value": Math.clamped(hp.value - (value - dt), -100, hp.max),
+            "system.attributes.hp.nonlethal": Math.max(_nonLethal + nonLethal + nonLethalHeal, 0),
+            "system.attributes.hp.temp": tmp - dt,
+            "system.attributes.hp.value": Math.clamped(hp.value - (value - dt), -100, hp.max),
           })
         );
       }
@@ -3293,7 +3293,7 @@ export class ActorPF extends Actor {
 
       promises.push(
         t.actor.update({
-          "data.attributes.hp.nonlethal": Math.max(0, nonLethal - damage),
+          "system.attributes.hp.nonlethal": Math.max(0, nonLethal - damage),
         })
       );
     }
@@ -3567,7 +3567,7 @@ export class ActorPF extends Actor {
       }
       // Don't auto-equip transferred items
       if (obj._id != null && ["weapon", "equipment"].includes(obj.type)) {
-        if (obj.document) obj.document.data.update({ "data.equipped": false });
+        if (obj.document) obj.document.data.update({ "system.equipped": false });
         else obj.system.equipped = false;
       }
       // Adjust weight on drop from compendium
@@ -4048,12 +4048,12 @@ export class ActorPF extends Actor {
         if (action.parameters.length === 4 && action.parameters[0] === "set" && action.parameters[2] === "to") {
           let name = cleanParam(action.parameters[1]);
           let value = cleanParam(action.parameters[3]);
-          actorUpdates[`data.attributes.conditions.${name}`] = value === "true";
+          actorUpdates[`system.attributes.conditions.${name}`] = value === "true";
         }
         // Condition toggle *name*
         else if (action.parameters.length === 2 && action.parameters[0] === "toggle") {
           let name = cleanParam(action.parameters[1]);
-          actorUpdates[`data.attributes.conditions.${name}`] = !getProperty(
+          actorUpdates[`system.attributes.conditions.${name}`] = !getProperty(
             this.system,
             `attributes.conditions.${name}`
           );
@@ -4082,7 +4082,7 @@ export class ActorPF extends Actor {
               currentTraits.splice(index, 1);
             }
           }
-          actorUpdates[`data.traits.${traitGroup}.value`] = currentTraits;
+          actorUpdates[`system.traits.${traitGroup}.value`] = currentTraits;
         } else
           ui.notifications.error(
             game.i18n.format("D35E.ErrorActionFormula", {
@@ -4257,7 +4257,7 @@ export class ActorPF extends Actor {
         if (action.parameters.length === 2) {
           let damage = new Roll35e(cleanParam(action.parameters[1]), actionRollData).roll();
           let damageTotal = damage.total;
-          let abilityField = `data.abilities.${action.parameters[0]}.damage`,
+          let abilityField = `system.abilities.${action.parameters[0]}.damage`,
             abilityDamage = actionRollData.self.abilities[action.parameters[0]].damage || 0;
           actorUpdates[abilityField] = Math.max(0, abilityDamage + damageTotal);
 
@@ -4301,7 +4301,7 @@ export class ActorPF extends Actor {
         if (action.parameters.length === 2) {
           let damage = new Roll35e(cleanParam(action.parameters[1]), actionRollData).roll();
           let damageTotal = damage.total;
-          let abilityField = `data.abilities.${action.parameters[0]}.drain`,
+          let abilityField = `system.abilities.${action.parameters[0]}.drain`,
             abilityDamage = actionRollData.self.abilities[action.parameters[0]].drain || 0;
           actorUpdates[abilityField] = Math.max(0, abilityDamage + damageTotal);
 
@@ -4806,7 +4806,7 @@ export class ActorPF extends Actor {
   _setMaster(itemData) {
     if (itemData == null) {
       let updateData = {};
-      updateData["data.-=master"] = null;
+      updateData["system.-=master"] = null;
       this.update(updateData);
     } else {
       let masterData = {
@@ -4897,7 +4897,7 @@ export class ActorPF extends Actor {
         if (!!minionClass) {
           let updateObject = {};
           updateObject["_id"] = minionClass.id || minionClass._id;
-          updateObject["data.levels"] =
+          updateObject["system.levels"] =
             this.getRollData().attributes.minionClassLevels[minionClass.system.minionGroup] || 0;
           LogHelper.log("D35E | Minion class", minionClass, updateObject, this.getRollData());
           await actor.updateOwnedItem(updateObject, { stopUpdates: true, massUpdate: true });
@@ -5137,7 +5137,7 @@ export class ActorPF extends Actor {
       let hp = 0;
       let levels = item["data"]["data"]["levels"];
       hp = Math.floor(parseInt(levels) * (hd / 2 + 0.5));
-      await this.updateOwnedItem({ _id: item._id, "data.hp": hp });
+      await this.updateOwnedItem({ _id: item._id, "system.hp": hp });
       await this.refresh();
     }
   }
@@ -5332,7 +5332,7 @@ export class ActorPF extends Actor {
 
   async deactivateBuffs(itemIds) {
     for (let itemId of itemIds) {
-      await this.items.find((item) => item._id === itemId).update({ "data.active": false }, { forceDeactivate: true });
+      await this.items.find((item) => item._id === itemId).update({ "system.active": false }, { forceDeactivate: true });
     }
   }
 
@@ -5439,7 +5439,7 @@ export class ActorPF extends Actor {
 
     let itemsToUpdate = [];
     for (const [key, value] of itemQuantities.entries()) {
-      itemsToUpdate.push({ _id: key, "data.quantity": value });
+      itemsToUpdate.push({ _id: key, "system.quantity": value });
     }
 
     if (itemsToUpdate.length)
@@ -5535,19 +5535,19 @@ export class ActorPF extends Actor {
 
     while (cardsToDraw > 0 && deckCards.length > 0) {
       let d = deckCards.pop();
-      cardUpdates.push({ _id: d, "data.state": "hand" });
+      cardUpdates.push({ _id: d, "system.state": "hand" });
       cardsToDraw--;
     }
 
     while (cardsToDraw > 0 && discardedCards.length > 0) {
       let d = discardedCards.pop();
-      cardUpdates.push({ _id: d, "data.state": "hand" });
+      cardUpdates.push({ _id: d, "system.state": "hand" });
       cardsToDraw--;
     }
 
     if (deckCards.length === 0 && discardedCards.length > 0) {
       discardedCards.forEach((d) => {
-        cardUpdates.push({ _id: d, "data.state": "deck" });
+        cardUpdates.push({ _id: d, "system.state": "deck" });
       });
     }
 
@@ -5562,14 +5562,14 @@ export class ActorPF extends Actor {
     let currentHP = racialHd.system.hp;
     let currentHidDice = racialHd.system.hd;
     if (!this.system?.advancement?.originalHD) {
-      updateData["data.advancement.originalHD"] = currentLevel;
+      updateData["system.advancement.originalHD"] = currentLevel;
     }
-    updateData["data.abilities.str.value"] = getProperty(this.system, "abilities.str.value");
-    updateData["data.abilities.dex.value"] = getProperty(this.system, "abilities.dex.value");
-    updateData["data.abilities.con.value"] = getProperty(this.system, "abilities.con.value");
-    updateData["data.abilities.con.value"] = getProperty(this.system, "abilities.con.value");
-    updateData["data.attributes.naturalAC"] = this.system.attributes.naturalAC;
-    updateData["data.details.cr"] = parseInt(getProperty(this.system, "details.cr"));
+    updateData["system.abilities.str.value"] = getProperty(this.system, "abilities.str.value");
+    updateData["system.abilities.dex.value"] = getProperty(this.system, "abilities.dex.value");
+    updateData["system.abilities.con.value"] = getProperty(this.system, "abilities.con.value");
+    updateData["system.abilities.con.value"] = getProperty(this.system, "abilities.con.value");
+    updateData["system.attributes.naturalAC"] = this.system.attributes.naturalAC;
+    updateData["system.details.cr"] = parseInt(getProperty(this.system, "details.cr"));
     const size = getProperty(this.system, "traits.size");
     let newSize = getProperty(this.system, "traits.size");
 
@@ -5587,16 +5587,16 @@ export class ActorPF extends Actor {
       currentSize++;
       let temporarySize = Object.keys(CONFIG.D35E.actorSizes)[currentSize];
       let temporaryChanges = CONFIG.D35E.sizeAdvancementChanges[temporarySize];
-      updateData["data.abilities.str.value"] += temporaryChanges.str;
-      updateData["data.abilities.dex.value"] += temporaryChanges.dex;
-      updateData["data.abilities.con.value"] += temporaryChanges.con;
-      updateData["data.attributes.naturalAC"] += temporaryChanges.nac;
-      updateData["data.details.cr"] += 1;
+      updateData["system.abilities.str.value"] += temporaryChanges.str;
+      updateData["system.abilities.dex.value"] += temporaryChanges.dex;
+      updateData["system.abilities.con.value"] += temporaryChanges.con;
+      updateData["system.attributes.naturalAC"] += temporaryChanges.nac;
+      updateData["system.details.cr"] += 1;
     }
-    updateData["data.traits.size"] = newSize;
-    updateData["data.details.cr"] += Math.floor((newHd - currentLevel) / racialHd.system.crPerHD);
+    updateData["system.traits.size"] = newSize;
+    updateData["system.details.cr"] += Math.floor((newHd - currentLevel) / racialHd.system.crPerHD);
     let newHP = Math.floor((newHd - currentLevel) * (currentHidDice / 2 + 0.5)) + currentHP;
-    await this.racialHD.update({ "data.levels": newHd, "data.hp": newHP });
+    await this.racialHD.update({ "system.levels": newHd, "system.hp": newHP });
     return this.update(updateData);
   }
 
@@ -5662,13 +5662,13 @@ export class ActorPF extends Actor {
       for (let i of this.items) {
         this.getItemResourcesUpdate(i, itemResourcesData);
         let _data = i.getElapsedTimeUpdateData(roundDelta);
-        if (_data && _data["data.active"] === false) itemsEnding.push(i);
+        if (_data && _data["system.active"] === false) itemsEnding.push(i);
         if ((i.system.perRoundActions || []).length && !_data.delete) itemsOnRound.push(i);
         if (_data && !_data.delete && !_data.ignore) {
           itemUpdateData.push({ item: i, data: _data });
           deletedOrChanged = true;
         } else if (_data && _data.delete === true) {
-          itemUpdateData.push({ item: i, data: { _id: _data._id, "data.active": false } });
+          itemUpdateData.push({ item: i, data: { _id: _data._id, "system.active": false } });
           itemsToDelete.push(_data._id);
           deletedOrChanged = true;
         }
