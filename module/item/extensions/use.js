@@ -1237,7 +1237,7 @@ export class ItemUse {
     if (form.find('[name="nonLethal"]').prop("checked")) {
       nonLethal = true;
     }
-    const itemNonLethal = getProperty(this.item.system, "nonLethal") || false;
+    const itemNonLethal = getProperty(this.item.system, "nonLethal") || getProperty(this.item.system, "nonLethalNoPenalty") || false;
     if (nonLethal !== itemNonLethal) {
       rollData.nonLethalPenalty = -4;
       attackExtraParts.push({

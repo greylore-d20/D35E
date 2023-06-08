@@ -372,6 +372,12 @@ export class Item35E extends ItemBase35E {
       labels.featType = C.featTypes[data.featType];
     }
 
+
+    // Feat Items
+    else if (itemData.type === "attack") {
+      itemData.system.isNaturalAttack = getProperty(this.system, "attackType") === "natural" || getProperty(this.system, "isNaturalEquivalent") || false;
+    }
+
     // Buff Items
     else if (itemData.type === "buff") {
       labels.buffType = C.buffTypes[data.buffType];

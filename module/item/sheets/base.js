@@ -209,7 +209,7 @@ export class ItemSheetPF extends ItemSheet {
     // Prepare attack specific stuff
     if (this.item.type === "attack") {
       sheetData.isWeaponAttack = this.item.system.attackType === "weapon";
-      sheetData.isNaturalAttack = this.item.system.attackType === "natural";
+      sheetData.isNaturalAttack = this.item.system.attackType === "natural" || this.item.system.isNaturalEquivalent;
       if (this.item.actor) {
         sheetData.autoScaleWithBab =
           (game.settings.get("D35E", "autoScaleAttacksBab") &&
@@ -663,7 +663,7 @@ export class ItemSheetPF extends ItemSheet {
     }
 
     // Action usage
-    if (item.type !== "weapon" && item.system.activation && !isEmpty(item.system.activation)) {
+    if (item.type !== "weapon" && item.system?.activation && !isEmpty(item.system.activation)) {
       props.push(labels.activation, labels.range, labels.target, labels.duration);
     }
 
