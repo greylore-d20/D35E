@@ -1045,6 +1045,24 @@ h1, h2, h3 {
     filter: invert(31%) sepia(6%) saturate(3178%) hue-rotate(145deg) brightness(102%) contrast(94%);
   }
 
+  .window-app.sidebar-popout {
+    border: 6px solid #55493B;
+    border-image: url("icons/ui/dialog-frame.png") 20 round;
+
+    &.window-app {
+      .window-header {
+        color: white;
+        background: url("icons/ui/background-header.png") repeat;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        line-height: 30px;
+      }
+    }
+
+    .sidebar-popout, .window-content {
+      background: url(icons/ui/sidebar-bg.png);
+      background-size: 100% 100%;
+    }
+  }
   .sheet {
     border: 6px solid #55493B;
     border-image: url("icons/ui/dialog-frame.png") 20 round;

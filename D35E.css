@@ -5779,6 +5779,21 @@ h3 {
 .d35ecustom .rollable.image-d20 {
   filter: invert(31%) sepia(6%) saturate(3178%) hue-rotate(145deg) brightness(102%) contrast(94%);
 }
+.d35ecustom .window-app.sidebar-popout {
+  border: 6px solid #55493B;
+  border-image: url("icons/ui/dialog-frame.png") 20 round;
+}
+.d35ecustom .window-app.sidebar-popout.window-app .window-header {
+  color: white;
+  background: url("icons/ui/background-header.png") repeat;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  line-height: 30px;
+}
+.d35ecustom .window-app.sidebar-popout .sidebar-popout,
+.d35ecustom .window-app.sidebar-popout .window-content {
+  background: url(icons/ui/sidebar-bg.png);
+  background-size: 100% 100%;
+}
 .d35ecustom .sheet {
   border: 6px solid #55493B;
   border-image: url("icons/ui/dialog-frame.png") 20 round;

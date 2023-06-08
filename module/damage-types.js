@@ -197,6 +197,7 @@ export class DamageTypes {
         ((base ? actorData.energyResistance : actorData.combinedResistances) || []).forEach(t => {
             if (t.uid === null) return ;
             let type = DamageTypes.getDamageTypeForUID(damageTypes,t.uid);
+            if (!type) return;
             type.value = t.value;
             type.vulnerable = t.vulnerable;
             type.immunity = t.immunity;

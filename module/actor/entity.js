@@ -1024,7 +1024,7 @@ export class ActorPF extends Actor {
     attackData["system.incorporeal"] = isIncorporeal || false;
     attackData["system.threatRangeExtended"] = isKeen;
     attackData["system.baseWeaponType"] =
-      item.system.baseWeaponType || item.system.unidentified?.name ? item.system.unidentified.name : item.name;
+      item.system.baseWeaponType || (item.system.unidentified?.name ? item.system.unidentified.name : item.name);
     attackData["system.originalWeaponCreated"] = true;
     attackData["system.originalWeaponId"] = item._id;
     attackData["system.originalWeaponName"] = identified ? item.data.name : item.system.unidentified.name;

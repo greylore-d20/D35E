@@ -14,6 +14,7 @@ export class ItemCombatChanges {
     let attackType = getProperty(rollData, "item.actionType") || "";
     let combatChangesRollData = duplicate(rollData);
     combatChangesRollData.self = mergeObject(this.item.system, this.item.getRollData(), { inplace: false });
+    combatChangesRollData.source = combatChangesRollData.self;
     try {
       combatChanges.forEach((change) => {
         this.#mapToFields(change);
