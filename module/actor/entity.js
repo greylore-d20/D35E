@@ -26,9 +26,11 @@ import { ItemActiveHelper } from "../item/helpers/itemActiveHelper.js";
 export class ActorPF extends Actor {
   /* -------------------------------------------- */
   static LOG_V10_COMPATIBILITY_WARNINGS = false;
-  API_URI = "https://companion.legaciesofthedragon.com/";
-  // API_URI = "http://localhost:5000";
+  //API_URI = "https://companion.legaciesofthedragon.com/";
+   API_URI = "http://localhost:5000";
   static SPELL_AUTO_HIT = -1337;
+  socketRoomConnected = false;
+  socket = null;
 
   constructor(...args) {
     super(...args);
@@ -508,6 +510,14 @@ export class ActorPF extends Actor {
     }
     preparedData.canLevelUp = preparedData.details.xp.value >= preparedData.details.xp.max;
     this.combatChangeItems = this.items.filter((o) => ItemCombatChangesHelper.isCombatChangeItemType(o));
+    if (this.isCompanionSetUp) {
+      this.connectToCompanionSocket();
+      if (this.canAskForRequest) {
+        this.connectToCompanionCharacterRoom();
+      } else {
+        this.disconnectFromCompanionCharacterRoom();
+      }
+    }
   }
 
   async refresh(options = {}) {
@@ -5231,6 +5241,48 @@ export class ActorPF extends Actor {
     if (!isMyCharacter && userWithCharacterIsActive) return false;
 
     return true;
+  }
+
+  get isCompanionSetUp() {
+    if (!getProperty(this.system, "companionUuid")) return false;
+    let apiKey = game.settings.get("D35E", "apiKeyWorld");
+    if (!apiKey) return false;
+
+    if (getProperty(this.system, "companionUsePersonalKey")) apiKey = game.settings.get("D35E", "apiKeyPersonal");
+    return apiKey || false;
+
+  }
+
+  connectToCompanionSocket() {
+    if (!this.canAskForRequest) return;
+    this.socket = io(`${this.API_URI}`);
+    this.socket.on('foundry', (data) => {
+      console.log("Received foundry message", data);
+      this.socket.emit('processed', {
+        actionId: data['actionId'],
+        room: getProperty(this.system, "companionUuid")
+      })
+      this.executeRemoteAction(data);
+    })
+  }
+
+  connectToCompanionCharacterRoom() {
+    if (!this.socket) return;
+    if (this.socketRoomConnected) return;
+    this.socket.emit('join', {
+      username: 'foundry'+game.user.name,
+      room: getProperty(this.system, "companionUuid")
+    })
+    this.socketRoomConnected = true;
+  }
+
+  disconnectFromCompanionCharacterRoom() {
+    if (!this.socketRoomConnected) return;
+    this.socket.emit('leave', {
+      username: 'foundry'+game.user.name,
+      room: getProperty(this.system, "companionUuid")
+    })
+    this.socketRoomConnected = false;
   }
 
   async getQueuedActions() {

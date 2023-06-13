@@ -497,23 +497,6 @@ Hooks.once("ready", async function () {
 
   let updateRequestArray = [];
 
-  const interval = setInterval(function () {
-    if (updateRequestArray.length === 0) {
-      game.actors.contents
-        .filter(
-          (obj) => obj.testUserPermission(game.user, "OWNER") && obj.data.data.companionUuid && obj.canAskForRequest
-        )
-        .forEach((a) => {
-          updateRequestArray.push(a);
-        });
-    }
-  }, 1000);
-
-  const actionRequestInterval = setInterval(function () {
-    let a = updateRequestArray.shift();
-    if (a) a.getQueuedActions();
-  }, 500);
-
   if (!game.user.isGM) {
     let isDemo = game.settings.get("D35E", "demoWorld");
     if (isDemo) {
