@@ -39,14 +39,14 @@ export const addLowLightVisionToTokenConfig = function (app, html) {
 };
 
 export const patchCoreForLowLightVision = function () {
-  const LightSource_initializeData = LightSource.prototype._initializeData;
-
-  LightSource.prototype._initializeData = function (data = {}) {
-    const rv = LightSource_initializeData.call(this, data);
-    const { dim, bright } = this.getRadius(this.data.dim, this.data.bright);
-    this.data.dim = dim;
-    this.data.bright = bright;
-    return rv;
+  // Low-light vision light radius initialization (v10 & v11)
+  const LightSource_initialize = LightSource.prototype.initialize;
+  LightSource.prototype.initialize = function (data = {}) {
+    const { dim, bright } = this.getRadius(data.dim, data.bright);
+    data.dim = dim;
+    data.bright = bright;
+    LightSource_initialize.call(this, data);
+    return this;
   };
 
   LightSource.prototype.getRadius = function (dim, bright) {
