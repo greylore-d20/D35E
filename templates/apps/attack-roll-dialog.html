@@ -202,7 +202,7 @@
         {{#if isNaturalAttack}}
         <label class="checkbox" style="margin-right: 8px; position: relative">
             <span class="label-left">{{localize "D35E.PrimaryAttack"}}</span>
-            <input type="checkbox" class="stylized" name="primary-attack" {{#if item.primaryAttack}}checked{{/if}}/>
+            <input type="checkbox" class="stylized" name="primary-attack" {{#if isPrimaryAttack}}checked{{/if}}/>
             <span class="checkmark"></span>
         </label>
         {{/if}}

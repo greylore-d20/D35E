@@ -989,6 +989,7 @@ export class ItemUse {
       isPower: this.item.type === "spell" && getProperty(this.item.system, "isPower"),
       hasDamageAbility: getProperty(this.item.system, "ability.damage") !== "",
       isNaturalAttack: getProperty(this.item.system, "attackType") === "natural",
+      isPrimaryAttack: getProperty(this.item.system, "primaryAttack") || false,
       isWeaponAttack: getProperty(this.item.system, "attackType") === "weapon",
       isRangedWeapon:
         getProperty(this.item.system, "attackType") === "weapon" &&
