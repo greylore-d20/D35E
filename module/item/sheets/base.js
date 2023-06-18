@@ -1316,15 +1316,29 @@ export class ItemSheetPF extends ItemSheet {
     let updateData = {};
     const value = Number(event.currentTarget.value);
     let _addedAbilities = duplicate(getProperty(this.item.system, `addedAbilities`) || []);
+    let canChange = true;
+    let foundAtSameLevel = 0;
     _addedAbilities
-      .filter(function (obj) {
-        return obj.uid === uid && (level === "" || parseInt(obj.level) === parseInt(level));
-      })
-      .forEach((i) => {
-        i.level = value;
-      });
-    updateData[`system.addedAbilities`] = _addedAbilities;
-    this.item.update(updateData);
+    .filter(function (obj) {
+      return obj.uid === uid && (level === "" || parseInt(obj.level) === parseInt(level));
+    })
+    .forEach((i) => {
+      i.level = value;
+    });
+    _addedAbilities.forEach(ability => {
+      if (ability.uid === uid && ability.level === value) {
+        foundAtSameLevel++;
+      }
+    })
+    canChange = foundAtSameLevel < 2;
+    if (canChange) {
+      updateData[`system.addedAbilities`] = _addedAbilities;
+      return this.item.update(updateData);
+    } else {
+      // Display warning
+      ui.notifications.warn(game.i18n.localize("D35E.WarningAbilityLevelChange"));
+      this.render(true);
+    }
   }
 
   async _onAddAbility(event) {
@@ -1336,7 +1350,13 @@ export class ItemSheetPF extends ItemSheet {
 
     let updateData = {};
     let _addedAbilities = duplicate(getProperty(this.item.system, `addedAbilities`) || []);
-    _addedAbilities.push({ uid: uid, level: 0 });
+    let newAbility = { uid: uid, level: 1 };
+    _addedAbilities.forEach(ability => {
+      if (ability.uid === uid) {
+        newAbility.level = Math.max(newAbility.level, ability.level + 1);
+      }
+    })
+    _addedAbilities.push(newAbility);
     updateData[`system.addedAbilities`] = _addedAbilities;
     await this.item.update(updateData);
   }
