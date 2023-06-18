@@ -212,7 +212,9 @@
   </select>
   <select name="system.ability.damageMult" data-dtype="Number">
     {{#select data.system.ability.damageMult}}
+    {{#if isNaturalAttack}}
     <option value="-1">{{localize "D35E.Auto"}}</option>
+    {{/if}}
     <option value="0.5">x0.5</option>
     <option value="1" {{#unless data.system.ability.damageMult}}selected="selected"{{/unless}}>x1</option>
     <option value="1.5">x1.5</option>
