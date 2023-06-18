@@ -183,10 +183,12 @@ export class ActorPF extends Actor {
       skill.subSkills = skill.subSkills || {};
       skill.namedSubSkills = {};
       for (let subSkillId of Object.keys(skill.subSkills)) {
-        if (skill.subSkills[subSkillId] == null || skill.subSkills[subSkillId].name === undefined) {
+        if (skill.subSkills[subSkillId] == null ||
+            skill.subSkills[subSkillId].name === undefined) {
           delete skill.subSkills[subSkillId];
         } else {
-          skill.namedSubSkills[createTag(skill.subSkills[subSkillId].name)] = skill.subSkills[subSkillId];
+          skill.namedSubSkills[createTag(
+              skill.subSkills[subSkillId].name)] = skill.subSkills[subSkillId];
         }
       }
     }
@@ -207,112 +209,131 @@ export class ActorPF extends Actor {
     preparedData.classes = {};
     preparedData.totalNonEclLevels = 0;
     preparedData.damage = {
-      nonlethal: { value: preparedData.attributes.hp.nonlethal || 0, max: preparedData.attributes.hp.max || 0 },
+      nonlethal: {
+        value: preparedData.attributes.hp.nonlethal || 0,
+        max: preparedData.attributes.hp.max || 0
+      },
     };
-    actorData.items
-      .filter((obj) => {
-        return obj.type === "class";
-      })
-      .forEach((cls) => {
-        let tag = createTag(cls.system.customTag || cls.name);
-        let nameTag = createTag(cls.name);
-        let originalNameTag = createTag(cls.originalName);
+    actorData.items.filter((obj) => {
+      return obj.type === "class";
+    }).forEach((cls) => {
+      let tag = createTag(cls.system.customTag || cls.name);
+      let nameTag = createTag(cls.name);
+      let originalNameTag = createTag(cls.originalName);
 
-        cls.system.baseTag = tag;
-        cls.system.nameTag = nameTag;
+      cls.system.baseTag = tag;
+      cls.system.nameTag = nameTag;
 
-        let count = 1;
-        while (
+      let count = 1;
+      while (
           actorData.items.filter((obj) => {
-            return obj.type === "class" && obj.system.tag === tag && obj !== cls;
+            return obj.type === "class" && obj.system.tag === tag && obj !==
+                cls;
           }).length > 0
-        ) {
-          count++;
-          tag = createTag(cls.system.customTag || cls.name) + count.toString();
-          nameTag = createTag(cls.name);
-        }
-        cls.system.tag = tag;
-        preparedData.totalNonEclLevels += cls.system.classType !== "template" ? cls.system.levels : 0;
-        let healthConfig = game.settings.get("D35E", "healthConfig");
-        healthConfig =
+          ) {
+        count++;
+        tag = createTag(cls.system.customTag || cls.name) + count.toString();
+        nameTag = createTag(cls.name);
+      }
+      cls.system.tag = tag;
+      preparedData.totalNonEclLevels += cls.system.classType !== "template"
+          ? cls.system.levels
+          : 0;
+      let healthConfig = game.settings.get("D35E", "healthConfig");
+      healthConfig =
           cls.system.classType === "racial"
-            ? healthConfig.hitdice.Racial
-            : this.hasPlayerOwner
-            ? healthConfig.hitdice.PC
-            : healthConfig.hitdice.NPC;
-        const classType = cls.system.classType || "base";
-        preparedData.classes[tag] = {
-          level: cls.system.levels,
-          _id: cls._id,
-          name: cls.name,
-          hd: cls.system.hd,
-          bab: cls.system.bab,
-          hp: healthConfig.auto,
-          maxLevel: cls.system.maxLevel,
-          skillsPerLevel: cls.system.skillsPerLevel,
-          isSpellcaster: cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none",
-          isPsionSpellcaster: cls.system.spellcastingType !== null && cls.system.spellcastingType === "psionic",
-          hasSpecialSlot: cls.system.hasSpecialSlot,
-          isSpellcastingSpontaneus: cls.system.spellcastingSpontaneus === true,
-          isArcane: cls.system.spellcastingType !== null && cls.system.spellcastingType === "arcane",
-          spellcastingType: cls.system.spellcastingType,
-          spellcastingAbility: cls.system.spellcastingAbility,
-          spellslotAbility: cls.system.spellslotAbility,
-          allSpellsKnown: cls.system.allSpellsKnown,
-          halfCasterLevel: cls.system.halfCasterLevel,
-          deckHandSizeFormula: cls.system.deckHandSizeFormula,
-          knownCardsSizeFormula: cls.system.knownCardsSizeFormula,
-          deckPrestigeClass: cls.system.deckPrestigeClass,
-          hasSpellbook: cls.system.hasSpellbook,
+              ? healthConfig.hitdice.Racial
+              : this.hasPlayerOwner
+                  ? healthConfig.hitdice.PC
+                  : healthConfig.hitdice.NPC;
+      const classType = cls.system.classType || "base";
+      preparedData.classes[tag] = {
+        level: cls.system.levels,
+        _id: cls._id,
+        name: cls.name,
+        hd: cls.system.hd,
+        bab: cls.system.bab,
+        hp: healthConfig.auto,
+        maxLevel: cls.system.maxLevel,
+        skillsPerLevel: cls.system.skillsPerLevel,
+        isSpellcaster: cls.system.spellcastingType !== null &&
+            cls.system.spellcastingType !== "none",
+        isPsionSpellcaster: cls.system.spellcastingType !== null &&
+            cls.system.spellcastingType === "psionic",
+        hasSpecialSlot: cls.system.hasSpecialSlot,
+        isSpellcastingSpontaneus: cls.system.spellcastingSpontaneus === true,
+        isArcane: cls.system.spellcastingType !== null &&
+            cls.system.spellcastingType === "arcane",
+        spellcastingType: cls.system.spellcastingType,
+        spellcastingAbility: cls.system.spellcastingAbility,
+        spellslotAbility: cls.system.spellslotAbility,
+        allSpellsKnown: cls.system.allSpellsKnown,
+        halfCasterLevel: cls.system.halfCasterLevel,
+        deckHandSizeFormula: cls.system.deckHandSizeFormula,
+        knownCardsSizeFormula: cls.system.knownCardsSizeFormula,
+        deckPrestigeClass: cls.system.deckPrestigeClass,
+        hasSpellbook: cls.system.hasSpellbook,
 
-          savingThrows: {
-            fort: 0,
-            ref: 0,
-            will: 0,
-          },
-          fc: {
-            hp: classType === "base" ? cls.system.fc.hp.value : 0,
-            skill: classType === "base" ? cls.system.fc.skill.value : 0,
-            alt: classType === "base" ? cls.system.fc.alt.value : 0,
-          },
-        };
-        preparedData.classes[tag].spellsKnownPerLevel = [];
-        preparedData.classes[tag].powersKnown = [];
-        preparedData.classes[tag].powersMaxLevel = [];
-        for (let _level = 1; _level < cls.system.maxLevel + 1; _level++) {
-          preparedData.classes[tag][`spellPerLevel${_level}`] =
-            cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none"
-              ? cls.system.spellsPerLevel[_level - 1]
-              : undefined;
-          if (cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none")
-            preparedData.classes[tag].spellsKnownPerLevel.push(cls.system.spellsKnownPerLevel[_level - 1]);
-          if (cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none")
-            preparedData.classes[tag].powersKnown.push(cls.system.powersKnown[_level - 1]);
-          if (cls.system.spellcastingType !== null && cls.system.spellcastingType !== "none")
-            preparedData.classes[tag].powersMaxLevel.push(cls.system.powersMaxLevel[_level - 1]);
-        }
-        for (let k of Object.keys(preparedData.classes[tag].savingThrows)) {
-          let formula = CONFIG.D35E.classSavingThrowFormulas[classType][cls.system.savingThrows[k].value];
-          if (formula == null) formula = "0";
-          preparedData.classes[tag].savingThrows[k] = new Roll35e(formula, { level: cls.system.levels }).roll().total;
-        }
-        if (cls.system.classType !== "racial")
-          totalNonRacialLevels = Math.min(totalNonRacialLevels + cls.system.levels, 20);
+        savingThrows: {
+          fort: 0,
+          ref: 0,
+          will: 0,
+        },
+        fc: {
+          hp: classType === "base" ? cls.system.fc.hp.value : 0,
+          skill: classType === "base" ? cls.system.fc.skill.value : 0,
+          alt: classType === "base" ? cls.system.fc.alt.value : 0,
+        },
+      };
+      preparedData.classes[tag].spellsKnownPerLevel = [];
+      preparedData.classes[tag].powersKnown = [];
+      preparedData.classes[tag].powersMaxLevel = [];
+      for (let _level = 1; _level < cls.system.maxLevel + 1; _level++) {
+        preparedData.classes[tag][`spellPerLevel${_level}`] =
+            cls.system.spellcastingType !== null &&
+            cls.system.spellcastingType !== "none"
+                ? cls.system.spellsPerLevel[_level - 1]
+                : undefined;
+        if (cls.system.spellcastingType !== null &&
+            cls.system.spellcastingType !== "none")
+          preparedData.classes[tag].spellsKnownPerLevel.push(
+              cls.system.spellsKnownPerLevel[_level - 1]);
+        if (cls.system.spellcastingType !== null &&
+            cls.system.spellcastingType !== "none")
+          preparedData.classes[tag].powersKnown.push(
+              cls.system.powersKnown[_level - 1]);
+        if (cls.system.spellcastingType !== null &&
+            cls.system.spellcastingType !== "none")
+          preparedData.classes[tag].powersMaxLevel.push(
+              cls.system.powersMaxLevel[_level - 1]);
+      }
+      for (let k of Object.keys(preparedData.classes[tag].savingThrows)) {
+        let formula = CONFIG.D35E.classSavingThrowFormulas[classType][cls.system.savingThrows[k].value];
+        if (formula == null) formula = "0";
+        preparedData.classes[tag].savingThrows[k] = new Roll35e(formula,
+            {level: cls.system.levels}).roll().total;
+      }
+      if (cls.system.classType !== "racial")
+        totalNonRacialLevels = Math.min(
+            totalNonRacialLevels + cls.system.levels, 20);
 
-        if (nameTag !== tag) preparedData.classes[nameTag] = preparedData.classes[tag];
-        if (originalNameTag !== tag) preparedData.classes[originalNameTag] = preparedData.classes[tag];
+      if (nameTag !==
+          tag) preparedData.classes[nameTag] = preparedData.classes[tag];
+      if (originalNameTag !==
+          tag) preparedData.classes[originalNameTag] = preparedData.classes[tag];
 
-        preparedData.classes[tag].spelllist = new Map();
-        for (let a = 0; a < 10; a++) {
-          (cls.system?.spellbook[a]?.spells || []).forEach((spell) => {
-            spell.level = a;
-            preparedData.classes[tag].spelllist.set(`${spell.pack}.${spell.id}`, spell);
-          });
-        }
-      });
+      preparedData.classes[tag].spelllist = new Map();
+      for (let a = 0; a < 10; a++) {
+        (cls.system?.spellbook[a]?.spells || []).forEach((spell) => {
+          spell.level = a;
+          preparedData.classes[tag].spelllist.set(`${spell.pack}.${spell.id}`,
+              spell);
+        });
+      }
+    });
 
     let naturalAttackCount = (actorData.items || []).filter(
-      (o) => o.type === "attack" && o.system.attackType === "natural"
+        (o) => o.type === "attack" && o.system.attackType === "natural"
     )?.length;
     preparedData.naturalAttackCount = naturalAttackCount;
 
@@ -324,13 +345,17 @@ export class ActorPF extends Actor {
         preparedData.counters[group] = {};
       }
       if (preparedData.counters[group][name] === undefined) {
-        preparedData.counters[group][name] = { value: 0, counted: 0 };
+        preparedData.counters[group][name] = {value: 0, counted: 0};
       }
-      preparedData.counters[group][name].value = Math.floor(preparedData.totalNonEclLevels / 3.0) + 1;
+      preparedData.counters[group][name].value = Math.floor(
+          preparedData.totalNonEclLevels / 3.0) + 1;
     }
 
-    preparedData.combinedResistances = preparedData.energyResistance ? duplicate(preparedData.energyResistance) : [];
-    preparedData.combinedDR = preparedData.damageReduction ? duplicate(preparedData.damageReduction) : [];
+    preparedData.combinedResistances = preparedData.energyResistance
+        ? duplicate(preparedData.energyResistance)
+        : [];
+    preparedData.combinedDR = preparedData.damageReduction ? duplicate(
+        preparedData.damageReduction) : [];
     let erDrRollData = this.getRollData();
 
     for (let [a, abl] of Object.entries(preparedData.abilities)) {
@@ -338,35 +363,35 @@ export class ActorPF extends Actor {
     }
 
     preparedData.shieldType = "none";
-    this.items
-      .filter((obj) => {
-        return ItemActiveHelper.isActive(obj);
-      })
-      .forEach((_obj) => {
-        ItemPrepareDataHelper.prepareResistancesForItem(_obj, erDrRollData, preparedData);
-        ItemPrepareDataHelper.prepareCountersForItem(_obj, preparedData);
-      });
-    actorData.items
-      .filter((obj) => {
-        return (
+    this.items.filter((obj) => {
+      return ItemActiveHelper.isActive(obj);
+    }).forEach((_obj) => {
+      ItemPrepareDataHelper.prepareResistancesForItem(_obj, erDrRollData,
+          preparedData);
+      ItemPrepareDataHelper.prepareCountersForItem(_obj, preparedData);
+    });
+    actorData.items.filter((obj) => {
+      return (
           obj.type === "feat" &&
           obj.system.featType === "feat" &&
           (obj.system.source === undefined || obj.system.source === "")
-        );
-      })
-      .forEach((obj) => {
-        let group = "feat";
-        let name =
-          obj.system.classSource !== undefined && obj.system.classSource !== "" ? obj.system.classSource : "base";
-        if (preparedData.counters[group][name] === undefined) {
-          preparedData.counters[group][name] = { value: 0, counted: 0 };
-        }
-        preparedData.counters[group][name].counted++;
-      });
+      );
+    }).forEach((obj) => {
+      let group = "feat";
+      let name =
+          obj.system.classSource !== undefined && obj.system.classSource !== ""
+              ? obj.system.classSource
+              : "base";
+      if (preparedData.counters[group][name] === undefined) {
+        preparedData.counters[group][name] = {value: 0, counted: 0};
+      }
+      preparedData.counters[group][name].counted++;
+    });
 
     // Prepare modifier containers
     preparedData.attributes.mods = preparedData.attributes.mods || {};
-    preparedData.attributes.mods.skills = preparedData.attributes.mods.skills || {};
+    preparedData.attributes.mods.skills = preparedData.attributes.mods.skills ||
+        {};
 
     let spellcastingBonusTotalUsed = {
       psionic: 0,
@@ -375,52 +400,63 @@ export class ActorPF extends Actor {
       cards: 0,
     };
 
-    for (let spellbook of Object.values(preparedData.attributes.spells.spellbooks)) {
-      if (spellbook.class !== "" && preparedData.classes[spellbook.class] != null) {
+    for (let spellbook of Object.values(
+        preparedData.attributes.spells.spellbooks)) {
+      if (spellbook.class !== "" && preparedData.classes[spellbook.class] !=
+          null) {
         let spellcastingType = preparedData.classes[spellbook.class].spellcastingType;
         spellcastingBonusTotalUsed[spellcastingType] += spellbook.bonusPrestigeCl;
       }
     }
 
-    for (let deck of Object.values(preparedData.attributes?.cards?.decks || {})) {
+    for (let deck of Object.values(
+        preparedData.attributes?.cards?.decks || {})) {
       if (deck.class !== "" && preparedData.classes[deck.class] != null) {
         spellcastingBonusTotalUsed["cards"] += deck.bonusPrestigeCl;
       }
     }
 
-    preparedData.senses = duplicate(getProperty(this.system, "attributes.senses")) || {};
+    preparedData.senses = duplicate(
+        getProperty(this.system, "attributes.senses")) || {};
     if (!preparedData.senses.modified) preparedData.senses.modified = {};
     for (let i of this.items.values()) {
       if (!i.system.hasOwnProperty("senses")) continue;
       if (
-        (i.system.equipped && !i.system.melded && !i.broken) ||
-        i.type === "race" ||
-        i.type === "class" ||
-        (i.type === "buff" && i.system.active) ||
-        (i.type === "aura" && i.system.active)
+          (i.system.equipped && !i.system.melded && !i.broken) ||
+          i.type === "race" ||
+          i.type === "class" ||
+          (i.type === "buff" && i.system.active) ||
+          (i.type === "aura" && i.system.active)
       ) {
         for (let [k, label] of Object.entries(CONFIG.D35E.senses)) {
-          if (preparedData.senses[k] !== Math.max(preparedData.senses[k], i.system.senses[k] || 0)) {
-            preparedData.senses[k] = Math.max(preparedData.senses[k], i.system.senses[k] || 0);
+          if (preparedData.senses[k] !==
+              Math.max(preparedData.senses[k], i.system.senses[k] || 0)) {
+            preparedData.senses[k] = Math.max(preparedData.senses[k],
+                i.system.senses[k] || 0);
             preparedData.senses.modified[k] = true;
           }
         }
-        preparedData.senses.darkvision = Math.max(preparedData.senses.darkvision, i.system.senses?.darkvision || 0);
+        preparedData.senses.darkvision = Math.max(
+            preparedData.senses.darkvision, i.system.senses?.darkvision || 0);
         if (preparedData.senses.lowLight !== i.system.senses?.lowLight) {
-          preparedData.senses.lowLight = preparedData.senses.lowLight || i.system.senses?.lowLight || false;
+          preparedData.senses.lowLight = preparedData.senses.lowLight ||
+              i.system.senses?.lowLight || false;
           preparedData.senses.modified["lowLight"] = true;
         }
-        if (preparedData.senses.lowLightMultiplier !== i.system.senses?.lowLightMultiplier) {
+        if (preparedData.senses.lowLightMultiplier !==
+            i.system.senses?.lowLightMultiplier) {
           preparedData.senses.lowLightMultiplier =
-            preparedData.senses.lowLightMultiplier < (i.system.senses?.lowLightMultiplier || 2)
-              ? i.system.senses?.lowLightMultiplier || 2
-              : preparedData.senses.lowLightMultiplier;
+              preparedData.senses.lowLightMultiplier <
+              (i.system.senses?.lowLightMultiplier || 2)
+                  ? i.system.senses?.lowLightMultiplier || 2
+                  : preparedData.senses.lowLightMultiplier;
           preparedData.senses.modified["lowLight"] = true;
         }
       }
     }
 
-    for (let spellbook of Object.values(preparedData.attributes.spells.spellbooks)) {
+    for (let spellbook of Object.values(
+        preparedData.attributes.spells.spellbooks)) {
       if (!spellbook.cl) continue;
       // Set CL
       spellbook.maxPrestigeCl = 0;
@@ -434,21 +470,25 @@ export class ActorPF extends Actor {
       if (actorData.type === "npc") spellbook.cl.total += spellbook.cl.base;
       if (spellbook.class === "_hd") {
         spellbook.cl.total += preparedData.attributes.hd.total;
-      } else if (spellbook.class !== "" && preparedData.classes[spellbook.class] != null) {
+      } else if (spellbook.class !== "" &&
+          preparedData.classes[spellbook.class] != null) {
         if (preparedData.classes[spellbook.class]?.halfCasterLevel)
-          spellbook.cl.total += Math.floor(preparedData.classes[spellbook.class].level / 2);
+          spellbook.cl.total += Math.floor(
+              preparedData.classes[spellbook.class].level / 2);
         else spellbook.cl.total += preparedData.classes[spellbook.class].level;
         let spellcastingType = spellbook.spellcastingType;
         if (
-          spellcastingType !== undefined &&
-          spellcastingType !== null &&
-          spellcastingType !== "none" &&
-          spellcastingType !== "other"
+            spellcastingType !== undefined &&
+            spellcastingType !== null &&
+            spellcastingType !== "none" &&
+            spellcastingType !== "other"
         ) {
-          if (preparedData.attributes.prestigeCl[spellcastingType]?.max !== undefined) {
+          if (preparedData.attributes.prestigeCl[spellcastingType]?.max !==
+              undefined) {
             spellbook.maxPrestigeCl = preparedData.attributes.prestigeCl[spellcastingType].max;
             spellbook.availablePrestigeCl =
-              preparedData.attributes.prestigeCl[spellcastingType].max - spellcastingBonusTotalUsed[spellcastingType];
+                preparedData.attributes.prestigeCl[spellcastingType].max -
+                spellcastingBonusTotalUsed[spellcastingType];
           }
         }
 
@@ -458,13 +498,20 @@ export class ActorPF extends Actor {
       spellbook.canAddPrestigeCl = spellbook.availablePrestigeCl > 0;
       spellbook.canRemovePrestigeCl = spellbook.bonusPrestigeCl > 0;
       spellbook.powersKnown = preparedData.classes[spellbook.class]?.powersKnown
-        ? preparedData.classes[spellbook.class]?.powersKnown[`${preparedData.classes[spellbook.class].level}`] || 0
-        : 0;
+          ? preparedData.classes[spellbook.class]?.powersKnown[`${preparedData.classes[spellbook.class].level}`] ||
+          0
+          : 0;
       spellbook.powersMaxLevel = preparedData.classes[spellbook.class]?.powersMaxLevel
-        ? preparedData.classes[spellbook.class]?.powersMaxLevel[`${preparedData.classes[spellbook.class].level}`] || 0
-        : 0;
-      spellbook.cl.total += spellbook.bonusPrestigeCl === undefined ? 0 : spellbook.bonusPrestigeCl;
-      spellbook.powerPointsValue = { max: spellbook.powerPointsTotal || 0, value: spellbook.powerPoints || 0 };
+          ? preparedData.classes[spellbook.class]?.powersMaxLevel[`${preparedData.classes[spellbook.class].level}`] ||
+          0
+          : 0;
+      spellbook.cl.total += spellbook.bonusPrestigeCl === undefined
+          ? 0
+          : spellbook.bonusPrestigeCl;
+      spellbook.powerPointsValue = {
+        max: spellbook.powerPointsTotal || 0,
+        value: spellbook.powerPoints || 0
+      };
       // Add spell slots
       spellbook.spells = spellbook.spells || {};
       for (let a = 0; a < 10; a++) {
@@ -474,33 +521,39 @@ export class ActorPF extends Actor {
           base: null,
           known: 0,
         };
-        let spellbookClassLevel = (preparedData.classes[spellbook.class]?.level || 0) + spellbook.bonusPrestigeCl;
+        let spellbookClassLevel = (preparedData.classes[spellbook.class]?.level ||
+            0) + spellbook.bonusPrestigeCl;
         spellbook.spells[`spell${a}`].maxKnown = preparedData.classes[spellbook.class]?.spellsKnownPerLevel
-          ? Math.max(
-              0,
-              preparedData.classes[spellbook.class]?.spellsKnownPerLevel[spellbookClassLevel - 1]
-                ? preparedData.classes[spellbook.class]?.spellsKnownPerLevel[spellbookClassLevel - 1][a + 1] || 0
-                : 0
+            ? Math.max(
+                0,
+                preparedData.classes[spellbook.class]?.spellsKnownPerLevel[spellbookClassLevel -
+                1]
+                    ? preparedData.classes[spellbook.class]?.spellsKnownPerLevel[spellbookClassLevel -
+                1][a + 1] || 0
+                    : 0
             )
-          : 0;
+            : 0;
       }
     }
-    for (let deck of Object.values(preparedData.attributes?.cards?.decks || {})) {
+    for (let deck of Object.values(
+        preparedData.attributes?.cards?.decks || {})) {
       // Set CL
       deck.maxPrestigeCl = 0;
 
       if (deck.class !== "" && preparedData.classes[deck.class] != null) {
         let spellcastingType = "cards";
         if (
-          spellcastingType !== undefined &&
-          spellcastingType !== null &&
-          spellcastingType !== "none" &&
-          spellcastingType !== "other"
+            spellcastingType !== undefined &&
+            spellcastingType !== null &&
+            spellcastingType !== "none" &&
+            spellcastingType !== "other"
         ) {
-          if (preparedData.attributes.prestigeCl[spellcastingType]?.max !== undefined) {
+          if (preparedData.attributes.prestigeCl[spellcastingType]?.max !==
+              undefined) {
             deck.maxPrestigeCl = preparedData.attributes.prestigeCl[spellcastingType].max;
             deck.availablePrestigeCl =
-              preparedData.attributes.prestigeCl[spellcastingType].max - spellcastingBonusTotalUsed[spellcastingType];
+                preparedData.attributes.prestigeCl[spellcastingType].max -
+                spellcastingBonusTotalUsed[spellcastingType];
           }
         }
       }
@@ -508,6 +561,7 @@ export class ActorPF extends Actor {
       deck.canAddPrestigeCl = deck.availablePrestigeCl > 0;
       deck.canRemovePrestigeCl = deck.bonusPrestigeCl > 0;
     }
+
     preparedData.canLevelUp = preparedData.details.xp.value >= preparedData.details.xp.max;
     this.combatChangeItems = this.items.filter((o) => ItemCombatChangesHelper.isCombatChangeItemType(o));
     if (this.isCompanionSetUp) {

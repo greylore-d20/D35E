@@ -1,8 +1,18 @@
 export class TokenDocumentPF extends TokenDocument {
   // Todo: Declare this in TokenDocumentPF when/ if TokenDocument.getData calls the constructor's method
-  getTrackedAttributes(data, path = []) {
+  static getTrackedAttributes(data, path = []) {
     const attr = super.getTrackedAttributes(data, path);
-    if (path.length === 0) attr.value.push(["attributes", "hp", "temp"], ["attributes", "hp", "nonlethal"]);
+    if (path.length === 0) {
+      if (!attr.value.find(a => a[0] === "attributes" && a[1] === "hp" && a[2] === "temp")) {
+        attr.value.push(["attributes", "hp", "temp"]);
+      }
+      if (!attr.value.find(a => a[0] === "attributes" && a[1] === "hp" && a[2] === "nonlethal")) {
+        attr.value.push(["attributes", "hp", "nonlethal"]);
+      }
+      if (!attr.bar.find(a => a[0] === "damage" && a[1] === "nonlethal")) {
+        attr.bar.push(["damage", "nonlethal"]);
+      }
+    }
     return attr;
   }
 
