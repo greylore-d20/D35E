@@ -66,17 +66,17 @@ export const buildCache = async function() {
         const packName = entry[0];
         const itemPack = entry[1];
 
-        if (packName.endsWith('.class-abilities')) {
+        if (packName.endsWith('class-abilities')) {
             addClassAbilitiesFromPackToCache(itemPack);
             continue;
         }
 
-        if (packName.endsWith('.racial-abilities')) {
+        if (packName.endsWith('racial-abilities')) {
             addRacialAbilitiedFromPackToCache(itemPack);
             continue;
         }
 
-        if (packName.endsWith('.spelllike-abilities') || packName.endsWith('.spell-like-abilities') || packName.endsWith('.spelllike')) {
+        if (packName.endsWith('spelllike-abilities') || packName.endsWith('spell-like-abilities') || packName.endsWith('spelllike')) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
@@ -95,7 +95,7 @@ export const buildCache = async function() {
             continue;
         }
 
-        if (packName.endsWith('.materials')) {
+        if (packName.endsWith('materials')) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
@@ -106,7 +106,7 @@ export const buildCache = async function() {
             continue;
         }
 
-        if (packName.endsWith('.damage-types')) {
+        if (packName.endsWith('damage-types')) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
