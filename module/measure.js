@@ -28,10 +28,9 @@ export class TemplateLayerPF extends TemplateLayer {
 
     // Create the new preview template
     const tool = game.activeTool;
-    const { originalEvent } = event.data;
 
     // Snap to grid
-    if (!originalEvent.shiftKey) {
+    if (!event.shiftKey) {
       const pos = canvas.grid.getSnappedPosition(origin.x, origin.y, this.gridPrecision);
       origin.x = pos.x;
       origin.y = pos.y;
@@ -49,7 +48,7 @@ export class TemplateLayerPF extends TemplateLayer {
     };
 
     // Apply some type-specific defaults
-    const defaults = CONFIG.MeasuredTemplate.defaults;
+    const defaults = MeasuredTemplatePF.defaults;
     if (tool === "cone") data["angle"] = defaults.angle;
     else if (tool === "ray") data["width"] = defaults.width * canvas.dimensions.distance;
 
@@ -63,13 +62,11 @@ export class TemplateLayerPF extends TemplateLayer {
   _onDragLeftMove(event) {
     if (!game.settings.get("D35E", "measureStyle")) return super._onDragLeftMove(event);
 
-    const { destination, createState, preview, origin } = event.data;
-    if (createState === 0) return;
-
-    const { originalEvent } = event.data;
+    const { destination, layerDragState, preview, origin } = event.interactionData;
+    if (layerDragState === 0) return;
 
     // Snap the destination to the grid
-    const snapToGrid = !originalEvent.shiftKey;
+    const snapToGrid = !event.shiftKey;
     if (snapToGrid) {
       event.interactionData.destination = canvas.grid.getSnappedPosition(destination.x, destination.y, 2);
     }
@@ -85,7 +82,7 @@ export class TemplateLayerPF extends TemplateLayer {
     // Set direction
     const baseDirection = Math.normalizeDegrees(Math.toDegrees(ray.angle));
     if (snapToGrid && ["cone", "circle"].includes(type)) {
-      const halfAngle = CONFIG.MeasuredTemplate.defaults.angle / 2;
+      const halfAngle = MeasuredTemplatePF.defaults.angle / 2;
       preview.document.direction = Math.floor((baseDirection + halfAngle / 2) / halfAngle) * halfAngle;
     } else if (snapToGrid && type === "ray") {
       preview.document.direction = Math.floor((baseDirection + cellSize / 2) / cellSize) * cellSize;
@@ -99,14 +96,20 @@ export class TemplateLayerPF extends TemplateLayer {
     } else {
       preview.document.distance = baseDistance;
     }
-    preview.refresh();
+    preview.renderFlags.set({ refreshShape: true });
 
     // Confirm the creation state
-    event.interactionData.createState = 2;
+    event.interactionData.layerDragState = 2;
   }
 }
 
 export class MeasuredTemplatePF extends MeasuredTemplate {
+  static get defaults() {
+        return {
+          angle: 90.0,
+          width: 1
+        }
+  };
   getHighlightedSquares() {
     if (!game.settings.get("D35E", "measureStyle") || !["circle", "cone", "ray"].includes(this.document.t)) return [];
 
