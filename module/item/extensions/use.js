@@ -443,7 +443,10 @@ export class ItemUse {
       allAttacks = manyshotAttacks;
     }
 
-    // Lock useAmount for powers to max value
+    // Determine spell CL / SL / ablMod (does notthing for other items)
+    this.#_determineSpellInfo(rollData)
+
+    // Lock useAmount for powers to max value and add aliases
     if (this.item.type === "spell" && getProperty(this.item.system, "isPower")) {
       rollData.useAmount = Math.max(
         0,
@@ -1500,6 +1503,55 @@ export class ItemUse {
     return usedItem.roll({ rollMode: rollModeOverride });
   }
 
+  #_determineSpellInfo(_rollData) {
+    const data = duplicate(this.item.system);
+    const rollData = _rollData ? _rollData : this.item.actor ? this.item.actor.getRollData() : {};
+    if (!_rollData) {
+      rollData.item = data;
+      if (this.item.actor) {
+        let allCombatChanges = [];
+        let attackType = this.item.type;
+        this.item.actor.combatChangeItems
+            .filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, attackType))
+            .forEach((i) => {
+              allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData));
+            });
+
+        this.item._addCombatChangesToRollData(allCombatChanges, rollData);
+      }
+    }
+
+    // Determines CL, SL and ability modifier
+    let spellSource;
+    let cl = 0;
+    let sl = 0;
+    let ablMod = 0;
+    if (this.item.type === "spell") {
+      const spellbookIndex = data.spellbook;
+      spellSource = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
+    } else if (this.item.type === "card") {
+      const deckIndex = data.deck;
+      spellSource = getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
+    } else {
+      return; // The values are left undefined for other kinds of items.
+    }
+
+    const spellAbility = spellSource.ability;
+    if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
+
+    cl += getProperty(spellSource, "cl.total") || 0;
+    cl += data.clOffset || 0;
+    cl += rollData.featClBonus || 0;
+    cl -= this.item.actor.system.attributes.energyDrain || 0;
+
+    sl += data.level;
+    sl += data.slOffset || 0;
+
+    rollData.cl = cl;
+    rollData.sl = sl;
+    rollData.ablMod = ablMod;
+  }
+
   #_getSpellDC(_rollData) {
     const data = duplicate(this.item.system);
     let spellDC = { dc: null, type: null, description: null };
@@ -1520,51 +1572,7 @@ export class ItemUse {
       }
     }
 
-    // Get the spell specific info
-    let spellbookIndex,
-      spellAbility,
-      ablMod = 0;
-    let spellbook = null;
-    let cl = 0;
-    let sl = 0;
-    if (this.item.type === "spell") {
-      spellbookIndex = data.spellbook;
-      spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
-      spellAbility = spellbook.ability;
-      if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
-
-      cl += getProperty(spellbook, "cl.total") || 0;
-      cl += data.clOffset || 0;
-      cl -= this.item.actor.system.attributes.energyDrain || 0;
-
-      cl += rollData.featClBonus || 0;
-
-      sl += data.level;
-      sl += data.slOffset || 0;
-
-      rollData.cl = cl;
-      rollData.sl = sl;
-      rollData.ablMod = ablMod;
-    } else if (this.item.type === "card") {
-      let deckIndex = data.deck;
-      let deck = getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
-      spellAbility = deck.ability;
-      if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
-
-      cl += getProperty(deck, "cl.total") || 0;
-      cl += data.clOffset || 0;
-      cl += rollData.featClBonus || 0;
-      cl -= this.item.actor.system.attributes.energyDrain || 0;
-
-      sl += data.level;
-      sl += data.slOffset || 0;
-
-      rollData.cl = cl;
-      rollData.sl = sl;
-      rollData.ablMod = ablMod;
-    }
-
-    spellDC.cl = cl;
+    spellDC.cl = rollData.cl;
 
     if (
       data.hasOwnProperty("actionType") &&
@@ -1575,6 +1583,7 @@ export class ItemUse {
         .total;
       let saveDesc = data.save.description;
       if (this.item.type === "spell") {
+        const spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${data.spellbook}`) || {};
         saveDC += new Roll35e(spellbook.baseDCFormula || "", rollData).roll().total;
       }
 
