@@ -2093,7 +2093,10 @@ export class ActorPF extends Actor {
       );
 
       let modifiersList = duplicate(skillSourceDetails);
-      modifiersList.unshift({ value: roll.terms[0].results[0].result, name: "Skill Roll" });
+      if (!take20 && !take10) {
+        modifiersList.unshift(
+            {value: roll.terms[0].results[0].result, name: "Skill Roll"});
+      }
       if (skillManualBonus) modifiersList.push({ value: skillManualBonus, name: "Situational Modifier" });
       modifiersList.push(...(rollData.featSkillBonusList || []));
 
@@ -2107,7 +2110,8 @@ export class ActorPF extends Actor {
                 `;
       }
       var tooltips = `<div class="dice-formula" style="margin-bottom: 8px">${roll.formula}</div><div class="table-container"><table>${tooltip}</table></div>`;
-      let renderedTooltip = $(await roll.getTooltip()).prepend(tooltips)[0].outerHTML;
+      let rollTooltip = await roll.getTooltip();
+      let renderedTooltip = rollTooltip ? $(rollTooltip).prepend(tooltips)[0].outerHTML : tooltips;
       // Set chat data
       let chatData = {
         speaker: options.speaker ? options.speaker : ChatMessage.getSpeaker({ actor: this.data }),
