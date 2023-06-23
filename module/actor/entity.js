@@ -1883,7 +1883,7 @@ export class ActorPF extends Actor {
     const noteObjects = this.getContextNotes(`savingThrow.${savingThrowId}`);
     for (let noteObj of noteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      if (noteObj.item != null) rollData.item = noteObj.item.toObject()
 
       await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
@@ -2181,7 +2181,7 @@ export class ActorPF extends Actor {
     const noteObjects = this.getContextNotes(contextNoteSkillId);
     for (let noteObj of noteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).getRollData();
+      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.toObject(), { owner: this.isOwner }).getRollData();
 
       for (let note of noteObj.notes) {
         for (let _note of note.split(/[\n\r]+/)) {
@@ -2392,7 +2392,7 @@ export class ActorPF extends Actor {
     const noteObjects = this.getContextNotes(`misc.cmb`);
     for (let noteObj of noteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      if (noteObj.item != null) rollData.item = noteObj.item.toObject()
       await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
     let props = this.getDefenseHeaders();
@@ -2499,7 +2499,7 @@ export class ActorPF extends Actor {
     const noteObjects = this.getContextNotes(`abilityChecks.${abilityId}`);
     for (let noteObj of noteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      if (noteObj.item != null) rollData.item = noteObj.item.toObject()
       await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
 
@@ -2627,7 +2627,7 @@ export class ActorPF extends Actor {
     const acNoteObjects = this.getContextNotes("misc.ac");
     for (let noteObj of acNoteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      if (noteObj.item != null) rollData.item = noteObj.item.toObject()
 
       await this.enrichAndAddNotes(noteObj, rollData, acNotes);
     }
@@ -2639,7 +2639,7 @@ export class ActorPF extends Actor {
     const cmdNoteObjects = this.getContextNotes("misc.cmd");
     for (let noteObj of cmdNoteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      if (noteObj.item != null) rollData.item = noteObj.item.toObject()
 
       await this.enrichAndAddNotes(noteObj, rollData, cmdNotes);
     }
@@ -2651,7 +2651,7 @@ export class ActorPF extends Actor {
     const srNoteObjects = this.getContextNotes("misc.sr");
     for (let noteObj of srNoteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      if (noteObj.item != null) rollData.item = noteObj.item.toObject()
       await this.enrichAndAddNotes(noteObj, rollData, srNotes);
     }
 

@@ -516,10 +516,10 @@ export class ItemRolls {
       rolls.push(roll);
     }
     for (let roll of rolls) {
-      if (roll.base.indexOf("@cl") !== -1 && !roll.source) {
+      if ((roll.base || "").indexOf("@cl") !== -1 && !roll.source) {
         roll.source = "Caster Level";
       }
-      if (roll.base.indexOf("@sl") !== -1 && !roll.source) {
+      if ((roll.base || "").indexOf("@sl") !== -1 && !roll.source) {
         roll.source = "Spell Level";
       }
     }
