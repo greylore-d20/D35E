@@ -269,7 +269,10 @@ Hooks.once("init", async function () {
     return options.inverse(this);
   });
 
-  //CONFIG.Canvas.layers["d35e"] = D35ELayer;
+  // CONFIG.Canvas.layers.d35e = {
+  //   layerClass: D35ELayer,
+  //   group: "interface",
+  // };
 
   // Patch Core Functions
   PatchCore();

@@ -9,10 +9,9 @@ export default class D35ELayer extends InteractionLayer {
 
     static get layerOptions() {
         return mergeObject(super.layerOptions, {
-            objectClass: Note,
-            sheetClass: NoteConfig,
-            canDragCreate: false,
-            zIndex: 180
+          name: "d35e",
+          sortActiveTop: true,
+          zIndex: 999,
         });
     }
 
@@ -50,12 +49,12 @@ export default class D35ELayer extends InteractionLayer {
 
       /** @override */
       _onClickLeft(event) {
-        canvas.tokens.controlled.forEach(token => token.release())
+        //canvas.tokens.controlled.forEach(token => token.release())
       }
 
       activate() {
           super.activate()
-          canvas.tokens.interactiveChildren = true;
+          //canvas.tokens.interactiveChildren = true;
       }
 
       deactivate() {

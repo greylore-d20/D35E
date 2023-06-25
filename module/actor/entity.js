@@ -1624,7 +1624,7 @@ export class ActorPF extends Actor {
     const noteObjects = this.getContextNotes(`misc.${type}`);
     for (let noteObj of noteObjects) {
       rollData.item = {};
-      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.data, { owner: this.isOwner }).toObject();
+      if (noteObj.item != null) rollData.item = new Item35E(noteObj.item.toObject(), { owner: this.isOwner }).toObject();
       await this.enrichAndAddNotes(noteObj, rollData, notes);
     }
     let props = this.getDefenseHeaders();

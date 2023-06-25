@@ -531,7 +531,7 @@ export class ActorUpdater {
                   subtype: this.#getChangeItemSubtype(item),
                   name: item.name,
                   item: item.system,
-                  itemRollData: new Item35E(item.data, { temporary: true }).getRollData(),
+                  itemRollData: new Item35E(item.toObject(), { temporary: true }).getRollData(),
                 },
               });
             }

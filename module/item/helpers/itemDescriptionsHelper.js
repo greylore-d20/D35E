@@ -119,9 +119,10 @@ export class ItemDescriptionsHelper {
             item.system.primaryAttack
           )
       );
+    if (abilityBonus < 0) abilityBonus = item.actor.system.abilities[item.system.ability.damage].mod;
     if (abilityBonus) results.push(abilityBonus);
     if (getProperty(item.system, "enh")) results.push(getProperty(item.system, "enh"));
-    return results.join(" + ");
+    return results.join(" + ").replaceAll(" + -", " - ");
   }
 
   static rangeDescription(item) {
