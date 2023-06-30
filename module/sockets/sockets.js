@@ -8,13 +8,13 @@ export class Sockets {
     switch (type) {
       case Sockets.PROGRESS_COMBAT_ROUND: {
         if (game.user.id === payload.gmId && game.user.isGM) {
-          LogHelper.log("D35E | Progress combat round", payload);
+          LogHelper.log("Progress combat round", payload);
           game.combats.get(payload.combatId).nextRound();
         }
       }
       case Sockets.PROGRESS_COMBAT_TURN: {
         if (game.user.id === payload.gmId && game.user.isGM) {
-          LogHelper.log("D35E | Progress combat turn", payload);
+          LogHelper.log("Progress combat turn", payload);
           game.combats.get(payload.combatId).nextTurn();
         }
       }

@@ -24,7 +24,7 @@ export class ItemChatAction {
     let isOwnerOfToken = false;
     if (_actor) isOwnerOfToken = _actor.testUserPermission(game.user, "OWNER");
     if (!(isTargetted || game.user.isGM || message.isAuthor || isOwnerOfToken || canBeUsedByEveryone)) {
-      //console.log('No permission', isTargetted, game.user.isGM, isOwnerOfToken)
+      //game.D35E.logger.log('No permission', isTargetted, game.user.isGM, isOwnerOfToken)
       button.disabled = false;
       return;
     }
@@ -133,7 +133,7 @@ export class ItemChatAction {
           `<button disabled class="disabled-action-button">${button.innerText}</button>`
         ),
       });
-      //console.log(message, button)
+      //game.D35E.logger.log(message, button)
     }
   }
 

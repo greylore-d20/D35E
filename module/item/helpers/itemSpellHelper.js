@@ -202,7 +202,7 @@ export class ItemSpellHelper {
 
   static getSpellDuration(durationData, level = 1) {
     let durationLabel = "";
-    console.log(durationData)
+    game.D35E.logger.log(durationData)
     let needRounds = !["", "inst", "perm", "seeText","spec"].includes(durationData.units);
     if (!needRounds || !durationData.value) {
       durationLabel = CONFIG.D35E.timePeriodsSpells[durationData.units];

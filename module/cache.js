@@ -59,7 +59,7 @@ export const rebuildCache = async function() {
 
 export const buildCache = async function() {
 
-    //console.log("D35E | Building Caches for compendiums...")
+    //game.D35E.logger.log("Building Caches for compendiums...")
     ui.notifications.info(`Building Caches for compendiums...`);
 
     for (const entry of game.packs.entries()) {
@@ -119,5 +119,5 @@ export const buildCache = async function() {
     };
 
     ui.notifications.info(`Building Caches for compendiums finished!`);
-    //console.log("D35E | Building Caches for finished!")
+    //game.D35E.logger.log("Building Caches for finished!")
 }

@@ -657,7 +657,7 @@ export class ActorPF extends Actor {
     if (options["recursive"] !== undefined && options["recursive"] === false) {
       return super.update(updated, options);
     }
-    LogHelper.log("D35E | ACTOR UPDATE | Running update");
+    LogHelper.log("ACTOR UPDATE | Running update");
     let diff = await new ActorUpdater(this).update(updated, options);
 
     let returnActor = null;
@@ -672,7 +672,7 @@ export class ActorPF extends Actor {
 
     this._cachedRollData = null;
     this._cachedAuras = null;
-    LogHelper.log("D35E | ACTOR UPDATE | Finished update");
+    LogHelper.log("ACTOR UPDATE | Finished update");
     return Promise.resolve(returnActor ? returnActor : this);
   }
 
@@ -710,7 +710,7 @@ export class ActorPF extends Actor {
   }
 
   async updateClassProgressionLevel(data, globalUpdateData, data1, levelUpData) {
-    //LogHelper.log('D35E | ActorPF | updateClassProgressionLevel | Starting update')
+    //LogHelper.log('ActorPF | updateClassProgressionLevel | Starting update')
     const classes = this.items
       .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
       .sort((a, b) => {
@@ -765,7 +765,7 @@ export class ActorPF extends Actor {
         itemUpdateData["system.hp"] = classHP.get(_class._id) || 0;
         await this.updateOwnedItem(itemUpdateData, { stopUpdates: true });
 
-        //LogHelper.log(`D35E | ActorPF | updateClassProgressionLevel | Updated class item ${_class.name}`)
+        //LogHelper.log(`ActorPF | updateClassProgressionLevel | Updated class item ${_class.name}`)
       }
 
       for (let [k, s] of Object.entries(getProperty(data, "system.skills"))) {
@@ -780,9 +780,9 @@ export class ActorPF extends Actor {
         }
       }
 
-      //LogHelper.log('D35E | ActorPF | updateClassProgressionLevel | Update done')
+      //LogHelper.log('ActorPF | updateClassProgressionLevel | Update done')
     } else {
-      //LogHelper.log('D35E | ActorPF | updateClassProgressionLevel | Update skipped, no levelUpData')
+      //LogHelper.log('ActorPF | updateClassProgressionLevel | Update skipped, no levelUpData')
     }
   }
 
@@ -1019,7 +1019,7 @@ export class ActorPF extends Actor {
     if (!this.testUserPermission(game.user, "OWNER"))
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
     if (item.type !== "weapon") throw new Error("Wrong Item type");
-    //LogHelper.log('D35E | Creating attack for', item)
+    //LogHelper.log('Creating attack for', item)
 
     let isKeen = false;
     let isSpeed = false;
@@ -1248,7 +1248,7 @@ export class ActorPF extends Actor {
     let createdAttack = await this.createEmbeddedEntity("Item", attacks, {});
     //let createdAttack = await this.createOwnedItem(attacks);
 
-    //LogHelper.log('D35E | Created attack for', item)
+    //LogHelper.log('Created attack for', item)
 
     ui.notifications.info(game.i18n.localize("D35E.NotificationCreatedAttack").format(item.data.name));
     return createdAttack;
@@ -2865,7 +2865,7 @@ export class ActorPF extends Actor {
       ac += parseInt(rollData.featAC) || 0;
       rollData.featACList = rollData.featACList || [];
       rollData.featACList.unshift({ value: baseAc, sourceName: game.i18n.localize("D35E.AC") });
-      //LogHelper.log('D35E | Final roll AC', ac)
+      //LogHelper.log('Final roll AC', ac)
       return {
         ac: ac,
         applyHalf: applyHalf,
@@ -2980,7 +2980,7 @@ export class ActorPF extends Actor {
     // flex: 400px;
     // margin: 0;
     // margin-bottom: 4px;
-    //LogHelper.log('D35E | Final dialog AC', finalAc)
+    //LogHelper.log('Final dialog AC', finalAc)
     return finalAc || { ac: -1, applyHalf: false, noCritical: false };
   }
 
@@ -3322,7 +3322,7 @@ export class ActorPF extends Actor {
         await createCustomChatMessage("systems/D35E/templates/chat/damage-description.html", templateData, chatData);
       }
 
-      //LogHelper.log('D35E | Damage Value ', value, damage)
+      //LogHelper.log('Damage Value ', value, damage)
       if (hit) {
         let dt = value > 0 ? Math.min(tmp, value) : 0;
         let nonLethalHeal = 0;
@@ -3581,7 +3581,7 @@ export class ActorPF extends Actor {
   }
 
   async deleteEmbeddedEntity(documentName, data, options = {}) {
-    console.warn(
+    game.D35E.logger.warn(
       "The Document#updateEmbeddedEntity method has been renamed to Document#updateEmbeddedDocuments. Support for the old method name was removed in 0.9.0"
     );
     data = data instanceof Array ? data : [data];
@@ -3631,7 +3631,7 @@ export class ActorPF extends Actor {
       try {
         delete obj.effects;
       } catch (e) {
-        console.warn(e);
+        game.D35E.logger.warn(e);
       }
       // Don't auto-equip transferred items
       if (obj._id != null && ["weapon", "equipment"].includes(obj.type)) {
@@ -3647,12 +3647,12 @@ export class ActorPF extends Actor {
       ) {
         let newSize = Object.keys(CONFIG.D35E.sizeChart).indexOf(getProperty(this.system, "traits.actualSize"));
         let oldSize = Object.keys(CONFIG.D35E.sizeChart).indexOf("med");
-        LogHelper.log("D35E | Resize Object", newSize, oldSize);
+        LogHelper.log("Resize Object", newSize, oldSize);
         let weightChange = Math.pow(2, newSize - oldSize);
         obj.system.weight = obj.system.weight * weightChange;
       }
       if (["weapon", "equipment", "loot"].includes(obj.type)) {
-        LogHelper.log("D35E | Create Object", obj);
+        LogHelper.log("Create Object", obj);
         if (obj.system.identifiedName !== obj.name) {
           obj.system.identifiedName = obj.name;
         }
@@ -3720,7 +3720,7 @@ export class ActorPF extends Actor {
             }
           }
           LogHelper.log(
-            "D35E | Spellpoints",
+            "Spellpoints",
             game.settings.get("D35E", "spellpointCostCustomFormula"),
             game.settings.get("D35E", "spellpointCostCustomFormula") &&
               game.settings.get("D35E", "spellpointCostCustomFormula") !== ""
@@ -4617,7 +4617,7 @@ export class ActorPF extends Actor {
 
     let _actions = Item35E.parseAction(actions);
 
-    LogHelper.log("D35E | ACTION | Actions", _actions);
+    LogHelper.log("ACTION | Actions", _actions);
     for (let action of _actions) {
       if (
         action.target !== target ||
@@ -4701,7 +4701,7 @@ export class ActorPF extends Actor {
       );
     }
     if (itemCreationActions.length) {
-      LogHelper.log("D35E | ACTION | itemCreationActions", itemCreationActions);
+      LogHelper.log("ACTION | itemCreationActions", itemCreationActions);
       await this.createEmbeddedDocuments("Item", itemsToCreate, {});
     }
     for (let action of itemRemoveActions) {
@@ -4716,7 +4716,7 @@ export class ActorPF extends Actor {
       );
     }
     if (itemRemoveActions.length) {
-      LogHelper.log("D35E | ACTION | itemRemoveActions", itemRemoveActions);
+      LogHelper.log("ACTION | itemRemoveActions", itemRemoveActions);
       await this.deleteEmbeddedDocuments("Item", itemsToDelete, {});
     }
 
@@ -4732,7 +4732,7 @@ export class ActorPF extends Actor {
       );
     }
     if (itemUpdateActions.length) {
-      LogHelper.log("D35E | ACTION | itemUpdateActions", itemUpdateActions);
+      LogHelper.log("ACTION | itemUpdateActions", itemUpdateActions);
       await this.updateEmbeddedDocuments("Item", itemUpdates, {});
     }
     for (let action of actorUpdateActions) {
@@ -4747,7 +4747,7 @@ export class ActorPF extends Actor {
       );
     }
     if (actorUpdateActions.length) {
-      LogHelper.log("D35E | ACTION | actorUpdates", actorUpdateActions, this.name);
+      LogHelper.log("ACTION | actorUpdates", actorUpdateActions, this.name);
       await this.update(actorUpdates);
     } else {
       await this.update({});
@@ -4767,9 +4767,9 @@ export class ActorPF extends Actor {
 
   async executeEvalOnSelf(action) {
     let actor = this;
-    //LogHelper.log('D35E | Running async eval')
+    //LogHelper.log('Running async eval')
     await eval("(async () => {" + action.body + "})()");
-    //LogHelper.log('D35E | Running async eval done')
+    //LogHelper.log('Running async eval done')
   }
 
   async quickChangeItemQuantity(itemId, add = 1) {
@@ -4967,7 +4967,7 @@ export class ActorPF extends Actor {
           updateObject["_id"] = minionClass.id || minionClass._id;
           updateObject["system.levels"] =
             this.getRollData().attributes.minionClassLevels[minionClass.system.minionGroup] || 0;
-          LogHelper.log("D35E | Minion class", minionClass, updateObject, this.getRollData());
+          LogHelper.log("Minion class", minionClass, updateObject, this.getRollData());
           await actor.updateOwnedItem(updateObject, { stopUpdates: true, massUpdate: true });
         }
         actor.update(masterData, { stopUpdates: true });
@@ -5160,9 +5160,9 @@ export class ActorPF extends Actor {
         }
         if (itemUpdate["_id"]) items.push(itemUpdate);
       }
-      console.log("Updating embedded items?", hasItemUpdates);
+      game.D35E.logger.log("Updating embedded items?", hasItemUpdates);
       if (hasItemUpdates) {
-        console.log("Updating embedded items", items);
+        game.D35E.logger.log("Updating embedded items", items);
         await this.updateEmbeddedDocuments("Item", items, { stopUpdates: true });
       }
 
@@ -5315,7 +5315,7 @@ export class ActorPF extends Actor {
     if (!this.canAskForRequest) return;
     this.socket = io(`${this.API_URI}`);
     this.socket.on('foundry', (data) => {
-      console.log("Received foundry message", data);
+      game.D35E.logger.log("Received foundry message", data);
       this.socket.emit('processed', {
         actionId: data['actionId'],
         room: getProperty(this.system, "companionUuid")
@@ -5557,7 +5557,7 @@ export class ActorPF extends Actor {
   }
 
   async updateOwnedItem(itemData, options = {}) {
-    console.warn(
+    game.D35E.logger.warn(
       "You are referencing Actor#updateOwnedItem which is deprecated in favor of Item#update or Actor#updateEmbeddedDocuments. Support will be removed in 0.9.0"
     );
     itemData = itemData instanceof Array ? itemData : [itemData];
@@ -5566,7 +5566,7 @@ export class ActorPF extends Actor {
   }
 
   async updateEmbeddedEntity(documentName, data, options = {}) {
-    console.warn(
+    game.D35E.logger.warn(
       "The Document#updateEmbeddedEntity method has been renamed to Document#updateEmbeddedDocuments. Support for the old method name will be removed in 0.9.0"
     );
     data = data instanceof Array ? data : [data];
@@ -5575,21 +5575,21 @@ export class ActorPF extends Actor {
   }
 
   async createEmbeddedDocuments(type, data, options = {}) {
-    LogHelper.log("D35E | createEmbeddedDocuments");
+    LogHelper.log("createEmbeddedDocuments");
     let createdItems = await super.createEmbeddedDocuments(type, data, options);
     if (!options.stopUpdates) await this.refresh({});
     return Promise.resolve(createdItems);
   }
 
   async updateEmbeddedDocuments(type, data, options = {}) {
-    LogHelper.log("D35E | updateEmbeddedDocuments");
+    LogHelper.log("updateEmbeddedDocuments");
     let updatedItems = await super.updateEmbeddedDocuments(type, data, options);
     if (options.massUpdate && !options.stopUpdates) await this.refresh({});
     return Promise.resolve(updatedItems);
   }
 
   async deleteEmbeddedDocuments(type, data, options = {}) {
-    LogHelper.log("D35E | deleteEmbeddedDocuments");
+    LogHelper.log("deleteEmbeddedDocuments");
 
     if (type === "Item") {
       let additionalItemsToDelete = [];

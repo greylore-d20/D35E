@@ -474,7 +474,7 @@ export class ChatAttack {
       }
 
       if (action.condition !== undefined && action.condition !== null && action.condition !== "") {
-        // //console.log('Condition', action.condition, this.rollData)
+        // //game.D35E.logger.log('Condition', action.condition, this.rollData)
         if (!new Roll35e(action.condition, this.rollData).roll().total) {
           continue;
         }

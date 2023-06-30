@@ -155,7 +155,7 @@ export async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
 
   if (AuraDebug) {
     perfEnd = performance.now();
-    console.log(`Active Auras Main Function took ${perfEnd - perfStart} ms, FPS:${Math.round(canvas.app.ticker.FPS)}`);
+    game.D35E.logger.log(`Active Auras Main Function took ${perfEnd - perfStart} ms, FPS:${Math.round(canvas.app.ticker.FPS)}`);
   }
 
   AURAS.runningUpdate = false;

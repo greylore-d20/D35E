@@ -97,7 +97,7 @@ export class ItemSheetPF extends ItemSheet {
     this.item.dataProperties = this._getItemProperties(this.item);
     this.item.dataName = this.item.name;
     sheetData.isPhysical = this.item.system.quantity !== undefined;
-    console.log("D35E | Base Item Data", this.item.system.quantity !== undefined);
+    game.D35E.logger.log("Base Item Data", this.item.system.quantity !== undefined);
     sheetData.isSpell = this.item.type === "spell";
     sheetData.isConsumable = this.item.type === "consumable";
     sheetData.isScroll = this.item.system.consumableType === "scroll";
@@ -459,7 +459,7 @@ export class ItemSheetPF extends ItemSheet {
               alreadyAddedDescriptions.add(e._id);
             }
           } else {
-            console.warn("D35E | Missing", ability);
+            game.D35E.logger.warn("Missing", ability);
           }
         }
       }
@@ -828,7 +828,7 @@ export class ItemSheetPF extends ItemSheet {
       component.updateForm(formData);
     });
 
-    //console.log("IM IN _UPDATE OBJECT FIXING THINGS", formData)
+    //game.D35E.logger.log("IM IN _UPDATE OBJECT FIXING THINGS", formData)
     return super._updateObject(event, formData);
   }
 
@@ -1058,7 +1058,7 @@ export class ItemSheetPF extends ItemSheet {
       let _customAttributes = duplicate(this.item.system.customAttributes || {});
       let newAttribute = { id: this.generateId(), name: "", value: "" };
       _customAttributes[newAttribute.id] = newAttribute;
-      //console.log(`D35E | Adding custom attribute | `,_customAttributes)
+      //game.D35E.logger.log(`Adding custom attribute | `,_customAttributes)
       return this.item.update({ "system.customAttributes": _customAttributes });
     }
 
@@ -1066,7 +1066,7 @@ export class ItemSheetPF extends ItemSheet {
     if (a.classList.contains("delete")) {
       await this._onSubmit(event);
       const li = a.closest(".custom-field");
-      //console.log(`D35E | Removing custom attribute | ${li.dataset.customField}`, this.item.system.customAttributes)
+      //game.D35E.logger.log(`Removing custom attribute | ${li.dataset.customField}`, this.item.system.customAttributes)
       const updateData = {};
       updateData[`system.customAttributes.-=${li.dataset.customField}`] = null;
       return this.item.update(updateData);
@@ -1429,7 +1429,7 @@ export class ItemSheetPF extends ItemSheet {
     const li = event.currentTarget;
     const packName = li.getAttribute("data-pack");
     const pack = game.packs.get(packName);
-    // //console.log(event)
+    // //game.D35E.logger.log(event)
     if (!pack) return;
     // Set the transfer data
     event.dataTransfer.setData(

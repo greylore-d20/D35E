@@ -132,7 +132,7 @@ export class ItemEnhancements extends ItemExtension {
 
   async updateBaseItemName(stopUpdates = false) {
     const updateData = {};
-    //console.log("updating name")
+    //game.D35E.logger.log("updating name")
     let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
     this.#preUpdateMagicItemName(updateData, _enhancements, true);
     this.#preUpdateMagicItemProperties(updateData, _enhancements, true);
@@ -381,7 +381,7 @@ export class ItemEnhancements extends ItemExtension {
         alignment.chaotic = objEnhancement.weaponData.alignment.chaotic || alignment.chaotic;
       }
     });
-    //console.log('Total enh',totalEnchancement, type)
+    //game.D35E.logger.log('Total enh',totalEnchancement, type)
     if (type === "weapon" && enhancements.length) {
       if (doLinkData) linkData(srcData, data, "system.weaponData.alignment", alignment);
       else data["system.weaponData.alignment"] = alignment;
@@ -402,7 +402,7 @@ export class ItemEnhancements extends ItemExtension {
         if (objEnhancement.enhancementType === "armor" && type === "equipment") totalEnchancement += objEnhancement.enh;
       }
     });
-    //console.log('Total enh',totalEnchancement, type)
+    //game.D35E.logger.log('Total enh',totalEnchancement, type)
     if (totalEnchancement > 0) {
       if (type === "weapon") {
         if (doLinkData) linkData(srcData, data, "system.enh", totalEnchancement);

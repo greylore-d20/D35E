@@ -332,7 +332,7 @@ export class ItemUse {
       });
     }
 
-    // //console.log('D35E | Enabled conditionals', enabledConditionals)
+    // //game.D35E.logger.log('Enabled conditionals', enabledConditionals)
     let attackEnhancementMap = new Map();
     let damageEnhancementMap = new Map();
     for (let enabledConditional of enabledConditionals) {
@@ -406,7 +406,7 @@ export class ItemUse {
     }
     if (rollData.featDamageList) {
       for (let dmg of Object.keys(rollData.featDamageList)) {
-        // //console.log('Bonus damage!', dmg, rollData.featDamage[dmg])
+        // //game.D35E.logger.log('Bonus damage!', dmg, rollData.featDamage[dmg])
         for (let [i, bonus] of rollData.featDamageList[dmg].entries()) {
           let extraDamagePart = [
             "(${this.featDamageList['" + dmg + "'][" + i + "].value})",
@@ -654,7 +654,7 @@ export class ItemUse {
     let templateX = 0;
     let templateY = 0;
     if (useMeasureTemplate) {
-      // //console.log(`D35E | Creating measure template.`)
+      // //game.D35E.logger.log(`Creating measure template.`)
       // Create template
       let optionalData = {};
       const template = AbilityTemplate.fromItem(this, rollData.spellWidened ? 2 : 1, rollData, optionalData);
@@ -678,10 +678,10 @@ export class ItemUse {
       templateY = template.data.y;
     }
 
-    // //console.log(`D35E | Updating item on attack.`)
+    // //game.D35E.logger.log(`Updating item on attack.`)
     // Deduct charge
     if (this.item.autoDeductCharges && !skipChargeCheck) {
-      // //console.log(`D35E | Deducting ${this.item.chargeCost} charges.`)
+      // //game.D35E.logger.log(`Deducting ${this.item.chargeCost} charges.`)
       if (rollData.useAmount === undefined) await this.item.addCharges(-1 * this.item.chargeCost, this.itemUpdateData);
       else await this.item.addCharges(-1 * parseFloat(rollData.useAmount) * this.item.chargeCost, this.itemUpdateData);
     } else {
@@ -718,7 +718,7 @@ export class ItemUse {
       getProperty(this.item.system, "actionType") === "special" ||
       getProperty(this.item.system, "actionType") === "summon"
     ) {
-      // //console.log(`D35E | Generating chat message.`)
+      // //game.D35E.logger.log(`Generating chat message.`)
       // Get extra text and properties
       let hasBoxInfo = this.item.hasAttack || this.item.hasDamage || this.item.hasEffect;
       let attackNotes = [];
@@ -908,7 +908,7 @@ export class ItemUse {
     rollData.item = duplicate(this.itemData);
     this.itemUpdateData = {};
     this.itemUpdateData._id = this.item._id;
-    console.log("D35E | Attack item update", this.itemUpdateData);
+    game.D35E.logger.log("Attack item update", this.itemUpdateData);
 
     let rolled = false;
 
@@ -1029,7 +1029,7 @@ export class ItemUse {
     dialogData.hasFeatsOrSummons =
       dialogData.weaponFeats.length || dialogData.weaponFeatsOptional.length || dialogData.summonableMonsters.length;
     const html = await renderTemplate(template, dialogData);
-    // //console.log(dialogData)
+    // //game.D35E.logger.log(dialogData)
     let roll;
     const buttons = {};
     let wasRolled = false;
@@ -1204,7 +1204,7 @@ export class ItemUse {
         ammoEnh = new Roll35e(useAmmoEnhancement, {}).roll().total;
       }
       rollModifiers.push(`${useAmmoName}`);
-      // //console.log('D35E | Selected ammo', useAmmoDamage, useAmmoAttack)
+      // //game.D35E.logger.log('Selected ammo', useAmmoDamage, useAmmoAttack)
     }
 
     // Power Attack
@@ -1637,7 +1637,7 @@ export class ItemUse {
         spellDC.description = saveDesc;
       }
     }
-    // //console.log('D35E | Calculated spell DC', spellDC)
+    // //game.D35E.logger.log('Calculated spell DC', spellDC)
     return spellDC;
   }
 }

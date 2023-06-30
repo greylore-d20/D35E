@@ -83,7 +83,7 @@ export class ActorMinionsHelper {
                     let updateObject = {}
                     updateObject["_id"] = minionClass.id || minionClass._id;
                     updateObject["data.levels"] = master.getRollData().attributes.minionClassLevels[minionClass.system.minionGroup] || 0;
-                    LogHelper.log('D35E | Minion class', minionClass, updateObject, master.getRollData(), )
+                    LogHelper.log('Minion class', minionClass, updateObject, master.getRollData(), )
                     await minion.updateOwnedItem(updateObject, {stopUpdates: true, massUpdate: true})
                 }
                 minion.update(masterData, {stopUpdates: true});

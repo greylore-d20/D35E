@@ -142,7 +142,7 @@ export class MonsterImporterDialog extends FormApplication {
 
         for (let monster of monsters) {
 
-            console.log("IMPORTER | INFO | Starting import of", monster.name, monster)
+            game.D35E.logger.log("IMPORTER | INFO | Starting import of", monster.name, monster)
             if (monster.name.indexOf("-Level") !== -1) {
                 console.info("IMPORTER | INFO | Skipping import of (has classes)", monster.name)
                 continue;
@@ -374,7 +374,7 @@ export class MonsterImporterDialog extends FormApplication {
                     // Skip, given by plan racial HD
                 } else if (missing_special === "ooze traits") {
                     // Skip, given by plan racial HD
-                    console.warn(`IMPORTER | CHCK | Monster ${monster.name} is an ooze, fix acid`)
+                    game.D35E.logger.warn(`IMPORTER | CHCK | Monster ${monster.name} is an ooze, fix acid`)
                 } else if (missing_special.startsWith("breath weapon")) {
                     for (let breathWeapon of missing_special.split(' or ')) {
                         breathWeapon = breathWeapon.replace('breath weapon', '').replace('(', '').replace(')', '')
@@ -521,7 +521,7 @@ export class MonsterImporterDialog extends FormApplication {
                                 await actor.updateOwnedItem(abilityUpdateData)
                             }
                         } else if (missing_special.startsWith("poison")) {
-                            console.warn(`IMPORTER | WARN | Monster ${monster.name} has poison, check its description`)
+                            game.D35E.logger.warn(`IMPORTER | WARN | Monster ${monster.name} has poison, check its description`)
                         }
                     } else if (missing_special !== "-" || missing_special.startsWith("dc ")) {
 
@@ -564,7 +564,7 @@ export class MonsterImporterDialog extends FormApplication {
                 }
             }
             if (unprocessed_specials.length > 0) {
-                console.error(`IMPORTER | WARN | Monster ${monster.name} has unprocessed specials`, unprocessed_specials, monster)
+                game.D35E.logger.error(`IMPORTER | WARN | Monster ${monster.name} has unprocessed specials`, unprocessed_specials, monster)
             }
 
             for (let special_data of monster.special_data) {
@@ -577,7 +577,7 @@ export class MonsterImporterDialog extends FormApplication {
                 await actor.updateOwnedItem(abilityUpdateData)
                 if (special_data.name.toLowerCase().indexOf("spells") !== -1) {
                     let spells = spellsFromText(special_data.text);
-                    //console.warn(`IMPORTER | WARN | Monster ${monster.name} has spells`, spells)
+                    //game.D35E.logger.warn(`IMPORTER | WARN | Monster ${monster.name} has spells`, spells)
                     let spellsToAdd = []
                     for (let spell of spells) {
                         let spellIndex = spellPack.index.find(e => spell.toLowerCase() === e.name.toLowerCase())
@@ -598,7 +598,7 @@ export class MonsterImporterDialog extends FormApplication {
                     for (let spelllikeblock of special_data.text.split(";")) {
                         let spells = spellsFromText(spelllikeblock);
                         let spellsToAdd = []
-                        //console.warn(`IMPORTER | WARN | Monster ${monster.name} has spell-like abilities group`, spelllikeblock)
+                        //game.D35E.logger.warn(`IMPORTER | WARN | Monster ${monster.name} has spell-like abilities group`, spelllikeblock)
                         for (let spell of spells) {
                             let spellIndex = spellPack.index.find(e => spell.toLowerCase() === e.name.toLowerCase())
                             if (spellIndex) {
@@ -793,7 +793,7 @@ export class MonsterImporterDialog extends FormApplication {
                     }
                 } else {
                     if (feat !== "None" && feat !== "-")
-                        console.error(`IMPORTER | WARN |  Monster ${monster.name} has missing feat`, feat)
+                        game.D35E.logger.error(`IMPORTER | WARN |  Monster ${monster.name} has missing feat`, feat)
                 }
             }
 
@@ -851,7 +851,7 @@ export class MonsterImporterDialog extends FormApplication {
                             ]
                             await actor.updateOwnedItem(abilityUpdateData)
                         }
-                        console.warn("IMPORTER | WARN | Monster is a Swarm!", monster)
+                        game.D35E.logger.warn("IMPORTER | WARN | Monster is a Swarm!", monster)
                     } else if (attack.toLowerCase().startsWith("incorporeal touch")) {
                         if (diceFromText(monster.attack).length) {
                             let abilityUpdateData = {}
@@ -862,7 +862,7 @@ export class MonsterImporterDialog extends FormApplication {
                             ]
                             await actor.updateOwnedItem(abilityUpdateData)
                         }
-                        console.warn(`IMPORTER | WARN | Monster ${monster.name} has Incorporeal Touch!`, monster)
+                        game.D35E.logger.warn(`IMPORTER | WARN | Monster ${monster.name} has Incorporeal Touch!`, monster)
                     } else {
                         if (monster.text_attacks[attack.toLowerCase()]) {
                             if (diceFromText(monster.text_attacks[attack.toLowerCase()]).length) {
@@ -912,7 +912,7 @@ export class MonsterImporterDialog extends FormApplication {
                         if (itemData._id) delete itemData._id;
                         let attackItem = await actor.createEmbeddedEntity("OwnedItem", itemData)
                         //let attackItem = await actor.importItemFromCollection("D35E.weapons-and-ammo", weaponIndex._id)
-                        console.log('IMPORTER | INFO | ', itemData, actor)
+                        game.D35E.logger.log('IMPORTER | INFO | ', itemData, actor)
                         let attack = await actor.createAttackFromWeapon(attackItem)
                         attackIdMap.set(fixedAttackName, {
                             _id: 0,
@@ -931,10 +931,10 @@ export class MonsterImporterDialog extends FormApplication {
 
             }
             if (unprocessed_attacks.length > 0) {
-                console.error(`IMPORTER | WARN | Monster ${monster.name} has unprocessed attacks`, unprocessed_attacks, monster)
+                game.D35E.logger.error(`IMPORTER | WARN | Monster ${monster.name} has unprocessed attacks`, unprocessed_attacks, monster)
             }
             if (monster.full_attack.indexOf('plus') !== -1) {
-                console.warn(`IMPORTER | WARN | Monster ${monster.name} has complex attack`, monster.full_attack)
+                game.D35E.logger.warn(`IMPORTER | WARN | Monster ${monster.name} has complex attack`, monster.full_attack)
             }
 
             for (let fullAttack of monster.full_attacks) {
@@ -952,7 +952,7 @@ export class MonsterImporterDialog extends FormApplication {
                             attackData._id = id
                             abilityUpdateData[`data.attacks.attack${id}`] = attackData
                         } else {
-                            console.error(`IMPORTER | WARN | Monster ${monster.name} has missing element in full attack`, _attack, attackIdMap)
+                            game.D35E.logger.error(`IMPORTER | WARN | Monster ${monster.name} has missing element in full attack`, _attack, attackIdMap)
                         }
                         id++;
                     }

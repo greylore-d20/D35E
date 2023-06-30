@@ -1019,7 +1019,7 @@ export class ActorSheetPF extends ActorSheet {
       });
     }
     {
-      //console.log("D35E | Item Browser | Loading pack inline browser on load")
+      //game.D35E.logger.log("Item Browser | Loading pack inline browser on load")
       let entityType = sessionStorage.getItem(`D35E-last-ent-type-${this.id}`);
       let type = sessionStorage.getItem(`D35E-last-type-${this.id}`);
       let subType = sessionStorage.getItem(`D35E-last-subtype-${this.id}`);
@@ -1392,7 +1392,7 @@ export class ActorSheetPF extends ActorSheet {
         let props = $(`<div class="item-properties"></div>`);
         chatData.properties.forEach((p) => props.append(`<span class="tag">${p}</span>`));
         if (!item.showUnidentifiedData) {
-          //console.log('D35E | Enchancement item data', getProperty(item.system, `enhancements.items`) || []);
+          //game.D35E.logger.log('Enchancement item data', getProperty(item.system, `enhancements.items`) || []);
           (getProperty(item.system, `enhancements.items`) || []).forEach((__enh) => {
             const _enh = duplicate(__enh);
             delete _enh._id;
@@ -1650,7 +1650,7 @@ export class ActorSheetPF extends ActorSheet {
       if (item.system.originVersion && item.system.originPack && item.system.originId) {
         let compendiumItem = await game.packs.get(item.system.originPack).getDocument(item.system.originId);
         if (!compendiumItem) {
-          console.log("Item missing from compendium...");
+          game.D35E.logger.log("Item missing from compendium...");
         } else {
           if (compendiumItem.system.originVersion > item.system.originVersion)
             itemUpdates.push({ _id: item.id, "system.possibleUpdate": true });
@@ -2255,7 +2255,7 @@ export class ActorSheetPF extends ActorSheet {
             }
           }
 
-          //console.log(`D35E | Item container | ${item.name}, ${item.system.containerId} |`, item)
+          //game.D35E.logger.log(`Item container | ${item.name}, ${item.system.containerId} |`, item)
           if (item.system.containerId && item.system.containerId !== "none") {
             if (!containerItems.has(item.system.containerId)) {
               containerItems.set(item.system.containerId, []);
@@ -3188,7 +3188,7 @@ export class ActorSheetPF extends ActorSheet {
     }
     itemData.data.quantity = quantity;
     this.enrichDropData(itemData);
-    console.log("D35E | Adding Quantity", quantity, itemData);
+    game.D35E.logger.log("Adding Quantity", quantity, itemData);
     await this.importItem(itemData, dataType);
     $(ev.target).prop("disabled", false);
   }
@@ -3262,7 +3262,7 @@ export class ActorSheetPF extends ActorSheet {
       }
     };
     let template = "systems/D35E/templates/apps/advance-monster.html";
-    console.log(JSON.stringify(advancement));
+    game.D35E.logger.log(JSON.stringify(advancement));
     if (!this.actor.racialHD?.system) {
       ui.notifications.error("No Racial HD found for this creature. Please add a Racial HD to this creature before advancing")
       return;

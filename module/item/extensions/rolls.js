@@ -523,7 +523,7 @@ export class ItemRolls {
         roll.source = "Spell Level";
       }
     }
-    // //console.log(rolls);
+    // //game.D35E.logger.log(rolls);
     return rolls;
   }
 

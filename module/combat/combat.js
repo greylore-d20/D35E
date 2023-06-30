@@ -364,7 +364,7 @@ export class CombatD35E extends Combat {
         await this.nextTurn();
       }
     } catch (error) {
-      console.error(error);
+      game.D35E.logger.error(error);
     }
   }
 
@@ -386,7 +386,7 @@ export class CombatD35E extends Combat {
         { type: Sockets.PROGRESS_COMBAT_ROUND, payload: { combatId: this.id, gmId: gmId } },
         (response) => {}
       );
-      LogHelper.log("D35E | Skipping Round on non-GM Client");
+      LogHelper.log("Skipping Round on non-GM Client");
       return combat;
     } else {
       const combat = await super.nextRound();
@@ -422,7 +422,7 @@ export class CombatD35E extends Combat {
         { type: Sockets.PROGRESS_COMBAT_TURN, payload: { combatId: this.id, gmId: gmId } },
         (response) => {}
       );
-      LogHelper.log("D35E | Skipping Turn on non-GM Client");
+      LogHelper.log("Skipping Turn on non-GM Client");
       return combat;
     } else {
       const combat = await super.nextTurn();
@@ -490,7 +490,7 @@ export class CombatD35E extends Combat {
       }
       await this.deleteEmbeddedDocuments("Combatant", combatantsToDelete);
     } catch (error) {
-      console.error(error);
+      game.D35E.logger.error(error);
     }
   }
 

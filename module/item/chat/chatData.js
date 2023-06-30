@@ -208,7 +208,7 @@ export class ItemChatData {
         }
 
         //
-        // //console.log('D35E | Calculated spell DC for props', saveDC)
+        // //game.D35E.logger.log('Calculated spell DC for props', saveDC)
       }
     }
 

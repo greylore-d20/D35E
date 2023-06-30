@@ -35,12 +35,12 @@ export class LootSheetActions {
    * Moves an item from a source actor to a destination actor
    */
   static async moveItem(source, destination, itemId, quantity = 1) {
-    //console.log("Loot Sheet | moveItem")
+    //game.D35E.logger.log("Loot Sheet | moveItem")
     let item = source.items.get(itemId);
 
     if (!item) {
       ui.notifications.warn(game.i18n.format("ERROR.lsInvalidMove", { actor: source.name }));
-      console.log(source, destination, itemId);
+      game.D35E.logger.log(source, destination, itemId);
       return null;
     }
 
@@ -125,7 +125,7 @@ export class LootSheetActions {
    * A looter (target actor) takes an item from a container (source actor)
    */
   static async lootItem(speaker, container, looter, itemId, quantity) {
-    console.log("Loot Sheet | LootSheetActions.lootItem");
+    game.D35E.logger.log("Loot Sheet | LootSheetActions.lootItem");
 
     if (itemId.length == 2 || itemId.startsWith("wl_")) {
       let moved = await LootSheetActions.moveCoins(container, looter, itemId, quantity);
@@ -162,7 +162,7 @@ export class LootSheetActions {
    * A giver (source actor) drops or sells a item to a merchant (target actor)
    */
   static async dropOrSellItem(speaker, merchant, giver, itemId) {
-    //console.log("Loot Sheet | Drop or sell item")
+    //game.D35E.logger.log("Loot Sheet | Drop or sell item")
     let messageKey = "";
     if (merchant.getFlag("D35E", "lootsheettype") === "Merchant") {
       await this.transaction(giver, giver, merchant, itemId, LootSheetActions.QUANTITY_ALL, true, true);
@@ -197,7 +197,7 @@ export class LootSheetActions {
     buyerUnlimitedFunds = false,
     isPlayerSelling = false
   ) {
-    console.log("Loot Sheet | Transaction");
+    game.D35E.logger.log("Loot Sheet | Transaction");
 
     let sellItem = seller.items.get(itemId);
 
@@ -232,7 +232,7 @@ export class LootSheetActions {
     for (let currency in buyerFundsAlt) {
       buyerAltFundsAsGold += (buyerFundsAlt[currency] || 0) * conversionRate[currency];
     }
-    console.log(buyerFunds, buyerFundsAlt);
+    game.D35E.logger.log(buyerFunds, buyerFundsAlt);
     if (itemCost > buyerFundsAsGold + buyerAltFundsAsGold && !buyerUnlimitedFunds) {
       LootSheetActions.errorMessageToActor(buyer, game.i18n.localize("ERROR.lsNotEnougFunds"));
       return;
@@ -258,19 +258,19 @@ export class LootSheetActions {
         conversionRate[key] = Math.round(conversionRate[key]);
       }
       const DEBUG = true;
-      if (DEBUG) console.log("Loot Sheet | Conversion rates: ");
-      if (DEBUG) console.log(conversionRate);
+      if (DEBUG) game.D35E.logger.log("Loot Sheet | Conversion rates: ");
+      if (DEBUG) game.D35E.logger.log(conversionRate);
 
       // remove funds from lowest currency to highest
       let remainingFunds = 0;
       for (const currency of Object.keys(conversionRate).reverse()) {
-        //console.log("Rate: " + conversionRate[currency])
+        //game.D35E.logger.log("Rate: " + conversionRate[currency])
         if (conversionRate[currency] < 1) {
           const ratio = conversionRate[currency] ? 1 / conversionRate[currency] : 0;
           const value = conversionRate[currency] ? Math.min(itemCost, Math.floor(buyerFunds[currency] / ratio)) : 0;
-          if (DEBUG) console.log("Loot Sheet | BuyerFunds " + currency + ": " + buyerFunds[currency]);
-          if (DEBUG) console.log("Loot Sheet | Ratio: " + ratio);
-          if (DEBUG) console.log("Loot Sheet | Value: " + value);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | BuyerFunds " + currency + ": " + buyerFunds[currency]);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Ratio: " + ratio);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Value: " + value);
           itemCost -= value;
           buyerFunds[currency] -= value * ratio;
         } else {
@@ -279,20 +279,20 @@ export class LootSheetActions {
           const lost = Math.ceil(value / conversionRate[currency]);
           buyerFunds[currency] -= lost;
           remainingFunds += lost * conversionRate[currency] - value;
-          if (DEBUG) console.log("Loot Sheet | Value+: " + value);
-          if (DEBUG) console.log("Loot Sheet | Lost+: " + lost);
-          if (DEBUG) console.log("Loot Sheet | remainingFunds+: " + remainingFunds);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Value+: " + value);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Lost+: " + lost);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | remainingFunds+: " + remainingFunds);
         }
       }
 
       for (const currency of Object.keys(conversionRate).reverse()) {
-        //console.log("Rate: " + conversionRate[currency])
+        //game.D35E.logger.log("Rate: " + conversionRate[currency])
         if (conversionRate[currency] < 1) {
           const ratio = conversionRate[currency] ? 1 / conversionRate[currency] : 0;
           const value = conversionRate[currency] ? Math.min(itemCost, Math.floor(buyerFunds[currency] / ratio)) : 0;
-          if (DEBUG) console.log("Loot Sheet | BuyerFunds " + currency + ": " + buyerFunds[currency]);
-          if (DEBUG) console.log("Loot Sheet | Ratio: " + ratio);
-          if (DEBUG) console.log("Loot Sheet | Value: " + value);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | BuyerFunds " + currency + ": " + buyerFunds[currency]);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Ratio: " + ratio);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Value: " + value);
           itemCost -= value;
           buyerFundsAlt[currency] -= value * ratio;
         } else {
@@ -301,9 +301,9 @@ export class LootSheetActions {
           const lost = Math.ceil(value / conversionRate[currency]);
           buyerFundsAlt[currency] -= lost;
           remainingFunds += lost * conversionRate[currency] - value;
-          if (DEBUG) console.log("Loot Sheet | Value+: " + value);
-          if (DEBUG) console.log("Loot Sheet | Lost+: " + lost);
-          if (DEBUG) console.log("Loot Sheet | remainingFunds+: " + remainingFunds);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Value+: " + value);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | Lost+: " + lost);
+          if (DEBUG) game.D35E.logger.log("Loot Sheet | remainingFunds+: " + remainingFunds);
         }
       }
 
@@ -312,15 +312,15 @@ export class LootSheetActions {
         return ui.notifications.error(game.i18n.localize("ERROR.lsCurrencyConversionFailed"));
       }
 
-      console.log("remainingFunds: " + remainingFunds);
+      game.D35E.logger.log("remainingFunds: " + remainingFunds);
 
       if (remainingFunds > 0) {
         for (const currency of Object.keys(conversionRate)) {
           if (conversionRate[currency] <= remainingFunds) {
             buyerFunds[currency] += Math.floor(remainingFunds / conversionRate[currency]);
             remainingFunds = remainingFunds % conversionRate[currency];
-            if (DEBUG) console.log("Loot Sheet | buyerFunds " + currency + ": " + buyerFunds[currency]);
-            if (DEBUG) console.log("Loot Sheet | remainingFunds: " + remainingFunds);
+            if (DEBUG) game.D35E.logger.log("Loot Sheet | buyerFunds " + currency + ": " + buyerFunds[currency]);
+            if (DEBUG) game.D35E.logger.log("Loot Sheet | remainingFunds: " + remainingFunds);
           }
         }
       }
@@ -330,7 +330,7 @@ export class LootSheetActions {
         return ui.notifications.error(game.i18n.localize("ERROR.lsCurrencyConversionFailed"));
       }
 
-      if (DEBUG) console.log(buyerFunds);
+      if (DEBUG) game.D35E.logger.log(buyerFunds);
 
       await buyer.update({
         "data.currency": buyerFunds,
@@ -422,7 +422,7 @@ export class LootSheetActions {
         );
       }
     } else {
-      console.log("Loot Sheet | Give operation failed because actors (giver or receiver) couldn't be found!");
+      game.D35E.logger.log("Loot Sheet | Give operation failed because actors (giver or receiver) couldn't be found!");
     }
   }
 

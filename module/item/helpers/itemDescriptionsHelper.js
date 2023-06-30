@@ -5,7 +5,7 @@ import { ItemCombatCalculationsHelper } from "./itemCombatCalculationsHelper.js"
 
 export class ItemDescriptionsHelper {
   static attackDescription(item, _rollData) {
-    // //console.log('D35E | AB ', item.hasAttack)
+    // //game.D35E.logger.log('AB ', item.hasAttack)
     let rollData = duplicate(_rollData);
     if (!rollData) {
       if (!item.actor) return []; //There are no requirements when item has no actor!
@@ -42,7 +42,7 @@ export class ItemDescriptionsHelper {
   }
 
   static attackBonus(item, rollData) {
-    // //console.log('D35E | AB ', item.hasAttack)
+    // //game.D35E.logger.log('AB ', item.hasAttack)
     if (!rollData) {
       if (!item.actor) return [];
       rollData = item.actor.getRollData();
@@ -90,7 +90,7 @@ export class ItemDescriptionsHelper {
   }
 
   static damageDescription(item, rollData) {
-    // //console.log('D35E | DD ', item.hasDamage)
+    // //game.D35E.logger.log('DD ', item.hasDamage)
     if (!rollData) {
       if (!item.actor) return []; //There are no requirements when item has no actor!
       rollData = item.actor.getRollData();

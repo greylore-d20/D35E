@@ -263,7 +263,7 @@ export class ActorUpdater {
       }
       if (hasContainerChanged) itemUpdates.push(itemUpdateData);
     }
-    // //LogHelper.log('D35E | Item updates', itemUpdates)
+    // //LogHelper.log('Item updates', itemUpdates)
     if (itemUpdates.length > 0) await this.actor.updateOwnedItem(itemUpdates, { stopUpdates: true });
     // Send resource updates to item
     let updatedResources = [];
@@ -379,9 +379,9 @@ export class ActorUpdater {
         (updated["system.details.level.available"] || getProperty(this.actor.system, "details.level.available")) +
         raceLA +
         racialHD;
-      //LogHelper.log('D35E | ActorPF | _updateExp | Update exp data from class level count', dataLevel)
+      //LogHelper.log('ActorPF | _updateExp | Update exp data from class level count', dataLevel)
     }
-    //LogHelper.log('D35E | ActorPF | _updateExp | Race LA, racial HD, level', raceLA, racialHD,dataLevel)
+    //LogHelper.log('ActorPF | _updateExp | Race LA, racial HD, level', raceLA, racialHD,dataLevel)
     // Translate update exp value to number
     let newExp = updated["system.details.xp.value"],
       resetExp = false;
@@ -656,12 +656,12 @@ export class ActorUpdater {
       options,
       updateData
     );
-    //LogHelper.log('D35E | Sorting Changes');
+    //LogHelper.log('Sorting Changes');
     // Sort changes
     allChanges.sort(this.#sortChanges.bind(this));
     // Parse changes
     let temp = [];
-    //LogHelper.log('D35E | Master Changes');
+    //LogHelper.log('Master Changes');
     const origData = mergeObject(this.actor.toObject(false), updated != null ? expandObject(updated) : {});
     updateData = flattenObject({
       system: mergeObject(origData.system, expandObject(updateData).system, { inplace: false }),
@@ -673,11 +673,11 @@ export class ActorUpdater {
       allChanges = allChanges.filter((c) => (c.raw[0] || "").indexOf("@master") === -1);
       if (_changesLength !== allChanges.length) {
         return ui.notifications.warn(game.i18n.localize("D35E.FamiliarNoMaster"));
-        //LogHelper.log('D35E | Minion has some changes removed |', _changesLength,allChanges.length);
+        //LogHelper.log('Minion has some changes removed |', _changesLength,allChanges.length);
       }
     }
 
-    //LogHelper.log('D35E | Rolling Changes');
+    //LogHelper.log('Rolling Changes');
     let currentChangeTarget = null;
     let changeRollData = null;
     // All changes are sorted and lumped together
@@ -794,7 +794,7 @@ export class ActorUpdater {
       }
     }
 
-    //LogHelper.log('D35E | ACP and spell slots');
+    //LogHelper.log('ACP and spell slots');
     // Reduce final speed under certain circumstances
     let armorItems = source.items.filter((o) => o.type === "equipment");
     for (let speedKey of Object.keys(source.system.attributes.speed)) {
@@ -1080,7 +1080,7 @@ export class ActorUpdater {
     } else {
       if (updateData["system.attributes.hp.max"]) {
         const hpDiff = updateData["system.attributes.hp.max"] - prevValues.mhp;
-        LogHelper.log("D35E | HP Diff", prevValues.mhp, hpDiff, updateData["system.attributes.hp.max"]);
+        LogHelper.log("HP Diff", prevValues.mhp, hpDiff, updateData["system.attributes.hp.max"]);
         if (hpDiff !== 0) {
           linkData(
             source,
@@ -1463,7 +1463,7 @@ export class ActorUpdater {
 
     let levelUpData = duplicate(data1.details.levelUpData) || [];
     if (levelUpData.length !== data1.details.level.available) {
-      LogHelper.log("D35E | ActorPF | Will update actor level");
+      LogHelper.log("ActorPF | Will update actor level");
       while (levelUpData.length < data1.details.level.available) {
         levelUpData.push({
           level: levelUpData.length + 1,
@@ -1481,7 +1481,7 @@ export class ActorUpdater {
         levelUpData.pop();
       }
       await this.actor.updateClassProgressionLevel(source, updateData, data1, levelUpData);
-      //LogHelper.log('D35E | LevelUpData | ', levelUpData)
+      //LogHelper.log('LevelUpData | ', levelUpData)
       linkData(source, updateData, "system.details.levelUpData", levelUpData);
     }
 
@@ -1927,7 +1927,7 @@ export class ActorUpdater {
         return cur + o.system.levels;
       }, 0);
 
-      //LogHelper.log(`D35E | Setting attributes hd total | ${level}`)
+      //LogHelper.log(`Setting attributes hd total | ${level}`)
       linkData(source, updateData, "system.attributes.hd.total", level);
 
       linkData(source, updateData, "system.attributes.hd.racialClass", level);
@@ -1961,7 +1961,7 @@ export class ActorUpdater {
         itemsWithUid.set(i.system.uniqueId, i.id);
       }
 
-      //LogHelper.log('D35E | Adding Features', level, data, getProperty(this.actor.system,"classLevels"), updateData)
+      //LogHelper.log('Adding Features', level, data, getProperty(this.actor.system,"classLevels"), updateData)
 
       if (true) {
         linkData(source, updateData, "system.details.level.value", level);
@@ -1986,10 +1986,10 @@ export class ActorUpdater {
         await itemPack.getIndex().then((index) => (items = index));
 
         for (const classInfo of classNames) {
-          //LogHelper.log('D35E | Adding Features', classInfo)
+          //LogHelper.log('Adding Features', classInfo)
           let added = false;
           for (let feature of classInfo[2]) {
-            LogHelper.log("D35E | Adding Features", feature);
+            LogHelper.log("Adding Features", feature);
             let e = CACHE.AllAbilities.get(feature.uid);
             const level = parseInt(feature.level);
             let uniqueId = e?.system?.uniqueId;
@@ -2014,7 +2014,7 @@ export class ActorUpdater {
             );
           }
           for (let e of CACHE.ClassFeatures.get(classInfo[0]) || []) {
-            //LogHelper.log('D35E | Adding Features', e)
+            //LogHelper.log('Adding Features', e)
             if (e.system.associations === undefined || e.system.associations.classes === undefined) continue;
             let levels = e.system.associations.classes.filter((el) => el[0] === classInfo[0]);
             for (let _level of levels) {
@@ -2141,7 +2141,7 @@ export class ActorUpdater {
 
       for (let abilityUid of existingAbilities) {
         if (!addedAbilities.has(abilityUid)) {
-          //LogHelper.log(`D35E | Removing existing ability ${abilityUid}`, changes)
+          //LogHelper.log(`Removing existing ability ${abilityUid}`, changes)
           changes.splice(
             changes.findIndex((change) => change.source.item.uniqueId === abilityUid),
             1
@@ -2172,7 +2172,7 @@ export class ActorUpdater {
     itemsToAdd,
     added
   ) {
-    //LogHelper.log('D35E | Adding Features', addedAbilities)
+    //LogHelper.log('Adding Features', addedAbilities)
     let canAdd = !addedAbilities.has(uniqueId);
     if (canAdd) {
       if (level <= classInfo[1]) {

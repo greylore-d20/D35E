@@ -592,7 +592,7 @@ export const getActorFromId = function (id) {
         fn();
       }
     } else {
-      console.error(
+      game.D35E.logger.error(
         "savy action not defined please use $('.classname').savy('load') to trigger savy to save all inputs"
       );
     }

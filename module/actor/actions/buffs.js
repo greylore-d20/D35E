@@ -11,7 +11,7 @@ export class ActorBuffs {
 
   // @Object { id: { title: String, type: buff/string, img: imgPath, active: true/false }, ... }
   calcBuffTextures() {
-    LogHelper.log("D35E | calcBuffTextures");
+    LogHelper.log("calcBuffTextures");
     const buffs = this.actor.items.filter((o) => o.type === "buff" || o.type === "aura");
     return buffs.reduce((acc, cur) => {
       const id = cur.uuid;

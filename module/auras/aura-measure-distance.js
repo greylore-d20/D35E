@@ -115,7 +115,7 @@ export class AuraMeasureDistance {
           }
           const r = new Ray({ x: tx, y: ty }, { x: currGrid.x + templatePos.x, y: currGrid.y + templatePos.y });
 
-          console.warn("templateCheck", { templateDetails, token, contains, tx, ty, r });
+          game.D35E.logger.warn("templateCheck", { templateDetails, token, contains, tx, ty, r });
           /**if (wallsBlockTargeting && game.modules.get("levels")?.active) {
                         let p1 = {
                             x: currGrid.x + templatePos.x, y: currGrid.y + templatePos.y,

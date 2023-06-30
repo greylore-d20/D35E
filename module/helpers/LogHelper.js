@@ -13,7 +13,23 @@ export class LogHelper {
     LogHelper.logLevel = level;
   }
   static log(...data) {
+    if (LogHelper.logLevel > LogLevel.DEBUG) return;
     console.log(...data);
+  }
+
+  static info(data) {
+    if (LogHelper.logLevel > LogLevel.INFO) return;
+    console.log(...data);
+  }
+
+  static warn(data) {
+    if (LogHelper.logLevel > LogLevel.WARN) return;
+    console.warn(...data);
+  }
+
+  static error(data) {
+    if (LogHelper.logLevel > LogLevel.ERROR) return;
+    console.error(...data);
   }
 
   static startTimer(name) {
@@ -27,7 +43,7 @@ export class LogHelper {
   }
 
   static debug(data) {
-    if (LogHelper.logLevel !== LogLevel.DEBUG) return;
+    if (LogHelper.logLevel > LogLevel.DEBUG) return;
     console.log(...data);
   }
 }

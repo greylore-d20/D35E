@@ -480,14 +480,14 @@ export class Item35E extends ItemBase35E {
     }
     itemData["custom"] = {};
     if (data.hasOwnProperty("customAttributes")) {
-      //console.log(data.customAttributes)
+      //game.D35E.logger.log(data.customAttributes)
       for (let prop in data.customAttributes || {}) {
         let propData = data.customAttributes[prop];
         itemData["custom"][(propData.name || propData.id).replace(/ /g, "").toLowerCase()] =
           propData?.selectListArray || false ? propData.selectListArray[propData.value] : propData.value;
       }
     }
-    //console.log('D35E | Custom properties', itemData['custom'])
+    //game.D35E.logger.log('Custom properties', itemData['custom'])
 
     // Assign labels and return the Item
     this.labels = labels;
@@ -499,11 +499,11 @@ export class Item35E extends ItemBase35E {
 
   async update(updated, options = {}) {
     if (options["recursive"] !== undefined && options["recursive"] === false) {
-      //console.log('D35E | Skipping update logic since it is not recursive')
+      //game.D35E.logger.log('Skipping update logic since it is not recursive')
       await super.update(updated, options);
       return;
     }
-    console.log("Is true/false", updated, getProperty(this.system, "active"));
+    game.D35E.logger.log("Is true/false", updated, getProperty(this.system, "active"));
     let expandedData = expandObject(updated);
     const srcData = mergeObject(this.toObject(), expandedData);
 
@@ -522,7 +522,7 @@ export class Item35E extends ItemBase35E {
     )
       needsUpdate = true;
 
-    console.log("Should be true/false, is true true", updated, getProperty(this.system, "active"));
+    game.D35E.logger.log("Should be true/false, is true true", updated, getProperty(this.system, "active"));
 
     for (var key in expandedData?.system?.customAttributes) {
       if (updated[`system.customAttributes.${key}`] === null) continue;
@@ -620,7 +620,7 @@ export class Item35E extends ItemBase35E {
       updated["system.weight"] = getProperty(this.system, "weight") * weightChange;
     }
 
-    //console.log("D35E Item Update", data)
+    //game.D35E.logger.log("D35E Item Update", data)
     if (updated["system.convertedWeight"] !== undefined && updated["system.convertedWeight"] !== null) {
       const conversion = game.settings.get("D35E", "units") === "metric" ? 2 : 1;
       updated["system.weight"] = updated["system.convertedWeight"] * conversion;
@@ -722,7 +722,7 @@ export class Item35E extends ItemBase35E {
                 i.type === "attack" &&
                 (i.system.attackType === "natural" || i.system.attackType === "extraordinary")
               ) {
-                //console.log('add polymorph attack')
+                //game.D35E.logger.log('add polymorph attack')
                 if (!this.actor) continue;
                 let data = duplicate(i);
                 data.system.fromPolymorph = true;
@@ -755,7 +755,7 @@ export class Item35E extends ItemBase35E {
             if (this.actor) {
               for (const i of this.actor.items) {
                 if (i.system.fromPolymorph) {
-                  //console.log('remove polymorph attack',i,this.actor,this.actor.token)
+                  //game.D35E.logger.log('remove polymorph attack',i,this.actor,this.actor.token)
                   itemsToDelete.push(i._id);
                 }
               }
@@ -799,7 +799,7 @@ export class Item35E extends ItemBase35E {
       }
     }
 
-    console.log("D35E | ITEM UPDATE | Updated");
+    game.D35E.logger.log("ITEM UPDATE | Updated");
     return Promise.resolve(updateData);
     // return super.update(data, options);
   }
@@ -1164,7 +1164,7 @@ export class Item35E extends ItemBase35E {
           propData?.selectListArray || false ? propData.selectListArray[propData.value] : propData.value;
       }
     }
-    //console.log('D35E | Roll data', result)
+    //game.D35E.logger.log('Roll data', result)
     return result;
   }
 

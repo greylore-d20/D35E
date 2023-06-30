@@ -102,7 +102,7 @@ export class EncounterGeneratorDialog extends FormApplication {
         let j = 0
         let breakOut = false
         if (grabbedTables.find(t => t.data._id === val).results.filter(result => result.data.type != 2) != 0) {
-            console.log(grabbedTables.find(t => t.data._id === val).results);
+            game.D35E.logger.log(grabbedTables.find(t => t.data._id === val).results);
             return ui.notifications.error("This Rolltable has Non-Creatures on it, Cannot roll!")
         }
         // Loop limit - total number of loops we want to do.

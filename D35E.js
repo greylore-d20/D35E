@@ -5,74 +5,83 @@
  */
 
 // Import Modules
-import { D35E } from "./module/config.js";
-import { registerSystemSettings } from "./module/settings.js";
-import { preloadHandlebarsTemplates } from "./module/templates.js";
-import { measureDistances, measureDistance, getConditions } from "./module/canvas/canvas.js";
-import { ActorPF } from "./module/actor/entity.js";
-import { ActorSheetPFCharacter } from "./module/actor/sheets/character.js";
-import { ActorSheetPFNPC } from "./module/actor/sheets/npc.js";
-import { ActorSheetPFNPCLite } from "./module/actor/sheets/npc-lite.js";
-import { ActorSheetPFNPCLoot } from "./module/actor/sheets/npc-loot.js";
-import { ActorSheetPFNPCMonster } from "./module/actor/sheets/npc-monster.js";
-import { Item35E } from "./module/item/entity.js";
-import { ItemSheetPF } from "./module/item/sheets/base.js";
-import { TokenPF } from "./module/token/token.js";
-import { addLowLightVisionToLightConfig } from "./module/canvas/low-light-vision.js";
-import { PatchCore } from "./module/patch-core.js";
-import { DicePF } from "./module/dice.js";
-import { CombatantD35E, CombatD35E } from "./module/combat/combat.js";
-import { createCustomChatMessage } from "./module/chat.js";
-import {} from "./module/canvas/low-light-vision.js";
-import { TemplateLayerPF, MeasuredTemplatePF } from "./module/measure.js";
-import { PatreonIntegrationFactory } from "./module/patreon-integration.js";
+import {D35E} from './module/config.js';
+import {registerSystemSettings} from './module/settings.js';
+import {preloadHandlebarsTemplates} from './module/templates.js';
+import {
+  getConditions,
+  measureDistance,
+  measureDistances,
+} from './module/canvas/canvas.js';
+import {ActorPF} from './module/actor/entity.js';
+import {ActorSheetPFCharacter} from './module/actor/sheets/character.js';
+import {ActorSheetPFNPC} from './module/actor/sheets/npc.js';
+import {ActorSheetPFNPCLite} from './module/actor/sheets/npc-lite.js';
+import {ActorSheetPFNPCLoot} from './module/actor/sheets/npc-loot.js';
+import {ActorSheetPFNPCMonster} from './module/actor/sheets/npc-monster.js';
+import {Item35E} from './module/item/entity.js';
+import {ItemSheetPF} from './module/item/sheets/base.js';
+import {TokenPF} from './module/token/token.js';
+import {
+  addLowLightVisionToLightConfig,
+} from './module/canvas/low-light-vision.js';
+import {PatchCore} from './module/patch-core.js';
+import {DicePF} from './module/dice.js';
+import {CombatantD35E, CombatD35E} from './module/combat/combat.js';
+import * as chat from './module/chat.js';
+import {createCustomChatMessage} from './module/chat.js';
+import {MeasuredTemplatePF, TemplateLayerPF} from './module/measure.js';
+import {PatreonIntegrationFactory} from './module/patreon-integration.js';
 
 import {
-  getItemOwner,
-  sizeDie,
   getActorFromId,
+  getItemOwner,
   isMinimumCoreVersion,
-  sizeNaturalDie,
+  sizeDie,
+  sizeInt,
   sizeMonkDamageDie,
-} from "./module/lib.js";
-import { ChatMessagePF } from "./module/sidebar/chat-message.js";
-import { TokenQuickActions } from "./module/token-quick-actions.js";
-import { TopPortraitBar } from "./module/top-portrait-bar.js";
-import * as chat from "./module/chat.js";
-import * as migrations from "./module/migration.js";
-import { SemanticVersion } from "./semver.js";
-import { sizeInt } from "./module/lib.js";
-import * as cache from "./module/cache.js";
-import { CACHE } from "./module/cache.js";
-import D35ELayer from "./module/layer.js";
-import { EncounterGeneratorDialog } from "./module/apps/encounter-generator-dialog.js";
-import { TreasureGeneratorDialog } from "./module/apps/treasure-generator-dialog.js";
-import { ActorSheetTrap } from "./module/actor/sheets/trap.js";
-import { applyConfigModifications } from "./module/config-tools.js";
-import { Roll35e } from "./module/roll.js";
-import { genTreasureFromToken } from "./module/treasure/treasure.js";
-import { ActiveEffectD35E } from "./module/ae/entity.js";
-import { CollateAuras } from "./module/auras/aura-helpers.js";
-import { ActorSheetObject } from "./module/actor/sheets/object.js";
-import { ActorChatListener } from "./module/actor/chat/chatListener.js";
-import { ItemChatListener } from "./module/item/chat/chatListener.js";
-import { D35ECombatTracker } from "./module/combat/combat-tracker.js";
-import { TokenDocumentPF } from "./module/token/tokenDocument.js";
+  sizeNaturalDie,
+} from './module/lib.js';
+import {ChatMessagePF} from './module/sidebar/chat-message.js';
+import {TokenQuickActions} from './module/token-quick-actions.js';
+import {TopPortraitBar} from './module/top-portrait-bar.js';
+import * as migrations from './module/migration.js';
+import {SemanticVersion} from './semver.js';
+import * as cache from './module/cache.js';
+import {CACHE} from './module/cache.js';
+import D35ELayer from './module/layer.js';
+import {
+  EncounterGeneratorDialog,
+} from './module/apps/encounter-generator-dialog.js';
+import {
+  TreasureGeneratorDialog,
+} from './module/apps/treasure-generator-dialog.js';
+import {ActorSheetTrap} from './module/actor/sheets/trap.js';
+import {applyConfigModifications} from './module/config-tools.js';
+import {genTreasureFromToken} from './module/treasure/treasure.js';
+import {ActiveEffectD35E} from './module/ae/entity.js';
+import {CollateAuras} from './module/auras/aura-helpers.js';
+import {ActorSheetObject} from './module/actor/sheets/object.js';
+import {ActorChatListener} from './module/actor/chat/chatListener.js';
+import {ItemChatListener} from './module/item/chat/chatListener.js';
+import {D35ECombatTracker} from './module/combat/combat-tracker.js';
+import {TokenDocumentPF} from './module/token/tokenDocument.js';
 import {
   DetectionModeBlindSightD35E,
   DetectionModeInvisibilityD35E,
   DetectionModeTremorD35E,
-} from "./module/canvas/detection-modes.js";
-import { EquipmentSheet35E } from "./module/item/sheets/equipment.js";
-import { WeaponSheet35E } from "./module/item/sheets/weapon.js";
-import { FeatSheet35E } from "./module/item/sheets/feat.js";
-import { Weapon35E } from "./module/item/weapon.js";
-import { Equipment35E } from "./module/item/equipment.js";
-import { ItemBase35E } from "./module/item/base.js";
-import { Spell35E } from "./module/item/spell.js";
-import { Feat35E } from "./module/item/feat.js";
-import { Sockets } from "./module/sockets/sockets.js";
+} from './module/canvas/detection-modes.js';
+import {EquipmentSheet35E} from './module/item/sheets/equipment.js';
+import {WeaponSheet35E} from './module/item/sheets/weapon.js';
+import {FeatSheet35E} from './module/item/sheets/feat.js';
+import {Weapon35E} from './module/item/weapon.js';
+import {Equipment35E} from './module/item/equipment.js';
+import {ItemBase35E} from './module/item/base.js';
+import {Spell35E} from './module/item/spell.js';
+import {Feat35E} from './module/item/feat.js';
+import {Sockets} from './module/sockets/sockets.js';
 import {CompendiumBrowser} from './module/apps/compendium-browser.js';
+import {Logger} from './module/utils/logger.js';
 
 // Add String.format
 if (!String.prototype.format) {
@@ -112,6 +121,7 @@ Hooks.once("init", async function () {
     migrateCompendium: migrations.migrateCompendium,
     createdMeasureTemplates: new Set(),
     sockets: new Sockets(),
+    logger: new Logger(),
   };
 
   if (!isMinimumCoreVersion("10.0")) {
@@ -1110,37 +1120,16 @@ function rollTurnUndead({ actorName = null, actorId = null } = {}) {
 
 Hooks.on("getSceneControlButtons", (controls) => {
   if (!game.user.isGM) return;
-  controls.push({
-    name: "d35e-gm-tools",
-    title: "D35E.GMTools",
-    icon: "fas fa-dungeon",
-    layer: "d35e",
-    tools: [
-      {
-        name: "select",
-        title: "CONTROLS.BasicSelect",
-        icon: "fas fa-expand",
-      },
-      {
-        name: "d35e-gm-tools-encounter-generator",
-        title: "D35E.EncounterGenerator",
-        icon: "fas fa-dragon",
-        onClick: () => {
-          new EncounterGeneratorDialog().render(true);
-          //QuestLog.render(true)
-          // Place your code here - <app class name>.render()
-          // Remember you must import file on the top - look at imports
-        },
-        button: true,
-      },
+  game.D35E.logger.log("Adding D35E GM Tools and scene controls");
+  controls.find((control) => control.name === "token").tools.push(
       {
         name: "d35e-gm-tools-convert-to-loot",
         title: "D35E.ConvertToLoot",
         icon: "fa-regular fa-treasure-chest",
         onClick: async () => {
           let selectedTokens = canvas.tokens.controlled.filter(
-            (t) =>
-              game.actors.get(t.data.actorId).type === "npc" || game.actors.get(t.data.actorId).type === "character"
+              (t) =>
+                  game.actors.get(t.data.actorId).type === "npc" || game.actors.get(t.data.actorId).type === "character"
           );
           if (selectedTokens.length === 0) {
             ui.notifications.error(`Please select at least one token`);
@@ -1163,18 +1152,42 @@ Hooks.on("getSceneControlButtons", (controls) => {
         icon: "fas fa-gem",
         onClick: async () => {
           let selectedNpcTokens = canvas.tokens.controlled.filter(
-            (t) => game.actors.get(t.data.actorId).data.type === "npc"
+              (t) => game.actors.get(t.data.actorId).data.type === "npc"
           );
           if (selectedNpcTokens.length === 0) {
             ui.notifications.error(`Please select at least a token`);
             return;
           }
           for (let token of canvas.tokens.controlled.filter(
-            (t) => game.actors.get(t.data.actorId).data.type === "npc"
+              (t) => game.actors.get(t.data.actorId).data.type === "npc"
           )) {
             await genTreasureFromToken(token);
           }
           ui.notifications.info(`Treasure generation finished`);
+        },
+        button: true,
+      }
+  )
+  controls.push({
+    name: "d35e-gm-tools",
+    title: "D35E.GMTools",
+    icon: "fas fa-dungeon",
+    layer: "d35e",
+    tools: [
+      {
+        name: "select",
+        title: "CONTROLS.BasicSelect",
+        icon: "fas fa-expand",
+      },
+      {
+        name: "d35e-gm-tools-encounter-generator",
+        title: "D35E.EncounterGenerator",
+        icon: "fas fa-dragon",
+        onClick: () => {
+          new EncounterGeneratorDialog().render(true);
+          //QuestLog.render(true)
+          // Place your code here - <app class name>.render()
+          // Remember you must import file on the top - look at imports
         },
         button: true,
       },

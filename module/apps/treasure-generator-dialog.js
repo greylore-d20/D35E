@@ -111,7 +111,7 @@ export class TreasureGeneratorDialog extends FormApplication {
     let treasureAmount = parseInt(document.getElementById("treasureAmount").value);
     let identified = document.getElementById("identified").checked;
 
-    //console.log(identified);
+    //game.D35E.logger.log(identified);
     this.curQuality = treasureQuality;
     this.curType = treasureType;
     this.curAmount = treasureAmount;
@@ -229,7 +229,7 @@ export class TreasureGeneratorDialog extends FormApplication {
     let itemsToCreate = [];
     for await (let it of ItemPfArr) {
       if (it === null || it === undefined) continue;
-      //console.log("item: ", item);
+      //game.D35E.logger.log("item: ", item);
       itemsToCreate.push(it);
     }
     let createdItems = await canvas.tokens
