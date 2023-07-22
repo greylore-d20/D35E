@@ -40,6 +40,7 @@ export class DicePF {
     let _roll = async (parts, setRoll, form) => {
       const originalFlavor = flavor;
       rollMode = form ? form.find('[name="rollMode"]').val() : rollMode;
+      const rolls = [];
       for (let a = 0; a < 1 + extraRolls.length; a++) {
         flavor = originalFlavor;
         let curParts = duplicate(parts);
@@ -62,6 +63,7 @@ export class DicePF {
 
         // Execute the roll
         let roll = new Roll35e(curParts.join(" + "), data).roll();
+        rolls.push(roll);
 
         // Convert the roll to a chat message
         if (chatTemplate) {
@@ -120,6 +122,7 @@ export class DicePF {
           });
         }
       }
+      return rolls;
     };
 
     // Modify the roll and handle fast-forwarding
