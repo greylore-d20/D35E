@@ -30,7 +30,7 @@ export class CompendiumBrowser extends Application {
     this._data.loaded = false;
   }
 
-  loadData() {
+  async loadData() {
     $("#d35e-compendium-browser-loader-label").text(game.i18n.localize("D35E.LoadingCompendiums"));
     $("#d35e-compendium-browser-loader-bar").css("width", "0%");
     $("#d35e-compendium-browser-loader").show();
