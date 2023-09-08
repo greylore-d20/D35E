@@ -5612,7 +5612,7 @@ h3 {
   border-bottom: none !important;
   flex: 0 0 36px;
 }
-.d35ecustom #sidebar li.folder h3 {
+.d35ecustom #sidebar li.folder h3:not(.entry-name) {
   padding-left: 36px;
 }
 .d35ecustom #sidebar li.folder h3 i {
