@@ -18,8 +18,4 @@ export class ActorSheetPFNPCMonster extends ActorSheetPFNPC {
     if ( !game.user.isGM && this.actor.limited ) return "systems/D35E/templates/actors/limited-sheet.html";
     return "systems/D35E/templates/actors/npc-sheet-monster.html";
   }
-
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFNPCMonster");
-  }
 }

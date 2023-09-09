@@ -33,9 +33,4 @@ export class ActorSheetTrap extends ActorSheetPFNPC {
   get template() {
     return "systems/D35E/templates/actors/trap-sheet.html";
   }
-
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFNPC");
-  }
-
 }

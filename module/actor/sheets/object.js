@@ -33,10 +33,6 @@ export class ActorSheetObject extends ActorSheetPF {
     return "systems/D35E/templates/actors/object-sheet.html";
   }
 
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFNPC");
-  }
-
   /* -------------------------------------------- */
 
   /**
