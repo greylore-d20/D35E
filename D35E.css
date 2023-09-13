@@ -302,6 +302,9 @@
   /* ----------------------------------------- */
   /*  List Filters                             */
   /* ----------------------------------------- */
+  /* ----------------------------------------- */
+  /*  Limited Sheet                            */
+  /* ----------------------------------------- */
 }
 .D35E.sheet .window-content {
   overflow-y: hidden;
@@ -389,20 +392,6 @@
   border-right: none;
   margin-right: 0;
 }
-.D35E.sheet .limited .sheet-header img.profile {
-    flex: 0 0 160px;
-    height: 160px;
-    max-width: 160px;
-}
-.D35E.sheet .limited .sheet-header section.header-details, .D35E.sheet .limited .sheet-header .header-details h1 {
-    height: auto;
-}
-.D35E.sheet .limited .sheet-header .header-details input {
-    border: none !important;
-}
-.D35E.sheet .limited .sheet-body {
-    background: linear-gradient(rgba(255, 255, 255, 0.3) 100%, rgba(255, 255, 255, 0.3) 100%), url(icons/ui/parchment-2.png) repeat;
-}
 .D35E.sheet .sheet-header .summary {
   flex: 0 0 100%;
   height: 60px;
@@ -481,6 +470,23 @@
 }
 .D35E.sheet a > .icon:hover {
   opacity: 0.5;
+}
+.D35E.sheet .limited .sheet-header img.profile {
+  flex: 0 0 160px;
+  height: 160px;
+  max-width: 160px;
+}
+.D35E.sheet .limited .sheet-header section.header-details {
+  height: auto;
+}
+.D35E.sheet .limited .sheet-header section.header-details h1 {
+  height: auto;
+}
+.D35E.sheet .limited .sheet-header section.header-details input {
+  border: none !important;
+}
+.D35E.sheet .limited .sheet-body {
+  background: linear-gradient(rgba(255, 255, 255, 0.3) 100%, rgba(255, 255, 255, 0.3) 100%), url(icons/ui/parchment-2.png) repeat;
 }
 /* ----------------------------------------- */
 /* Trait Selector
