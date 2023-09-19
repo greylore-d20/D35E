@@ -450,6 +450,32 @@
       opacity: 0.5;
     }
   }
+
+  /* ----------------------------------------- */
+  /*  Limited Sheet                            */
+  /* ----------------------------------------- */
+
+  .limited {
+    .sheet-header {
+        img.profile {
+            flex: 0 0 160px;
+            height: 160px;
+            max-width: 160px;
+        }
+        section.header-details {
+            height: auto;
+            & h1 {
+                height: auto;
+            }
+            & input {
+                border: none !important;
+            }
+        }
+    }
+    .sheet-body {
+        background: linear-gradient(rgba(255, 255, 255, 0.3) 100%, rgba(255, 255, 255, 0.3) 100%), url(icons/ui/parchment-2.png) repeat;
+    }
+  }
 }
 
 
