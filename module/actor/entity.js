@@ -1265,7 +1265,7 @@ export class ActorPF extends Actor {
    * @param {Object} options      Options which configure how ability tests or saving throws are rolled
    */
   rollAbility(abilityId, options = {}) {
-    this.rollAbilityTest(abilityId, options);
+    return this.rollAbilityTest(abilityId, options);
   }
 
   rollBAB(options = {}) {
@@ -1616,6 +1616,8 @@ export class ActorPF extends Actor {
       await createCustomChatMessage("systems/D35E/templates/chat/resistance.html", templateData, chatData, {
         rolls: [roll],
       });
+
+      return roll;
     };
 
     // Add contextual notes
@@ -1661,7 +1663,7 @@ export class ActorPF extends Actor {
           roll = _roll.call(this, type, html, props);
         },
       };
-      await new Promise((resolve) => {
+      return new Promise((resolve) => {
         new Dialog(
           {
             title: `${game.i18n.localize("D35E.ResRollResistance")}`,
@@ -1679,7 +1681,7 @@ export class ActorPF extends Actor {
         ).render(true);
       });
     } else {
-      _roll.call(this, type, null, props);
+      return _roll.call(this, type, null, props);
     }
   }
 
@@ -1852,6 +1854,8 @@ export class ActorPF extends Actor {
       await createCustomChatMessage("systems/D35E/templates/chat/saving-throw.html", templateData, chatData, {
         rolls: [roll],
       });
+
+      return roll;
     };
 
     let savingThrowId = "";
@@ -1922,7 +1926,7 @@ export class ActorPF extends Actor {
         roll = _roll.call(this, savingThrowId, savingThrowAbility, savingThrowBaseAbility, target, html, props);
       },
     };
-    await new Promise((resolve) => {
+    return new Promise((resolve) => {
       new Dialog({
         title: `${game.i18n.localize("D35E.STRollSavingThrow")} - ${this.name}`,
         content: html,
@@ -2152,18 +2156,23 @@ export class ActorPF extends Actor {
       await createCustomChatMessage("systems/D35E/templates/chat/skill.html", templateData, chatData, {
         rolls: [roll],
       });
+
+      return roll;
     };
 
     // Generating Skill Name
     let skl, sklName, skillTag, subSkillId;
     const skillParts = skillId.split("."),
-      isSubSkill = skillParts[1] === "subSkills" && skillParts.length === 3;
+      isSubSkill = (skillParts[1] === "subSkills" || skillParts[1] === "namedSubSkills") && skillParts.length === 3;
     if (isSubSkill) {
       skillId = skillParts[0];
-      skl = this.system.skills[skillId].subSkills[skillParts[2]];
+      if (skillParts[1] === "namedSubSkills") {
+
+      }
+      skl = this.system.skills[skillId][skillParts[1]][skillParts[2]];
       sklName = `${CONFIG.D35E.skills[skillId]} (${skl.name})`;
       skillTag = createTag(skl.name);
-      subSkillId = skillParts[2];
+      subSkillId = Object.entries(this.system.skills[skillId].subSkills).find(([id,skill]) => skill === skl)[0];
     } else {
       skl = this.system.skills[skillId];
       if (skl.name != null) sklName = skl.name;
@@ -2243,7 +2252,7 @@ export class ActorPF extends Actor {
         roll = _roll.call(this, options.target, html, props, sklName, "1d20", sourceChangesSkillId);
       },
     };
-    await new Promise((resolve) => {
+    return new Promise((resolve) => {
       new Dialog(
         {
           title: sklName + " - " + this.name,
@@ -2388,6 +2397,8 @@ export class ActorPF extends Actor {
       await createCustomChatMessage("systems/D35E/templates/chat/grapple.html", templateData, chatData, {
         rolls: [roll],
       });
+
+      return roll;
     };
 
     // Add contextual notes
@@ -2430,7 +2441,7 @@ export class ActorPF extends Actor {
         roll = _roll.call(this, target, html, props);
       },
     };
-    await new Promise((resolve) => {
+    return new Promise((resolve) => {
       new Dialog(
         {
           title: `${game.i18n.localize("D35E.GRRollGrapple")}`,
