@@ -20,10 +20,10 @@ export class EncounterGeneratorDialog extends FormApplication {
 
     async loadCompendium() {//is the Bestiary compendium loaded?, No? Load it
         if (game.D35E.compendiumBrowser.entityType !== 'Actor' || game.D35E.compendiumBrowser._data.loaded === false) {
-            ui.notifications.info("Loading Monster Compendiums for the first time... please wait")
+            ui.notifications.info("Initializing Encounter Generator...")
             game.D35E.compendiumBrowser.entityType = 'Actor';
             await game.D35E.compendiumBrowser.loadData();
-            ui.notifications.info("Monster Compendiums loaded");
+            ui.notifications.info("Encounter Generator ready!");
         }
     }
     async getCompendiumTables(){
@@ -105,7 +105,7 @@ export class EncounterGeneratorDialog extends FormApplication {
         let breakOut = false
         if (grabbedTables.find(t => t.data._id === val).results.filter(result => result.data.type != 2) != 0) {
             game.D35E.logger.log(grabbedTables.find(t => t.data._id === val).results);
-            return ui.notifications.error("This Rolltable has Non-Creatures on it, Cannot roll!")
+            return ui.notifications.error("Selected roll table has non-actor roll results, cannot roll for monster!")
         }
         // Loop limit - total number of loops we want to do.
         while (j < limit) {
