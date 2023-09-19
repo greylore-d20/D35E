@@ -20,10 +20,6 @@ export class ActorSheetPFCharacter extends ActorSheetPF {
       });
   }
 
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFCharacter");
-  }
-
   /* -------------------------------------------- */
   /*  Rendering                                   */
   /* -------------------------------------------- */

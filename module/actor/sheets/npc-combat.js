@@ -23,10 +23,6 @@ export class ActorSheetPFNPCCombat extends ActorSheetPFNPC {
     return "systems/D35E/templates/actors/npc-sheet-combat.html";
   }
 
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFNPCMonster");
-  }
-
   _render(...args) {
     this._element = null;
     return super._render(...args);
