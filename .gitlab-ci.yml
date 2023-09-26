@@ -19,3 +19,15 @@ release_job:
           url: 'https://www.legaciesofthedragon.com/D35E/tags/$CI_COMMIT_TAG/system.json'
         - name: 'zip'
           url: 'https://www.legaciesofthedragon.com/D35E/tags/$CI_COMMIT_TAG/data.zip'
+
+test:
+  stage: test
+  image: node:lts
+  script:
+    - npm ci
+    - npm test-gitlab
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml

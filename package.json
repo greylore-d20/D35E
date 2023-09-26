@@ -5,13 +5,16 @@
     "name": "Antoni Sobkowicz"
   },
   "scripts": {
-    "build:release": "webpack"
+    "build:release": "webpack",
+    "test": "mocha --require @babel/register --reporter mocha-teamcity-reporter test/**",
+    "test-gitlab": "mocha --require @babel/register --reporter mocha-junit-reporter --reporter-options mochaFile=junit.xml test/**"
   },
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.22.20",
     "@babel/register": "^7.22.15",
     "@league-of-foundry-developers/foundry-vtt-types": "^9.280.0",
+    "chai": "^4.3.8",
     "color": "^3.1.2",
     "cypress": "^6.3.0",
     "fs-extra": "^9.0.0",
@@ -19,6 +22,8 @@
     "gulp-less": "^4.0.1",
     "gulp-stream": "0.0.2",
     "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.1",
+    "mocha-teamcity-reporter": "^4.2.0",
     "prettier": "2.7.1",
     "sinon": "^16.0.0",
     "terser-webpack-plugin": "^3.0.2",
