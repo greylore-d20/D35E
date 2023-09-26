@@ -45,9 +45,24 @@ if not args.icons_only:
     repo.git.add("system.json")
     print("Updated system.json")
 
+
+    print("Unpacking and changing line endings")
     for pack in packs:
         packPath = pack['path'].replace("./packs/","")
         os.system("fvtt package unpack "+packPath+" --outputDirectory source/"+packPath+" --inputDirectory packs/")
+
+        # For each unpackaged pack, change all file line endings to windows line endings
+        for root, dirs, files in os.walk("source/"+packPath):
+            for file in files:
+                WINDOWS_LINE_ENDING = b'\r\n'
+                UNIX_LINE_ENDING = b'\n'
+                file_path = "source/"+packPath+"/"+file
+                with open(file_path, 'rb') as open_file:
+                    content = open_file.read()
+                content = content.replace(UNIX_LINE_ENDING, WINDOWS_LINE_ENDING)
+
+                with open(file_path, 'wb') as open_file:
+                    open_file.write(content)
 
     headers = { 'PRIVATE-TOKEN':args.token}
     params = {'title': version}

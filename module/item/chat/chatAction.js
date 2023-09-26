@@ -1,5 +1,6 @@
 import { ActorPF } from "../../actor/entity.js";
 import { ChatHelper } from "../../helpers/chatHelper.js";
+import {ActorDamageHelper} from '../../actor/helpers/actorDamageHelper.js';
 
 export class ItemChatAction {
   /* -------------------------------------------- */
@@ -68,7 +69,7 @@ export class ItemChatAction {
       const touch = button.dataset.touch === "true";
       const incorporeal = button.dataset.incorporeal === "true";
       event.applyHalf = action === "applyDamageHalf";
-      ActorPF.applyDamage(
+      ActorDamageHelper.applyDamage(
         event,
         roll,
         critroll,
@@ -92,7 +93,7 @@ export class ItemChatAction {
       );
     } else if (action === "applyHealing") {
       const value = button.dataset.value;
-      ActorPF.applyDamage(event, roll, null, null, null, null, null, value, null, null, null, null, false, true);
+      ActorDamageHelper.applyDamage(event, roll, null, null, null, null, null, value, null, null, null, null, false, true);
     }
 
     // Roll saving throw
