@@ -25,7 +25,7 @@ test:
   image: node:lts
   script:
     - npm ci
-    - npm test-gitlab
+    - npm run test-gitlab
   artifacts:
     when: always
     reports:
