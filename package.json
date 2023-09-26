@@ -6,8 +6,8 @@
   },
   "scripts": {
     "build:release": "webpack",
-    "test": "mocha --require @babel/register --reporter mocha-teamcity-reporter test/**",
-    "test-gitlab": "mocha --require @babel/register --reporter mocha-junit-reporter --reporter-options mochaFile=junit.xml test/**"
+    "test": "mocha test/**/*.js --require @babel/register --reporter mocha-teamcity-reporter",
+    "test-gitlab": "mocha test/**/*.js  --require @babel/register --reporter mocha-junit-reporter --reporter-options mochaFile=junit.xml"
   },
   "devDependencies": {
     "@babel/core": "^7.23.0",
