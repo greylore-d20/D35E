@@ -7,7 +7,7 @@
   "scripts": {
     "build:release": "webpack",
     "test": "jest --reporters=default --reporters=jest-teamcity-reporter",
-    "test-gitlab": "jest --reporters=default --reporters=jest-junit-reporter"
+    "test-gitlab": "jest --reporters=default --reporters=jest-junit"
   },
   "devDependencies": {
     "@babel/core": "^7.23.0",
