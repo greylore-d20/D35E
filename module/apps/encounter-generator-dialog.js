@@ -18,10 +18,12 @@ export class EncounterGeneratorDialog extends FormApplication {
         });
     };
 
-    loadCompendium() {//is the Bestiary compendium loaded?, No? Load it
-        if (game.D35E.compendiumBrowser.compendiums.bestiary._data.loaded == false) {
-            ui.notifications.info("Loading Monster Compendiums for the first time...")
-            game.D35E.compendiumBrowser.compendiums.bestiary.loadData()
+    async loadCompendium() {//is the Bestiary compendium loaded?, No? Load it
+        if (game.D35E.compendiumBrowser.entityType !== 'Actor' || game.D35E.compendiumBrowser._data.loaded === false) {
+            ui.notifications.info("Initializing Encounter Generator...")
+            game.D35E.compendiumBrowser.entityType = 'Actor';
+            await game.D35E.compendiumBrowser.loadData();
+            ui.notifications.info("Encounter Generator ready!");
         }
     }
     async getCompendiumTables(){
@@ -85,7 +87,7 @@ export class EncounterGeneratorDialog extends FormApplication {
         let crConverted = crConvert(crArray);
 
         //log2(of all converted CRs added together)*2
-        let EL = Math.round(Math.log2(crConverted.reduce(add)) * 2)
+        let EL = Math.round(Math.log2(crConverted.reduce(add, 0)) * 2)
         return EL
     };
 
@@ -103,7 +105,7 @@ export class EncounterGeneratorDialog extends FormApplication {
         let breakOut = false
         if (grabbedTables.find(t => t.data._id === val).results.filter(result => result.data.type != 2) != 0) {
             game.D35E.logger.log(grabbedTables.find(t => t.data._id === val).results);
-            return ui.notifications.error("This Rolltable has Non-Creatures on it, Cannot roll!")
+            return ui.notifications.error("Selected roll table has non-actor roll results, cannot roll for monster!")
         }
         // Loop limit - total number of loops we want to do.
         while (j < limit) {
@@ -122,7 +124,7 @@ export class EncounterGeneratorDialog extends FormApplication {
                     let monsters = (await grabbedTables.find(t => t.data._id === val).roll()).results
                     testELArray = duplicate(monsterArray)
                     monsters.forEach(monster => {
-                        let monsterCR = game.D35E.compendiumBrowser.compendiums.bestiary.items.find(x => x.item._id === monster.documentId)
+                        let monsterCR = game.D35E.compendiumBrowser.items.find(x => x.item._id === monster.documentId)
                         testELArray.push({
                             id: monster.documentId,
                             pack: monster.documentCollection,
@@ -220,10 +222,10 @@ export class EncounterGeneratorDialog extends FormApplication {
     }
 
     async getData() {//Load the compendium and get those tables to display!
-        this.loadCompendium()
-        let data = {tables: await this.getTables()}
+        await this.loadCompendium();
+        const data = {tables: await this.getTables()}
 
-        return data
+        return data;
     };
 
     activateListeners(html) {//This makes the button clickable ;D
