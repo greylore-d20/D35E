@@ -1,6 +1,302 @@
-import {CACHE} from "./cache.js";
+import {CACHE} from "../../cache.js";
+import {ActorPF} from '../entity.js';
+import {createCustomChatMessage} from '../../chat.js';
 
-export class DamageTypes {
+export class ActorDamageHelper {
+    /**
+     * Apply rolled dice damage to the token or tokens which are currently controlled.
+     * This allows for damage to be scaled by a multiplier to account for healing, critical hits, or resistance
+     *
+     * @param {Number} value   The amount of damage to deal.
+     * @return {Promise}
+     */
+    static async applyDamage(
+        ev,
+        roll,
+        critroll,
+        natural20,
+        natural20Crit,
+        fubmle,
+        fumble20Crit,
+        damage,
+        normalDamage,
+        material,
+        alignment,
+        enh,
+        nonLethalDamage,
+        simpleDamage = false,
+        actor = null,
+        attackerId = null,
+        attackerTokenId = null,
+        ammoId = null,
+        incorporeal = false,
+        touch = false
+    ) {
+        let value = 0;
+
+        let tokensList = [];
+        const promises = [];
+
+        let _attacker = game.actors.get(attackerId);
+
+        if (actor === null) {
+            if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);
+            else tokensList = canvas.tokens.controlled;
+            if (!tokensList.length) {
+                ui.notifications.warn(game.i18n.localize("D35E.NoTokensSelected"));
+                return;
+            }
+        } else {
+            tokensList.push({ actor: actor });
+        }
+
+        for (let t of tokensList) {
+            let a = t.actor,
+                hp = a.system.attributes.hp,
+                _nonLethal = a.system.attributes.hp.nonlethal || 0,
+                nonLethal = 0,
+                tmp = parseInt(hp.temp) || 0,
+                hit = false,
+                crit = false;
+
+            if (!a.testUserPermission(game.user, "OWNER")) {
+                ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
+                continue;
+            }
+            if (simpleDamage) {
+                hit = true;
+                value = damage;
+            } else {
+                let finalAc = {};
+                if (fubmle) return;
+                if (ev && ev.originalEvent instanceof MouseEvent && ev.originalEvent.shiftKey) {
+                    finalAc.noCheck = true;
+                    finalAc.ac = 0;
+                    finalAc.noCritical = false;
+                    finalAc.applyHalf = ev.applyHalf === true;
+                } else {
+                    if (roll > ActorPF.SPELL_AUTO_HIT) {
+                        // Spell roll value
+                        finalAc = await a.rollDefenseDialog({ ev: ev, touch: touch, flatfooted: false });
+                        if (finalAc.ac === -1) continue;
+                    } else {
+                        finalAc.applyHalf = ev?.applyHalf === true;
+                    }
+                }
+                let concealMiss = false;
+                let concealRoll = 0;
+                let concealTarget = 0;
+                let concealRolled = false;
+                if (
+                    (finalAc.conceal ||
+                        finalAc.fullConceal ||
+                        a.system.attributes?.concealment?.total ||
+                        finalAc.concealOverride) &&
+                    roll !== ActorPF.SPELL_AUTO_HIT
+                ) {
+                    concealRolled = true;
+                    concealRoll = new Roll35e("1d100").roll().total;
+                    if (finalAc.fullConceal) concealTarget = 50;
+                    if (finalAc.conceal) concealTarget = 20;
+                    if (finalAc.concealOverride) concealTarget = finalAc.concealOverride;
+                    concealTarget = Math.max(a.system.attributes?.concealment?.total || 0, concealTarget);
+                    if (concealRoll <= concealTarget) {
+                        concealMiss = true;
+                    }
+                }
+                let achit = roll >= finalAc.ac || natural20;
+                hit = ((roll >= finalAc.ac || roll === ActorPF.SPELL_AUTO_HIT || natural20) && !concealMiss) || finalAc.noCheck; // This is for spells and natural 20
+                crit =
+                    (critroll >= finalAc.ac || (critroll && finalAc.noCheck) || natural20Crit) &&
+                    !finalAc.noCritical &&
+                    !fumble20Crit;
+                let damageData = null;
+                let noPrecision = false;
+                // Fortitifcation / crit resistance
+                let fortifyRolled = false;
+                let fortifySuccessfull = false;
+                let fortifyValue = 0;
+                let fortifyRoll = 0;
+                if (hit && a.system.attributes.fortification?.total) {
+                    fortifyRolled = true;
+                    fortifyValue = a.system.attributes.fortification?.total;
+                    fortifyRoll = new Roll35e("1d100").roll().total;
+                    if (fortifyRoll <= fortifyValue) {
+                        fortifySuccessfull = true;
+                        crit = false;
+                        if (!finalAc.applyPrecision) noPrecision = true;
+                    }
+                }
+                if (crit) {
+                    damageData = ActorDamageHelper.calculateDamageToActor(
+                        a,
+                        damage,
+                        material,
+                        alignment,
+                        enh,
+                        nonLethalDamage,
+                        noPrecision,
+                        incorporeal,
+                        finalAc.applyHalf
+                    );
+                } else {
+                    if (natural20 || (critroll && hit))
+                        //Natural 20 or we had a crit roll, no crit but base attack hit
+                        damageData = ActorDamageHelper.calculateDamageToActor(
+                            a,
+                            normalDamage,
+                            material,
+                            alignment,
+                            enh,
+                            nonLethalDamage,
+                            noPrecision,
+                            incorporeal,
+                            finalAc.applyHalf
+                        );
+                    else
+                        damageData = ActorDamageHelper.calculateDamageToActor(
+                            a,
+                            damage,
+                            material,
+                            alignment,
+                            enh,
+                            nonLethalDamage,
+                            noPrecision,
+                            incorporeal,
+                            finalAc.applyHalf
+                        );
+                }
+                value = damageData.damage;
+                nonLethal += damageData.nonLethalDamage;
+
+                damageData.nonLethalDamage = nonLethal;
+                damageData.displayDamage = value;
+                let props = [];
+                if ((finalAc.rollModifiers || []).length > 0)
+                    props.push({
+                        header: game.i18n.localize("D35E.RollModifiers"),
+                        value: finalAc.rollModifiers,
+                    });
+                let ammoRecovered = false;
+                if (game.settings.get("D35E", "useAutoAmmoRecovery")) {
+                    if (ammoId && attackerId && !hit) {
+                        let recoveryRoll = new Roll35e("1d100").roll().total;
+                        if (recoveryRoll < 50) {
+                            ammoRecovered = true;
+                            if (_attacker) await _attacker.quickChangeItemQuantity(ammoId, 1);
+                        }
+                    }
+                }
+                if (damageData.damagePoolPossibleReductionsUpdate) {
+                    await a.updateDamageReductionPoolItems(damageData.damagePoolPossibleReductionsUpdate);
+                }
+
+                let actions = [];
+                finalAc.rollData = {};
+                finalAc.rollData.hit = hit;
+                if (finalAc.allCombatChanges && finalAc.allCombatChanges.length > 0) {
+                    actions = await a.getAndApplyCombatChangesSpecialActions(
+                        finalAc.allCombatChanges,
+                        this,
+                        finalAc.rollData,
+                        finalAc.optionalFeatIds,
+                        finalAc.optionalFeatRanges
+                    );
+                }
+
+                // Set chat data
+                let chatData = {
+                    speaker: ChatMessage.getSpeaker({ actor: a.data }),
+                    rollMode: finalAc.rollMode || "gmroll",
+                    sound: CONFIG.sounds.dice,
+                    "flags.D35E.noRollRender": true,
+                };
+                let chatTemplateData = {
+                    name: a.name,
+                    sourceName: _attacker.name,
+                    sourceImg: _attacker.img,
+                    type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+                    rollMode: finalAc.rollMode || "gmroll",
+                };
+                const templateData = mergeObject(
+                    chatTemplateData,
+                    {
+                        actor: a,
+                        damageData: damageData,
+                        img: a.img,
+                        roll: roll,
+                        ac: finalAc,
+                        hit: hit,
+                        achit: achit,
+                        crit: crit,
+                        actions: actions,
+                        acModifiers: finalAc.acModifiers || [],
+                        concealMiss: concealMiss,
+                        concealRoll: concealRoll,
+                        concealTarget: concealTarget,
+                        concealRolled: concealRolled,
+                        isSpell: roll === ActorPF.SPELL_AUTO_HIT,
+                        applyHalf: finalAc.applyHalf,
+                        ammoRecovered: ammoRecovered,
+                        fortifyRolled: fortifyRolled,
+                        fortifyValue: Math.min(fortifyValue, 100),
+                        fortifyRoll: fortifyRoll,
+                        fortifySuccessfull: fortifySuccessfull,
+                        hasProperties: props.length,
+                        properties: props,
+                    },
+                    { inplace: false }
+                );
+                // Create message
+
+                await createCustomChatMessage("systems/D35E/templates/chat/damage-description.html", templateData, chatData);
+            }
+
+            //LogHelper.log('Damage Value ', value, damage)
+            if (hit) {
+                let dt = value > 0 ? Math.min(tmp, value) : 0;
+                let nonLethalHeal = 0;
+                if (value < 0) nonLethalHeal = value;
+                promises.push(
+                    t.actor.update({
+                        "system.attributes.hp.nonlethal": Math.max(_nonLethal + nonLethal + nonLethalHeal, 0),
+                        "system.attributes.hp.temp": tmp - dt,
+                        "system.attributes.hp.value": Math.clamped(hp.value - (value - dt), -100, hp.max),
+                    })
+                );
+            }
+        }
+        return Promise.all(promises);
+    }
+
+    static async applyRegeneration(damage, actor = null) {
+        let value = 0;
+
+        let tokensList = [];
+        const promises = [];
+        if (actor === null) {
+            if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);
+            else tokensList = canvas.tokens.controlled;
+            if (!tokensList.length) {
+                ui.notifications.warn(game.i18n.localize("D35E.NoTokensSelected"));
+                return;
+            }
+        } else {
+            tokensList.push({ actor: actor });
+        }
+
+        for (let t of tokensList) {
+            let a = t.actor,
+                nonLethal = a.system.attributes.hp.nonlethal || 0;
+
+            promises.push(
+                t.actor.update({
+                    "system.attributes.hp.nonlethal": Math.max(0, nonLethal - damage),
+                })
+            );
+        }
+        return Promise.all(promises);
+    }
 
     static get defaultDR() {
         return {
@@ -33,7 +329,7 @@ export class DamageTypes {
     }
 
     static getDRDamageTypes() {
-        let damageTypes = DamageTypes.getBaseDRDamageTypes();
+        let damageTypes = ActorDamageHelper.getBaseDRDamageTypes();
         return damageTypes;
     }
 
@@ -41,10 +337,10 @@ export class DamageTypes {
         let damageTypes = duplicate(this.getDRDamageTypes());
         let actorData = actor.system;
         let actorDR = base ? actorData.damageReduction : actorData.combinedDR
-        DamageTypes.getDamageTypeForUID(damageTypes,'any').value = actorDR?.any || 0;
+        ActorDamageHelper.getDamageTypeForUID(damageTypes,'any').value = actorDR?.any || 0;
         (actorDR?.types || []).forEach(t => {
             if (t.uid === null) return ;
-            let type = DamageTypes.getDamageTypeForUID(damageTypes,t.uid);
+            let type = ActorDamageHelper.getDamageTypeForUID(damageTypes,t.uid);
             type.value = t.value;
             type.or = t.or;
             type.lethal = t.lethal;
@@ -64,11 +360,11 @@ export class DamageTypes {
      */
     static getActorMapForDR(dr) {
         let damageReduction = {}
-        damageReduction['any'] = DamageTypes.getDamageTypeForUID(dr,'any').value;
+        damageReduction['any'] = ActorDamageHelper.getDamageTypeForUID(dr,'any').value;
         damageReduction['types'] = []
         dr.forEach(t => {
             if (t.uid === "any") return;
-            damageReduction['types'].push(DamageTypes.getDamageTypeForUID(dr,t.uid));
+            damageReduction['types'].push(ActorDamageHelper.getDamageTypeForUID(dr,t.uid));
         })
         return damageReduction;
     }
@@ -82,12 +378,12 @@ export class DamageTypes {
         let drParts = [];
         let drOrParts = [];
         let orValue = 0;
-        if (DamageTypes.getDamageTypeForUID(dr,'any').value > 0) {
-            drParts.push(`${DR} ${DamageTypes.getDamageTypeForUID(dr,'any').value}/-`)
+        if (ActorDamageHelper.getDamageTypeForUID(dr,'any').value > 0) {
+            drParts.push(`${DR} ${ActorDamageHelper.getDamageTypeForUID(dr,'any').value}/-`)
         }
         dr.forEach(t => {
             if (t.uid === "any") return;
-            let drType = DamageTypes.getDamageTypeForUID(dr,t.uid)
+            let drType = ActorDamageHelper.getDamageTypeForUID(dr,t.uid)
             if (drType.immunity) {
                 if (drType.or) {
                     drOrParts.push(`${drType.name}`)
@@ -124,13 +420,13 @@ export class DamageTypes {
         drParts.push('<ul class="traits-list">')
         let drOrParts = [];
         let orValue = 0;
-        if (DamageTypes.getDamageTypeForUID(dr,'any').value > 0) {
-            drParts.push(`<li class="tag">${DR} ${DamageTypes.getDamageTypeForUID(dr,'any').value}/-</li>`)
+        if (ActorDamageHelper.getDamageTypeForUID(dr,'any').value > 0) {
+            drParts.push(`<li class="tag">${DR} ${ActorDamageHelper.getDamageTypeForUID(dr,'any').value}/-</li>`)
         }
         let drOrModified = false;
         dr.forEach(t => {
             if (t.uid === "any") return;
-            let drType = DamageTypes.getDamageTypeForUID(dr,t.uid)
+            let drType = ActorDamageHelper.getDamageTypeForUID(dr,t.uid)
             if (drType.immunity) {
                 if (drType.or) {
                     drOrParts.push(`${drType.name}`)
@@ -196,7 +492,7 @@ export class DamageTypes {
         let actorData = actor.system;
         ((base ? actorData.energyResistance : actorData.combinedResistances) || []).forEach(t => {
             if (t.uid === null) return ;
-            let type = DamageTypes.getDamageTypeForUID(damageTypes,t.uid);
+            let type = ActorDamageHelper.getDamageTypeForUID(damageTypes,t.uid);
             if (!type) return;
             type.value = t.value;
             type.vulnerable = t.vulnerable;
@@ -215,7 +511,7 @@ export class DamageTypes {
         let energyResistance = []
         er.forEach(t => {
             if (t.uid === "any") return;
-            energyResistance.push(DamageTypes.getDamageTypeForUID(er,t.uid));
+            energyResistance.push(ActorDamageHelper.getDamageTypeForUID(er,t.uid));
         })
         return energyResistance;
     }
@@ -262,8 +558,8 @@ export class DamageTypes {
      * Damage Calculation
      */
     static calculateDamageToActor(actor,damage,material,alignment,enh,nonLethal,noPrecision,incorporeal,applyHalf) {
-        let er = DamageTypes.getERForActor(actor).filter(d => d.value > 0 || d.vulnerable || d.immunity || d.lethal);
-        let dr = DamageTypes.getDRForActor(actor).filter(d => d.value > 0 || d.lethal || d.immunity);
+        let er = ActorDamageHelper.getERForActor(actor).filter(d => d.value > 0 || d.vulnerable || d.immunity || d.lethal);
+        let dr = ActorDamageHelper.getDRForActor(actor).filter(d => d.value > 0 || d.lethal || d.immunity);
         let hasRegeneration = !!actor.system.traits.regen;
         let nonLethalDamage = 0;
         let bypassedDr = new Set()
@@ -293,6 +589,8 @@ export class DamageTypes {
         //Checks for slashing/piercing/bludgeonign damage and typeless damage
         let hasAnyTypeDamage = false;
         let baseIsNonLethal = nonLethal || false;
+        // Sum the damage for each damageTypeUid in the damage array, and remove duplicates from the damage array
+        damage = this.mergeDamageTypes(damage);
         damage.forEach(d => {
             if (d.damageTypeUid) {
                 let _damage = CACHE.DamageTypes.get(d.damageTypeUid)
@@ -353,7 +651,7 @@ export class DamageTypes {
             if (d.damageTypeUid) {
                 let _damage = CACHE.DamageTypes.get(d.damageTypeUid)
                 if (_damage.system.damageType === "energy") {
-                    let erValue = DamageTypes.getDamageTypeForUID(er,d.damageTypeUid)
+                    let erValue = ActorDamageHelper.getDamageTypeForUID(er,d.damageTypeUid)
                     let realDamage = (applyHalf ? Math.floor(d.roll.total/2.0) : d.roll.total);
                     let damageAfterEr = Math.max(realDamage - (erValue?.value || 0),0)
 
@@ -436,6 +734,25 @@ export class DamageTypes {
             incorporealRolled: incorporealRolled,
             damagePoolPossibleReductionsUpdate: damagePoolPossibleReductionsUpdate,
             incorporealMiss: incorporealMiss};
+    }
+
+    static mergeDamageTypes(damage) {
+        let damageMap = new Map();
+        let finalDamageArray = [];
+        damage.forEach(d => {
+            if (d.damageTypeUid) {
+                if (!damageMap.has(d.damageTypeUid)) {
+                    damageMap.set(d.damageTypeUid, d);
+                } else {
+                    // Add the damage to existing damage roll total
+                    damageMap.get(d.damageTypeUid).roll.total += d.roll.total;
+                }
+            } else {
+                finalDamageArray.push(d);
+            }
+        });
+        finalDamageArray.push(...damageMap.values());
+        return finalDamageArray;
     }
 
     static mapDamageType(type) {

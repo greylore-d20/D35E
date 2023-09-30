@@ -3,7 +3,7 @@ import { EntrySelector } from "../../apps/entry-selector.js";
 import { Item35E } from "../entity.js";
 import { CACHE } from "../../cache.js";
 import { isMinimumCoreVersion } from "../../lib.js";
-import { DamageTypes } from "../../damage-types.js";
+import { ActorDamageHelper } from "../../actor/helpers/actorDamageHelper.js";
 import { createTag } from "../../lib.js";
 
 import { Roll35e } from "../../roll.js";
@@ -121,8 +121,8 @@ export class ItemSheetPF extends ItemSheet {
     sheetData.showIdentifyDescription = sheetData.isGM && sheetData.isPhysical;
     sheetData.showUnidentifiedData = this.item.showUnidentifiedData;
     sheetData.materials = Array.from(CACHE.Materials.values());
-    sheetData.baseDamageTypes = DamageTypes.getBaseDRDamageTypes();
-    sheetData.energyDamageTypes = DamageTypes.getERDamageTypes();
+    sheetData.baseDamageTypes = ActorDamageHelper.getBaseDRDamageTypes();
+    sheetData.energyDamageTypes = ActorDamageHelper.getERDamageTypes();
     var damageTypesUnsorded = Array.from(CACHE.DamageTypes.values());
     sheetData.damageTypes = damageTypesUnsorded.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
     sheetData.damageTypes.forEach((d) => {

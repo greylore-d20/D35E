@@ -11,7 +11,7 @@ import { DeckEditor } from "../../apps/deck-editor.js";
 import { D35E } from "../../config.js";
 import { PointBuyCalculator } from "../../apps/point-buy-calculator.js";
 import { Item35E } from "../../item/entity.js";
-import { DamageTypes } from "../../damage-types.js";
+import { ActorDamageHelper } from "../helpers/actorDamageHelper.js";
 import { Roll35e } from "../../roll.js";
 import ActorSensesConfig from "../../apps/senses-config.js";
 import AbilityConfig from "../../apps/ability-config.js";
@@ -304,8 +304,8 @@ export class ActorSheetPF extends ActorSheet {
     // Prepare skillsets
     sheetData.skillsets = this._prepareSkillsets(sheetData.actor.data.skills);
 
-    sheetData.energyResistance = DamageTypes.computeERTags(DamageTypes.getERForActor(this.actor));
-    sheetData.damageReduction = DamageTypes.computeDRTags(DamageTypes.getDRForActor(this.actor));
+    sheetData.energyResistance = ActorDamageHelper.computeERTags(ActorDamageHelper.getERForActor(this.actor));
+    sheetData.damageReduction = ActorDamageHelper.computeDRTags(ActorDamageHelper.getDRForActor(this.actor));
 
     // Skill rank counting
     const skillRanks = { allowed: 0, used: 0, bgAllowed: 0, bgUsed: 0, sentToBG: 0 };

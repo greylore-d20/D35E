@@ -1,13 +1,13 @@
 import {CACHE} from "../cache.js";
-import {DamageTypes} from "../damage-types.js";
+import {ActorDamageHelper} from "../actor/helpers/actorDamageHelper.js";
 
 export class DamageReductionSetting extends FormApplication {
 
     constructor(...args) {
         super(...args);
 
-        this.damageReduction = DamageTypes.getDRForActor(this.object, true)
-        this.energyResistance = DamageTypes.getERForActor(this.object, true)
+        this.damageReduction = ActorDamageHelper.getDRForActor(this.object, true)
+        this.energyResistance = ActorDamageHelper.getERForActor(this.object, true)
     }
 
     static get defaultOptions() {
@@ -41,23 +41,23 @@ export class DamageReductionSetting extends FormApplication {
         html.find('input[type="checkbox"]').change(this._onChecboxChange.bind(this));
 
 
-        $('input[name="computed-dr"]').val(DamageTypes.computeDRString(this.damageReduction))
-        $('input[name="computed-er"]').val(DamageTypes.computeERString(this.energyResistance))
+        $('input[name="computed-dr"]').val(ActorDamageHelper.computeDRString(this.damageReduction))
+        $('input[name="computed-er"]').val(ActorDamageHelper.computeERString(this.energyResistance))
     }
 
     async _onEntryChange(event) {
         let key = $(event.target).attr('name')
         let value = $(event.target).val()
         this._updateDRERDataFromForm(key, value)
-        $('input[name="computed-dr"]').val(DamageTypes.computeDRString(this.damageReduction))
-        $('input[name="computed-er"]').val(DamageTypes.computeERString(this.energyResistance))
+        $('input[name="computed-dr"]').val(ActorDamageHelper.computeDRString(this.damageReduction))
+        $('input[name="computed-er"]').val(ActorDamageHelper.computeERString(this.energyResistance))
     }
     async _onChecboxChange(event) {
         let key = $(event.target).attr('name')
         let value = $(event.target).is(":checked")
         this._updateDRERDataFromForm(key, value)
-        $('input[name="computed-dr"]').val(DamageTypes.computeDRString(this.damageReduction))
-        $('input[name="computed-er"]').val(DamageTypes.computeERString(this.energyResistance))
+        $('input[name="computed-dr"]').val(ActorDamageHelper.computeDRString(this.damageReduction))
+        $('input[name="computed-er"]').val(ActorDamageHelper.computeERString(this.energyResistance))
     }
 
     _updateObject(event, formData) {
@@ -66,8 +66,8 @@ export class DamageReductionSetting extends FormApplication {
             this._updateDRERDataFromForm(key, data);
         })
         const updateData = {};
-        updateData[`data.damageReduction`] = DamageTypes.getActorMapForDR(this.damageReduction);
-        updateData[`data.energyResistance`] = DamageTypes.getActorMapForER(this.energyResistance);
+        updateData[`data.damageReduction`] = ActorDamageHelper.getActorMapForDR(this.damageReduction);
+        updateData[`data.energyResistance`] = ActorDamageHelper.getActorMapForER(this.energyResistance);
         this.actor.update(updateData);
 
         this.close();
@@ -76,31 +76,31 @@ export class DamageReductionSetting extends FormApplication {
     _updateDRERDataFromForm(key, data) {
         if (key.startsWith("dr-or-")) {
             let dr = key.replace("dr-or-", "")
-            DamageTypes.getDamageTypeForUID(this.damageReduction, dr).or = data;
+            ActorDamageHelper.getDamageTypeForUID(this.damageReduction, dr).or = data;
         } else if (key.startsWith("dr-value-")) {
             let dr = key.replace("dr-value-", "")
-            DamageTypes.getDamageTypeForUID(this.damageReduction, dr).value = parseInt(data);
+            ActorDamageHelper.getDamageTypeForUID(this.damageReduction, dr).value = parseInt(data);
         } else if (key.startsWith("dr-lethal-")) {
             let dr = key.replace("dr-lethal-", "")
-            DamageTypes.getDamageTypeForUID(this.damageReduction, dr).lethal = data;
+            ActorDamageHelper.getDamageTypeForUID(this.damageReduction, dr).lethal = data;
         } else if (key.startsWith("dr-immunity-")) {
             let dr = key.replace("dr-immunity-", "")
-            DamageTypes.getDamageTypeForUID(this.damageReduction, dr).immunity = data;
+            ActorDamageHelper.getDamageTypeForUID(this.damageReduction, dr).immunity = data;
         } else if (key.startsWith("er-value-")) {
             let dr = key.replace("er-value-", "")
-            DamageTypes.getDamageTypeForUID(this.energyResistance, dr).value = parseInt(data);
+            ActorDamageHelper.getDamageTypeForUID(this.energyResistance, dr).value = parseInt(data);
         } else if (key.startsWith("er-immunity-")) {
             let dr = key.replace("er-immunity-", "")
-            DamageTypes.getDamageTypeForUID(this.energyResistance, dr).immunity = data;
+            ActorDamageHelper.getDamageTypeForUID(this.energyResistance, dr).immunity = data;
         } else if (key.startsWith("er-vulnerable-")) {
             let dr = key.replace("er-vulnerable-", "")
-            DamageTypes.getDamageTypeForUID(this.energyResistance, dr).vulnerable = data;
+            ActorDamageHelper.getDamageTypeForUID(this.energyResistance, dr).vulnerable = data;
         } else if (key.startsWith("er-lethal-")) {
             let dr = key.replace("er-lethal-", "")
-            DamageTypes.getDamageTypeForUID(this.energyResistance, dr).lethal = data;
+            ActorDamageHelper.getDamageTypeForUID(this.energyResistance, dr).lethal = data;
         } else if (key.startsWith("er-half-")) {
             let dr = key.replace("er-half-", "")
-            DamageTypes.getDamageTypeForUID(this.energyResistance, dr).half = data;
+            ActorDamageHelper.getDamageTypeForUID(this.energyResistance, dr).half = data;
         }
     }
 }

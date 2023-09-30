@@ -2,7 +2,7 @@ import { DicePF } from "../dice.js";
 import { Item35E } from "../item/entity.js";
 import { createTag, getOriginalNameIfExists, isMinimumCoreVersion, linkData, shuffle, uuidv4 } from "../lib.js";
 import { createCustomChatMessage } from "../chat.js";
-import { DamageTypes } from "../damage-types.js";
+import { ActorDamageHelper } from "./helpers/actorDamageHelper.js";
 import { D35E } from "../config.js";
 import { Roll35e } from "../roll.js";
 import { ActorRestDialog } from "../apps/actor-rest.js";
@@ -3084,299 +3084,15 @@ export class ActorPF extends Actor {
     }
   }
 
-  /**
-   * Apply rolled dice damage to the token or tokens which are currently controlled.
-   * This allows for damage to be scaled by a multiplier to account for healing, critical hits, or resistance
-   *
-   * @param {Number} value   The amount of damage to deal.
-   * @return {Promise}
-   */
-  static async applyDamage(
-    ev,
-    roll,
-    critroll,
-    natural20,
-    natural20Crit,
-    fubmle,
-    fumble20Crit,
-    damage,
-    normalDamage,
-    material,
-    alignment,
-    enh,
-    nonLethalDamage,
-    simpleDamage = false,
-    actor = null,
-    attackerId = null,
-    attackerTokenId = null,
-    ammoId = null,
-    incorporeal = false,
-    touch = false
-  ) {
-    let value = 0;
-
-    let tokensList = [];
-    const promises = [];
-
-    let _attacker = game.actors.get(attackerId);
-
-    if (actor === null) {
-      if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);
-      else tokensList = canvas.tokens.controlled;
-      if (!tokensList.length) {
-        ui.notifications.warn(game.i18n.localize("D35E.NoTokensSelected"));
-        return;
-      }
-    } else {
-      tokensList.push({ actor: actor });
-    }
-
-    for (let t of tokensList) {
-      let a = t.actor,
-        hp = a.system.attributes.hp,
-        _nonLethal = a.system.attributes.hp.nonlethal || 0,
-        nonLethal = 0,
-        tmp = parseInt(hp.temp) || 0,
-        hit = false,
-        crit = false;
-
-      if (!a.testUserPermission(game.user, "OWNER")) {
-        ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
-        continue;
-      }
-      if (simpleDamage) {
-        hit = true;
-        value = damage;
-      } else {
-        let finalAc = {};
-        if (fubmle) return;
-        if (ev && ev.originalEvent instanceof MouseEvent && ev.originalEvent.shiftKey) {
-          finalAc.noCheck = true;
-          finalAc.ac = 0;
-          finalAc.noCritical = false;
-          finalAc.applyHalf = ev.applyHalf === true;
-        } else {
-          if (roll > ActorPF.SPELL_AUTO_HIT) {
-            // Spell roll value
-            finalAc = await a.rollDefenseDialog({ ev: ev, touch: touch, flatfooted: false });
-            if (finalAc.ac === -1) continue;
-          } else {
-            finalAc.applyHalf = ev?.applyHalf === true;
-          }
-        }
-        let concealMiss = false;
-        let concealRoll = 0;
-        let concealTarget = 0;
-        let concealRolled = false;
-        if (
-          (finalAc.conceal ||
-            finalAc.fullConceal ||
-            a.system.attributes?.concealment?.total ||
-            finalAc.concealOverride) &&
-          roll !== ActorPF.SPELL_AUTO_HIT
-        ) {
-          concealRolled = true;
-          concealRoll = new Roll35e("1d100").roll().total;
-          if (finalAc.fullConceal) concealTarget = 50;
-          if (finalAc.conceal) concealTarget = 20;
-          if (finalAc.concealOverride) concealTarget = finalAc.concealOverride;
-          concealTarget = Math.max(a.system.attributes?.concealment?.total || 0, concealTarget);
-          if (concealRoll <= concealTarget) {
-            concealMiss = true;
-          }
-        }
-        let achit = roll >= finalAc.ac || natural20;
-        hit = ((roll >= finalAc.ac || roll === ActorPF.SPELL_AUTO_HIT || natural20) && !concealMiss) || finalAc.noCheck; // This is for spells and natural 20
-        crit =
-          (critroll >= finalAc.ac || (critroll && finalAc.noCheck) || natural20Crit) &&
-          !finalAc.noCritical &&
-          !fumble20Crit;
-        let damageData = null;
-        let noPrecision = false;
-        // Fortitifcation / crit resistance
-        let fortifyRolled = false;
-        let fortifySuccessfull = false;
-        let fortifyValue = 0;
-        let fortifyRoll = 0;
-        if (hit && a.system.attributes.fortification?.total) {
-          fortifyRolled = true;
-          fortifyValue = a.system.attributes.fortification?.total;
-          fortifyRoll = new Roll35e("1d100").roll().total;
-          if (fortifyRoll <= fortifyValue) {
-            fortifySuccessfull = true;
-            crit = false;
-            if (!finalAc.applyPrecision) noPrecision = true;
-          }
-        }
-        if (crit) {
-          damageData = DamageTypes.calculateDamageToActor(
-            a,
-            damage,
-            material,
-            alignment,
-            enh,
-            nonLethalDamage,
-            noPrecision,
-            incorporeal,
-            finalAc.applyHalf
-          );
-        } else {
-          if (natural20 || (critroll && hit))
-            //Natural 20 or we had a crit roll, no crit but base attack hit
-            damageData = DamageTypes.calculateDamageToActor(
-              a,
-              normalDamage,
-              material,
-              alignment,
-              enh,
-              nonLethalDamage,
-              noPrecision,
-              incorporeal,
-              finalAc.applyHalf
-            );
-          else
-            damageData = DamageTypes.calculateDamageToActor(
-              a,
-              damage,
-              material,
-              alignment,
-              enh,
-              nonLethalDamage,
-              noPrecision,
-              incorporeal,
-              finalAc.applyHalf
-            );
-        }
-        value = damageData.damage;
-        nonLethal += damageData.nonLethalDamage;
-
-        damageData.nonLethalDamage = nonLethal;
-        damageData.displayDamage = value;
-        let props = [];
-        if ((finalAc.rollModifiers || []).length > 0)
-          props.push({
-            header: game.i18n.localize("D35E.RollModifiers"),
-            value: finalAc.rollModifiers,
-          });
-        let ammoRecovered = false;
-        if (game.settings.get("D35E", "useAutoAmmoRecovery")) {
-          if (ammoId && attackerId && !hit) {
-            let recoveryRoll = new Roll35e("1d100").roll().total;
-            if (recoveryRoll < 50) {
-              ammoRecovered = true;
-              if (_attacker) await _attacker.quickChangeItemQuantity(ammoId, 1);
-            }
-          }
-        }
-        if (damageData.damagePoolPossibleReductionsUpdate) {
-          await a.updateDamageReductionPoolItems(damageData.damagePoolPossibleReductionsUpdate);
-        }
-
-        let actions = [];
-        finalAc.rollData = {};
-        finalAc.rollData.hit = hit;
-        if (finalAc.allCombatChanges && finalAc.allCombatChanges.length > 0) {
-          actions = await a.getAndApplyCombatChangesSpecialActions(
-            finalAc.allCombatChanges,
-            this,
-            finalAc.rollData,
-            finalAc.optionalFeatIds,
-            finalAc.optionalFeatRanges
-          );
-        }
-
-        // Set chat data
-        let chatData = {
-          speaker: ChatMessage.getSpeaker({ actor: a.data }),
-          rollMode: finalAc.rollMode || "gmroll",
-          sound: CONFIG.sounds.dice,
-          "flags.D35E.noRollRender": true,
-        };
-        let chatTemplateData = {
-          name: a.name,
-          sourceName: _attacker.name,
-          sourceImg: _attacker.img,
-          type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-          rollMode: finalAc.rollMode || "gmroll",
-        };
-        const templateData = mergeObject(
-          chatTemplateData,
-          {
-            actor: a,
-            damageData: damageData,
-            img: a.img,
-            roll: roll,
-            ac: finalAc,
-            hit: hit,
-            achit: achit,
-            crit: crit,
-            actions: actions,
-            acModifiers: finalAc.acModifiers || [],
-            concealMiss: concealMiss,
-            concealRoll: concealRoll,
-            concealTarget: concealTarget,
-            concealRolled: concealRolled,
-            isSpell: roll === ActorPF.SPELL_AUTO_HIT,
-            applyHalf: finalAc.applyHalf,
-            ammoRecovered: ammoRecovered,
-            fortifyRolled: fortifyRolled,
-            fortifyValue: Math.min(fortifyValue, 100),
-            fortifyRoll: fortifyRoll,
-            fortifySuccessfull: fortifySuccessfull,
-            hasProperties: props.length,
-            properties: props,
-          },
-          { inplace: false }
-        );
-        // Create message
-
-        await createCustomChatMessage("systems/D35E/templates/chat/damage-description.html", templateData, chatData);
-      }
-
-      //LogHelper.log('Damage Value ', value, damage)
-      if (hit) {
-        let dt = value > 0 ? Math.min(tmp, value) : 0;
-        let nonLethalHeal = 0;
-        if (value < 0) nonLethalHeal = value;
-        promises.push(
-          t.actor.update({
-            "system.attributes.hp.nonlethal": Math.max(_nonLethal + nonLethal + nonLethalHeal, 0),
-            "system.attributes.hp.temp": tmp - dt,
-            "system.attributes.hp.value": Math.clamped(hp.value - (value - dt), -100, hp.max),
-          })
-        );
-      }
-    }
-    return Promise.all(promises);
+  static async applyDamage(...args) {
+    LogHelper.warn("Deprecated: This method will be removed in D35E 2.5.0")
+    return ActorDamageHelper.applyDamage(...args);
   }
 
-  static async applyRegeneration(damage, actor = null) {
-    let value = 0;
 
-    let tokensList = [];
-    const promises = [];
-    if (actor === null) {
-      if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);
-      else tokensList = canvas.tokens.controlled;
-      if (!tokensList.length) {
-        ui.notifications.warn(game.i18n.localize("D35E.NoTokensSelected"));
-        return;
-      }
-    } else {
-      tokensList.push({ actor: actor });
-    }
-
-    for (let t of tokensList) {
-      let a = t.actor,
-        nonLethal = a.system.attributes.hp.nonlethal || 0;
-
-      promises.push(
-        t.actor.update({
-          "system.attributes.hp.nonlethal": Math.max(0, nonLethal - damage),
-        })
-      );
-    }
-    return Promise.all(promises);
+  static async applyRegeneration(...args) {
+    LogHelper.warn("Deprecated: This method will be removed in D35E 2.5.0")
+    return ActorDamageHelper.applyRegeneration(...args);
   }
 
   async rollSave(type, ability, target, options = {}) {
@@ -4282,7 +3998,7 @@ export class ActorPF extends Actor {
       case "SelfDamage":
         if (action.parameters.length === 1) {
           let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll().total;
-          ActorPF.applyDamage(
+          ActorDamageHelper.applyDamage(
             null,
             null,
             null,
@@ -4301,9 +4017,9 @@ export class ActorPF extends Actor {
           );
         } else if (action.parameters.length === 2) {
           let damageRoll = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll();
-          let damage = [{ damageTypeUid: DamageTypes.mapDamageType(action.parameters[1]), roll: damageRoll }];
+          let damage = [{ damageTypeUid: ActorDamageHelper.mapDamageType(action.parameters[1]), roll: damageRoll }];
 
-          ActorPF.applyDamage(
+          ActorDamageHelper.applyDamage(
             null,
             ActorPF.SPELL_AUTO_HIT,
             null,
@@ -4423,7 +4139,7 @@ export class ActorPF extends Actor {
         //LogHelper.log(action)
         if (action.parameters.length === 1) {
           let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll().total;
-          ActorPF.applyRegeneration(damage, this);
+          ActorDamageHelper.applyRegeneration(damage, this);
         } else
           ui.notifications.error(
             game.i18n.format("D35E.ErrorActionFormula", {

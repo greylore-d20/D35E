@@ -1,4 +1,4 @@
-import {DamageTypes} from "../../damage-types.js";
+import {ActorDamageHelper} from "./actorDamageHelper.js";
 import {Roll35e} from "../../roll.js";
 import {isEqual} from "../../lib.js";
 import {ItemEnhancementHelper} from "../../item/helpers/itemEnhancementHelper.js";
@@ -13,7 +13,7 @@ export class ItemPrepareDataHelper {
                     return;
                 let _resistance = actorPrepareData.combinedResistances.find(res => res.uid === resistance[1]);
                 if (!_resistance) {
-                    _resistance = DamageTypes.defaultER;
+                    _resistance = ActorDamageHelper.defaultER;
                     _resistance.uid = resistance[1];
                     actorPrepareData.combinedResistances.push(_resistance);
                 }
@@ -46,7 +46,7 @@ export class ItemPrepareDataHelper {
                     }
                     let _dr = actorPrepareData.combinedDR.types.find(res => res.uid === dr[1]);
                     if (!_dr) {
-                        _dr = DamageTypes.defaultDR;
+                        _dr = ActorDamageHelper.defaultDR;
                         _dr.uid = dr[1];
                         actorPrepareData.combinedDR.types.push(_dr);
                     }
@@ -80,7 +80,7 @@ export class ItemPrepareDataHelper {
                             return;
                         let _resistance = actorPrepareData.combinedResistances.find(res => res.uid === resistance[1]);
                         if (!_resistance) {
-                            _resistance = DamageTypes.defaultER;
+                            _resistance = ActorDamageHelper.defaultER;
                             _resistance.uid = resistance[1];
                             actorPrepareData.combinedResistances.push(_resistance);
                         }
@@ -110,7 +110,7 @@ export class ItemPrepareDataHelper {
                                 }
                                 let _dr = actorPrepareData.combinedDR.types.find(res => res.uid === dr[1]);
                                 if (!_dr) {
-                                    _dr = DamageTypes.defaultDR;
+                                    _dr = ActorDamageHelper.defaultDR;
                                     _dr.uid = dr[1];
                                     actorPrepareData.combinedDR.types.push(_dr);
                                 }

@@ -3,6 +3,7 @@
  */
 import { ActorPF } from "./actor/entity.js";
 import { ItemChatAction } from "./item/chat/chatAction.js";
+import {ActorDamageHelper} from './actor/helpers/actorDamageHelper.js';
 
 export function bindShowReveal(chatMessage, html, data) {
   html.on("click", ".reveal-roll", (event) => {
@@ -215,7 +216,7 @@ function applyChatCardDamage(li, multiplier) {
   return Promise.all(
     canvas.tokens.controlled.map((t) => {
       const a = t.actor;
-      ActorPF.applyDamage(
+      ActorDamageHelper.applyDamage(
         null,
         null,
         null,
