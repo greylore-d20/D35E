@@ -3084,18 +3084,16 @@ export class ActorPF extends Actor {
     }
   }
 
-  async static applyDamage(...args) {
+  static async applyDamage(...args) {
     LogHelper.warn("Deprecated: This method will be removed in D35E 2.5.0")
     return ActorDamageHelper.applyDamage(...args);
   }
 
 
-  async static applyRegeneration(...args) {
+  static async applyRegeneration(...args) {
     LogHelper.warn("Deprecated: This method will be removed in D35E 2.5.0")
     return ActorDamageHelper.applyRegeneration(...args);
   }
-
-
 
   async rollSave(type, ability, target, options = {}) {
     this.rollSavingThrow(type, ability, target, options);

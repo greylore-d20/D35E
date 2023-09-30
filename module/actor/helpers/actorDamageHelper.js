@@ -1,4 +1,6 @@
 import {CACHE} from "../../cache.js";
+import {ActorPF} from '../entity.js';
+import {createCustomChatMessage} from '../../chat.js';
 
 export class ActorDamageHelper {
     /**

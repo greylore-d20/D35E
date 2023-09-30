@@ -32,7 +32,7 @@ export class ItemDescriptionsHelper {
       } else {
         attacks.push(`${totalBonus >= 0 ? "+" + totalBonus : totalBonus}`);
         for (let part of getProperty(item.system, "attackParts")) {
-          let partBonus = totalBonus + part[0];
+          let partBonus = totalBonus + parseInt(part[0]);
           attacks.push(`${partBonus >= 0 ? "+" + partBonus : partBonus}`);
         }
       }

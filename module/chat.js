@@ -3,7 +3,7 @@
  */
 import { ActorPF } from "./actor/entity.js";
 import { ItemChatAction } from "./item/chat/chatAction.js";
-import {ActorDamageHelper} from './actor/helpers/actorDamageHelper.sj';
+import {ActorDamageHelper} from './actor/helpers/actorDamageHelper.js';
 
 export function bindShowReveal(chatMessage, html, data) {
   html.on("click", ".reveal-roll", (event) => {

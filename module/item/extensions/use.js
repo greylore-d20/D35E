@@ -735,9 +735,10 @@ export class ItemUse {
         if (noteObj.item != null) rollData.item = duplicate(noteObj.item.system);
 
         for (let note of noteObj.notes) {
+          let source = noteObj?.item?.name || game.i18n.localize("D35E.Unknown");
           for (let _note of note.split(/[\n\r]+/)) {
             let attackNote = await TextEditor.enrichHTML(
-              `<span class="tag">${Item35E._fillTemplate(_note, rollData)}</span>`,
+              `<span class="tag tooltip"><span class="tooltipcontent">${source}</span> ${Item35E._fillTemplate(_note, rollData)}</span>`,
               {
                 rollData: rollData,
               }
@@ -748,11 +749,11 @@ export class ItemUse {
       }
       let attackStr = "";
       for (let an of attackNotes) {
-        attackStr += `<span class="tag">${an}</span>`;
+        attackStr += `${an}`;
       }
 
       if (attackStr.length > 0) {
-        const innerHTML = TextEditor.enrichHTML(attackStr, { rollData: rollData });
+        const innerHTML = await TextEditor.enrichHTML(attackStr, { rollData: rollData });
         extraText += `<div class="flexcol property-group"><label>${game.i18n.localize(
           "D35E.AttackNotes"
         )}</label><div class="flexrow">${innerHTML}</div></div>`;
