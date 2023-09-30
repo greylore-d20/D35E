@@ -1,6 +1,14 @@
-var assert = require('assert');
-const {ActorDamageHelper} = require(
-    '../../../module/actor/helpers/actorDamageHelper.js');
+import sinon from 'sinon';
+import {
+  ActorDamageHelper
+} from '../../../module/actor/helpers/actorDamageHelper';
+const Roll = {}
+jest.mock('../../../module/actor/entity', () => {
+  class Actor { /* Mocked methods and properties */ }
+  class ActorPF extends Actor { /* Mocked methods and properties */ }
+  return { ActorPF };
+});
+
 describe('ActorDamageHelper', function () {
   describe('mergeDamageTypes', function () {
     it('should correctly merge damage types', function () {
@@ -16,7 +24,7 @@ describe('ActorDamageHelper', function () {
           {damageTypeUid: 'acid', roll: {total: 3}}
       ]
       let damageArray = ActorDamageHelper.mergeDamageTypes(inputDamageArray);
-      assert.deepEqual(damageArray, expectedDamage);
+      expect(damageArray).toEqual(expectedDamage);
     });
   });
 });
