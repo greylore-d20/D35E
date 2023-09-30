@@ -1243,7 +1243,7 @@ export class ItemUse {
       nonLethal = true;
     }
     const itemNonLethal = getProperty(this.item.system, "nonLethal") || getProperty(this.item.system, "nonLethalNoPenalty") || false;
-    if (nonLethal !== itemNonLethal) {
+    if (nonLethal && nonLethal !== itemNonLethal) {
       rollData.nonLethalPenalty = -4;
       attackExtraParts.push({
         part: "@nonLethalPenalty",
