@@ -58,9 +58,13 @@ export const rebuildCache = async function() {
 }
 
 const _CheckSettingsForPackName = (packName, settingData) => {
+    if (!settingData) {
+        return false;
+    }
+
     const packs = settingData.split(',');
     for (let pack of packs) {
-        if (pack.endsWith(packName)) {
+        if (packName.endsWith(pack)) {
             return true;
         }
     }
@@ -88,12 +92,12 @@ export const buildCache = async function() {
             continue;
         }
 
-        if (packName.endsWith('racial-abilities') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_racialAbilities)) {
+        else if (packName.endsWith('racial-abilities') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_racialAbilities)) {
             addRacialAbilitiedFromPackToCache(itemPack);
             continue;
         }
 
-        if (packName.endsWith('spelllike-abilities')
+        else if (packName.endsWith('spelllike-abilities')
             || packName.endsWith('spell-like-abilities')
             || packName.endsWith('spelllike')
             || _CheckSettingsForPackName(packName, additionalCachedCompendiums_spellLikeAbilities)
@@ -116,7 +120,7 @@ export const buildCache = async function() {
             continue;
         }
 
-        if (packName.endsWith('materials') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_materials)) {
+        else if (packName.endsWith('materials') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_materials)) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
@@ -127,7 +131,7 @@ export const buildCache = async function() {
             continue;
         }
 
-        if (packName.endsWith('damage-types') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_damageTypes)) {
+        else if (packName.endsWith('damage-types') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_damageTypes)) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
