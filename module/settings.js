@@ -495,6 +495,9 @@ export const registerSystemSettings = function() {
     config: true,
     default: '',
     type: String,
+    onChange: () => {
+      window.location.reload();
+    }
   });
 
   game.settings.register("D35E", "additionalCachedCompendiums_racialAbilities", {
@@ -504,6 +507,9 @@ export const registerSystemSettings = function() {
     config: true,
     default: '',
     type: String,
+    onChange: () => {
+      window.location.reload();
+    }
   });
 
   game.settings.register("D35E", "additionalCachedCompendiums_spellLikeAbilities", {
@@ -513,6 +519,9 @@ export const registerSystemSettings = function() {
     config: true,
     default: '',
     type: String,
+    onChange: () => {
+      window.location.reload();
+    }
   });
 
   game.settings.register("D35E", "additionalCachedCompendiums_materials", {
@@ -522,6 +531,9 @@ export const registerSystemSettings = function() {
     config: true,
     default: '',
     type: String,
+    onChange: () => {
+      window.location.reload();
+    }
   });
 
   game.settings.register("D35E", "additionalCachedCompendiums_damageTypes", {
@@ -531,6 +543,9 @@ export const registerSystemSettings = function() {
     config: true,
     default: '',
     type: String,
+    onChange: () => {
+      window.location.reload();
+    }
   });
 
 
