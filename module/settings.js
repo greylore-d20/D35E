@@ -484,6 +484,55 @@ export const registerSystemSettings = function() {
     // type: Boolean,
   // });
 
+  /**
+   * Add extra Compendiums to cache
+   */
+  const addToCacheMsg = "Add the names of additional compendiums that you'd like cached. Seperate compendium names with a coma (',')."
+  game.settings.register("D35E", "additionalCachedCompendiums_classAbilities", {
+    name: "Additonal Class Ability Compendiums",
+    hint: addToCacheMsg,
+    scope: "world",
+    config: true,
+    default: '',
+    type: String,
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_racialAbilities", {
+    name: "Additonal Racial Ability Compendiums",
+    hint: addToCacheMsg,
+    scope: "world",
+    config: true,
+    default: '',
+    type: String,
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_spellLikeAbilities", {
+    name: "Additonal Spell-Like Ability Compendiums",
+    hint: addToCacheMsg,
+    scope: "world",
+    config: true,
+    default: '',
+    type: String,
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_materials", {
+    name: "Additonal Material Compendiums",
+    hint: addToCacheMsg,
+    scope: "world",
+    config: true,
+    default: '',
+    type: String,
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_damageTypes", {
+    name: "Additonal Damage Type Compendiums",
+    hint: addToCacheMsg,
+    scope: "world",
+    config: true,
+    default: '',
+    type: String,
+  });
+
 
   game.settings.register("D35E", '__onboarding', {
     name: `Tutorial shown`,
