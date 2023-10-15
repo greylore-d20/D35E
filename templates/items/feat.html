@@ -25,16 +25,23 @@
     </div>
 
     <header class="sheet-header flexrow">
+    <div class="flexcol">
 
-    <div class="header-details flexrow">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{item.name}}" placeholder="{{localize "D35E.ItemName"}}"/>
-      </h1>
+      <div class="header-details flexrow">
+        <h1 class="charname">
+          <input name="name" type="text" value="{{item.name}}" placeholder="{{localize "D35E.ItemName"}}"/>
+        </h1>
 
-      <div class="item-subtitle">
-        <h4 class="item-type">{{labels.featType}}</h4>
-        <span class="item-status">{{itemStatus}}</span>
+        <div class="item-subtitle">
+          <h4 class="item-type">{{labels.featType}}</h4>
+          <span class="item-status">{{itemStatus}}</span>
+        </div>
       </div>
+      <ul class="tag-list">
+        {{#each tags}}
+        <li class="tag">{{this}}</li>
+        {{/each}}
+      </ul>
     </div>
   </header>
   </div>

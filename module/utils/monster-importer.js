@@ -388,7 +388,7 @@ export class MonsterImporterDialog extends FormApplication {
 
                         let abilityUpdateData = {}
                         abilityUpdateData['_id'] = abilityItem._id
-                        energy = 'fire'
+                        let energy = 'fire'
                         if (breathWeapon.indexOf('cold') !== -1) {
                             energy = 'cold'
                         } else if (breathWeapon.indexOf('lightning') !== -1) {
