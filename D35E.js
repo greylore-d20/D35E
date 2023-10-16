@@ -56,6 +56,9 @@ import {
 import {
   TreasureGeneratorDialog,
 } from './module/apps/treasure-generator-dialog.js';
+import {
+  MonsterImporterDialog,
+} from './module/utils/monster-importer.js';
 import {ActorSheetTrap} from './module/actor/sheets/trap.js';
 import {applyConfigModifications} from './module/config-tools.js';
 import {genTreasureFromToken} from './module/treasure/treasure.js';

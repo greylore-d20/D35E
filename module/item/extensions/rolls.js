@@ -197,7 +197,7 @@ export class ItemRolls {
     }
     // Add secondary natural attack penalty
     if (options.primaryAttack === false) {
-      if (this.item.actor.getFlag("D35E", "improvedMultiAttack")) {
+      if (this.item.actor.getFlag("D35E", "improvedMultiattack")) {
         descriptionParts.push({ name: game.i18n.localize("D35E.AttackSecondaryAttackPenalty"), value: 0 });
       } else if (this.item.actor.getFlag("D35E", "multiAttack")) {
         parts.push("-2");

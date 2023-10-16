@@ -13,7 +13,16 @@ for (let i = 0; i < system['packs'].length; i++) {
   if (fs.existsSync("packs/"+packNameFromPath)) {
     let fvttProcess = execSync(
         `fvtt package unpack ${packNameFromPath} --outputDirectory source/${packNameFromPath} --inputDirectory packs/`)
-    let foundFiles = fs.readdirSync("source/" + packNameFromPath).length;
+    const unpackedFiles = fs.readdirSync("source/" + packNameFromPath);
+    let foundFiles = unpackedFiles.length;
+    for (let j = 0; j < unpackedFiles.length; j++) {
+      let filePath = "source/" + packNameFromPath + "/" + unpackedFiles[j];
+      let fileData = fs.readFileSync(filePath);
+      fileData = fileData.toString().replace(/\n/g, "\r\n");
+      fs.writeFileSync(filePath, fileData);
+    }
+
+
     console.log(`Unpacking ${packNameFromPath} done (${foundFiles} files found)`)
   } else {
     console.log("Pack " + packNameFromPath + " not found, skipping repack")

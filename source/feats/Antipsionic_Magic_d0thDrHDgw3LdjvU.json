@@ -2,7 +2,7 @@
   "_id": "d0thDrHDgw3LdjvU",
   "name": "Antipsionic Magic",
   "type": "feat",
-  "img": "systems/D35E/icons/feats/feat-generic.png",
+  "img": "systems/D35E/icons/feats/antipsionic_magic.png",
   "effects": [],
   "folder": null,
   "sort": 0,
@@ -12,12 +12,12 @@
     }
   },
   "system": {
-    "originVersion": 99,
+    "originVersion": 108,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
     "description": {
-      "value": "\n\n\n<p>Your spells are more potent when used against psionic characters and creatures.\n</p>\n<h3><span class=\"mw-headline\" id=\"Prerequisite\">Prerequisite</span></h3>\n<p>Spellcraft 5 ranks.\n</p>\n<h3><span class=\"mw-headline\" id=\"Benefit\">Benefit</span></h3>\n<p>You get a get a +2 bonus on caster level checks made to overcome a psionic creature’s power resistance.\n</p><p>This bonus stacks with the bonus conferred by Spell Penetration and Greater Spell Penetration. Moreover, whenever a psionic creature attempts to dispel a spell you cast, it makes its manifester level check against a DC of 13 + its manifester level.\n</p><p>The benefits of this feat apply only to power resistance.\n</p><p>The bonus does not apply to spell resistance. This is an exception to the psionics–magic transparency rule.\n</p>\n<h3><span class=\"mw-headline\" id=\"Special\">Special</span></h3>\n<p>You cannot take or use this feat if you have the ability to use powers (if you have a power point reserve or psi-like abilities).\n</p><p><br/>\n</p>\n<hr/>\n\n\n",
+      "value": "<p>Your spells are more potent when used against psionic characters and creatures.</p>\n<h3><span id=\"Prerequisite\" class=\"mw-headline\">Prerequisite</span></h3>\n<p>Spellcraft 5 ranks.</p>\n<h3><span id=\"Benefit\" class=\"mw-headline\">Benefit</span></h3>\n<p>You get a get a +2 bonus on caster level checks made to overcome a psionic creature&rsquo;s power resistance.</p>\n<p>This bonus stacks with the bonus conferred by Spell Penetration and Greater Spell Penetration. Moreover, whenever a psionic creature attempts to dispel a spell you cast, it makes its manifester level check against a DC of 13 + its manifester level.</p>\n<p>The benefits of this feat apply only to power resistance.</p>\n<p>The bonus does not apply to spell resistance. This is an exception to the psionics&ndash;magic transparency rule.</p>\n<h3><span id=\"Special\" class=\"mw-headline\">Special</span></h3>\n<p>You cannot take or use this feat if you have the ability to use powers (if you have a power point reserve or psi-like abilities).</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -25,8 +25,13 @@
     "psionic": "",
     "nameFormula": "",
     "nameFromFormula": false,
-    "tags": [],
+    "tags": [
+      [
+        "General"
+      ]
+    ],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -160,7 +165,9 @@
       "multiAttack": false,
       "multiweaponAttack": false,
       "uncannyDodge": false,
-      "hasted": false
+      "hasted": false,
+      "improvedMultiattack": false,
+      "firstChangeTargetSelectableOnDescription": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -307,7 +314,21 @@
     "index": {
       "subType": "feat",
       "uniqueId": ""
-    }
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Antipsionic Magic",
+    "bookSource": "3.5e SRD Psionic"
   },
   "ownership": {
     "default": 0,
@@ -315,10 +336,10 @@
   },
   "_stats": {
     "systemId": "D35E",
-    "systemVersion": "2.1.3",
-    "coreVersion": "10.291",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.309",
     "createdTime": null,
-    "modifiedTime": 1678394292482,
+    "modifiedTime": 1696072211116,
     "lastModifiedBy": "cB3ob9BYxSFYX7sd"
   },
   "_key": "!items!d0thDrHDgw3LdjvU"

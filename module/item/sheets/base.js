@@ -105,6 +105,7 @@ export class ItemSheetPF extends ItemSheet {
     sheetData.isRace = this.item.type === "race";
     sheetData.isAttack = this.item.type === "attack";
     sheetData.isWeaponAttack = this.item.system?.actionType === "rwak" || this.item.system?.actionType === "mwak";
+    sheetData.tags = this.item.system.tags
     sheetData.isSpellLike =
       this.item.type === "spell" ||
       this.item.system?.actionType === "rsak" ||
