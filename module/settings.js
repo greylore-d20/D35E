@@ -484,7 +484,6 @@ export const registerSystemSettings = function() {
     // type: Boolean,
   // });
 
-
   game.settings.register("D35E", '__onboarding', {
     name: `Tutorial shown`,
     hint: 'Basic system usage tutorial already shown. Uncheck to view again after reload.',

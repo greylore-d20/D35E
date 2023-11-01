@@ -57,26 +57,51 @@ export const rebuildCache = async function() {
     return buildCache();
 }
 
+const _CheckSettingsForPackName = (packName, settingData) => {
+    if (!settingData) {
+        return false;
+    }
+
+    const packs = settingData.split(',');
+    for (let pack of packs) {
+        if (packName.endsWith(pack)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 export const buildCache = async function() {
 
     //game.D35E.logger.log("Building Caches for compendiums...")
     ui.notifications.info(`Building Caches for compendiums...`);
 
+    const additionalCachedCompendiums_classAbilities = game.settings.get("D35E", "additionalCachedCompendiums_classAbilities");
+    const additionalCachedCompendiums_racialAbilities = game.settings.get("D35E", "additionalCachedCompendiums_racialAbilities");
+    const additionalCachedCompendiums_spellLikeAbilities = game.settings.get("D35E", "additionalCachedCompendiums_spellLikeAbilities");
+    const additionalCachedCompendiums_materials = game.settings.get("D35E", "additionalCachedCompendiums_materials");
+    const additionalCachedCompendiums_damageTypes = game.settings.get("D35E", "additionalCachedCompendiums_damageTypes");
+
     for (const entry of game.packs.entries()) {
         const packName = entry[0];
         const itemPack = entry[1];
 
-        if (packName.endsWith('class-abilities')) {
+        if (packName.endsWith('class-abilities') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_classAbilities)) {
             addClassAbilitiesFromPackToCache(itemPack);
             continue;
         }
 
-        if (packName.endsWith('racial-abilities')) {
+        else if (packName.endsWith('racial-abilities') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_racialAbilities)) {
             addRacialAbilitiedFromPackToCache(itemPack);
             continue;
         }
 
-        if (packName.endsWith('spelllike-abilities') || packName.endsWith('spell-like-abilities') || packName.endsWith('spelllike')) {
+        else if (packName.endsWith('spelllike-abilities')
+            || packName.endsWith('spell-like-abilities')
+            || packName.endsWith('spelllike')
+            || _CheckSettingsForPackName(packName, additionalCachedCompendiums_spellLikeAbilities)
+        ) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
@@ -95,7 +120,7 @@ export const buildCache = async function() {
             continue;
         }
 
-        if (packName.endsWith('materials')) {
+        else if (packName.endsWith('materials') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_materials)) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
@@ -106,7 +131,7 @@ export const buildCache = async function() {
             continue;
         }
 
-        if (packName.endsWith('damage-types')) {
+        else if (packName.endsWith('damage-types') || _CheckSettingsForPackName(packName, additionalCachedCompendiums_damageTypes)) {
             const entities = await itemPack.getDocuments();
             for (let e of entities) {
                 //e.pack = packName;
