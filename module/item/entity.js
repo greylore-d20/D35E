@@ -126,7 +126,7 @@ export class Item35E extends ItemBase35E {
   }
 
   get getChatDescription() {
-    return this.getDescription(this.item.showUnidentifiedData);
+    return this.getDescription(this.showUnidentifiedData);
   }
 
   get getCombatChangesShortDescription() {
