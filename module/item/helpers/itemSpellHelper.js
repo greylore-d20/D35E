@@ -29,7 +29,7 @@ export class ItemSpellHelper {
     rollData.spellPenetration = rollData.cl + (rollData?.featSpellPenetrationBonus || 0);
   }
 
-  static async generateSpellDescription(sourceItem) {
+  static async generateSpellDescription(sourceItem, renderTextDescription = false) {
     const reSplit = CONFIG.D35E.re.traitSeparator;
 
     const label = {
@@ -37,45 +37,45 @@ export class ItemSpellHelper {
       subschool: getProperty(sourceItem, "system.subschool") || "",
       types: "",
     };
-    const data = {
+    const renderData = {
       data: mergeObject(sourceItem?.system || {}, { inplace: false }),
       label: label,
     };
 
-    data.renderedShortDescription = await TextEditor.enrichHTML(getProperty(data.data, "shortDescription"), {async: true})
-
+    renderData.renderedShortDescription = await TextEditor.enrichHTML(getProperty(renderData.data, "shortDescription"), {async: true})
+    renderData.renderTextDescription = renderTextDescription;
     // Set subschool and types label
     const types = getProperty(sourceItem, "system.types");
     if (typeof types === "string" && types.length > 0) {
       label.types = types.split(reSplit).join(", ");
     }
     // Set information about when the spell is learned
-    data.learnedAt = {};
-    data.learnedAt.class = (getProperty(sourceItem, "system.learnedAt.class") || [])
+    renderData.learnedAt = {};
+    renderData.learnedAt.class = (getProperty(sourceItem, "system.learnedAt.class") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    data.learnedAt.domain = (getProperty(sourceItem, "system.learnedAt.domain") || [])
+    renderData.learnedAt.domain = (getProperty(sourceItem, "system.learnedAt.domain") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    data.learnedAt.subDomain = (getProperty(sourceItem, "system.learnedAt.subDomain") || [])
+    renderData.learnedAt.subDomain = (getProperty(sourceItem, "system.learnedAt.subDomain") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    data.learnedAt.elementalSchool = (getProperty(sourceItem, "system.learnedAt.elementalSchool") || [])
+    renderData.learnedAt.elementalSchool = (getProperty(sourceItem, "system.learnedAt.elementalSchool") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    data.learnedAt.bloodline = (getProperty(sourceItem, "system.learnedAt.bloodline") || [])
+    renderData.learnedAt.bloodline = (getProperty(sourceItem, "system.learnedAt.bloodline") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
@@ -98,7 +98,7 @@ export class ItemSpellHelper {
       if (label.castingTime) label.castingTime = label.castingTime.toLowerCase();
     }
 
-    data.psionicPower = getProperty(sourceItem, "system.isPower");
+    renderData.psionicPower = getProperty(sourceItem, "system.isPower");
 
     // Set components label
     let components = [];
@@ -191,13 +191,13 @@ export class ItemSpellHelper {
       const pr = getProperty(sourceItem, "system.pr");
       label.pr = pr === true ? "yes" : "no";
 
-      if (getProperty(sourceItem, "system.range.units") !== "personal") data.useDCandSR = true;
+      if (getProperty(sourceItem, "system.range.units") !== "personal") renderData.useDCandSR = true;
     }
 
     if (getProperty(sourceItem, "system.powerPointsCost") > 0)
       label.powerPointsCost = getProperty(sourceItem, "system.powerPointsCost");
     label.display = getProperty(sourceItem, "system.display");
-    return data;
+    return renderData;
   }
 
   static getSpellDuration(durationData, level = 1) {

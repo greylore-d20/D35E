@@ -3775,6 +3775,10 @@ export class ActorPF extends Actor {
               if (isActionRollable(action.parameters[4])) {
                 updateObject[action.parameters[2]] = new Roll35e(action.parameters[4], actionRollData).roll().total;
               } else {
+                // Remove starting and ending " from the param
+                if (action.parameters[4].startsWith('"') && action.parameters[4].endsWith('"')) {
+                  action.parameters[4] = action.parameters[4].substring(1, action.parameters[4].length - 1);
+                }
                 updateObject[action.parameters[2]] = action.parameters[4];
               }
             }
@@ -3783,7 +3787,7 @@ export class ActorPF extends Actor {
           }
         }
         // Set attack * field data.melded to true on self
-        else if (action.parameters.length === 6 && action.parameters[2] === "field" && action.parameters[4] === "to") {
+        else if (action.parameters.length === 6 && action.parameters[2] === "field" && (action.parameters[4] === "to" || action.parameters[4] === "exact")) {
           let type = cleanParam(action.parameters[0]);
           let subtype = null;
           if (type.indexOf(":") !== -1) {
@@ -3806,9 +3810,13 @@ export class ActorPF extends Actor {
                 if (action.parameters[5] === "true" || action.parameters[5] === "false") {
                   updateObject[action.parameters[3]] = action.parameters[5] === "true";
                 } else {
-                  if (isActionRollable(action.parameters[5])) {
+                  if (isActionRollable(action.parameters[5]) && action.parameters[4] !== "exact") {
                     updateObject[action.parameters[3]] = new Roll35e(action.parameters[5], actionRollData).roll().total;
                   } else {
+                    // Remove starting and ending " from the param
+                    if (action.parameters[5].startsWith('"') && action.parameters[5].endsWith('"')) {
+                      action.parameters[5] = action.parameters[5].substring(1, action.parameters[5].length - 1);
+                    }
                     updateObject[action.parameters[3]] = action.parameters[5];
                   }
                 }
@@ -3821,9 +3829,13 @@ export class ActorPF extends Actor {
               if (action.parameters[5] === "true" || action.parameters[5] === "false") {
                 updateObject[action.parameters[3]] = action.parameters[5] === "true";
               } else {
-                if (isActionRollable(action.parameters[5])) {
+                if (isActionRollable(action.parameters[5]) && action.parameters[4] !== "exact") {
                   updateObject[action.parameters[3]] = new Roll35e(action.parameters[5], actionRollData).roll().total;
                 } else {
+                  // Remove starting and ending " from the param
+                  if (action.parameters[5].startsWith('"') && action.parameters[5].endsWith('"')) {
+                    action.parameters[5] = action.parameters[5].substring(1, action.parameters[5].length - 1);
+                  }
                   updateObject[action.parameters[3]] = action.parameters[5];
                 }
               }

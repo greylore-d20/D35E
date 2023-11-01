@@ -12,6 +12,7 @@ import { ItemSheetComponent } from "./components/itemSheetComponent.js";
 import { ChangesSheetComponent } from "./components/changesSheetComponent.js";
 import { EnhancementSheetComponent } from "./components/enhancementSheetComponent.js";
 import { NotesSheetComponent } from "./components/notesSheetComponent.js";
+import {ItemSpellHelper} from '../helpers/itemSpellHelper.js';
 
 /**
  * Override and extend the core ItemSheet implementation to handle D&D5E specific item types
@@ -99,6 +100,7 @@ export class ItemSheetPF extends ItemSheet {
     sheetData.isPhysical = this.item.system.quantity !== undefined;
     game.D35E.logger.log("Base Item Data", this.item.system.quantity !== undefined);
     sheetData.isSpell = this.item.type === "spell";
+    sheetData.isCard = this.item.type === "card";
     sheetData.isConsumable = this.item.type === "consumable";
     sheetData.isScroll = this.item.system.consumableType === "scroll";
     sheetData.isClass = this.item.type === "class";
@@ -179,6 +181,12 @@ export class ItemSheetPF extends ItemSheet {
       await this.item.getUnidentifiedDescription(),
       { async: true }
     );
+    if (sheetData.isSpell || sheetData.isCard) {
+      const spellPropertyData = await ItemSpellHelper.generateSpellDescription(this.item);
+      sheetData.enriched.spellProperties = await TextEditor.enrichHTML(
+        await renderTemplate("systems/D35E/templates/internal/spell-description.html", spellPropertyData)
+      )
+    }
 
     sheetData.material = this.item.system.material?.system || this.item.system.material?.data;
     sheetData.materialMetadata = {

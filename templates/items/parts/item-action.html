@@ -395,8 +395,9 @@
       <div class="flexrow"><span>Action:</span><input type="text" name="system.specialActions.{{a}}.action" placeholder="{{localize "D35E.Action"}}" value="{{lookup this "action"}}"/></div>
       <div class="flexrow"><span>Condition:</span><input type="text" name="system.specialActions.{{a}}.condition" placeholder="{{localize "D35E.Condition"}}" value="{{lookup this "condition"}}"/></div>
       <div class="flexrow"><span>Icon path:</span><input type="text" name="system.specialActions.{{a}}.img" placeholder="{{localize "D35E.Image"}}" value="{{lookup this "img"}}"/></div>
-      <a class="special-control delete-special"><i class="fas fa-minus"></i>Remove</a>
-
+      <div style="width: 100%">
+      <a class="special-control delete-special" style="width: auto; float: right"><i class="fas fa-minus"></i>Remove</a>
+      </div>
     </li>
     {{/each}}
   </ol>

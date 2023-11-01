@@ -81,6 +81,7 @@ import {Weapon35E} from './module/item/weapon.js';
 import {Equipment35E} from './module/item/equipment.js';
 import {ItemBase35E} from './module/item/base.js';
 import {Spell35E} from './module/item/spell.js';
+import {Card35E} from './module/item/card.js';
 import {Feat35E} from './module/item/feat.js';
 import {Sockets} from './module/sockets/sockets.js';
 import {CompendiumBrowser} from './module/apps/compendium-browser.js';
@@ -152,6 +153,7 @@ Hooks.once("init", async function () {
     weapon: Weapon35E,
     equipment: Equipment35E,
     spell: Spell35E,
+    card: Card35E,
     feat: Feat35E,
   };
   CONFIG.Item.compendiumIndexFields.push("system.index.subType");
@@ -307,7 +309,7 @@ Hooks.once("init", async function () {
         console.log("D35E | Enriching Linked Description");
         let item = await fromUuid(match[1]);
         const a = document.createElement("div");
-        a.innerHTML = item.getChatDescription;
+        a.innerHTML = await item.getDescription();
         return a;
       },
     },
