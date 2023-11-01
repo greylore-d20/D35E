@@ -306,7 +306,15 @@
                             <div class="item-name child-item  flexrow rollable">
                                 <div class="item-image" style="background-image: url('{{iitem.img}}')"></div>
                                 <h4>
-                                    {{~#if iitem.isStack}}({{iitem.system.quantity}}) {{/if}}{{iitem.name}}</h4>
+                                    {{~#if iitem.isStack}}({{iitem.system.quantity}}) {{/if}}{{iitem.name}}
+
+                                    {{#unless iitem.system.identified}}
+                                    <i class="fas fa-question-circle tooltip non-rollable" style="color: #0a1d2d">
+                                        <div class="tooltipcontent" style="z-index: 1111">{{ localize 'D35E.Unidentified' }}<br>{{ localize 'D35E.IdentifiedInformation' }}
+                                        </div>
+                                    </i>
+                                    {{/unless}}
+                                </h4>
 
                             </div>
 
