@@ -4423,6 +4423,10 @@ export class ActorPF extends Actor {
       }
     }
 
+    if (this.baseAttack) {
+      actionRollData.baseAttack = duplicate(this.baseAttack);
+    }
+
     let itemUpdates = [];
     let itemsToDelete = [];
     let itemsToCreate = [];
