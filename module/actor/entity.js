@@ -1484,7 +1484,7 @@ export class ActorPF extends Actor {
 
     // Iterate over combatants to roll for
     const combatantIds = combat.combatants.reduce((arr, c) => {
-      if (c.actor.id !== this.id || (this.isToken && c.data.tokenId !== this.token.id)) return arr;
+      if (c.actor?.id !== this.id || (this.isToken && c.data?.tokenId !== this.token.id)) return arr;
       if (c.initiative && !rerollInitiative) return arr;
       arr.push(c.id);
       return arr;
@@ -1722,11 +1722,10 @@ export class ActorPF extends Actor {
     if (_savingThrow === "ref") _savingThrow = "reflexnegates";
     if (_savingThrow === "will") _savingThrow = "willnegates";
 
-    const _roll = async function (saveType, ability, baseAbility, target, form, props) {
+    const _roll = async function (saveType, ability, baseAbility, target, form, props, rollMode) {
       let savingThrowBonus = getProperty(this.system, `attributes.savingThrows.${saveType}.total`) || 0,
         optionalFeatIds = [],
         optionalFeatRanges = new Map(),
-        rollMode = null,
         saveFieldName = `system.attributes.savingThrows.${saveType}.total`;
       savingThrowBonus -= getProperty(this.system, `abilities.${baseAbility}.mod`) || 0;
       let savingThrowAbilityBonus = getProperty(this.system, `abilities.${ability}.mod`) || 0;
@@ -2003,12 +2002,11 @@ export class ActorPF extends Actor {
     if (!this.testUserPermission(game.user, "OWNER"))
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
-    const _roll = async function (target, form, props, sklName, skillRollFormula, sourceSkillId) {
+    const _roll = async function (target, form, props, sklName, skillRollFormula, sourceSkillId, rollMode) {
       let optionalFeatIds = [],
         skillModTotal = skl.mod,
         optionalFeatRanges = new Map(),
-        rollAbility = skl.ability,
-        rollMode = null;
+        rollAbility = skl.ability
       let skillManualBonus = 0;
       let take20 = false;
       let take10 = false;
@@ -2022,9 +2020,7 @@ export class ActorPF extends Actor {
         rollMode = form.find('[name="rollMode"]').val();
         rollAbility = form.find('[name="ability"]').val();
 
-        if (rollAbility !== skl.ability) {
-          skillModTotal = this.system.abilities[rollAbility].mod;
-        }
+
         props.push({
           header: game.i18n.localize("D35E.Ability"),
           value: [CONFIG.D35E.abilities[rollAbility]],
@@ -2069,8 +2065,20 @@ export class ActorPF extends Actor {
       this._addCombatChangesToRollData(allCombatChanges, rollData);
 
       rollData.skillModTotal = 0;
-      skillRollFormula = skillRollFormula + " + @skillModTotal + @skillManualBonus";
+      skillRollFormula = skillRollFormula;
       let skillSourceDetails = this.sourceDetails[sourceSkillId] || [];
+      if (rollAbility !== skl.ability) {
+        // Replace "Abilitiy Modifier" with the correct ability modifier in skillSourceDetails
+        // find the ability modifier in skillSourceDetails and replace and change name
+        let abilityModIndex = skillSourceDetails.findIndex((o) => o.name === "Ability Modifier");
+        if (abilityModIndex !== -1) {
+          skillSourceDetails[abilityModIndex].name = `Ability Modifier (${CONFIG.D35E.abilities[rollAbility]})`;
+          skillSourceDetails[abilityModIndex].value = this.system.abilities[rollAbility].mod;
+        }
+      }
+      if (skillManualBonus) {
+        skillSourceDetails.push({ value: skillManualBonus, name: "Situational Modifier" });
+      }
       for (let skillDetail of skillSourceDetails) {
         skillRollFormula += `+ ${skillDetail.value}`;
       }
@@ -2101,7 +2109,6 @@ export class ActorPF extends Actor {
         modifiersList.unshift(
             {value: roll.terms[0].results[0].result, name: "Skill Roll"});
       }
-      if (skillManualBonus) modifiersList.push({ value: skillManualBonus, name: "Situational Modifier" });
       modifiersList.push(...(rollData.featSkillBonusList || []));
 
       const token = this ? this.token : null;
@@ -2235,21 +2242,21 @@ export class ActorPF extends Actor {
       label: game.i18n.localize("D35E.Take10"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, options.target, html, props, sklName, "10", sourceChangesSkillId);
+        roll = _roll.call(this, options.target, html, props, sklName, "10", sourceChangesSkillId, options.rollMode);
       },
     };
     buttons.takeTwenty = {
       label: game.i18n.localize("D35E.Take20"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, options.target, html, props, sklName, "20", sourceChangesSkillId);
+        roll = _roll.call(this, options.target, html, props, sklName, "20", sourceChangesSkillId, options.rollMode);
       },
     };
     buttons.normal = {
       label: game.i18n.localize("D35E.Roll"),
       callback: (html) => {
         wasRolled = true;
-        roll = _roll.call(this, options.target, html, props, sklName, "1d20", sourceChangesSkillId);
+        roll = _roll.call(this, options.target, html, props, sklName, "1d20", sourceChangesSkillId, options.rollMode);
       },
     };
     return new Promise((resolve) => {
@@ -3099,7 +3106,7 @@ export class ActorPF extends Actor {
     this.rollSavingThrow(type, ability, target, options);
   }
 
-  static async _rollSave(type, ability, target) {
+  static async _rollSave(type, ability, target, options = {}) {
     let tokensList;
     if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);
     else tokensList = canvas.tokens.controlled;
@@ -3115,7 +3122,28 @@ export class ActorPF extends Actor {
         ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
         continue;
       }
-      promises.push(t.actor.rollSavingThrow(type, ability, target, {}));
+      promises.push(t.actor.rollSavingThrow(type, ability, target, options));
+    }
+    return Promise.all(promises);
+  }
+
+  static async _rollSkill(type, options = {}) {
+    let tokensList;
+    if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);
+    else tokensList = canvas.tokens.controlled;
+    const promises = [];
+    if (!tokensList.length) {
+      ui.notifications.warn(game.i18n.localize("D35E.NoTokensSelected"));
+      return;
+    }
+    for (let t of tokensList) {
+      if (t.actor == null) continue;
+      let a = t.actor;
+      if (!a.testUserPermission(game.user, "OWNER")) {
+        ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
+        continue;
+      }
+      promises.push(t.actor.rollSkill(type, options   ));
     }
     return Promise.all(promises);
   }
@@ -3948,46 +3976,38 @@ export class ActorPF extends Actor {
       case "Damage":
         // Rolls arbitrary attack
         //LogHelper.log(action)
-        if (action.parameters.length === 1) {
-          let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll();
+        if (action.parameters.length === 2) {
+          let damage = new Roll35e(cleanParam(action.parameters[1]), actionRollData).roll();
+          damage.damageTypeUid = ActorDamageHelper.mapDamageType(action.parameters[0]);
+          let damageType = cleanParam(action.parameters[0]);
+          let damageName = ActorDamageHelper.nameByType(cleanParam(action.parameters[0]));
+          let damageIcon = ActorDamageHelper.getDamageIcon(cleanParam(action.parameters[0]));
           let name = action.name;
           let chatTemplateData = {
-            name: this.name,
+            name: sourceActor.name,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             rollMode: "public",
           };
+          let tooltip = $(await damage.getTooltip()).
+              prepend(
+                  `<div class="dice-formula">${damage.formula}</div>`);
+          if (tooltip.length == 0) {
+            tooltip = $('<div class="dice-tooltip dmg-tooltip"></div>')
+          } else {
+            tooltip[0].outerHTML
+          }
           const templateData = mergeObject(
             chatTemplateData,
             {
-              flavor: name,
+              flavor: `<img src="systems/D35E/icons/damage-type/${damageIcon}.svg" title="${
+                  damageName
+              }" class="dmg-type-icon" /> ${damageName}`,
               total: damage.total,
-              tooltip: $(await damage.getTooltip()).prepend(`<div class="dice-formula">${damage.formula}</div>`)[0]
-                .outerHTML,
-            },
-            { inplace: false }
-          );
-          // Create message
-          await createCustomChatMessage(
-            "systems/D35E/templates/chat/simple-attack-roll.html",
-            templateData,
-            {},
-            damage
-          );
-        } else if (action.parameters.length === 2) {
-          let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll();
-          let name = action.name;
-          let chatTemplateData = {
-            name: this.name,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            rollMode: "public",
-          };
-          const templateData = mergeObject(
-            chatTemplateData,
-            {
-              flavor: name,
-              total: damage.total,
-              tooltip: $(await damage.getTooltip()).prepend(`<div class="dice-formula">${damage.formula}</div>`)[0]
-                .outerHTML,
+              action: `applyDamage`,
+              actor: sourceActor,
+              attacker: sourceActor._id,
+              json: JSON.stringify([{roll: damage, damageTypeUid: damage.damageTypeUid}]),
+              tooltip: tooltip,
             },
             { inplace: false }
           );
@@ -4006,27 +4026,67 @@ export class ActorPF extends Actor {
             })
           );
         break;
+      // These actions directly roll and apply damage to targets
       case "ApplyDamage":
       case "SelfDamage":
         if (action.parameters.length === 1) {
-          let damage = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll().total;
-          ActorDamageHelper.applyDamage(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            damage,
-            null,
-            null,
-            null,
-            null,
-            false,
-            true,
-            this
-          );
+          // Check if there is [] in the damage formula
+          if (action.parameters[0].indexOf("[") !== -1) {
+            // We got the damage in format 1d6+2[fire]+2d8[acid], so we need to parse it and build damage array
+            let damageArray = [];
+            let damageString = action.parameters[0];
+            let damageRegex = /(\d+d\d+)(\+\d+)?(\[(\w+)\])?/g;
+            let match = damageRegex.exec(damageString);
+            while (match != null) {
+              let damage = {
+                roll: match[1],
+                damageTypeUid: ActorDamageHelper.mapDamageType(match[4]),
+              };
+              if (match[2]) {
+                damage.roll += match[2];
+              }
+              damageArray.push(damage);
+              match = damageRegex.exec(damageString);
+            }
+            ActorDamageHelper.applyDamage(
+                null,
+                ActorPF.SPELL_AUTO_HIT,
+                null,
+                null,
+                null,
+                null,
+                null,
+                damageArray,
+                null,
+                null,
+                null,
+                null,
+                false,
+                false,
+                this,
+                this.id
+            );
+          } else {
+            let damage = new Roll35e(cleanParam(action.parameters[0]),
+                actionRollData).roll().total;
+            ActorDamageHelper.applyDamage(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                damage,
+                null,
+                null,
+                null,
+                null,
+                false,
+                true,
+                this
+            );
+          }
         } else if (action.parameters.length === 2) {
           let damageRoll = new Roll35e(cleanParam(action.parameters[0]), actionRollData).roll();
           let damage = [{ damageTypeUid: ActorDamageHelper.mapDamageType(action.parameters[1]), roll: damageRoll }];
@@ -4317,13 +4377,25 @@ export class ActorPF extends Actor {
         // Rolls arbitrary attack
         //LogHelper.log(action)
         if (action.parameters.length > 1) {
+
           let messageType = action.parameters.shift();
+          //try to check if the rest of the parameters are not a JSON object
+          let message = action.parameters.join(" ");
+          let messageData = null;
+          try {
+            messageData = JSON.parse(message);
+          } catch (e) {
+            messageData = {
+              text: message
+            };
+          }
           let chatTemplateData = {
             name: this.name,
             actor: this,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             rollMode: cleanParam(messageType),
-            text: action.parameters.join(" "),
+            text: messageData.text,
+            secretText: messageData.secretText || null,
           };
           let chatData = {
             rollMode: cleanParam(messageType),

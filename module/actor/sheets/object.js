@@ -38,8 +38,8 @@ export class ActorSheetObject extends ActorSheetPF {
   /**
    * Add some extra data when rendering the sheet to reduce the amount of logic required within the template.
    */
-  getData() {
-    const sheetData = super.getData();
+  async getData() {
+    const sheetData = await super.getData();
     sheetData.material = this.actor.material;
     sheetData.attackFeatures = [];
     sheetData.items

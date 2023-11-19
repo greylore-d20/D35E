@@ -86,6 +86,7 @@ import {Feat35E} from './module/item/feat.js';
 import {Sockets} from './module/sockets/sockets.js';
 import {CompendiumBrowser} from './module/apps/compendium-browser.js';
 import {Logger} from './module/utils/logger.js';
+import {EnrichersHelper} from './module/enrichers.js';
 
 // Add String.format
 if (!String.prototype.format) {
@@ -114,6 +115,7 @@ Hooks.once("init", async function () {
     migrations,
     rollItemMacro,
     rollDefenses,
+    requestRoll,
     rollTurnUndead,
     rollPreProcess: {
       sizeRoll: sizeDie,
@@ -302,30 +304,7 @@ Hooks.once("init", async function () {
   $("body").toggleClass("d35ecustom", game.settings.get("D35E", "customSkin"));
   $("body").toggleClass("color-blind", game.settings.get("D35E", "colorblindColors"));
   $("body").toggleClass("no-players-list", game.settings.get("D35E", "hidePlayersList"));
-  CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
-    {
-      pattern: /@LinkedDescription\[(.+?)\]/gm,
-      enricher: async (match, options) => {
-        console.log("D35E | Enriching Linked Description");
-        let item = await fromUuid(match[1]);
-        const a = document.createElement("div");
-        a.innerHTML = await item.getDescription();
-        return a;
-      },
-    },
-  ]);
-  CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
-    {
-      pattern: /@LinkedFieldText\[(.+?)\]\{(.+?)}/gm,
-      enricher: async (match, options) => {
-        console.log("D35E | Enriching Linked Description");
-        let item = await fromUuid(match[1]);
-        const a = document.createElement("div");
-        a.innerHTML = await TextEditor.enrichHTML(getProperty(item, match[2]), { async: true });
-        return a;
-      },
-    },
-  ]);
+  EnrichersHelper.setupEnrichers();
 });
 
 /* -------------------------------------------- */
@@ -936,11 +915,12 @@ Hooks.on("updateActor", (actor, data, options, user) => {
 
 Hooks.on("controlToken", (token, selected) => {
   // Refresh canvas sight
-  canvas.perception.schedule({
-    lighting: { initialize: true, refresh: true },
-    sight: { refresh: true },
-    sounds: { refresh: true },
-    foreground: { refresh: true },
+  canvas.perception.update({
+    initializeLighting: true,
+    refreshLighting: true,
+    refreshVision: true,
+    refreshSounds: true,
+    refreshTiles: true,
   });
 });
 
@@ -949,9 +929,14 @@ Hooks.on("controlToken", (token, selected) => {
 /* -------------------------------------------- */
 
 Hooks.on("hotbarDrop", (bar, data, slot) => {
-  if (data.type !== "Item") return;
-  createItemMacro(data.uuid, slot);
-  return false;
+  if (data.type === "skill") {
+    createSkillMacro(data.uuid, data.skill, slot)
+    return false;
+  }
+  if (data.type === "Item") {
+    createItemMacro(data.uuid, slot);
+    return false;
+  }
 });
 
 Hooks.on("updateWorldTime", async (date, delta, other) => {
@@ -1026,6 +1011,35 @@ Hooks.on("aipSetup", (packageConfig) => {
 });
 
 /**
+ * Create a Macro from an Skill drop.
+ * Get an existing item macro if one exists, otherwise create a new one.
+ * @param {Object} actorId  The actor id
+ * @param {string} skill    The skill name
+ * @param {number} slot     The hotbar slot to use
+ * @returns {Promise}
+ */
+async function createSkillMacro(actorId, skill, slot) {
+  const actor = fromUuidSync(actorId);
+  let skillName = CONFIG.D35E.skills[skill] ? CONFIG.D35E.skills[skill] : skill;
+  const command =
+    `fromUuidSync("${actorId}").rollSkill("${skill}");`;
+  let macro = game.macros.contents.find((m) => m.name === skillName && m.command === command);
+  if (!macro) {
+    macro = await Macro.create(
+      {
+        name: skillName,
+        type: "script",
+        img: CONFIG.D35E.skills[skill] ? `/systems/D35E/icons/skills/${skill}.png` : `/systems/D35E/icons/actions/unknown.png`,
+        command: command,
+        flags: { "D35E.skillMacro": true },
+      },
+      { displaySheet: false }
+    );
+  }
+  game.user.assignHotbarMacro(macro, slot);
+}
+
+/**
  * Create a Macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
  * @param {Object} item     The item data
@@ -1036,22 +1050,18 @@ async function createItemMacro(itemUuid, slot) {
   const item = await fromUuid(itemUuid);
   const actor = getItemOwner(item);
   const command =
-    `game.D35E.rollItemMacro("${item.name}", {\n` +
-    `  itemId: "${item._id}",\n` +
-    `  itemType: "${item.type}",\n` +
-    (actor != null ? `  actorId: "${actor._id}",\n` : "") +
-    `});`;
+      `fromUuidSync("${itemUuid}").use({})`;
   let macro = game.macros.contents.find((m) => m.name === item.name && m.command === command);
   if (!macro) {
     macro = await Macro.create(
-      {
-        name: item.name,
-        type: "script",
-        img: item.img,
-        command: command,
-        flags: { "D35E.itemMacro": true },
-      },
-      { displaySheet: false }
+        {
+          name: item.name,
+          type: "script",
+          img: item.img,
+          command: command,
+          flags: { "D35E.itemMacro": true },
+        },
+        { displaySheet: false }
     );
   }
   game.user.assignHotbarMacro(macro, slot);
@@ -1123,6 +1133,55 @@ function rollTurnUndead({ actorName = null, actorId = null } = {}) {
   return actor.rollTurnUndead();
 }
 
+function requestRoll({rollType = "skill", rollTarget = "apr", dcTarget = 0, rollMode = "public"}) {
+  // Create a chat message with a button depending on the selected roll type
+  if (rollType === "save") {
+    let buttonCode = `<div class="flexcol card-buttons"><button class="everyone no-actor" data-action="rollSave" data-value="${rollTarget}" data-ability="${dcTarget}" data-targetrollmode="${rollMode}" data-target="${dcTarget}">
+${game.i18n.localize("D35E.RollSavingThrow")}
+            </button></div>`;
+    let chatTemplateData = {
+      name: game.i18n.localize("D35E.RollSavingThrow") + ` (${CONFIG.D35E.savingThrows[rollTarget]})`,
+      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      rollMode: rollMode,
+      text: buttonCode,
+      targetText: `
+      <div class="dice-result box">
+          <h4 class="box-title">
+          DC
+          </h4>
+          <h4 class="dice-total rolled-roll">
+          ${dcTarget}
+          </h4>
+      </div>`,
+    };
+    createCustomChatMessage("systems/D35E/templates/chat/request-roll.html", chatTemplateData, {}, {});
+  }
+  else if (rollType === "skill") {
+    let buttonCode = `<div class="flexcol card-buttons"><button class="everyone no-actor" data-action="rollSkill" data-value="${rollTarget}" data-ability="${dcTarget}" data-targetrollmode="${rollMode}" data-target="${dcTarget}">
+${game.i18n.localize("D35E.RollSkillCheck")}
+            </button></div>`;
+    let skillName = CONFIG.D35E.skills[rollTarget];
+    let chatTemplateData = {
+      name: `${game.i18n.localize("D35E.RollSkillCheck")} (${skillName})`,
+      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      rollMode: rollMode,
+      text: buttonCode,
+      // DC target text
+      targetText: `
+      <div class="dice-result box">
+          <h4 class="box-title">
+          DC
+          </h4>
+          <h4 class="dice-total rolled-roll">
+          ${dcTarget}
+          </h4>
+      </div>`,
+    };
+    createCustomChatMessage("systems/D35E/templates/chat/request-roll.html", chatTemplateData, {}, {});
+  }
+
+}
+
 Hooks.on("getSceneControlButtons", (controls) => {
   if (!game.user.isGM) return;
   game.D35E.logger.log("Adding D35E GM Tools and scene controls");
@@ -1184,15 +1243,21 @@ Hooks.on("getSceneControlButtons", (controls) => {
         title: "CONTROLS.BasicSelect",
         icon: "fas fa-expand",
       },
+      // {
+      //   name: "d35e-gm-tools-roll-requestor",
+      //   title: "D35E.RequestRoll",
+      //   icon: "fas fa-dice",
+      //   onClick: () => {
+      //     new RollRequestorDialog().render(true);
+      //   },
+      //   button: true,
+      // },
       {
         name: "d35e-gm-tools-encounter-generator",
         title: "D35E.EncounterGenerator",
         icon: "fas fa-dragon",
         onClick: () => {
           new EncounterGeneratorDialog().render(true);
-          //QuestLog.render(true)
-          // Place your code here - <app class name>.render()
-          // Remember you must import file on the top - look at imports
         },
         button: true,
       },
@@ -1245,3 +1310,5 @@ Hooks.on("renderItemSheet", (app, html) => {
   const div = html.find("h4.window-title");
   div.append(copyUidButton);
 });
+
+EnrichersHelper.setupHooks();

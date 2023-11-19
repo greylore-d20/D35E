@@ -615,13 +615,13 @@
 
     {{!-- Biography Tab --}}
     <div class="tab biography flexcol" data-group="primary" data-tab="biography">
-      {{editor content=system.details.biography.value target="system.details.biography.value" button=true owner=owner
+      {{editor rendered.biography target="system.details.biography.value" button=true owner=owner
       editable=editable}}
     </div>
 
     {{!-- Notes Tab --}}
     <div class="tab actor-notes flexcol" data-group="primary" data-tab="notes">
-      {{editor content=system.details.notes.value target="system.details.notes.value" button=true owner=owner
+      {{editor rendered.notes target="system.details.notes.value" button=true owner=owner
       editable=editable}}
     </div>
 

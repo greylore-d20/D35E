@@ -213,8 +213,8 @@ export class ActorDamageHelper {
                 };
                 let chatTemplateData = {
                     name: a.name,
-                    sourceName: _attacker.name,
-                    sourceImg: _attacker.img,
+                    sourceName: _attacker?.name || "Unknown",
+                    sourceImg: _attacker?.img || "systems/D35E/icons/special-abilities/imported.png",
                     type: CONST.CHAT_MESSAGE_TYPES.OTHER,
                     rollMode: finalAc.rollMode || "gmroll",
                 };
@@ -762,5 +762,84 @@ export class ActorDamageHelper {
                 return damageType.system.uniqueId;
         }
         return type;
+    }
+
+    static isDamageType(type) {
+        for (let damageType of CACHE.DamageTypes.values()) {
+            let identifiers = damageType.system.identifiers;
+            if (identifiers.some(i => i[0].toLowerCase() === type.toLowerCase()))
+                return true;
+        }
+        return false;
+    }
+
+    static nameByType(type) {
+        for (let damageType of CACHE.DamageTypes.values()) {
+            let identifiers = damageType.system.identifiers;
+            if (identifiers.some(i => i[0].toLowerCase() === type.toLowerCase()))
+                return damageType.name;
+        }
+        return type;
+    }
+
+    static getDamageIcon(dmgName) {
+        let dmgIconBase = dmgName?.toLowerCase() || "";
+        let dmgIcon = "unknown";
+        if (dmgIconBase.includes("energy-")) {
+            dmgIconBase = dmgIconBase.replace("energy-", "");
+        }
+        switch (dmgIconBase) {
+            case "fire":
+            case "f":
+                dmgIcon = "fire";
+                break;
+            case "cold":
+            case "c":
+                dmgIcon = "cold";
+                break;
+            case "electricity":
+            case "electric":
+            case "el":
+            case "e":
+                dmgIcon = "electricity";
+                break;
+            case "acid":
+            case "a":
+                dmgIcon = "acid";
+                break;
+            case "sonic":
+                dmgIcon = "sonic";
+                break;
+            case "air":
+                dmgIcon = "air";
+                break;
+            case "piercing":
+            case "p":
+                dmgIcon = "p";
+                break;
+            case "slashing":
+            case "s":
+                dmgIcon = "s";
+                break;
+            case "bludgeoning":
+            case "b":
+                dmgIcon = "b";
+                break;
+            case "unarmed":
+                dmgIcon = "unarmed";
+                break;
+            case "positive energy":
+                dmgIcon = "positive-energy";
+                break;
+            case "force":
+                dmgIcon = "force";
+                break;
+            case "negative energy":
+                dmgIcon = "negative-energy";
+                break;
+            default:
+                return "unknown";
+        }
+        return dmgIcon;
     }
 }

@@ -359,11 +359,19 @@ export class CombatD35E extends Combat {
             }
           }
         } else {
-          await actor.progressBuff(this.roundBuffUpdates, buffId, 1);
+          if (actor) {
+            await actor.progressBuff(this.roundBuffUpdates, buffId, 1);
+          } // We don't have an actor, so we can't progress the buff. we should delete it.
+          else {
+            await this.removeBuffsFromCombat([buffId])
+            game.D35E.logger.log("Removing buff from combat because actor is null.")
+          }
+
         }
         await this.nextTurn();
       }
     } catch (error) {
+      ui.notifications.error("Error processing current combatant.")
       game.D35E.logger.error(error);
     }
   }

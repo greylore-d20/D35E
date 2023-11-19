@@ -74,8 +74,8 @@ export class ItemChatData {
 
     htmlOptions.async = true;
     // Rich text description
-    itemChatData.description.value = await TextEditor.enrichHTML(
-      await this.item.getChatDescription(),
+     itemChatData.description.value = await TextEditor.enrichHTML(
+      await this.item.getChatDescription,
       htmlOptions
     );
 

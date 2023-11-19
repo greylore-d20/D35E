@@ -40,8 +40,8 @@ export class ActorSheetPFNPC extends ActorSheetPF {
   /**
    * Add some extra data when rendering the sheet to reduce the amount of logic required within the template.
    */
-  getData() {
-    const sheetData = super.getData();
+  async getData() {
+    const sheetData = await super.getData();
 
     // Challenge Rating
     const cr = parseFloat(sheetData.system.details.cr || 0);

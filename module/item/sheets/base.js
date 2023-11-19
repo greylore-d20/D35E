@@ -437,7 +437,7 @@ export class ItemSheetPF extends ItemSheet {
               sheetData.abilitiesDescription.push({
                 level: level,
                 name: e.name,
-                description: TextEditor.enrichHTML(e.system.description.value),
+                description: await TextEditor.enrichHTML(e.system.description.value),
               });
               alreadyAddedDescriptions.add(e._id);
             }
@@ -463,7 +463,7 @@ export class ItemSheetPF extends ItemSheet {
               sheetData.abilitiesDescription.push({
                 level: ability.level,
                 name: e.name,
-                description: TextEditor.enrichHTML(e.system.description.value),
+                description: await TextEditor.enrichHTML(e.system.description.value),
               });
               alreadyAddedDescriptions.add(e._id);
             }
@@ -544,7 +544,7 @@ export class ItemSheetPF extends ItemSheet {
       }
 
       if (this.item.system.nonActiveClassAbilities !== undefined && this.item.system.nonActiveClassAbilities !== null) {
-        this.item.system.nonActiveClassAbilities.forEach((a) => {
+        for (const a of this.item.system.nonActiveClassAbilities) {
           if (a[0] !== 0) {
             if (sheetData.progression[a[0] - 1]["nonActive"] === undefined) {
               sheetData.progression[a[0] - 1]["nonActive"] = [];
@@ -553,9 +553,9 @@ export class ItemSheetPF extends ItemSheet {
             sheetData.progression[a[0] - 1]["nonActive"].push({ name: a[1], desc: a[2] });
           }
           if (a[2] !== "") {
-            sheetData.abilitiesDescription.push({ level: a[0], name: a[1], description: TextEditor.enrichHTML(a[2]) });
+            sheetData.abilitiesDescription.push({ level: a[0], name: a[1], description: await TextEditor.enrichHTML(a[2]) });
           }
-        });
+        }
       }
 
       sheetData.abilitiesDescription.sort((a, b) => (a.level > b.level ? 1 : b.level > a.level ? -1 : 0));
@@ -1138,6 +1138,10 @@ export class ItemSheetPF extends ItemSheet {
           ],
         ]),
       });
+    }
+    if (a.classList.contains("add-special-template")) {
+      await this._onSubmit(event);
+      return this._addSpecialActionDialog(event)
     }
 
     // Remove an attack component
@@ -1833,5 +1837,270 @@ export class ItemSheetPF extends ItemSheet {
   async _onGenerateUid(event) {
     await this.item.update({ "system.uniqueId": this.item.tag + "-" + Math.random().toString(36).slice(-6) });
     this.render(true);
+  }
+
+  async _addSpecialActionDialog(itemData) {
+    let template = `<form><em>${game.i18n.localize("D35E.CreateSpecialActionFromTemplateHint").format(itemData.name)}</em></form>`;
+    new Dialog({
+      title: game.i18n.localize("D35E.CreateSpecialActionFromTemplate").format(itemData.name),
+      content: template,
+      classes: ["custom-dialog", "stacked-buttons"],
+      buttons: {
+        abilityDrain: {
+          icon: '<i class="fas fa-prescription-bottle"></i>',
+          label: "Ability Drain/Damage",
+          callback: (html) => {
+            this._addSpecialActionAbilityDrain(itemData)
+          },
+        },
+        poison: {
+          icon: '<i class="fas fa-flask"></i>',
+          label: "Poison or Disease",
+          callback: (html) => this._addSpecialActionPoison(itemData),
+        },
+      },
+      default: "abilityDrain",
+    }, { classes: ["dialog", "stacked-buttons"]}).render(true);
+  }
+
+  _addSpecialActionAbilityDrain(itemData) {
+    let template = `<form>
+                          <div class="form-group">
+                            <label>${game.i18n.localize('D35E.Ability')}</label>
+                            <select name="ability">
+                              <option value="str">${game.i18n.localize('D35E.AbilityStr')}</option>
+                              <option value="dex">${game.i18n.localize('D35E.AbilityDex')}</option>
+                              <option value="con">${game.i18n.localize('D35E.AbilityCon')}</option>
+                              <option value="int">${game.i18n.localize('D35E.AbilityInt')}</option>
+                              <option value="wis">${game.i18n.localize('D35E.AbilityWis')}</option>
+                              <option value="cha">${game.i18n.localize('D35E.AbilityCha')}</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label>${game.i18n.localize('D35E.Roll')}</label>
+                            <input type="text" name="roll" value="1d4" />
+                          </div>  
+                          </form>`;
+    new Dialog({
+      title: game.i18n.localize("D35E.CreateSpecialActionFromTemplate").format(itemData.name),
+      content: template,
+      classes: ["dialog", "stacked-buttons"],
+      buttons: {
+        abilityDrain: {
+          label: game.i18n.localize("D35E.AbilityDrain"),
+          icon: '<i class="fas fa-prescription-bottle"></i>',
+          callback: (html) => {
+            // get ability from form
+            let ability = html.find('[name="ability"]')[0].value;
+            // create special action
+            let specialActions = duplicate(this.item.system.specialActions);
+            if (specialActions === undefined) specialActions = [];
+            return this.item.update({
+              "system.specialActions": specialActions.concat([
+                  {
+                    name: game.i18n.localize("D35E.AbilityDrain"),
+                    action: `AbilityDrain ${ability} ${html.find('[name="roll"]')[0].value}`,
+                    range: "",
+                    img: this.item.img,
+                    condition: "",
+                  }
+              ])
+            });
+          }
+        },
+        abilityDamage: {
+          label: game.i18n.localize("D35E.AbilityDamage"),
+          icon: '<i class="fas fa-scroll"></i>',
+          callback: (html) => {
+            // get ability from form
+            let ability = html.find('[name="ability"]')[0].value;
+            // create special action
+            let specialActions = duplicate(this.item.system.specialActions);
+            if (specialActions === undefined) specialActions = [];
+            return this.item.update({
+              "system.specialActions": specialActions.concat([
+                  {
+                    name: game.i18n.localize("D35E.AbilityDamage"),
+                    action: `AbilityDamage ${ability} ${html.find('[name="roll"]')[0].value}`,
+                    range: "",
+                    img: this.item.img,
+                    condition: "",
+                  },
+              ])
+            });
+          }
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: game.i18n.localize("D35E.Cancel"),
+        }
+      },
+    }, { classes: ["dialog", "stacked-buttons"]}).render(true);;
+  }
+
+  _addSpecialActionPoison(itemData) {
+    let saveDc = null;
+    let saveType = null;
+    let saveName = null;
+    let dc = this.item.system.description.value.match(/(Fortitude|Will|Reflex) DC (\d+)/);
+    if (dc) {
+      saveDc = parseInt(dc[2]);
+      saveType = dc[1].toLowerCase();
+      if (saveType === 'fortitude') {
+        saveName = "Fortitude";
+        saveType = 'fort';
+      }
+    }
+    // Create a template form with save DC field and save type field (already prefilled with the save type from the poison)
+    // Also add checkbox to possibly try to extract ability damages from the description
+    let template = `<form>
+           <div class="form-group">
+              <label>${game.i18n.localize('D35E.SaveDC')}</label>
+              <input type="number" name="dc" value="${saveDc}" />
+            </div>
+            <div class="form-group">
+              <label>${game.i18n.localize('D35E.SavingThrow')}</label>
+              <select name="saveType">
+                <option value="fort" ${saveType === 'fort' ? 'selected' : ''}>${game.i18n.localize('D35E.SavingThrowFort')}</option>
+                <option value="ref" ${saveType === 'ref' ? 'selected' : ''}>${game.i18n.localize('D35E.SavingThrowRef')}</option>
+                <option value="will" ${saveType === 'will' ? 'selected' : ''}>${game.i18n.localize('D35E.SavingThrowWill')}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>${game.i18n.localize('D35E.ExtractAbilityDamage')}</label>
+              <input type="checkbox" name="extractAbilityDamage" value="1" />
+            </div>
+            </form>`;
+    new Dialog({
+      title: game.i18n.localize("D35E.CreateSpecialActionFromTemplate").format(itemData.name),
+      content: template,
+      classes: ["dialog", "stacked-buttons"],
+      buttons: {
+        poison: {
+          label: game.i18n.localize("D35E.CreatePoison"),
+          icon: '<i class="fas fa-flask"></i>',
+          callback: (html) => {
+
+            return this._createPoisonOrDiseaseSpecialAction("poison",saveName, saveDc, html, itemData);
+          }
+        },
+        disease: {
+          label: game.i18n.localize("D35E.CreateDisease"),
+          icon: '<i class="fas fa-disease"></i>',
+          callback: (html) => {
+            return this._createPoisonOrDiseaseSpecialAction("disease",saveName, saveDc, html, itemData);
+          }
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: game.i18n.localize("D35E.Cancel"),
+        }
+      }
+    }
+
+    ).render(true);
+  }
+
+  _createPoisonOrDiseaseSpecialAction(type, saveName, saveDc, html, itemData) {
+    let specialActionTemplate = ''
+    let actionName = ''
+    if (type === 'poison') {
+      actionName = game.i18n.localize("D35E.Poisoned");
+      specialActionTemplate = 'Create unique "Poisoned" from "D35E.commonbuffs" on target;Set buff "Poisoned" field data.level to max(1,[DC]) on target;Set buff "Poisoned" field system.description.value exact "[Desc]" on target;Set buff "Poisoned" field name to "Poisoned ([Monster])" on target;Activate buff "Poisoned ([Monster])" on target;';
+    } else {
+      actionName = itemData.name;
+      specialActionTemplate = `Create unique "Diseased" from "D35E.commonbuffs" on target;Set buff "Diseased" field data.level to max(1,[DC]) on target;Set buff "Poisoned" field system.description.value exact "[Desc]" on target;Set buff "Diseased" field name to "${itemData.name}" on target;Activate buff "${itemData.name}" on target;`;
+    }
+
+    let secondaryDamageDescription = `${saveName} DC ${saveDc}<br>For details see @UUID[${this.item.uuid}]`;
+    specialActionTemplate = specialActionTemplate.replace(/\[DC\]/g, saveDc);
+    specialActionTemplate = specialActionTemplate.replace(/\[Monster\]/g,
+        this.item.actor.name);
+    specialActionTemplate = specialActionTemplate.replace(/\[Desc\]/g,
+        secondaryDamageDescription);
+
+    let addedSpecialActions = [
+      {
+        name: itemData.name,
+        action: specialActionTemplate,
+        range: '',
+        img: this.item.img,
+        condition: '',
+      },
+    ];
+
+    // if we selcted extract ability damage, we need to extract it and add it to the special actions
+    if (html.find('[name="extractAbilityDamage"]')[0].checked) {
+      // Extract initial damage, ex. initial damage 1d2 Con
+      let initialDamage = this.item.system.description.value.match(
+          /initial damage (\d+d\d+) (\w+)/);
+      // Extract secondary damage, ex. secondary damage 1d2 Con
+      let secondaryDamage = this.item.system.description.value.match(
+          /secondary damage (\d+d\d+) (\w+)/);
+      // Extract combined damage, ex. initial and secondary damage 1d2 Con
+      let combinedDamage = this.item.system.description.value.match(
+          /initial and secondary damage (\d+d\d+) (\w+)/);
+      // Get the damage dices and ability from extracted damages
+      let initialDamageDice = initialDamage ? initialDamage[1] : null;
+      let initialDamageAbility = initialDamage ? initialDamage[2] : null;
+      let secondaryDamageDice = secondaryDamage ? secondaryDamage[1] : null;
+      let secondaryDamageAbility = secondaryDamage ? secondaryDamage[2] : null;
+      // If they are zero check for combined damage, same for initial and secondary
+      if (!initialDamageDice) {
+        initialDamageDice = combinedDamage ? combinedDamage[1] : null;
+        initialDamageAbility = combinedDamage ? combinedDamage[2] : null;
+        secondaryDamageDice = combinedDamage ? combinedDamage[1] : null;
+        secondaryDamageAbility = combinedDamage ? combinedDamage[2] : null;
+      }
+      if (!initialDamageDice && type === 'disease') {
+        initialDamage = this.item.system.description.value.match(
+            /damage (\d+d\d+) (\w+)/);
+        initialDamageDice = initialDamage ? initialDamage[1] : null;
+        initialDamageAbility = initialDamage ? initialDamage[2] : null;
+      }
+      if (!initialDamageDice) {
+        // make a notifictaion but proceed
+        ui.notifications.warn(game.i18n.localize('D35E.PoisonNoDamageFound'));
+      } else {
+
+        // Ability damage special action template
+        let abilityDamTemplate = 'AbilityDamage [ability] [damage] on target;';
+        // Replace ability and damage dice in template
+        let initialDamageSpecialAction = abilityDamTemplate.replace(
+            /\[ability\]/g, initialDamageAbility.toLowerCase());
+        initialDamageSpecialAction = initialDamageSpecialAction.replace(
+            /\[damage\]/g, initialDamageDice);
+
+        // Add the special actions
+        addedSpecialActions = addedSpecialActions.concat([
+          {
+            name: 'Initial Damage',
+            action: initialDamageSpecialAction,
+            img: `systems/D35E/icons/special-abilities/${type}-initial.png`,
+          },
+        ]);
+        if (secondaryDamageDice) {
+          let secondaryDamageSpecialAction = abilityDamTemplate.replace(
+              /\[ability\]/g, secondaryDamageAbility.toLowerCase());
+          secondaryDamageSpecialAction = secondaryDamageSpecialAction.replace(
+              /\[damage\]/g, secondaryDamageDice);
+
+          // Add the special actions
+          addedSpecialActions = addedSpecialActions.concat([
+            {
+              name: 'Secondary Damage',
+              action: secondaryDamageSpecialAction,
+              img: 'systems/D35E/icons/special-abilities/poison-secondary.png',
+            },
+          ]);
+        }
+      }
+    }
+
+    let specialActions = duplicate(this.item.system.specialActions);
+    if (specialActions === undefined) specialActions = [];
+    return this.item.update({
+      'system.specialActions': specialActions.concat(addedSpecialActions),
+    });
   }
 }
