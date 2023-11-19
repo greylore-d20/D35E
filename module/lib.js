@@ -258,8 +258,16 @@ export const applyCritToFormula = function (crit, formula) {
 };
 
 export const sizeDie = function (origCount, origSides, targetSize = "M", crit = 1) {
-  if (typeof targetSize === "string")
-    targetSize = Object.values(CONFIG.D35E.sizeChart).indexOf(targetSize.toUpperCase());
+
+  if (typeof targetSize === "string") {
+    if (targetSize.length > 1) {
+      targetSize = CONFIG.D35E.sizeChart[targetSize.toLowerCase()]
+      // replace targetsize with the one letter value
+      targetSize = targetSize ? targetSize : "M";
+    }
+    targetSize = Object.values(CONFIG.D35E.sizeChart).
+        indexOf(targetSize.toUpperCase());
+  }
   else if (typeof targetSize === "number")
     targetSize = Math.max(
       0,

@@ -28,7 +28,7 @@ export class DicePF {
    * @param {Array} extraRolls      An array containing bonuses/penalties for extra rolls
    * @param {Boolean} autoRender    Whether to automatically render the chat messages
    */
-  static async d20Roll({event, parts, data, template, title, speaker, flavor, takeTwenty=true, situational=true,
+  static async d20Roll({event, parts, data, template, title, speaker, flavor, takeTwenty=true, situational=true, dynamicBonuses=[],
                   fastForward=true, critical=20, fumble=1, treshold=null, onClose, dialogOptions, extraRolls=[], chatTemplate, chatTemplateData,
                   staticRoll=null }) {
     // Handle input arguments
@@ -60,6 +60,11 @@ export class DicePF {
           curParts[0] = `${setRoll}`;
           flavor += ` (Take ${setRoll})`;
         }
+        if (dynamicBonuses.length > 0) {
+          for (let bonus of dynamicBonuses) {
+            curParts.push(bonus.value);
+          }
+        }
 
         // Execute the roll
         let roll = new Roll35e(curParts.join(" + "), data).roll();
@@ -77,6 +82,28 @@ export class DicePF {
             isCrit: treshold ? roll.total >= treshold : d20.total >= critical,
             isFumble: d20.total <= fumble,
           }, chatTemplateData || {});
+          rollData.dynamicBonuses = dynamicBonuses;
+          // add basic roll result to rollData
+          rollData.dynamicBonuses.unshift({
+            name: "Roll",
+            value: d20.total,
+          })
+
+          let tooltip = rollData.tooltip;
+          let tableRows = '';
+          for (let bonus of dynamicBonuses) {
+            tableRows += `<tr><td><b>${bonus.name}</b></td><td><b>${bonus.value}</b></td></tr>`;
+          }
+          // add table container
+          let table = `<div class="table-container"><table><tbody>${tableRows}</tbody></table></div>`;
+          // find the tooptip-part section in tooltip and add table at the end of the section, after dice div
+          // use jquery to find the element
+          let tooltipJquery = $(tooltip);
+          let tooltipPart = tooltipJquery.find('.tooltip-part');
+          tooltipPart.append(table);
+          // convert back to string
+          tooltip = tooltipJquery.prop('outerHTML');
+          rollData.tooltip = tooltip;
 
           // Create chat data
           let chatData = {
