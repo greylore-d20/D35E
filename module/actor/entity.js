@@ -1395,6 +1395,12 @@ export class ActorPF extends Actor {
     // offset by the medium size which is treated as 0
     sizeIndex -= 4;
     let rollFormula = game.D35E.rollPreProcess.sizeRoll(1, 3, this.system.traits.actualSize, 1);
+    // add str value
+    // if str mod > 0, add it to the roll
+    if (this.system.abilities.str.mod > 0)
+      rollFormula += `+${this.system.abilities.str.mod}`;
+    else
+      rollFormula += `${this.system.abilities.str.mod}`;
     let meleeAttack = {
       name: game.i18n.localize('D35E.Melee'),
       img: `/icons/skills/melee/hand-grip-sword-red.webp`,
