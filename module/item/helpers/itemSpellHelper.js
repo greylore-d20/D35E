@@ -26,7 +26,7 @@ export class ItemSpellHelper {
         (item.actor.system.attributes.energyDrain || 0);
     }
     rollData.cl = Math.max(new Roll35e(`${itemData.baseCl}`, rollData).roll().total, cl);
-    rollData.spellPenetration = rollData.cl + (rollData?.featSpellPenetrationBonus || 0);
+    rollData.spellPenetration = rollData.cl + (new Roll35e(rollData?.featSpellPenetrationBonus || "0", rollData).roll().total || 0);
   }
 
   static async generateSpellDescription(sourceItem, renderTextDescription = false) {
