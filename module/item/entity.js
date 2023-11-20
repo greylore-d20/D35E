@@ -1005,7 +1005,6 @@ export class Item35E extends ItemBase35E {
         if (c.specialActionCondition && c.specialActionCondition !== "") {
           if (new Roll35e(c.specialActionCondition, rollData).roll().total !== true) continue;
         }
-        actor.baseAttack = this.getRollData();
         await attack.addCommandAsSpecial(
           c.itemName,
           c.itemImg,
@@ -1013,7 +1012,8 @@ export class Item35E extends ItemBase35E {
           actor,
           rollData.useAmount || 1,
           rollData.cl,
-          optionalFeatRanges.get(c.itemId)?.base || 0
+          optionalFeatRanges.get(c.itemId)?.base || 0,
+          this.uuid
         );
       }
     }
