@@ -459,7 +459,7 @@ export class ItemUse {
 
     let dc = this.#_getSpellDC(rollData);
     rollData.dc = dc;
-    rollData.spellPenetration = rollData.cl + (rollData.featSpellPenetrationBonus || 0);
+    rollData.spellPenetration = rollData.cl + (new Roll35e(rollData.featSpellPenetrationBonus || "0", rollData).roll().total || 0);
     this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
 
     let attacks = [];
@@ -1589,7 +1589,7 @@ export class ItemUse {
       }
 
       if (saveDC > 0 && data?.save?.type) {
-        spellDC.dc = saveDC + (rollData.featSpellDCBonus || 0);
+        spellDC.dc = saveDC + (new Roll35e(rollData.featSpellDCBonus || "0", rollData).roll().total || 0);
         spellDC.type = data.save.type;
         spellDC.ability = data.save.ability;
         spellDC.isHalf = data.save.type.indexOf("half") !== -1;
@@ -1597,7 +1597,7 @@ export class ItemUse {
         spellDC.description = `${CONFIG.D35E.savingThrowTypes[data.save.type]}`;
         if (data.save.ability) spellDC.description += ` (${CONFIG.D35E.abilitiesShort[data.save.ability]})`;
       } else if (saveDC > 0 && saveDesc) {
-        spellDC.dc = saveDC + (rollData.featSpellDCBonus || 0);
+        spellDC.dc = saveDC + (new Roll35e(rollData.featSpellDCBonus || "0", rollData).roll().total || 0);
         if (saveDesc.toLowerCase().indexOf("will") !== -1) {
           spellDC.type = "will";
         } else if (saveDesc.toLowerCase().indexOf("reflex") !== -1) {

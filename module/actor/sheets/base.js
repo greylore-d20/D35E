@@ -81,15 +81,20 @@ export class ActorSheetPF extends ActorSheet {
   /**
    * Add some extra data when rendering the sheet to reduce the amount of logic required within the template.
    */
-  getData() {
+  async getData() {
     // Basic data
     let isOwner = this.document.isOwner;
     const sheetData = {
       owner: isOwner,
+      uuid: this.entity.uuid,
       name: this.document.name,
       limited: this.document.limited,
       options: this.options,
       editable: this.isEditable,
+      rendered: {
+        biography: await TextEditor.enrichHTML(this.actor.system.details.biography.value),
+        notes: await TextEditor.enrichHTML(this.actor.system.details.notes.value),
+      },
       cssClass: isOwner ? "editable" : "locked",
       actorId: this.actor.id || this.actor._id,
       isCharacter: this.entity.data.type === "character",
@@ -725,6 +730,10 @@ export class ActorSheetPF extends ActorSheet {
     let handler = (ev) => this._onDragStart(ev);
     html.find("li.item").each((i, li) => {
       if (li.classList.contains("inventory-header")) return;
+      li.setAttribute("draggable", true);
+      li.addEventListener("dragstart", handler, false);
+    });
+    html.find("li.skill").each((i, li) => {
       li.setAttribute("draggable", true);
       li.addEventListener("dragstart", handler, false);
     });
@@ -3316,5 +3325,15 @@ export class ActorSheetPF extends ActorSheet {
   _onCharacterGenerateStatblock(event) {
     event.preventDefault();
     StatblockGenerator.generateStatblock(this.actor);
+  }
+
+
+  _onDragStart(event) {
+    const li = event.currentTarget;
+    if (li.dataset.type === "skill") {
+      event.dataTransfer.setData("text/plain", JSON.stringify(li.dataset));
+    } else {
+      super._onDragStart(event);
+    }
   }
 }

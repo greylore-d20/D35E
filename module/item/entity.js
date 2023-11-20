@@ -811,15 +811,18 @@ export class Item35E extends ItemBase35E {
       data["system.save.dcAutoType"] !== ""
     ) {
       let autoDCBonus = 0;
-      if (this.actor && this.actor.racialHD) {
-        let autoType = data["system.save.dcAutoType"];
+      let autoType = data["system.save.dcAutoType"];
+      if (this.actor) {
         switch (autoType) {
           case "racialHD":
-            autoDCBonus += this.actor.racialHD.system.levels;
+            if (this.actor.racialHD)
+              autoDCBonus += this.actor.racialHD.system.levels;
             break;
           case "halfRacialHD":
-            autoDCBonus += this.actor.racialHD.system.levels;
-            autoDCBonus = Math.floor(autoDCBonus / 2.0);
+            if (this.actor.racialHD) {
+              autoDCBonus += this.actor.racialHD.system.levels;
+              autoDCBonus = Math.floor(autoDCBonus / 2.0);
+            }
             break;
           case "HD":
             autoDCBonus += this.actor.system.attributes.hd.total;
@@ -832,9 +835,10 @@ export class Item35E extends ItemBase35E {
             break;
         }
         let ability = data["system.save.dcAutoAbility"];
-        data["system.save.dc"] = 10 + (this.actor.system.abilities[ability]?.mod || 0) + autoDCBonus;
+        data["system.save.dc"] = 10 +
+            (this.actor.system.abilities[ability]?.mod || 0) + autoDCBonus;
       } else {
-        data["system.save.dc"] = 0;
+        data["system.save.dc"] = 10;
       }
     }
   }

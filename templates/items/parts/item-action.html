@@ -386,7 +386,8 @@
 <div class="flexcol special-actions">
   <h4 class="in-header">
     {{localize "D35E.SpecialActions"}}
-    <a class="special-control add-special"><i class="fas fa-plus"></i></a>
+    <a class="special-control add-special"><i class="fas fa-plus"></i> Add</a>
+    <a class="special-control add-special-template"><i class="fas fa-plus"></i> From Template</a>
   </h4>
   <ol class="special-parts form-group">
     {{#each data.system.specialActions as |part a|}}
@@ -403,7 +404,7 @@
   </ol>
   <div class="spellbuff-link flexcol">
     <div style="width: 100%; text-align: center; padding: 12px">
-      You can drop a buff from compendium here to create a special action.
+      Drop a buff from compendium here to create a special action
     </div>
   </div>
 </div>

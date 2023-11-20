@@ -76,8 +76,8 @@ export class AuraMeasureDistance {
           } else {
             // collision blocked by sight or movement
             collision =
-              canvas.walls.checkCollision(r, { mode: "any", type: "sight" }) ||
-              canvas.walls.checkCollision(r, { mode: "any", type: "move" });
+                CONFIG.Canvas.polygonBackends.sight.testCollision(r.A, r.B, { mode: "any", type: "sight" }) ||
+                CONFIG.Canvas.polygonBackends.move.testCollision(r.A, r.B, { mode: "any", type: "move" });
           }
           if (collision) continue;
         }
@@ -137,8 +137,8 @@ export class AuraMeasureDistance {
 
           // collision blocked by sight or movement
           contains =
-            !canvas.walls.checkCollision(r, { mode: "any", type: "sight" }) &&
-            !canvas.walls.checkCollision(r, { mode: "any", type: "move" });
+            !CONFIG.Canvas.polygonBackends.sight.testCollision(r.A, r.B, { mode: "any", type: "sight" }) &&
+            !CONFIG.Canvas.polygonBackends.move.testCollision(r.A, r.B, { mode: "any", type: "move" });
         }
         // Check the distance from origin.
         if (contains) return true;

@@ -74,8 +74,8 @@ export class ItemChatData {
 
     htmlOptions.async = true;
     // Rich text description
-    itemChatData.description.value = await TextEditor.enrichHTML(
-      await this.item.getChatDescription(),
+     itemChatData.description.value = await TextEditor.enrichHTML(
+      await this.item.getChatDescription,
       htmlOptions
     );
 
@@ -201,7 +201,7 @@ export class ItemChatData {
         if (this.item.type === "spell") {
           saveDC += new Roll35e(spellbook.baseDCFormula || "", rollData).roll().total;
         }
-        saveDC += rollData.featSpellDCBonus || 0;
+        saveDC += new Roll35e(rollData.featSpellDCBonus || "0", rollData).roll().total || 0;
         if (saveDC > 0 && saveType) {
           props.push(`DC ${saveDC}`);
           props.push(saveType);

@@ -12,6 +12,7 @@ export class ItemChatAction {
     const button = event.currentTarget;
     button.disabled = true;
     const canBeUsedByEveryone = $(button).hasClass("everyone");
+    const noActor = $(button).hasClass("no-actor");
     const singleUse = $(button).hasClass("single-use");
     const card = button.closest(".chat-card");
     const messageId = card.closest(".message").dataset.messageId;
@@ -32,13 +33,17 @@ export class ItemChatAction {
 
     // Get the Actor from a synthetic Token
     const actor = ChatHelper.getChatCardActor(card);
-    if (!actor) {
+    if (!actor && !noActor) {
       button.disabled = false;
       return;
     }
 
     // Get the Item
-    const item = actor.getOwnedItem(card.dataset.itemId);
+
+    let item = null;
+    if (!noActor) {
+      item = actor.getOwnedItem(card.dataset.itemId);
+    }
 
     // Get card targets
     const targets = isTargetted ? ChatHelper.getChatCardTargets(card) : [];
@@ -101,7 +106,13 @@ export class ItemChatAction {
       const type = button.dataset.value;
       const ability = button.dataset.ability;
       const target = button.dataset.target;
-      if (type) ActorPF._rollSave(type, ability, target);
+      const targetRollType = button.dataset.targetrollmode;
+      if (type) ActorPF._rollSave(type, ability, target, {rollMode: targetRollType});
+    } else if (action === "rollSkill") {
+      const type = button.dataset.value;
+      const target = button.dataset.target;
+      const targetRollType = button.dataset.targetrollmode;
+      if (type) ActorPF._rollSkill(type, {target: target, rollMode: targetRollType});
     } else if (action === "rollPR") {
       const spellPenetration = button.dataset.spellpen;
       ActorPF._rollPowerResistance(spellPenetration);
