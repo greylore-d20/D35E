@@ -39,11 +39,14 @@ export class ItemChatAction {
     }
 
     // Get the Item
-
     let item = null;
     if (!noActor) {
       item = actor.getOwnedItem(card.dataset.itemId);
     }
+
+    // Get the Originating Attack
+    const originatingAttackId = button.dataset.originatingAttackId;
+
 
     // Get card targets
     const targets = isTargetted ? ChatHelper.getChatCardTargets(card) : [];
@@ -132,7 +135,7 @@ export class ItemChatAction {
        * -
        */
 
-      await actor.applyActionOnSelf(actionValue, actor);
+      await actor.applyActionOnSelf(actionValue, actor, null, "self", originatingAttackId);
       await ActorPF.applyAction(actionValue, actor);
     }
 

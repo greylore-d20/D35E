@@ -502,16 +502,24 @@ export class ChatAttack {
     }
   }
 
-  async addCommandAsSpecial(name, img, actionData, actor = null, useAmount = 1, cl = null, range = 0) {
-    let _actor = this.item.actor;
-    if (actor != null) _actor = actor;
+  async addCommandAsSpecial(
+    name,
+    img,
+    actionData,
+    actor = null,
+    useAmount = 1,
+    cl = null,
+    range = 0,
+    originatingAttackId = null
+  ) {
+    let _actor = actor != null
+      ? actor
+      : this.item.actor;
 
-    if (cl === null) {
-      if (this.item.data.type === "spell") {
-        const spellbookIndex = this.item.system.spellbook;
-        const spellbook = _actor.system.attributes.spells.spellbooks[spellbookIndex];
-        cl = spellbook.cl.total + (this.item.system.clOffset || 0);
-      }
+    if (cl === null && this.item.data.type === "spell") {
+      const spellbookIndex = this.item.system.spellbook;
+      const spellbook = _actor.system.attributes.spells.spellbooks[spellbookIndex];
+      cl = spellbook.cl.total + (this.item.system.clOffset || 0);
     }
 
     let _actionData = actionData
@@ -525,7 +533,7 @@ export class ChatAttack {
       .replace(/\(@damage\)/g, `${this.damage.total}`);
 
     // If this is self action, run it on the actor on the time of render
-    await _actor.autoApplyActionsOnSelf(_actionData);
+    await _actor.autoApplyActionsOnSelf(_actionData, originatingAttackId);
     this.special.push({
       label: name,
       value: _actionData,
@@ -533,6 +541,7 @@ export class ChatAttack {
       action: "customAction",
       img: img,
       hasImg: img !== undefined && img !== null && img !== "",
+      originatingAttackId,
     });
   }
 }
