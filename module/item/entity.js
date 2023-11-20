@@ -1005,7 +1005,7 @@ export class Item35E extends ItemBase35E {
         if (c.specialActionCondition && c.specialActionCondition !== "") {
           if (new Roll35e(c.specialActionCondition, rollData).roll().total !== true) continue;
         }
-        actor.baseAttack = this;
+        actor.baseAttack = this.getRollData();
         await attack.addCommandAsSpecial(
           c.itemName,
           c.itemImg,
