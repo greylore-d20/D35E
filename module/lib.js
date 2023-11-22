@@ -3,57 +3,60 @@
  * For example, if you input the string "Wizard of Oz 2", you will get "wizardOfOz2"
  */
 
-
-import {Roll35e} from "./roll.js"
+import { Roll35e } from "./roll.js";
 
 export const isEqual = function (obj1, obj2) {
   var props1 = Object.getOwnPropertyNames(obj1);
   var props2 = Object.getOwnPropertyNames(obj2);
   if (props1.length != props2.length) {
-      return false;
+    return false;
   }
   for (var i = 0; i < props1.length; i++) {
-      let val1 = obj1[props1[i]];
-      let val2 = obj2[props1[i]];
-      let isObjects = isObject(val1) && isObject(val2);
-      if (isObjects && !isEqual(val1, val2) || !isObjects && val1 !== val2) {
-          return false;
-      }
+    let val1 = obj1[props1[i]];
+    let val2 = obj2[props1[i]];
+    let isObjects = isObject(val1) && isObject(val2);
+    if ((isObjects && !isEqual(val1, val2)) || (!isObjects && val1 !== val2)) {
+      return false;
+    }
   }
   return true;
-}
-export const  isObject = function (object) {
-  return object != null && typeof object === 'object';
-}
-
-
-export const createTag = function(str) {
-  if (str.length === 0) str = "tag";
-  return str.replace(/[^a-zA-Z0-9\s]/g, "").split(/\s+/).map((s, a) => {
-    s = s.toLowerCase();
-    if (a > 0) s = s.substring(0, 1).toUpperCase() + s.substring(1);
-    return s;
-  }).join("");
+};
+export const isObject = function (object) {
+  return object != null && typeof object === "object";
 };
 
-export const uuidv4 =function() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+export const createTag = function (str) {
+  if (str.length === 0) str = "tag";
+  return str
+    .replace(/[^a-zA-Z0-9\s]/g, "")
+    .split(/\s+/)
+    .map((s, a) => {
+      s = s.toLowerCase();
+      if (a > 0) s = s.substring(0, 1).toUpperCase() + s.substring(1);
+      return s;
+    })
+    .join("");
+};
+
+export const uuidv4 = function () {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
-}
+};
 
 /**
  * Alters a roll in string form.
  */
-export const alterRoll = function(str, add, multiply) {
+export const alterRoll = function (str, add, multiply) {
   // const rgx = new RegExp(Die.rgx.die, "g");
   const rgx = /^([0-9]+)d([0-9]+)/;
   if (str.match(/^([0-9]+)d([0-9]+)/)) {
     return str.replace(rgx, (match, nd, d, mods) => {
-      nd = (nd * (multiply || 1)) + (add || 0);
+      nd = nd * (multiply || 1) + (add || 0);
       mods = mods || "";
-      return ((nd == null || Number.isNaN(nd)) ? "" : nd) + "d" + d + mods;
+      return (nd == null || Number.isNaN(nd) ? "" : nd) + "d" + d + mods;
     });
   }
   return str;
@@ -62,9 +65,9 @@ export const alterRoll = function(str, add, multiply) {
 /**
  * Creates tabs for a sheet object
  */
-export const createTabs = function(html, tabGroups, existingTabs = null) {
+export const createTabs = function (html, tabGroups, existingTabs = null) {
   // Create recursive activation/callback function
-  const _recursiveActivate = function(rtabs, tabName=null) {
+  const _recursiveActivate = function (rtabs, tabName = null) {
     if (tabName == null) this._initialTab[rtabs.group] = rtabs.active;
     else {
       rtabs.activate(tabName);
@@ -74,7 +77,9 @@ export const createTabs = function(html, tabGroups, existingTabs = null) {
     // Scroll to previous position
     let scrollElems = html.find(`.scroll-${rtabs.group}`);
     if (scrollElems.length === 0) scrollElems = html.find(`.tab[data-group="${rtabs.group}"]`);
-    for (let o of scrollElems) { o.scrollTop = this._scrollTab[rtabs.group]; }
+    for (let o of scrollElems) {
+      o.scrollTop = this._scrollTab[rtabs.group];
+    }
 
     // Recursively activate tabs
     for (let subTab of rtabs.subTabs) {
@@ -83,7 +88,7 @@ export const createTabs = function(html, tabGroups, existingTabs = null) {
   };
 
   // Create all tabs
-  const _func = function(group, children, tabs = null) {
+  const _func = function (group, children, tabs = null) {
     if (html.find(`nav[data-group="${group}"]`).length === 0) return null;
 
     if (this._initialTab == null) this._initialTab = {};
@@ -91,7 +96,12 @@ export const createTabs = function(html, tabGroups, existingTabs = null) {
 
     const subHtml = html.find(`.${group}-body > div[data-group="${group}"]`);
     const activeSubHtml = subHtml.filter(".active");
-    const initial = this._initialTab[group] !== undefined ? this._initialTab[group] : (activeSubHtml.length > 0 ? activeSubHtml[0].dataset.tab : "");
+    const initial =
+      this._initialTab[group] !== undefined
+        ? this._initialTab[group]
+        : activeSubHtml.length > 0
+        ? activeSubHtml[0].dataset.tab
+        : "";
 
     // Set up data for scroll position and active tab
     if (this._scrollTab[group] === undefined) this._scrollTab[group] = 0;
@@ -100,7 +110,7 @@ export const createTabs = function(html, tabGroups, existingTabs = null) {
     // Set up scrolling callback
     let scrollElems = html.find(`.scroll-${group}`);
     if (scrollElems.length === 0) scrollElems = html.find(`.tab[data-group="${group}"]`);
-    scrollElems.scroll(ev => this._scrollTab[group] = ev.currentTarget.scrollTop);
+    scrollElems.scroll((ev) => (this._scrollTab[group] = ev.currentTarget.scrollTop));
 
     if (!tabs) {
       // Create tabs object
@@ -135,7 +145,7 @@ export const createTabs = function(html, tabGroups, existingTabs = null) {
  * @param {String} version - A version string to unpack. Must be something like '0.5.1'.
  * @returns {Object} An object containing the keys 'release', 'major', and 'minor', which are numbers.
  */
-export const unpackVersion = function(version) {
+export const unpackVersion = function (version) {
   if (version.match(/^([0-9]+)\.([0-9]+)(?:\.([0-9]+))?$/)) {
     return {
       release: parseInt(RegExp.$1),
@@ -149,9 +159,9 @@ export const unpackVersion = function(version) {
  * @param {String} version - The minimum core version to compare to. Must be something like '0.5.1'.
  * @returns {Boolean} Whether the current core version is at least the given version.
  */
-export const isMinimumCoreVersion = function(version) {
+export const isMinimumCoreVersion = function (version) {
   if (version.indexOf(".") === -1) {
-    version = version + ".0.0"
+    version = version + ".0.0";
   }
   const coreVersion = unpackVersion(game.version);
   const compareVersion = unpackVersion(version);
@@ -176,27 +186,27 @@ export const isMinimumCoreVersion = function(version) {
   return true;
 };
 
-export const degtorad = function(degrees) {
-  return degrees * Math.PI / 180;
+export const degtorad = function (degrees) {
+  return (degrees * Math.PI) / 180;
 };
 
-export const radtodeg = function(radians) {
-  return radians / 180 * Math.PI;
+export const radtodeg = function (radians) {
+  return (radians / 180) * Math.PI;
 };
 
-export const linkData = function(expanded, flattened, key, value) {
+export const linkData = function (expanded, flattened, key, value) {
   if (key.startsWith("data.")) {
-    key.replace("data.","system.")
+    key.replace("data.", "system.");
   }
   setProperty(expanded, key, value);
   flattened[key] = value;
 };
 
-export const getItemOwner = function(item) {
+export const getItemOwner = function (item) {
   if (item.actor) return item.actor;
   if (item._id) {
-    return game.actors.contents.filter(o => {
-      return o.items.filter(i => i._id === item._id).length > 0;
+    return game.actors.contents.filter((o) => {
+      return o.items.filter((i) => i._id === item._id).length > 0;
     })[0];
   }
   return null;
@@ -224,25 +234,58 @@ export const CR = {
   },
 };
 
-export const sizeInt = function (targetSize="M") {
-  if (typeof targetSize === "string") targetSize = Object.values(CONFIG.D35E.sizeChart).indexOf(targetSize.toUpperCase());
-  else if (typeof targetSize === "number") targetSize = Math.max(0, Math.min(Object.values(CONFIG.D35E.sizeChart).length - 1, Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize));
-  return `${targetSize}`
-}
+export const sizeInt = function (targetSize = "M") {
+  if (typeof targetSize === "string")
+    targetSize = Object.values(CONFIG.D35E.sizeChart).indexOf(targetSize.toUpperCase());
+  else if (typeof targetSize === "number")
+    targetSize = Math.max(
+      0,
+      Math.min(
+        Object.values(CONFIG.D35E.sizeChart).length - 1,
+        Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize
+      )
+    );
+  return `${targetSize}`;
+};
 
-export const sizeDie = function(origCount, origSides, targetSize="M", crit=1) {
-  if (typeof targetSize === "string") targetSize = Object.values(CONFIG.D35E.sizeChart).indexOf(targetSize.toUpperCase());
-  else if (typeof targetSize === "number") targetSize = Math.max(0, Math.min(Object.values(CONFIG.D35E.sizeChart).length - 1, Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize));
-  let c = duplicate(CONFIG.D35E.sizeDie);
+export const applyCritToFormula = function (crit, formula) {
+  if (crit !== 1 && formula.match(/^([0-9]+)d([0-9]+)(.*)/)) {
+    const count = parseInt(RegExp.$1);
+    const sides = parseInt(RegExp.$2);
+    formula = `${count * crit}d${sides}${RegExp.$3}`;
+  }
+  return formula;
+};
+
+export const sizeDie = function (origCount, origSides, targetSize = "M", crit = 1) {
+
+  if (typeof targetSize === "string") {
+    if (targetSize.length > 1) {
+      targetSize = CONFIG.D35E.sizeChart[targetSize.toLowerCase()]
+      // replace targetsize with the one letter value
+      targetSize = targetSize ? targetSize : "M";
+    }
+    targetSize = Object.values(CONFIG.D35E.sizeChart).
+        indexOf(targetSize.toUpperCase());
+  }
+  else if (typeof targetSize === "number")
+    targetSize = Math.max(
+      0,
+      Math.min(
+        Object.values(CONFIG.D35E.sizeChart).length - 1,
+        Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize
+      )
+    );
+  let sizeDieMap = duplicate(CONFIG.D35E.sizeDie);
 
   const mediumDie = `${origCount}d${origSides}`;
   const mediumDieMax = origCount * origSides;
-  if (c.indexOf(mediumDie) === -1) {
-    c = c.map(d => {
+  if (sizeDieMap.indexOf(mediumDie) === -1) {
+    sizeDieMap = sizeDieMap.map((d) => {
       if (d.match(/^([0-9]+)d([0-9]+)$/)) {
         const dieCount = parseInt(RegExp.$1),
-            dieSides = parseInt(RegExp.$2),
-            dieMaxValue = dieCount * dieSides;
+          dieSides = parseInt(RegExp.$2),
+          dieMaxValue = dieCount * dieSides;
 
         if (dieMaxValue === mediumDieMax) return mediumDie;
       }
@@ -252,12 +295,12 @@ export const sizeDie = function(origCount, origSides, targetSize="M", crit=1) {
   }
 
   // Pick an index from the chart
-  let index = c.indexOf(mediumDie),
-      formula = mediumDie;
+  let index = sizeDieMap.indexOf(mediumDie),
+    formula = mediumDie;
   if (index >= 0) {
-    const d6Index = c.indexOf("1d6");
-    let d8Index = c.indexOf("1d8");
-    if (d8Index === -1) d8Index = c.indexOf("2d4");
+    const d6Index = sizeDieMap.indexOf("1d6");
+    let d8Index = sizeDieMap.indexOf("1d8");
+    if (d8Index === -1) d8Index = sizeDieMap.indexOf("2d4");
     let curSize = 4;
 
     // When decreasing in size (e.g. from medium to small)
@@ -265,8 +308,7 @@ export const sizeDie = function(origCount, origSides, targetSize="M", crit=1) {
       if (curSize <= 4 || index <= d8Index) {
         index--;
         curSize--;
-      }
-      else {
+      } else {
         index -= 2;
         curSize--;
       }
@@ -276,23 +318,18 @@ export const sizeDie = function(origCount, origSides, targetSize="M", crit=1) {
       if (curSize <= 3 || index <= d6Index) {
         index++;
         curSize++;
-      }
-      else {
+      } else {
         index += 2;
         curSize++;
       }
     }
 
     // Alter crit
-    index = Math.max(0, Math.min(c.length - 1, index));
-    formula = c[index];
+    index = Math.max(0, Math.min(sizeDieMap.length - 1, index));
+    formula = sizeDieMap[index];
   }
 
-  if (crit !== 1 && formula.match(/^([0-9]+)d([0-9]+)(.*)/)) {
-  const count = parseInt(RegExp.$1);
-  const sides = parseInt(RegExp.$2);
-  formula = `${count * crit}d${sides}${RegExp.$3}`;
-  }
+  formula = applyCritToFormula(crit, formula);
   if (index === -1) {
     ui.notifications.warn(game.i18n.localize("D35E.WarningNoSizeDie").format(mediumDie, formula));
   }
@@ -300,45 +337,119 @@ export const sizeDie = function(origCount, origSides, targetSize="M", crit=1) {
   return formula;
 };
 
-export const sizeMonkDamageDie = function(level, targetSize="M", crit=1) {
-  let monkLevelDamageDies =
-      [
-          [1,6],
-        [1,6],
-        [1,6],
-        [1,6],
-        [1,8],
-        [1,8],
-        [1,8],
-        [1,8],
-        [1,10],
-        [1,10],
-        [1,10],
-        [1,10],
-        [2,6],
-        [2,6],
-        [2,6],
-        [2,6],
-        [2,8],
-        [2,8],
-        [2,8],
-        [2,8],
-        [2,10],
-      ]
-  return sizeDie(monkLevelDamageDies[Math.max(Math.min(level,20),1)][0],monkLevelDamageDies[Math.max(Math.min(level,20),1)][1], targetSize, crit);
+export const sizeMonkDamageDie = function (level, targetSize = "M", crit = 1) {
+  if (typeof targetSize === "number") {
+    targetSize = Math.max(
+      0,
+      Math.min(
+        Object.values(CONFIG.D35E.sizeChart).length - 1,
+        Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize
+      )
+    );
+    targetSize = Object.values(CONFIG.D35E.sizeChart)[targetSize];
+  }
+  let monkLevelDamageDies = {
+    S: [
+      [1, 4],
+      [1, 4],
+      [1, 4],
+      [1, 4],
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 8],
+    ],
+    M: [
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 6],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [2, 10],
+    ],
+    L: [
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [1, 8],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 6],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [2, 8],
+      [3, 6],
+      [3, 6],
+      [3, 6],
+      [3, 6],
+      [3, 8],
+      [3, 8],
+      [3, 8],
+      [3, 8],
+      [4, 8],
+    ],
+  };
+  if (monkLevelDamageDies[targetSize]) {
+    let diceCount = monkLevelDamageDies[targetSize][Math.max(Math.min(level, 20), 1)][0];
+    let dice = monkLevelDamageDies[targetSize][Math.max(Math.min(level, 20), 1)][1];
+    return applyCritToFormula(crit, `${diceCount}d${dice}`);
+  }
+  return sizeDie(
+    monkLevelDamageDies["M"][Math.max(Math.min(level, 20), 1)][0],
+    monkLevelDamageDies["M"][Math.max(Math.min(level, 20), 1)][1],
+    targetSize,
+    crit
+  );
 };
 
-export const sizeNaturalDie= function(block, targetSize="M", crit=1) {
-  if (typeof targetSize === "string") targetSize = Object.values(CONFIG.D35E.sizeChart).indexOf(targetSize.toUpperCase());
-  else if (typeof targetSize === "number") targetSize = Math.max(0, Math.min(Object.values(CONFIG.D35E.sizeChart).length - 1, Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize));
-  let naturalDamageSizes =
-      [
-        ['0','1','1','1d3','1d4','1d6','1d8','2d6','2d8'],
-        ['1','1d2','1d3','1d4','1d6','1d8','2d6','2d8','4d6'],
-        ['0','1','1d2','1d3','1d4','1d6','1d8','2d6','2d8'],
-        ['0','1','1d2','1d4','1d6','1d8','2d6','2d8','4d6'],
-      ]
-  let formula = naturalDamageSizes[block][targetSize+1]
+export const sizeNaturalDie = function (block, targetSize = "M", crit = 1) {
+  if (typeof targetSize === "string")
+    targetSize = Object.values(CONFIG.D35E.sizeChart).indexOf(targetSize.toUpperCase());
+  else if (typeof targetSize === "number")
+    targetSize = Math.max(
+      0,
+      Math.min(
+        Object.values(CONFIG.D35E.sizeChart).length - 1,
+        Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize
+      )
+    );
+  let naturalDamageSizes = [
+    ["0", "1", "1", "1d3", "1d4", "1d6", "1d8", "2d6", "2d8"],
+    ["1", "1d2", "1d3", "1d4", "1d6", "1d8", "2d6", "2d8", "4d6"],
+    ["0", "1", "1d2", "1d3", "1d4", "1d6", "1d8", "2d6", "2d8"],
+    ["0", "1", "1d2", "1d4", "1d6", "1d8", "2d6", "2d8", "4d6"],
+  ];
+  let formula = naturalDamageSizes[block][targetSize + 1];
   if (crit !== 1 && formula.match(/^([0-9]+)d([0-9]+)(.*)/)) {
     const count = parseInt(RegExp.$1);
     const sides = parseInt(RegExp.$2);
@@ -347,7 +458,7 @@ export const sizeNaturalDie= function(block, targetSize="M", crit=1) {
   return formula;
 };
 
-export const normalDie = function(origCount, origSides, crit=1) {
+export const normalDie = function (origCount, origSides, crit = 1) {
   let formula = `${origCount}d${origSides}`;
 
   if (crit !== 1 && formula.match(/^([0-9]+)d([0-9]+)(.*)/)) {
@@ -360,33 +471,31 @@ export const normalDie = function(origCount, origSides, crit=1) {
 };
 
 export const shuffle = function (array) {
-  var currentIndex = array.length,  randomIndex;
+  var currentIndex = array.length,
+    randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
 
   return array;
-}
+};
 
 export const getOriginalNameIfExists = function (object) {
   if (typeof Babele !== "undefined") {
-    if (object.translated)
-      return object.originalName;
+    if (object.translated) return object.originalName;
     if (object.getFlag !== undefined && object.getFlag("babele", "translated"))
-      return object.getFlag("babele", "originalName");      
+      return object.getFlag("babele", "originalName");
     return object.name;
   }
-  return object.name
-}
+  return object.name;
+};
 
 /**
  * Returns the result of a roll of die, which changes based on different sizes.
@@ -397,21 +506,19 @@ export const getOriginalNameIfExists = function (object) {
  *   Can also be a number in the range of -4 to 4, where 0 is Medium.
  * @returns {number} The result of the new Roll35e.
  */
-export const sizeRoll = function(origCount, origSides, targetSize="M", crit=1) {
+export const sizeRoll = function (origCount, origSides, targetSize = "M", crit = 1) {
   return new Roll35e(sizeDie(origCount, origSides, targetSize, crit)).roll().total;
 };
 
-export const sizeNaturalRoll = function(block, targetSize="M", crit=1) {
+export const sizeNaturalRoll = function (block, targetSize = "M", crit = 1) {
   return new Roll35e(sizeNaturalDie(block, targetSize, crit)).roll().total;
 };
 
-
-export const sizeMonkDamageRoll = function(level, targetSize="M", crit=1) {
+export const sizeMonkDamageRoll = function (level, targetSize = "M", crit = 1) {
   return new Roll35e(sizeMonkDamageDie(level, targetSize, crit)).roll().total;
 };
 
-
-export const getActorFromId = function(id) {
+export const getActorFromId = function (id) {
   const speaker = ChatMessage.getSpeaker();
   let actor = null;
   if (id) {
@@ -423,74 +530,79 @@ export const getActorFromId = function(id) {
   return actor;
 };
 
-
 /*savy.js*/
-(function($) {
-  $.fn.savy = function(order,fn,prefix='pref') {
-    const sv = "savy-"+prefix+"-";
+(function ($) {
+  $.fn.savy = function (order, fn, prefix = "pref") {
+    const sv = "savy-" + prefix + "-";
     if (order == "load") {
-      $(this).each(function() {
+      $(this).each(function () {
         if ($(this).is(":radio")) {
-          if(sessionStorage.getItem(sv+$(this).attr("name"))){
-            if (sessionStorage.getItem(sv+$(this).attr("name")) == $(this).attr("name")) {
+          if (sessionStorage.getItem(sv + $(this).attr("name"))) {
+            if (sessionStorage.getItem(sv + $(this).attr("name")) == $(this).attr("name")) {
               this.checked = true;
-            }else{
-              this.checked = false
+            } else {
+              this.checked = false;
             }
           }
-          $(this).change(function() {
-            sessionStorage.setItem(sv+$(this).attr("name"), $(this).attr("name"));
+          $(this).change(function () {
+            sessionStorage.setItem(sv + $(this).attr("name"), $(this).attr("name"));
           });
-        }else if($(this).is(":checkbox")){
-          if(sessionStorage.getItem(sv+$(this).attr("name"))){
-            this.checked = (sessionStorage.getItem(sv+$(this).attr("name")) == "1" ? true : false);
+        } else if ($(this).is(":checkbox")) {
+          if (sessionStorage.getItem(sv + $(this).attr("name"))) {
+            this.checked = sessionStorage.getItem(sv + $(this).attr("name")) == "1" ? true : false;
           }
-          $(this).change(function() {
-            sessionStorage.setItem(sv+$(this).attr("name"), (this.checked ? "1" : "0"));
+          $(this).change(function () {
+            sessionStorage.setItem(sv + $(this).attr("name"), this.checked ? "1" : "0");
           });
-        }else if($(this).is("input") || $(this).is("textarea")) {
-          if(sessionStorage.getItem(sv+$(this).attr("name"))){
-            this.value = sessionStorage.getItem(sv+$(this).attr("name"));
+        } else if ($(this).is("input") || $(this).is("textarea")) {
+          if (sessionStorage.getItem(sv + $(this).attr("name"))) {
+            this.value = sessionStorage.getItem(sv + $(this).attr("name"));
           }
-          $(this).on( 'focus', function(){
+          $(this).on("focus", function () {
             var intervalDuration = 500,
-                interval = setInterval( () => {
-                  sessionStorage.setItem(sv+$(this).attr("name"), this.value);
-                  if(!$(this).is(":focus")) clearInterval(interval);
-                }, intervalDuration );
-          } );
-        }else if($(this).is("select")) {
+              interval = setInterval(() => {
+                sessionStorage.setItem(sv + $(this).attr("name"), this.value);
+                if (!$(this).is(":focus")) clearInterval(interval);
+              }, intervalDuration);
+          });
+        } else if ($(this).is("select")) {
           if ($(this).is("[multiple]")) {
-            if(sessionStorage.getItem(sv+$(this).attr("name"))){
-              $(this).val(sessionStorage.getItem(sv+$(this).attr("name")).split(","));
-            }else{
-              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
+            if (sessionStorage.getItem(sv + $(this).attr("name"))) {
+              $(this).val(sessionStorage.getItem(sv + $(this).attr("name")).split(","));
+            } else {
+              sessionStorage.setItem(sv + $(this).attr("name"), $(this).val());
             }
-            $(this).change(function() {
-              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
+            $(this).change(function () {
+              sessionStorage.setItem(sv + $(this).attr("name"), $(this).val());
             });
-          }else{
-            if(sessionStorage.getItem(sv+$(this).attr("name"))){
-              $(this).val(sessionStorage.getItem(sv+$(this).attr("name")));
-            }else{
-              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
+          } else {
+            if (sessionStorage.getItem(sv + $(this).attr("name"))) {
+              $(this).val(sessionStorage.getItem(sv + $(this).attr("name")));
+            } else {
+              sessionStorage.setItem(sv + $(this).attr("name"), $(this).val());
             }
-            $(this).change(function() {
-              sessionStorage.setItem(sv+$(this).attr("name"), $(this).val());
+            $(this).change(function () {
+              sessionStorage.setItem(sv + $(this).attr("name"), $(this).val());
             });
           }
         }
       });
-      if ($.isFunction(fn)){fn();}
-    }else if (order == "destroy") {
-      $(this).each(function() {
-        if(sessionStorage.getItem(sv+this.id)){
-          sessionStorage.removeItem(sv+this.id)
+      if ($.isFunction(fn)) {
+        fn();
+      }
+    } else if (order == "destroy") {
+      $(this).each(function () {
+        if (sessionStorage.getItem(sv + this.id)) {
+          sessionStorage.removeItem(sv + this.id);
         }
       });
-      if ($.isFunction(fn)){fn();}
-    }else{
-      console.error("savy action not defined please use $('.classname').savy('load') to trigger savy to save all inputs")
+      if ($.isFunction(fn)) {
+        fn();
+      }
+    } else {
+      game.D35E.logger.error(
+        "savy action not defined please use $('.classname').savy('load') to trigger savy to save all inputs"
+      );
     }
   };
 })(jQuery);

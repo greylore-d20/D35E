@@ -42,6 +42,9 @@
       <input type="checkbox" name="system.changeFlags.multiAttack" {{checked data.system.changeFlags.multiAttack}}/> {{localize "D35E.ChangeFlagMultiAttack"}}
     </label>
     <label class="checkbox">
+      <input type="checkbox" name="system.changeFlags.improvedMultiattack" {{checked data.system.changeFlags.improvedMultiattack}}/> {{localize "D35E.ChangeFlagImprovedMultiAttack"}}
+    </label>
+    <label class="checkbox">
       <input type="checkbox" name="system.changeFlags.multiweaponAttack" {{checked data.system.changeFlags.multiweaponAttack}}/> {{localize "D35E.ChangeFlagMultiweaponAttack"}}
     </label>
     <label class="checkbox">
@@ -239,23 +242,29 @@
         </select>
       </div>
       <div class="form-group" style="width: 100%; margin: 0">
-        <label>{{localize "D35E.Condition"}}</label>
+        <label>{{localize "D35E.Condition"}} </label>
       <input  class="bordered" type="text" name="system.combatChanges.{{a}}.2" value="{{lookup this "2"}}"
       placeholder="{{localize "D35E.Condition"}} {{localize "D35E.Formula"}}" />
+
       </div>
 
-      <div class="form-group" style="width: 100%; margin: 0">
-        <label>
-
+      <div class="form-group {{#if change.errorNoDynamicChange}}tooltip{{/if}}" style="width: 100%; margin: 0">
+        <label class="">
           {{localize "D35E.ModifiedField"}}
-
         </label>
-      <input class="bordered"  type="text" name="system.combatChanges.{{a}}.3" value="{{lookup this "3"}}"
+
+      <input class="bordered {{#if change.errorNoDynamicChange}}invalid{{/if}}"  type="text" name="system.combatChanges.{{a}}.3" value="{{lookup this "3"}}"
       placeholder="{{localize "D35E.ModifiedFieldPlaceholder"}}" list="combatChangesFieldsList" />
+        {{#if change.errorNoDynamicChange}}
+        <div class="tooltipcontent">
+          {{localize "D35E.ModifiedFormulaNeedsAmpersand"}}
+        </div>
+        {{/if}}
       </div>
 
       <div class="form-group" style="width: 100%; margin: 0">
-        <label>{{localize "D35E.ModificationFormula"}}</label>
+        <label>{{localize "D35E.ModificationFormula"}}
+        </label>
       <input class="bordered" type="text" name="system.combatChanges.{{a}}.4" value="{{lookup this "4"}}"
       placeholder="{{localize "D35E.ModificationFormula"}} {{localize "D35E.Formula"}}" />
       </div>
@@ -265,6 +274,13 @@
         <label>{{localize "D35E.SpecialAction"}}</label>
         <input class="bordered" type="text" name="system.combatChanges.{{a}}.5" value="{{lookup this "5"}}"
         placeholder="{{localize "D35E.SpecialAction"}}" />
+      </div>
+
+
+      <div class="form-group" style="width: 100%; margin: 0">
+        <label>{{localize "D35E.SpecialAction"}} {{localize "D35E.Apply"}} {{localize "D35E.Condition"}}</label>
+        <input class="bordered" type="text" name="system.combatChanges.{{a}}.6" value="{{lookup this "6"}}"
+        placeholder="{{localize "D35E.Condition"}}" />
       </div>
 
       <div class="form-group" style="width: 100%; margin: 0">

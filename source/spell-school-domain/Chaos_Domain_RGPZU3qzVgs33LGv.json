@@ -1,0 +1,324 @@
+{
+  "_id": "RGPZU3qzVgs33LGv",
+  "name": "Chaos Domain",
+  "type": "feat",
+  "flags": {
+    "core": {
+      "sourceId": "Item.febFgmwNyspSs7m1"
+    }
+  },
+  "img": "systems/D35E/icons/spells/domain/chaos.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>You cast chaos spells at +1 caster level.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0,
+      "value": null,
+      "charged": false,
+      "_deprecated": true
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [
+      [
+        "spell",
+        "",
+        "'@item.types' == 'chaotic'",
+        "featCl",
+        "1"
+      ]
+    ],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "featType": "spellSpecialization",
+    "abilityType": "",
+    "associations": {
+      "classes": []
+    },
+    "crOffset": "",
+    "spellSpecializationName": "chaos",
+    "spellSpecializationForbiddenNames": "",
+    "linkedItems": [],
+    "metamagic": {
+      "enabled": false,
+      "shortDesc": "",
+      "code": ""
+    },
+    "spellSpecialization": {
+      "isDomain": true,
+      "spells": {
+        "level1": {
+          "level": 1,
+          "name": "Protection from Law",
+          "img": "systems/D35E/icons/spells/named-spells/protection-against-law.png",
+          "pack": "D35E.spells",
+          "id": "0xCENsUBViSQFswa"
+        },
+        "level2": {
+          "level": 2,
+          "name": "Shatter",
+          "img": "systems/D35E/icons/spells/named-spells/shatter.png",
+          "pack": "D35E.spells",
+          "id": "H8ihwWp7CSKHNmSt"
+        },
+        "level3": {
+          "level": 3,
+          "name": "Magic Circle against Law",
+          "img": "systems/D35E/icons/spells/named-spells/magic-circle-against-law.png",
+          "pack": "D35E.spells",
+          "id": "OhzAggNJ0Ax2oncn"
+        },
+        "level4": {
+          "level": 4,
+          "name": "Chaos Hammer",
+          "img": "systems/D35E/icons/spells/named-spells/chaos-hammer.png",
+          "pack": "D35E.spells",
+          "id": "mdtVRG4wai7lKY3S"
+        },
+        "level5": {
+          "level": 5,
+          "name": "Dispel Law",
+          "img": "systems/D35E/icons/spells/named-spells/dispel-law.png",
+          "pack": "D35E.spells",
+          "id": "Iu5Jmwu4Ai987eng"
+        },
+        "level6": {
+          "level": 6,
+          "name": "Animate Objects",
+          "img": "systems/D35E/icons/spells/named-spells/animate-objects.png",
+          "pack": "D35E.spells",
+          "id": "1PLVs2ToCB4e9vAW"
+        },
+        "level7": {
+          "level": 7,
+          "name": "Word of Chaos",
+          "img": "systems/D35E/icons/spells/named-spells/word-of-chaos.png",
+          "pack": "D35E.spells",
+          "id": "WOCJR3mNQ569iUCn"
+        },
+        "level8": {
+          "level": 8,
+          "name": "Cloak of Chaos",
+          "img": "systems/D35E/icons/spells/named-spells/cloak-of-chaos.png",
+          "pack": "D35E.spells",
+          "id": "ejTbbzhPEVwbsHnC"
+        },
+        "level9": {
+          "level": 9,
+          "name": "Summon Monster IX",
+          "img": "systems/D35E/icons/spells/named-spells/summon-monster.png",
+          "pack": "D35E.spells",
+          "id": "JfA2R9PWZ5Qdj0qL"
+        }
+      }
+    },
+    "showInQuickbar": false,
+    "links": {
+      "charges": []
+    },
+    "attack": {
+      "parts": []
+    },
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Chaos Domain",
+    "index": {
+      "subType": "spellSpecialization",
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394277668,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!RGPZU3qzVgs33LGv"
+}

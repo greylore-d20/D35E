@@ -11,7 +11,7 @@
         // deprecated function
         // @since 2.8.0
         module.exports.introJs = function () {
-            console.warn('Deprecated: please use require("intro.js") directly, instead of the introJs method of the function');
+            game.D35E.logger.warn('Deprecated: please use require("intro.js") directly, instead of the introJs method of the function');
             // introJs()
             return f().apply(this, arguments);
         };

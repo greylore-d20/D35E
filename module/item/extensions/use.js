@@ -8,7 +8,8 @@ import { createCustomChatMessage } from "../../chat.js";
 import { D35E } from "../../config.js";
 import { ItemSpellHelper as ItemSpellHelper } from "../helpers/itemSpellHelper.js";
 import { ItemCombatChangesHelper } from "../helpers/itemCombatChangesHelper.js";
-import {Item35E} from "../entity.js";
+import { Item35E } from "../entity.js";
+import { ItemActiveHelper } from "../helpers/itemActiveHelper.js";
 
 export class ItemUse {
   /**
@@ -260,13 +261,17 @@ export class ItemUse {
         label: `Rapid Shot`,
       });
       rollData.rapidShotPenalty = -2;
-      attackExtraParts.push("@rapidShotPenalty");
+      attackExtraParts.push({
+        part: "@rapidShotPenalty",
+        value: rollData.rapidShotPenalty,
+        source: game.i18n.localize("D35E.AttackRapidShot"),
+      });
     }
 
     if (flurryOfBlows) {
       allAttacks.push({
         bonus: 0,
-        label: `Flurry of Blows`,
+        label: game.i18n.localize("D35E.AttackFlurryOfBlows"),
       });
       let monkClass = (actor?.items || []).filter(
         (o) => o.type === "class" && (o.name === "Monk" || o.system.customTag === "monk")
@@ -274,25 +279,33 @@ export class ItemUse {
       //1-4 = -2
       if (monkClass.system.levels < 5) {
         rollData.flurryOfBlowsPenalty = -2;
-        attackExtraParts.push("@flurryOfBlowsPenalty");
+        attackExtraParts.push({
+          part: "@flurryOfBlowsPenalty",
+          value: rollData.rapidShotPenalty,
+          source: game.i18n.localize("D35E.AttackFlurryOfBlows"),
+        });
       }
       //5-8 = -1
       else if (monkClass.system.levels < 9) {
         rollData.flurryOfBlowsPenalty = -1;
-        attackExtraParts.push("@flurryOfBlowsPenalty");
+        attackExtraParts.push({
+          part: "@flurryOfBlowsPenalty",
+          value: rollData.rapidShotPenalty,
+          source: game.i18n.localize("D35E.AttackFlurryOfBlows"),
+        });
         //9+ = 0
         //11+ = 2nd extra attack
       } else if (monkClass.system.levels > 10) {
         allAttacks.push({
           bonus: 0,
-          label: `Flurry of Blows 2`,
+          label: game.i18n.localize("D35E.AttackFlurryOfBlows"),
         });
       }
     }
 
     let isHasted =
       (actor?.items || []).filter(
-        (o) => o.type === "buff" && o.system.active && (o.name === "Haste" || o.system.changeFlags.hasted)
+        (o) => ItemActiveHelper.isActive(o) && (o.name === "Haste" || o.system.changeFlags.hasted)
       ).length > 0;
     if (
       (fullAttack || actor.system.attributes.bab.total < 6) &&
@@ -319,7 +332,7 @@ export class ItemUse {
       });
     }
 
-    // //console.log('D35E | Enabled conditionals', enabledConditionals)
+    // //game.D35E.logger.log('Enabled conditionals', enabledConditionals)
     let attackEnhancementMap = new Map();
     let damageEnhancementMap = new Map();
     for (let enabledConditional of enabledConditionals) {
@@ -329,8 +342,12 @@ export class ItemUse {
         if (modifier.target === "attack") {
           if (modifier.subTarget !== "allAttack") {
             if (!attackEnhancementMap.has(modifier.subTarget)) attackEnhancementMap.set(modifier.subTarget, []);
-            attackEnhancementMap.get(modifier.subTarget).push(modifier.formula);
-          } else attackExtraParts.push(modifier.formula);
+            attackEnhancementMap
+              .get(modifier.subTarget)
+              .push({ part: modifier.formula, value: modifier.formula, source: `${conditional.name}` });
+          } else {
+            attackExtraParts.push({ part: modifier.formula, value: modifier.formula, source: `${conditional.name}` });
+          }
         }
         if (modifier.target === "damage") {
           if (modifier.subTarget !== "allDamage") {
@@ -338,12 +355,14 @@ export class ItemUse {
             damageEnhancementMap.get(modifier.subTarget).push({
               formula: modifier.formula,
               type: modifier.type,
+              source: conditional.name,
             });
           } else
             damageExtraParts.push([
               modifier.formula,
               CACHE.DamageTypes.get(modifier.type)?.data?.name || game.i18n.localize("D35E.UnknownDamageType"),
               modifier.type,
+              `${conditional.name}`,
             ]);
         }
       }
@@ -352,42 +371,16 @@ export class ItemUse {
     // Getting all combat changes from items
     let allCombatChanges = [];
     let attackType = this.item.type;
-    actor.items
-      .filter(
-        (o) =>
-          o.type === "aura" ||
-          o.type === "feat" ||
-          (o.type === "buff" && o.system.active) ||
-          (o.type === "equipment" && o.system.equipped === true && !o.system.melded)
-      )
-      .forEach((i) => {
-        if (i.combatChanges.hasCombatChange(attackType, rollData)) {
-          allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData));
-          rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name}`);
-        }
-        if (
-          i.combatChanges.hasCombatChange(attackType + "Optional", rollData) &&
-          optionalFeatIds.indexOf(i._id) !== -1
-        ) {
-          allCombatChanges = allCombatChanges.concat(
-            i.combatChanges.getPossibleCombatChanges(attackType + "Optional", rollData, optionalFeatRanges.get(i._id))
-          );
-          i.addCharges(
-            -1 *
-              (i.system.combatChangesUsesCost === "chargesPerUse"
-                ? i.system?.uses?.chargesPerUse || 1
-                : optionalFeatRanges.get(i._id).base)
-          );
-          if (optionalFeatRanges.get(i._id)) {
-            let ranges = [];
-            if (optionalFeatRanges.get(i._id).base) ranges.push(optionalFeatRanges.get(i._id).base);
-            if (optionalFeatRanges.get(i._id).slider1) ranges.push(optionalFeatRanges.get(i._id).slider1);
-            if (optionalFeatRanges.get(i._id).slider2) ranges.push(optionalFeatRanges.get(i._id).slider2);
-            if (optionalFeatRanges.get(i._id).slider3) ranges.push(optionalFeatRanges.get(i._id).slider3);
-            rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name} (${ranges.join(", ")})`);
-          } else rollModifiers.push(`${i.system.combatChangeCustomReferenceName || i.name}`);
-        }
-      });
+    allCombatChanges = ItemCombatChangesHelper.getAllSelectedCombatChangesForRoll(
+      actor.items,
+      attackType,
+      rollData,
+      allCombatChanges,
+      rollModifiers,
+      optionalFeatIds,
+      optionalFeatRanges
+    );
+
     this.item._addCombatChangesToRollData(allCombatChanges, rollData);
 
     if (rollData.isKeen && !getProperty(this.item.system, "threatRangeExtended")) {
@@ -397,17 +390,32 @@ export class ItemUse {
       //getProperty(this.item.system,"ability.critRange") = baseCrit;
     }
 
-    if (rollData.featDamageBonus) {
-      if (rollData.featDamageBonus !== 0)
-        damageExtraParts.push(["@critMult*(${this.featDamageBonus})", "Feats", "base"]);
+    if (rollData.featDamageBonusList) {
+      for (let [i, bonus] of rollData.featDamageBonusList.entries()) {
+        damageExtraParts.push([
+          "@critMult*(${this.featDamageBonusList[" + i + "].value})",
+          bonus["sourceName"],
+          "base",
+        ]);
+      }
     }
-    if (rollData.featDamagePrecision) {
-      damageExtraParts.push(["(${this.featDamagePrecision})", "Precision"]);
+    if (rollData.featDamagePrecisionList) {
+      for (let [i, bonus] of rollData.featDamagePrecisionList.entries()) {
+        damageExtraParts.push(["(${this.featDamagePrecisionList[" + i + "].value})", bonus["sourceName"]]);
+      }
     }
-    if (rollData.featDamage) {
-      for (let dmg of Object.keys(rollData.featDamage)) {
-        // //console.log('Bonus damage!', dmg, rollData.featDamage[dmg])
-        damageExtraParts.push(["(${this.featDamage." + dmg + "})", dmg]);
+    if (rollData.featDamageList) {
+      for (let dmg of Object.keys(rollData.featDamageList)) {
+        // //game.D35E.logger.log('Bonus damage!', dmg, rollData.featDamage[dmg])
+        for (let [i, bonus] of rollData.featDamageList[dmg].entries()) {
+          let extraDamagePart = [
+            "(${this.featDamageList['" + dmg + "'][" + i + "].value})",
+            dmg,
+            null,
+            bonus["sourceName"],
+          ];
+          damageExtraParts.push(extraDamagePart);
+        }
       }
     }
 
@@ -422,11 +430,6 @@ export class ItemUse {
       }
     }
 
-    let dc = this.#_getSpellDC(rollData);
-    rollData.dc = dc;
-    rollData.spellPenetration = rollData.cl + (rollData.featSpellPenetrationBonus || 0)
-    this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
-
     let manyshotAttacks = [];
     if (greaterManyshot) {
       allAttacks.forEach((attack) => {
@@ -440,7 +443,10 @@ export class ItemUse {
       allAttacks = manyshotAttacks;
     }
 
-    // Lock useAmount for powers to max value
+    // Determine spell CL / SL / ablMod (does notthing for other items)
+    this.#_determineSpellInfo(rollData)
+
+    // Lock useAmount for powers to max value and add aliases
     if (this.item.type === "spell" && getProperty(this.item.system, "isPower")) {
       rollData.useAmount = Math.max(
         0,
@@ -448,7 +454,14 @@ export class ItemUse {
       );
       rollData.powerPointsUsed = rollData.useAmount + parseInt(getProperty(this.item.system, "powerPointsCost"));
       rollData.additionalPowerPointsUsed = rollData.useAmount;
+      rollData.augmentation = rollData.useAmount;
     }
+
+    let dc = this.#_getSpellDC(rollData);
+    rollData.dc = dc;
+    rollData.spellPenetration = rollData.cl + (new Roll35e(rollData.featSpellPenetrationBonus || "0", rollData).roll().total || 0);
+    this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
+
     let attacks = [];
     if (this.item.hasAttack) {
       let attackId = 0;
@@ -478,6 +491,7 @@ export class ItemUse {
             aepConditional.formula,
             CACHE.DamageTypes.get(aepConditional.type)?.data?.name || game.i18n.localize("D35E.UnknownDamageType"),
             aepConditional.type,
+            aepConditional.source,
           ]);
         }
         await attack.addAttack({
@@ -640,7 +654,7 @@ export class ItemUse {
     let templateX = 0;
     let templateY = 0;
     if (useMeasureTemplate) {
-      // //console.log(`D35E | Creating measure template.`)
+      // //game.D35E.logger.log(`Creating measure template.`)
       // Create template
       let optionalData = {};
       const template = AbilityTemplate.fromItem(this, rollData.spellWidened ? 2 : 1, rollData, optionalData);
@@ -655,7 +669,7 @@ export class ItemUse {
       }
       let _template = await result.place();
       if (selectedTargets.length == 0) {
-        // We can override selevted dargets
+        // We can override selected targets
         selectedTargets = template.getTokensWithin().filter((t) => !t.data.hidden);
         hiddenTargets = template.getTokensWithin().filter((t) => t.data.hidden);
       }
@@ -664,10 +678,10 @@ export class ItemUse {
       templateY = template.data.y;
     }
 
-    // //console.log(`D35E | Updating item on attack.`)
+    // //game.D35E.logger.log(`Updating item on attack.`)
     // Deduct charge
     if (this.item.autoDeductCharges && !skipChargeCheck) {
-      // //console.log(`D35E | Deducting ${this.item.chargeCost} charges.`)
+      // //game.D35E.logger.log(`Deducting ${this.item.chargeCost} charges.`)
       if (rollData.useAmount === undefined) await this.item.addCharges(-1 * this.item.chargeCost, this.itemUpdateData);
       else await this.item.addCharges(-1 * parseFloat(rollData.useAmount) * this.item.chargeCost, this.itemUpdateData);
     } else {
@@ -693,7 +707,8 @@ export class ItemUse {
 
     // Post message
     if (this.item.data.type === "spell" || getProperty(this.item.system, "isFromSpell")) {
-      if (!game.settings.get("D35E", "hideSpellDescriptionsIfHasAction")) await this.item.roll({ rollMode: rollMode });
+      if (!game.settings.get("D35E", "hideSpellDescriptionsIfHasAction"))
+        await this.item.roll({ rollMode: rollMode }, actor);
     }
     let rolled = false;
     if (
@@ -703,46 +718,48 @@ export class ItemUse {
       getProperty(this.item.system, "actionType") === "special" ||
       getProperty(this.item.system, "actionType") === "summon"
     ) {
-      // //console.log(`D35E | Generating chat message.`)
+      // //game.D35E.logger.log(`Generating chat message.`)
       // Get extra text and properties
       let hasBoxInfo = this.item.hasAttack || this.item.hasDamage || this.item.hasEffect;
       let attackNotes = [];
       const noteObjects = actor.getContextNotes("attacks.attack");
+      if (typeof this.itemData.attackNotes === "string" && this.itemData.attackNotes.length) {
+        noteObjects.push({ notes: [this.itemData.attackNotes] });
+      }
+
+      if (useAmmoNote !== "") {
+        noteObjects.push({ notes: [useAmmoNote] });
+      }
       for (let noteObj of noteObjects) {
         rollData.item = {};
         if (noteObj.item != null) rollData.item = duplicate(noteObj.item.system);
 
         for (let note of noteObj.notes) {
+          let source = noteObj?.item?.name || game.i18n.localize("D35E.Unknown");
           for (let _note of note.split(/[\n\r]+/)) {
-            let attackNote = await TextEditor.enrichHTML(`<span class="tag">${Item35E._fillTemplate(_note, rollData)}</span>`, {
-              rollData: rollData,
-            })
-            attackNotes.push(
-                attackNote
-            )
+            let attackNote = await TextEditor.enrichHTML(
+              `<span class="tag tooltip"><span class="tooltipcontent">${source}</span> ${Item35E._fillTemplate(_note, rollData)}</span>`,
+              {
+                rollData: rollData,
+              }
+            );
+            attackNotes.push(attackNote);
           }
         }
       }
-      if (typeof this.itemData.attackNotes === "string" && this.itemData.attackNotes.length) {
-        attackNotes.push(...this.itemData.attackNotes.split(/[\n\r]+/));
-      }
-
-      if (useAmmoNote !== "") {
-        attackNotes.push(...useAmmoNote.split(/[\n\r]+/));
-      }
       let attackStr = "";
       for (let an of attackNotes) {
-        attackStr += `<span class="tag">${an}</span>`;
+        attackStr += `${an}`;
       }
 
       if (attackStr.length > 0) {
-        const innerHTML = TextEditor.enrichHTML(attackStr, { rollData: rollData });
+        const innerHTML = await TextEditor.enrichHTML(attackStr, { rollData: rollData });
         extraText += `<div class="flexcol property-group"><label>${game.i18n.localize(
           "D35E.AttackNotes"
         )}</label><div class="flexrow">${innerHTML}</div></div>`;
       }
 
-      const properties = this.item.getChatData({}, rollData).properties;
+      const properties = (await this.item.getChatData({}, rollData)).properties;
       if (properties.length > 0)
         props.push({
           header: game.i18n.localize("D35E.InfoShort"),
@@ -753,7 +770,19 @@ export class ItemUse {
           header: game.i18n.localize("D35E.RollModifiers"),
           value: rollModifiers,
         });
-
+      hiddenTargets = hiddenTargets.map((t) => {
+        return {
+          name: t.document.name,
+          img: t.document.texture.src,
+        };
+      });
+      selectedTargets = selectedTargets.map((t) => {
+        return {
+          id: t.id,
+          name: t.document.name,
+          img: t.document.texture.src,
+        };
+      });
       const token = actor ? actor.token : null;
       const templateData = mergeObject(
         chatTemplateData,
@@ -880,7 +909,7 @@ export class ItemUse {
     rollData.item = duplicate(this.itemData);
     this.itemUpdateData = {};
     this.itemUpdateData._id = this.item._id;
-    console.log("D35E | Attack item update", this.itemUpdateData);
+    game.D35E.logger.log("Attack item update", this.itemUpdateData);
 
     let rolled = false;
 
@@ -937,7 +966,7 @@ export class ItemUse {
     let dialogData = {
       data: rollData,
       id: this.item.id,
-      item: this.item.system,
+      item: this.item,
       targets: Array.from(game.user.targets) || [],
       hasTargets: (game.user.targets || new Set()).size,
       rollMode: rollModeOverride
@@ -964,6 +993,7 @@ export class ItemUse {
       isPower: this.item.type === "spell" && getProperty(this.item.system, "isPower"),
       hasDamageAbility: getProperty(this.item.system, "ability.damage") !== "",
       isNaturalAttack: getProperty(this.item.system, "attackType") === "natural",
+      isPrimaryAttack: getProperty(this.item.system, "primaryAttack") || false,
       isWeaponAttack: getProperty(this.item.system, "attackType") === "weapon",
       isRangedWeapon:
         getProperty(this.item.system, "attackType") === "weapon" &&
@@ -986,10 +1016,10 @@ export class ItemUse {
           (o) => o.type === "feat" && (o.originalName === "Flurry of Blows" || o.system.customTag === "flurryOfBlows")
         ).length > 0,
       maxGreaterManyshotValue: getProperty(actor.system, "abilities.wis.mod"),
-      weaponFeats: actor.items.filter((o) =>
+      weaponFeats: actor.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, `${this.item.type}`)
       ),
-      weaponFeatsOptional: actor.items.filter((o) =>
+      weaponFeatsOptional: actor.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, `${this.item.type}Optional`)
       ),
       conditionals: getProperty(this.item.system, "conditionals"),
@@ -1000,7 +1030,7 @@ export class ItemUse {
     dialogData.hasFeatsOrSummons =
       dialogData.weaponFeats.length || dialogData.weaponFeatsOptional.length || dialogData.summonableMonsters.length;
     const html = await renderTemplate(template, dialogData);
-    // //console.log(dialogData)
+    // //game.D35E.logger.log(dialogData)
     let roll;
     const buttons = {};
     let wasRolled = false;
@@ -1069,7 +1099,7 @@ export class ItemUse {
         },
         {
           classes: ["roll-defense", "dialog", dialogData.hasFeatsOrSummons ? "twocolumn" : "single"],
-          width: dialogData.hasFeatsOrSummons ? 700 : 350,
+          width: dialogData.hasFeatsOrSummons ? 800 : 400,
         }
       ).render(true);
     });
@@ -1118,7 +1148,11 @@ export class ItemUse {
   ) {
     rollData.attackBonus = form.find('[name="attack-bonus"]').val();
     if (rollData.attackBonus) {
-      attackExtraParts.push("@attackBonus");
+      attackExtraParts.push({
+        part: "@attackBonus",
+        value: rollData.attackBonus,
+        source: game.i18n.localize("D35E.AttackRollBonus"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.AttackRollBonus")} ${rollData.attackBonus}`);
     }
     rollData.damageBonus = form.find('[name="damage-bonus"]').val();
@@ -1160,13 +1194,18 @@ export class ItemUse {
         damageExtraParts.push([useAmmoDamage, useAmmoDamageType, useAmmoDamageUid]);
       }
       if (useAmmoAttack !== "") {
-        attackExtraParts.push(useAmmoAttack);
+        rollData.useAmmoAttack = parseInt(useAmmoAttack);
+        attackExtraParts.push({
+          part: "@useAmmoAttack",
+          value: rollData.useAmmoAttack,
+          source: `${useAmmoName} ${game.i18n.localize("D35E.Bonus")}`,
+        });
       }
       if (useAmmoEnhancement !== undefined && useAmmoEnhancement !== "") {
         ammoEnh = new Roll35e(useAmmoEnhancement, {}).roll().total;
       }
       rollModifiers.push(`${useAmmoName}`);
-      // //console.log('D35E | Selected ammo', useAmmoDamage, useAmmoAttack)
+      // //game.D35E.logger.log('Selected ammo', useAmmoDamage, useAmmoAttack)
     }
 
     // Power Attack
@@ -1180,7 +1219,11 @@ export class ItemUse {
         "base",
       ]);
       rollData.powerAttackPenalty = -rollData.powerAttackBonus;
-      attackExtraParts.push("@powerAttackPenalty");
+      attackExtraParts.push({
+        part: "@powerAttackPenalty",
+        value: rollData.powerAttackPenalty,
+        source: game.i18n.localize("D35E.PowerAttack"),
+      });
       if (rollData.powerAttackBonus > 0)
         rollModifiers.push(`${game.i18n.localize("D35E.PowerAttack")} ${rollData.powerAttackBonus}`);
     }
@@ -1188,17 +1231,25 @@ export class ItemUse {
       manyshot = true;
       manyshotCount = parseInt(form.find('[name="manyshot-count"]').val());
       rollData.manyshotPenalty = -manyshotCount * 2;
-      attackExtraParts.push("@manyshotPenalty");
+      attackExtraParts.push({
+        part: "@manyshotPenalty",
+        value: rollData.manyshotPenalty,
+        source: game.i18n.localize("D35E.FeatManyshot"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.FeatManyshot")}`);
     }
 
     if (form.find('[name="nonLethal"]').prop("checked")) {
       nonLethal = true;
     }
-    const itemNonLethal = getProperty(this.item.system, "nonLethal") || false;
-    if (nonLethal !== itemNonLethal) {
+    const itemNonLethal = getProperty(this.item.system, "nonLethal") || getProperty(this.item.system, "nonLethalNoPenalty") || false;
+    if (nonLethal && nonLethal !== itemNonLethal) {
       rollData.nonLethalPenalty = -4;
-      attackExtraParts.push("@nonLethalPenalty");
+      attackExtraParts.push({
+        part: "@nonLethalPenalty",
+        value: rollData.nonLethalPenalty,
+        source: game.i18n.localize("D35E.WeaponPropNonLethal"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.WeaponPropNonLethal")}`);
     }
 
@@ -1206,49 +1257,77 @@ export class ItemUse {
       rollData.pronePenalty = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.prone = true;
-      attackExtraParts.push("@pronePenalty");
+      attackExtraParts.push({
+        part: "@pronePenalty",
+        value: rollData.pronePenalty,
+        source: game.i18n.localize("D35E.Prone"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Prone")}`);
     }
     if (form.find('[name="squeezing"]').prop("checked")) {
       rollData.squeezingPenalty = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.squeezing = true;
-      attackExtraParts.push("@squeezingPenalty");
+      attackExtraParts.push({
+        part: "@squeezingPenalty",
+        value: rollData.squeezingPenalty,
+        source: game.i18n.localize("D35E.Squeezing"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Squeezing")}`);
     }
     if (form.find('[name="highground"]').prop("checked")) {
       rollData.highground = 1;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.highGround = true;
-      attackExtraParts.push("@highground");
+      attackExtraParts.push({
+        part: "@highground",
+        value: rollData.highground,
+        source: game.i18n.localize("D35E.HighGround"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.HighGround")}`);
     }
     if (form.find('[name="defensive"]').prop("checked")) {
       rollData.defensive = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.defensive = true;
-      attackExtraParts.push("@defensive");
+      attackExtraParts.push({
+        part: "@defensive",
+        value: rollData.attackToggles.defensive,
+        source: game.i18n.localize("D35E.DefensiveFighting"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.DefensiveFighting")}`);
     }
     if (form.find('[name="charge"]').prop("checked")) {
       rollData.charge = 2;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.charge = true;
-      attackExtraParts.push("@charge");
+      attackExtraParts.push({
+        part: "@charge",
+        value: rollData.charge,
+        source: game.i18n.localize("D35E.Charge"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Charge")}`);
     }
     if (form.find('[name="ccshot"]').prop("checked")) {
-      rollData.ccshot = -4;
+      rollData.closeQuartersShot = -4;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.closeQuartersShot = true;
-      attackExtraParts.push("@ccshot");
+      attackExtraParts.push({
+        part: "@closeQuartersShot",
+        value: rollData.closeQuartersShot,
+        source: game.i18n.localize("D35E.CloseQuartersShot"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.CloseQuartersShot")}`);
     }
     if (form.find('[name="flanking"]').prop("checked")) {
       rollData.flanking = 2;
       if (!rollData.attackToggles) rollData.attackToggles = {};
       rollData.attackToggles.flanking = true;
-      attackExtraParts.push("@flanking");
+      attackExtraParts.push({
+        part: "@flanking",
+        value: rollData.flanking,
+        source: game.i18n.localize("D35E.Flanking"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.Flanking")}`);
     }
 
@@ -1256,7 +1335,11 @@ export class ItemUse {
       greaterManyshotCount = parseInt(form.find('[name="greater-manyshot-count"]').val());
       greaterManyshot = true;
       rollData.greaterManyshotPenalty = -greaterManyshotCount * 2;
-      attackExtraParts.push("@greaterManyshotPenalty");
+      attackExtraParts.push({
+        part: "@greaterManyshotPenalty",
+        value: rollData.greaterManyshotPenalty,
+        source: game.i18n.localize("D35E.FeatGreaterManyshot"),
+      });
       rollModifiers.push(`${game.i18n.localize("D35E.FeatGreaterManyshot")}`);
     }
     if (form.find('[name="rapid-shot"]').prop("checked")) {
@@ -1289,23 +1372,39 @@ export class ItemUse {
         rollData.twoWeaponPenalty = -4;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -2;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -2;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
       } else if (twoWeaponMode === "main-offhand-normal") {
         rollData.twoWeaponPenalty = -6;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -4;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -4;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
       } else if (twoWeaponMode === "offhand-light") {
         rollData.twoWeaponPenalty = -8;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -2;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -2;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
         twoWeaponFightingOffhand = true;
       } else if (twoWeaponMode === "offhand-normal") {
         rollData.twoWeaponPenalty = -10;
         if (hasTwoWeaponFightingFeat) rollData.twoWeaponPenalty = -4;
         if (multiweaponFighting) rollData.twoWeaponPenalty = -4;
-        attackExtraParts.push("@twoWeaponPenalty");
+        attackExtraParts.push({
+          part: "@twoWeaponPenalty",
+          value: rollData.twoWeaponPenalty,
+          source: game.i18n.localize("D35E.TwoWeaponPenalty"),
+        });
         twoWeaponFightingOffhand = true;
       } else if (twoWeaponMode === "two-handed") {
         rollData.weaponHands = 2;
@@ -1405,6 +1504,55 @@ export class ItemUse {
     return usedItem.roll({ rollMode: rollModeOverride });
   }
 
+  #_determineSpellInfo(_rollData) {
+    const data = duplicate(this.item.system);
+    const rollData = _rollData ? _rollData : this.item.actor ? this.item.actor.getRollData() : {};
+    if (!_rollData) {
+      rollData.item = data;
+      if (this.item.actor) {
+        let allCombatChanges = [];
+        let attackType = this.item.type;
+        this.item.actor.combatChangeItems
+            .filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, attackType))
+            .forEach((i) => {
+              allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData));
+            });
+
+        this.item._addCombatChangesToRollData(allCombatChanges, rollData);
+      }
+    }
+
+    // Determines CL, SL and ability modifier
+    let spellSource;
+    let cl = 0;
+    let sl = 0;
+    let ablMod = 0;
+    if (this.item.type === "spell") {
+      const spellbookIndex = data.spellbook;
+      spellSource = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
+    } else if (this.item.type === "card") {
+      const deckIndex = data.deck;
+      spellSource = getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
+    } else {
+      return; // The values are left undefined for other kinds of items.
+    }
+
+    const spellAbility = spellSource.ability;
+    if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
+
+    cl += getProperty(spellSource, "cl.total") || 0;
+    cl += data.clOffset || 0;
+    cl += rollData.featClBonus || 0;
+    cl -= this.item.actor.system.attributes.energyDrain || 0;
+
+    sl += data.level;
+    sl += data.slOffset || 0;
+
+    rollData.cl = cl;
+    rollData.sl = sl;
+    rollData.ablMod = ablMod;
+  }
+
   #_getSpellDC(_rollData) {
     const data = duplicate(this.item.system);
     let spellDC = { dc: null, type: null, description: null };
@@ -1415,7 +1563,7 @@ export class ItemUse {
       if (this.item.actor) {
         let allCombatChanges = [];
         let attackType = this.item.type;
-        this.item.actor.items
+        this.item.actor.combatChangeItems
           .filter((o) => ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, attackType))
           .forEach((i) => {
             allCombatChanges = allCombatChanges.concat(i.combatChanges.getPossibleCombatChanges(attackType, rollData));
@@ -1425,51 +1573,7 @@ export class ItemUse {
       }
     }
 
-    // Get the spell specific info
-    let spellbookIndex,
-      spellAbility,
-      ablMod = 0;
-    let spellbook = null;
-    let cl = 0;
-    let sl = 0;
-    if (this.item.type === "spell") {
-      spellbookIndex = data.spellbook;
-      spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
-      spellAbility = spellbook.ability;
-      if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
-
-      cl += getProperty(spellbook, "cl.total") || 0;
-      cl += data.clOffset || 0;
-      cl -= this.item.actor.system.attributes.energyDrain || 0;
-
-      cl += rollData.featClBonus || 0;
-
-      sl += data.level;
-      sl += data.slOffset || 0;
-
-      rollData.cl = cl;
-      rollData.sl = sl;
-      rollData.ablMod = ablMod;
-    } else if (this.item.type === "card") {
-      let deckIndex = data.deck;
-      let deck = getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
-      spellAbility = deck.ability;
-      if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
-
-      cl += getProperty(deck, "cl.total") || 0;
-      cl += data.clOffset || 0;
-      cl += rollData.featClBonus || 0;
-      cl -= this.item.actor.system.attributes.energyDrain || 0;
-
-      sl += data.level;
-      sl += data.slOffset || 0;
-
-      rollData.cl = cl;
-      rollData.sl = sl;
-      rollData.ablMod = ablMod;
-    }
-
-    spellDC.cl = cl;
+    spellDC.cl = rollData.cl;
 
     if (
       data.hasOwnProperty("actionType") &&
@@ -1480,11 +1584,12 @@ export class ItemUse {
         .total;
       let saveDesc = data.save.description;
       if (this.item.type === "spell") {
+        const spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${data.spellbook}`) || {};
         saveDC += new Roll35e(spellbook.baseDCFormula || "", rollData).roll().total;
       }
 
       if (saveDC > 0 && data?.save?.type) {
-        spellDC.dc = saveDC + (rollData.featSpellDCBonus || 0);
+        spellDC.dc = saveDC + (new Roll35e(rollData.featSpellDCBonus || "0", rollData).roll().total || 0);
         spellDC.type = data.save.type;
         spellDC.ability = data.save.ability;
         spellDC.isHalf = data.save.type.indexOf("half") !== -1;
@@ -1492,7 +1597,7 @@ export class ItemUse {
         spellDC.description = `${CONFIG.D35E.savingThrowTypes[data.save.type]}`;
         if (data.save.ability) spellDC.description += ` (${CONFIG.D35E.abilitiesShort[data.save.ability]})`;
       } else if (saveDC > 0 && saveDesc) {
-        spellDC.dc = saveDC + (rollData.featSpellDCBonus || 0);
+        spellDC.dc = saveDC + (new Roll35e(rollData.featSpellDCBonus || "0", rollData).roll().total || 0);
         if (saveDesc.toLowerCase().indexOf("will") !== -1) {
           spellDC.type = "will";
         } else if (saveDesc.toLowerCase().indexOf("reflex") !== -1) {
@@ -1533,7 +1638,7 @@ export class ItemUse {
         spellDC.description = saveDesc;
       }
     }
-    // //console.log('D35E | Calculated spell DC', spellDC)
+    // //game.D35E.logger.log('Calculated spell DC', spellDC)
     return spellDC;
   }
 }

@@ -1,0 +1,274 @@
+{
+  "_id": "sf4kDHTOsJqwKKF2",
+  "name": "Summon Nature's Ally IV",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/summon-natures-ally-iv.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {},
+  "system": {
+    "originVersion": 121,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;conjuration&nbsp;(summoning)&nbsp;[see text];\n    <br>\n    <strong>Level:</strong>&nbsp;Druid 4, Ranger 4;\n    <strong>Domain:</strong>&nbsp;Animal 4;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, F, DF<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 round<br>\n    <strong>Range:</strong>&nbsp;close (25 ft. + 5 ft./2 levels)<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;One or more creatures, no two of which can be more than 30 ft. apart<br>\n    <strong>Duration:</strong>&nbsp;1 Round/Level (D)<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  <p>This spell functions like @Compendium[D35E.spells.pwToH2PNia9Ts6Ed]{Summon Nature's Ally I}<em>, </em>except that you can summon one 4th-level creature, 1d3 3rd-level creatures of the same kind, or 1d4+1 lower-level creatures of the same kind.</p>\n<p>When you use a summoning spell to summon an air, chaotic, earth, evil, fire, good, lawful, or water creature, it is a spell of that type.</p>\n<h3><span id=\"Summon_Nature&rsquo;s_Ally\"></span><span id=\"Summon_Nature.E2.80.99s_Ally\" class=\"mw-headline\">Summon Nature&rsquo;s Ally</span></h3>\n<p>@Compendium[D35E.summoning-roll-tables.jpSs0x2y9FYUeeAA]{Summon Nature's Ally I}</p>\n<p>@Compendium[D35E.summoning-roll-tables.wC7LE0Y4qcMwyDKu]{Summon Nature's Ally II}</p>\n<p>@Compendium[D35E.summoning-roll-tables.HzgTNwOhFgrVvpJY]{Summon Nature's Ally III}</p>\n<p>@Compendium[D35E.summoning-roll-tables.tHXLiDRBeZhnD2OA]{Summon Nature's Ally IV}</p>\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "close",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "circle",
+      "size": "5",
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "summon",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [
+      {
+        "name": "Summon Nature's Ally I",
+        "id": "jpSs0x2y9FYUeeAA",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1d4+1"
+      },
+      {
+        "name": "Summon Nature's Ally II",
+        "id": "wC7LE0Y4qcMwyDKu",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1d4+1"
+      },
+      {
+        "name": "Summon Nature's Ally III",
+        "id": "HzgTNwOhFgrVvpJY",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1d3"
+      },
+      {
+        "name": "Summon Nature's Ally IV",
+        "id": "tHXLiDRBeZhnD2OA",
+        "pack": "D35E.summoning-roll-tables",
+        "formula": "1"
+      }
+    ],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Druid",
+          4
+        ],
+        [
+          "Ranger",
+          4
+        ]
+      ],
+      "domain": [
+        [
+          "Animal",
+          4
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "con",
+    "subschool": "summoning",
+    "types": "see text",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": true,
+      "divineFocus": 1
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "<p>This spell functions like @Compendium[D35E.spells.pwToH2PNia9Ts6Ed]{Summon Nature's Ally I}<em>, </em>except that you can summon one 4th-level creature, 1d3 3rd-level creatures of the same kind, or 1d4+1 lower-level creatures of the same kind.</p>\n<p>When you use a summoning spell to summon an air, chaotic, earth, evil, fire, good, lawful, or water creature, it is a spell of that type.</p>\n<h3><span id=\"Summon_Nature&rsquo;s_Ally\"></span><span id=\"Summon_Nature.E2.80.99s_Ally\" class=\"mw-headline\">Summon Nature&rsquo;s Ally</span></h3>\n<p>@Compendium[D35E.summoning-roll-tables.jpSs0x2y9FYUeeAA]{Summon Nature's Ally I}</p>\n<p>@Compendium[D35E.summoning-roll-tables.wC7LE0Y4qcMwyDKu]{Summon Nature's Ally II}</p>\n<p>@Compendium[D35E.summoning-roll-tables.HzgTNwOhFgrVvpJY]{Summon Nature's Ally III}</p>\n<p>@Compendium[D35E.summoning-roll-tables.tHXLiDRBeZhnD2OA]{Summon Nature's Ally IV}</p>",
+    "snip": "Calls animal to fight for you.",
+    "spellDuration": "1 round/level (D)",
+    "spellEffect": "One or more creatures, no two of which can be more than 30 ft. apart",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Summon Nature's Ally IV",
+    "customReferenceId": "",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "spellDurationData": {
+      "value": "1*@cl",
+      "units": "roundPerLevel",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846681581,
+    "modifiedTime": 1678394302123,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!sf4kDHTOsJqwKKF2"
+}

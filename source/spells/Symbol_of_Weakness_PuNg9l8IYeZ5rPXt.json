@@ -1,0 +1,259 @@
+{
+  "_id": "PuNg9l8IYeZ5rPXt",
+  "name": "Symbol of Weakness",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/school/nec.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.mHHfGG4zg00B7XM8"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "PuNg9l8IYeZ5rPXt",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;necromancy;\n    <br>\n    <strong>Level:</strong>&nbsp;Cleric 7, Sorcerer 7, Wizard 7;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (mercury and phosphorus, plus powdered diamond and opal with a total value of at least 5,000 gp)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;10 minutes<br>\n    <strong>Range:</strong>&nbsp;0 feet<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;One symbol<br>\n    <strong>Duration:</strong>&nbsp;See Text<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;13<br>\n        <strong>Saving Throw:</strong>&nbsp;Fortitude Negates\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nThis spell functions like <i>symbol of death</i>, except that every creature within 60 feet of a <i>symbol of weakness </i>instead suffers crippling weakness that deals 3d6 points of Strength damage.\n</p><p>Unlike <i>symbol of death</i>, <i>symbol of weakness </i>has no hit point limit; once triggered, a <i>symbol of weakness </i>simply remains active for 10 minutes per caster level.\n</p><p><i>Note: </i>Magic traps such as <i>symbol of weakness </i>are hard to detect and disable. A rogue (only) can use the Search skill to find a <i>symbol of weakness </i>and Disable Device to thwart it. The DC in each case is 25 + spell level, or 32 for <i>symbol of weakness</i>.\n</p><p><i>Material Component: </i>Mercury and phosphorus, plus powdered diamond and opal with a total value of at least 5,000 gp.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 10,
+      "type": "minute"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "0",
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "circle",
+      "size": "60",
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Fortitude negates",
+      "ability": "",
+      "type": "fortitudenegates",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "Every creature within 60 feet of a symbol of weakness suffers crippling weakness that deals 3d6 points of Strength damage.",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Strength damage",
+        "action": "AbilityDamage str 3d6 on target;",
+        "condition": "",
+        "img": "systems/D35E/icons/spells/school/nec.png"
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Cleric",
+          7
+        ],
+        [
+          "Wizard",
+          7
+        ],
+        [
+          "Sorcerer",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "nec",
+    "subschool": "",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "mercury and phosphorus, plus powdered diamond and opal with a total value of at least 5,000 gp",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 13,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nThis spell functions like <i>symbol of death</i>, except that every creature within 60 feet of a <i>symbol of weakness </i>instead suffers crippling weakness that deals 3d6 points of Strength damage.\n</p><p>Unlike <i>symbol of death</i>, <i>symbol of weakness </i>has no hit point limit; once triggered, a <i>symbol of weakness </i>simply remains active for 10 minutes per caster level.\n</p><p><i>Note: </i>Magic traps such as <i>symbol of weakness </i>are hard to detect and disable. A rogue (only) can use the Search skill to find a <i>symbol of weakness </i>and Disable Device to thwart it. The DC in each case is 25 + spell level, or 32 for <i>symbol of weakness</i>.\n</p><p><i>Material Component: </i>Mercury and phosphorus, plus powdered diamond and opal with a total value of at least 5,000 gp.\n</p>\n<hr/>\n\n\n",
+    "snip": "Triggered rune weakens nearby creatures.",
+    "spellDuration": "See text",
+    "spellEffect": "One symbol",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Symbol of Weakness",
+    "customReferenceId": "",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "spellDurationData": {
+      "value": "",
+      "units": "seeText",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846677908,
+    "modifiedTime": 1678394294083,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!PuNg9l8IYeZ5rPXt"
+}

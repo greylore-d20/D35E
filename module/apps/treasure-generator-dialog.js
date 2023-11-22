@@ -103,18 +103,15 @@ export class TreasureGeneratorDialog extends FormApplication {
 
   addTreasure() {
     let treasureType = document.getElementById("treasureType").value;
-    let treasureTypeDesc = document.getElementById("treasureType").options[
-      document.getElementById("treasureType").selectedIndex
-    ].text;
+    let treasureTypeDesc =
+      document.getElementById("treasureType").options[document.getElementById("treasureType").selectedIndex].text;
     let treasureQuality = document.getElementById("treasureQuality").value;
-    let treasureQualityDesc = document.getElementById("treasureQuality")
-      .options[document.getElementById("treasureQuality").selectedIndex].text;
-    let treasureAmount = parseInt(
-      document.getElementById("treasureAmount").value
-    );
+    let treasureQualityDesc =
+      document.getElementById("treasureQuality").options[document.getElementById("treasureQuality").selectedIndex].text;
+    let treasureAmount = parseInt(document.getElementById("treasureAmount").value);
     let identified = document.getElementById("identified").checked;
 
-    //console.log(identified);
+    //game.D35E.logger.log(identified);
     this.curQuality = treasureQuality;
     this.curType = treasureType;
     this.curAmount = treasureAmount;
@@ -137,9 +134,7 @@ export class TreasureGeneratorDialog extends FormApplication {
   }
 
   async genTreasure() {
-    let selectedNpcTokens = canvas.tokens.controlled.filter(
-      (t) => game.actors.get(t.data.actorId).data.type === "npc"
-    );
+    let selectedNpcTokens = canvas.tokens.controlled.filter((t) => game.actors.get(t.data.actorId).data.type === "npc");
     if (selectedNpcTokens.length !== 1) {
       ui.notifications.info(`Please select a token and one only`);
       return;
@@ -222,37 +217,28 @@ export class TreasureGeneratorDialog extends FormApplication {
       }
 
       options.identified = treasure.identified;
-      treasureGen.genItems(
-        treasure.treasureAmount,
-        itemsTable,
-        treasure.treasureQuality,
-        rolls,
-        options
-      );
+      treasureGen.genItems(treasure.treasureAmount, itemsTable, treasure.treasureQuality, rolls, options);
     }
 
     // debug purposes
     // treasureGen.toChat();
 
     let ItemPfArr = treasureGen.toItemPfArr();
-    let actor = canvas.tokens.get(token.data._id).actor
+    let actor = canvas.tokens.get(token.data._id).actor;
     //TODO adding items to actor, verify 0.8 compatibility
-    let itemsToCreate = []
+    let itemsToCreate = [];
     for await (let it of ItemPfArr) {
       if (it === null || it === undefined) continue;
-      //console.log("item: ", item);
+      //game.D35E.logger.log("item: ", item);
       itemsToCreate.push(it);
-      
     }
     let createdItems = await canvas.tokens
-        .get(token.data._id)
-        .actor.createEmbeddedEntity("Item", itemsToCreate, { stopUpdates: true });
+      .get(token.data._id)
+      .actor.createEmbeddedEntity("Item", itemsToCreate, { stopUpdates: true });
     for (let item of createdItems) {
       if (item.data.type === "weapon" || item.data.type === "equipment") {
         const updateData = {};
-        let _enhancements = duplicate(
-          getProperty(item.data, `data.enhancements.items`) || []
-        );
+        let _enhancements = duplicate(getProperty(item.data, `system.enhancements.items`) || []);
 
         item.updateMagicItemName(updateData, _enhancements, true, true);
         item.updateMagicItemProperties(updateData, _enhancements, true);

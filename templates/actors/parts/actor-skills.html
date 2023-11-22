@@ -11,7 +11,7 @@
     </div>
   </li>
   {{#each skill.subSkills as |subSkill b|}}
-  <li class="sub-skill flexrow" data-skill="{{b}}" data-main-skill="{{s}}">
+  <li class="sub-skill flexrow" data-skill="{{b}}" data-main-skill="{{s}}" draggable="true" data-type="skill" data-uuid="{{../uuid}}" data-id="{{b}}.{{s}}">
     <input type="hidden" name="system.skills.{{s}}.subSkills.{{b}}.value" value="{{subSkill.value}}" data-dtype="Number"/>
     <div class="skill-name tooltip">
       <span class="tooltipcontent">
@@ -74,7 +74,7 @@
   </li>
   {{/each}}
   {{else}}
-  <li class="skill flexrow" data-skill="{{s}}">
+  <li class="skill flexrow" data-skill="{{s}}" draggable="true" data-type="skill" data-uuid="{{../uuid}}" data-id="{{s}}">
     <input type="hidden" name="system.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/>
     <div class="skill-name tooltip {{#if skill.rt}}{{#unless skill.points}}skill-untrained{{/unless}}{{/if}}">
       <span class="tooltipcontent">

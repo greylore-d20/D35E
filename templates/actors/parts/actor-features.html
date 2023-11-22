@@ -112,7 +112,7 @@
         {{/if}}
 
         {{#if section.isFeat}}
-          <div class="item-detail item-usage"><span>{{ localize 'D35E.FeatPool' }}</span></div>
+          <div class="item-detail item-usage"><span>{{ localize 'D35E.Feat' }} {{ localize 'D35E.Source' }}</span></div>
         {{/if}}
 
         {{#if section.isClass}}
@@ -248,19 +248,20 @@
           {{/if}}
           {{#if section.isFeat}}
           <div class="item-detail item-usage">
-          {{#if item.system.source}}
-             <em style="opacity: 0.8">{{item.system.source}}</em>
-          {{else}}
-              <select name="item.system.classSource" style="width: 100%" data-dtype="String" class="feat-group-selector">
-                  {{#select item.system.classSource}}
-                  <option value="">{{ localize 'D35E.Base' }}</option>
-                  {{#each ../../featCounters as |ftt a|}}
-                  <option value="{{ftt.val}}" style="text-transform: capitalize">{{ftt.name}}</option>
-                  {{/each}}
-                  {{/select}}
-              </select>
-            
-          {{/if}}
+            <em style="opacity: 0.8">
+            {{#if item.system.source}}
+              {{item.system.source}}
+            {{else}}
+              {{#if item.system.classSource}}
+               {{item.system.classSource}}
+              {{else}}
+               {{ localize 'D35E.Base'}}
+              {{/if}}
+            {{/if}}
+            {{#if item.system.addedLevel}}
+              {{item.system.addedLevel}}
+            {{/if}}
+            </em>
           </div>
           {{/if}}
           {{else if section.isClass}}

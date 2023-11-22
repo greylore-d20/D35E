@@ -1,0 +1,265 @@
+{
+  "_id": "Sal6tSoWHT24Ynlm",
+  "name": "Holy Aura",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/holy-aura.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.BK3za8RQhYXeYWws"
+    },
+    "cf": {
+      "id": "temp_u74z4lctcql"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "Sal6tSoWHT24Ynlm",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;abjuration&nbsp;[good];\n    <br>\n    <strong>Level:</strong>&nbsp;Cleric 8;\n    <strong>Domain:</strong>&nbsp;Good 8;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, F (a tiny reliquary containing some sacred relic  the reliquary costs at least 500 gp)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;20 feet<br>\n    \n    <strong>Target:</strong>&nbsp;one creature/level in a 20-ft.-radius burst centered on you<br>\n    \n    <strong>Duration:</strong>&nbsp;1 Round/Level (D)<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;15<br>\n        <strong>Saving Throw:</strong>&nbsp;Fortitude Negates\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nA brilliant divine radiance surrounds the subjects, protecting them from attacks, granting them resistance to spells cast by evil creatures, and causing evil creatures to become blinded when they strike the subjects. This abjuration has four effects.\n</p><p>First, each warded creature gains a +4 deflection bonus to AC and a +4 resistance bonus on saves. Unlike <i>protection from evil</i>, this benefit applies against all attacks, not just against attacks by evil creatures.\n</p><p>Second, each warded creature gains spell resistance 25 against evil spells and spells cast by evil creatures.\n</p><p>Third, the abjuration blocks possession and mental influence, just as <i>protection from evil </i>does.\n</p><p>Finally, if an evil creature succeeds on a melee attack against a warded creature, the offending attacker is blinded (Fortitude save negates, as <i>blindness/deafness</i>, but against <i>holy aura’s </i>save DC).\n</p><p><i>Focus: </i>A tiny reliquary containing some sacred relic. The reliquary costs at least 500 gp.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "one creature/level in a 20-ft.-radius burst centered on you"
+    },
+    "range": {
+      "value": "20",
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 20,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "See text",
+      "ability": "",
+      "type": "fortitudenegates",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "Fortitude save is only for evil creatures who make a successful melee attack a warded creature",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Holy Aura",
+        "action": "Create unique \"Holy Aura\" from \"D35E.commonbuffs\" on target;Set buff \"Holy Aura\" field data.level to max(1,(@cl)) on target;Activate buff \"Holy Aura\" on target",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      },
+      {
+        "name": "Blindness",
+        "action": "Condition set blinded to true on target;",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Cleric",
+          8
+        ]
+      ],
+      "domain": [
+        [
+          "Good",
+          8
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 8,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "abj",
+    "subschool": "",
+    "types": "good",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": true,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": "a tiny reliquary containing some sacred relic  the reliquary costs at least 500 gp"
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 15,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nA brilliant divine radiance surrounds the subjects, protecting them from attacks, granting them resistance to spells cast by evil creatures, and causing evil creatures to become blinded when they strike the subjects. This abjuration has four effects.\n</p><p>First, each warded creature gains a +4 deflection bonus to AC and a +4 resistance bonus on saves. Unlike <i>protection from evil</i>, this benefit applies against all attacks, not just against attacks by evil creatures.\n</p><p>Second, each warded creature gains spell resistance 25 against evil spells and spells cast by evil creatures.\n</p><p>Third, the abjuration blocks possession and mental influence, just as <i>protection from evil </i>does.\n</p><p>Finally, if an evil creature succeeds on a melee attack against a warded creature, the offending attacker is blinded (Fortitude save negates, as <i>blindness/deafness</i>, but against <i>holy aura’s </i>save DC).\n</p><p><i>Focus: </i>A tiny reliquary containing some sacred relic. The reliquary costs at least 500 gp.\n</p>\n<hr/>\n\n\n",
+    "snip": "+4 to AC, +4 resistance, and SR 25 against evil spells.",
+    "spellDuration": "1 round/level (D)",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Holy Aura",
+    "changes": [],
+    "combatChanges": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "perRoundActions": [],
+    "spellDurationData": {
+      "value": "1*@cl",
+      "units": "roundPerLevel",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846678264,
+    "modifiedTime": 1678394294874,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!Sal6tSoWHT24Ynlm"
+}

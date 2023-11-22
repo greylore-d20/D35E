@@ -1,11 +1,11 @@
 export class LevelUpDataDialog extends FormApplication {
   constructor(...args) {
     super(...args);
-    //console.log('D35E | Level Up Windows data', this.object.data)
+    //game.D35E.logger.log('Level Up Windows data', this.object.data)
     this.actor = this.object;
     this.levelUpId = this.options.id;
     this.levelUpData = this.actor.system.details.levelUpData.find((a) => a.id === this.levelUpId);
-    //console.log('ludid',this.levelUpId,this.levelUpData, this.options.skillset)
+    //game.D35E.logger.log('ludid',this.levelUpId,this.levelUpData, this.options.skillset)
   }
 
   static get defaultOptions() {
@@ -107,7 +107,7 @@ export class LevelUpDataDialog extends FormApplication {
     const updateData = {};
     let classId = formData["class"];
     let hp = parseInt(formData["hp"] || 0);
-    //console.log('formData',formData)
+    //game.D35E.logger.log('formData',formData)
     if (classId !== "") {
       let _class = this.actor.items.find((cls) => cls._id === classId);
       let levelUpData = duplicate(this.actor.system.details.levelUpData);
@@ -139,7 +139,7 @@ export class LevelUpDataDialog extends FormApplication {
           });
         }
       });
-      //console.log(`D35E | Updating Level Data | ${classId} | ${this.levelUpId}`)
+      //game.D35E.logger.log(`Updating Level Data | ${classId} | ${this.levelUpId}`)
       updateData[`system.details.levelUpData`] = levelUpData;
 
       const classes = this.actor.items

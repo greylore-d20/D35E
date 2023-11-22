@@ -14,11 +14,11 @@
             <ol class="item-list" data-pack="D35E.class-abilities">
                 {{#each children.abilities as |item iid|}}
                 <li class="item item-box  flexrow" data-item-id="{{item.item._id}}" data-pack="{{item.pack}}"
-                    data-item-level="{{item.level}}" data-item-uid="{{item.item.data.system.uniqueId}}">
+                    data-item-level="{{item.level}}" data-item-uid="{{item.item.system.uniqueId}}">
                     <div class="item-name child-item flexrow">
                         <div class="item-image" style="background-image: url('{{item.item.img}}')"></div>
                         <h4 class="rollable{{#if item.disabled}} strikethrough-text{{/if}}">
-                            {{~#if item.item.isStack}}({{item.item.data.quantity}}) {{/if}}
+                            {{~#if item.item.isStack}}({{item.item.system.quantity}}) {{/if}}
                             {{item.item.name~}}
                         </h4>
                     </div>
@@ -39,11 +39,11 @@
             <ol class="item-list" data-pack="D35E.class-abilities">
                 {{#each children.addedAbilities as |item iid|}}
                 <li class="item item-box  flexrow" data-item-id="{{item.item._id}}" data-pack="{{item.pack}}"
-                    data-item-uid="{{item.item.data.system.uniqueId}}" data-item-level="{{item.level}}">
+                    data-item-uid="{{item.item.system.uniqueId}}" data-item-level="{{item.level}}">
                     <div class="item-name child-item flexrow">
                         <div class="item-image" style="background-image: url('{{item.item.img}}')"></div>
                         <h4 class="rollable{{#if item.empty}} strikethrough-text{{/if}}">
-                            {{~#if item.item.isStack}}({{item.item.data.quantity}}) {{/if}}
+                            {{~#if item.item.isStack}}({{item.item.system.quantity}}) {{/if}}
                             {{item.item.name~}}
                         </h4>
                     </div>
@@ -90,22 +90,22 @@
         {{/if}}
         {{#if isClass}}
         <ol class="item-list" data-pack="D35E.class-abilities">
-            {{#each children.abilities as |item iid|}}
-            <li class="item item-box  flexrow" data-item-id="{{item.item._id}}" data-pack="{{item.pack}}"
-                data-item-level="{{item.level}}" data-item-uid="{{item.item.data.system.uniqueId}}">
+            {{#each children.abilities as |ability iid|}}
+            <li class="item item-box  flexrow" data-item-id="{{ability.item._id}}" data-pack="{{item.pack}}"
+                data-item-level="{{ability.level}}" data-item-uid="{{ability.item.system.uniqueId}}">
                 <div class="item-name child-item flexrow">
-                    <div class="item-image" style="background-image: url('{{item.item.img}}')"></div>
+                    <div class="item-image" style="background-image: url('{{ability.item.img}}')"></div>
                     <h4 class="rollable{{#if item.disabled}} strikethrough-text{{/if}}">
-                        {{~#if item.item.isStack}}({{item.item.data.quantity}}) {{/if}}
-                        {{item.item.name~}}
+                        {{~#if ability.item.isStack}}({{ability.item.system.quantity}}) {{/if}}
+                        {{ability.item.name~}}
                     </h4>
                 </div>
                 <div style="flex: 0 60px; text-align: center; opacity: 0.7">
-                    <em>{{localize "D35E.Level"}} {{item.level}}</em>
+                    <em>{{localize "D35E.Level"}} {{ability.level}}</em>
                 </div>
 
                 <div class="item-detail item-type flexrow">
-                    {{#if item.disabled}}
+                    {{#if ability.disabled}}
                     <a class="enable-ability">+ Enable</a>
                     {{else}}
                     <a class="disable-ability">- Disable</a>
@@ -118,22 +118,22 @@
         </ol>
 
         <ol class="item-list" data-pack="D35E.class-abilities">
-            {{#each children.addedAbilities as |item iid|}}
-            <li class="item item-box  flexrow" data-item-id="{{item.item._id}}" data-pack="{{item.pack}}"
-                data-item-uid="{{item.item.data.system.uniqueId}}" data-item-level="{{item.level}}">
+            {{#each children.addedAbilities as |ability iid|}}
+            <li class="item item-box  flexrow" data-item-id="{{ability.item._id}}" data-pack="{{item.pack}}"
+                data-item-uid="{{ability.item.system.uniqueId}}" data-item-level="{{ability.level}}">
                 <div class="item-name child-item flexrow">
-                    <div class="item-image" style="background-image: url('{{item.item.img}}')"></div>
+                    <div class="item-image" style="background-image: url('{{ability.item.img}}')"></div>
                     <h4 class="rollable{{#if item.empty}} strikethrough-text{{/if}}">
-                        {{~#if item.item.isStack}}({{item.item.data.quantity}}) {{/if}}
-                        {{item.item.name~}}
+                        {{~#if ability.item.isStack}}({{ability.item.quantity}}) {{/if}}
+                        {{ability.item.name~}}
                     </h4>
                 </div>
                 <div style="flex: 0 60px; text-align: center">
-                    <input class="change-class-ability-level" type="text" value="{{item.level}}" data-dtype="Number"/>
+                    <input class="change-class-ability-level" type="text" value="{{ability.level}}" data-dtype="Number"/>
                 </div>
 
                 <div class="item-detail item-type flexrow">
-                    <a class="delete-ability">+ Delete</a>
+                    <a class="delete-ability">- Delete</a>
                 </div>
 
             </li>
@@ -155,7 +155,7 @@
         <ol class="item-list full-ability-list" data-pack="D35E.class-abilities" id="{{randomUuid}}-list">
             {{#each allAbilities as |e iid|}}
             <li class="item item-box  flexrow" data-item-id="{{e._id}}" data-pack="{{e.pack}}"
-                data-item-uid="{{e.data.system.uniqueId}}">
+                data-item-uid="{{e.system.uniqueId}}">
                 <div class="item-name child-item flexrow">
                     <div class="item-image" style="background-image: url('{{e.img}}')"></div>
 

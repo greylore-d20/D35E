@@ -1,0 +1,221 @@
+{
+  "_id": "gYQU1jaKN4LVmJaa",
+  "name": "Charm Monster",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/tel.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n    <strong>Discipline</strong>&nbsp;telepathy&nbsp;(cha)&nbsp;[charm, mind-affecting];\n    <strong>Level</strong>&nbsp;Psion 3;\n    \n    \n    \n    \n  </p>\n  <p>\n    <strong>Manifesting Time</strong>&nbsp;1 round<br>\n    \n  </p>\n  <p>\n    <strong>Power Display</strong>&nbsp;Target: One living creature\n<br>\n    <strong>Range</strong>&nbsp;touch<br>\n    \n    <strong>Targets</strong>&nbsp;5\n<br>\n    \n    <strong>Duration</strong>&nbsp;his power makes a creature regard the manifester as his or her trusted friend and ally. If the creature is currently being threatened or attacked by the manifester or allies, however, he or she receives a +5 bonus on his or her saving throw.\n<br>\n    <strong>Power Points/Spell Points Cost</strong>&nbsp;3<br>\n    <strong>Saving Throw</strong>&nbsp;none;&nbsp;<strong>Power Resistance</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The power does not enable the manifester to control the charmed creature as if he or she was an automaton, but he or she perceives the manifester's words and actions in the most favorable way. The manifester can try to give the subject orders, but must win an opposed Charisma check to convince him or her to do anything he or she would not ordinarily do. (Retries are not allowed.) A charmed person never obeys suicidal or obviously harmful orders. Any act by the manifester or apparent allies that threatens the charmed creature breaks the power.\n</p><p>The manifester does not need to be able to speak the subject's language to communicate with him or her.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "5\n"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          3
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 3,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "tel",
+    "subschool": "cha",
+    "types": "charm,mind-affecting",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 3,
+    "display": "Target: One living creature\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The power does not enable the manifester to control the charmed creature as if he or she was an automaton, but he or she perceives the manifester's words and actions in the most favorable way. The manifester can try to give the subject orders, but must win an opposed Charisma check to convince him or her to do anything he or she would not ordinarily do. (Retries are not allowed.) A charmed person never obeys suicidal or obviously harmful orders. Any act by the manifester or apparent allies that threatens the charmed creature breaks the power.\n</p><p>The manifester does not need to be able to speak the subject's language to communicate with him or her.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "",
+    "spellDuration": "his power makes a creature regard the manifester as his or her trusted friend and ally. If the creature is currently being threatened or attacked by the manifester or allies, however, he or she receives a +5 bonus on his or her saving throw.\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394294721,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!gYQU1jaKN4LVmJaa"
+}

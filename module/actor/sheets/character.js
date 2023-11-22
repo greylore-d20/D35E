@@ -15,13 +15,9 @@ export class ActorSheetPFCharacter extends ActorSheetPF {
 	static get defaultOptions() {
 	  return mergeObject(super.defaultOptions, {
       classes: ["D35E", "sheet", "actor", "character"],
-      width: 725,
+      width: 920,
       height: 840
       });
-  }
-
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFCharacter");
   }
 
   /* -------------------------------------------- */
@@ -42,8 +38,8 @@ export class ActorSheetPFCharacter extends ActorSheetPF {
   /**
    * Add some extra data when rendering the sheet to reduce the amount of logic required within the template.
    */
-  getData() {
-    const data = super.getData();
+  async getData() {
+    const data = await super.getData();
 
     // Experience Tracking
     data["disableExperience"] = game.settings.get("D35E", "disableExperienceTracking");

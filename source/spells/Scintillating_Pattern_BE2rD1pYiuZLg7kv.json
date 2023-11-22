@@ -1,0 +1,258 @@
+{
+  "_id": "BE2rD1pYiuZLg7kv",
+  "name": "Scintillating Pattern",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/school/ill.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.COJiGAXGArqyHTQe"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "BE2rD1pYiuZLg7kv",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;illusion&nbsp;(pattern)&nbsp;[mind-affecting];\n    <br>\n    <strong>Level:</strong>&nbsp;Sorcerer 8, Wizard 8;\n    \n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (a small crystal prism)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;close (25 ft. + 5 ft./2 levels)<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;Colorful lights in a 20-ft.-radius spread\n<br>\n    <strong>Duration:</strong>&nbsp;Special<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;15<br>\n        <strong>Saving Throw:</strong>&nbsp;None\n\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n\n<p>\nA twisting pattern of discordant, coruscating colors weaves through the air, affecting creatures within it. The spell affects a total number of Hit Dice of creatures equal to your caster level (maximum 20). Creatures with the fewest HD are affected first; and, among creatures with equal HD, those who are closest to the spell’s point of origin are affected first. Hit Dice that are not sufficient to affect a creature are wasted. The spell affects each subject according to its Hit Dice.\n</p><p><i>6 or less: </i>Unconscious for 1d4 rounds, then stunned for 1d4 rounds, and then <i>confused </i>for 1d4 rounds. (Treat an unconscious result as stunned for nonliving creatures.)\n</p><p><i>7 to 12: </i>Stunned for 1d4 rounds, then <i>confused </i>for 1d4 rounds.\n</p><p><i>13 or more: Confused </i>for 1d4 rounds.\n</p><p>Sightless creatures are not affected by <i>scintillating pattern</i>.\n</p><p><i>Material Component: </i>A small crystal prism.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "close",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Unconscious (Scintillating Pattern)",
+        "action": "Create unique \"Unconscious (Scintillating Pattern)\" from \"D35E.commonbuffs\" on target;Set buff \"Unconscious (Scintillating Pattern)\" field data.level to max(1,(@cl)) on target;Activate buff \"Unconscious (Scintillating Pattern)\" on target",
+        "range": "",
+        "img": "icons/svg/item-bag.svg",
+        "condition": ""
+      },
+      {
+        "name": "Stunned (Scintillating Pattern)",
+        "action": "Create unique \"Stunned (Scintillating Pattern)\" from \"D35E.commonbuffs\" on target;Set buff \"Stunned (Scintillating Pattern)\" field data.level to max(1,(@cl)) on target;Activate buff \"Stunned (Scintillating Pattern)\" on target",
+        "range": "",
+        "img": "icons/svg/item-bag.svg",
+        "condition": ""
+      },
+      {
+        "name": "Confused (Scintillating Pattern)",
+        "action": "Create unique \"Confused (Scintillating Pattern)\" from \"D35E.commonbuffs\" on target;Set buff \"Confused (Scintillating Pattern)\" field data.level to max(1,(@cl)) on target;Activate buff \"Confused (Scintillating Pattern)\" on target",
+        "range": "",
+        "img": "icons/svg/item-bag.svg",
+        "condition": ""
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Wizard",
+          8
+        ],
+        [
+          "Sorcerer",
+          8
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 8,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "ill",
+    "subschool": "pattern",
+    "types": "mind-affecting",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "a small crystal prism",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 15,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n\n<p>\nA twisting pattern of discordant, coruscating colors weaves through the air, affecting creatures within it. The spell affects a total number of Hit Dice of creatures equal to your caster level (maximum 20). Creatures with the fewest HD are affected first; and, among creatures with equal HD, those who are closest to the spell’s point of origin are affected first. Hit Dice that are not sufficient to affect a creature are wasted. The spell affects each subject according to its Hit Dice.\n</p><p><i>6 or less: </i>Unconscious for 1d4 rounds, then stunned for 1d4 rounds, and then <i>confused </i>for 1d4 rounds. (Treat an unconscious result as stunned for nonliving creatures.)\n</p><p><i>7 to 12: </i>Stunned for 1d4 rounds, then <i>confused </i>for 1d4 rounds.\n</p><p><i>13 or more: Confused </i>for 1d4 rounds.\n</p><p>Sightless creatures are not affected by <i>scintillating pattern</i>.\n</p><p><i>Material Component: </i>A small crystal prism.\n</p>\n<hr/>\n\n\n",
+    "snip": "Twisting colors confuse, stun, or render unconscious.",
+    "spellDuration": "Concentration + 2 rounds\n",
+    "spellEffect": "Colorful lights in a 20-ft.-radius spread\n",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Scintillating Pattern",
+    "customReferenceId": "",
+    "spellDurationData": {
+      "value": "Concentration + 2 rounds",
+      "units": "spec",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846676216,
+    "modifiedTime": 1678394289229,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!BE2rD1pYiuZLg7kv"
+}

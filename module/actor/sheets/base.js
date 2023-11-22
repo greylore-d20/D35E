@@ -4,15 +4,14 @@ import { DamageReductionSetting } from "../../apps/damage-reduction-setting.js";
 import { LevelUpDataDialog } from "../../apps/level-up-data.js";
 import { ActorSheetFlags } from "../../apps/actor-flags.js";
 import { DicePF } from "../../dice.js";
-import { createTag, createTabs, isMinimumCoreVersion, uuidv4 } from "../../lib.js";
+import { createTabs, createTag, isMinimumCoreVersion, uuidv4 } from "../../lib.js";
 import { NoteEditor } from "../../apps/note-editor.js";
 import { SpellbookEditor } from "../../apps/spellbook-editor.js";
 import { DeckEditor } from "../../apps/deck-editor.js";
 import { D35E } from "../../config.js";
 import { PointBuyCalculator } from "../../apps/point-buy-calculator.js";
 import { Item35E } from "../../item/entity.js";
-import { CompendiumDirectoryPF } from "../../sidebar/compendium.js";
-import { DamageTypes } from "../../damage-types.js";
+import { ActorDamageHelper } from "../helpers/actorDamageHelper.js";
 import { Roll35e } from "../../roll.js";
 import ActorSensesConfig from "../../apps/senses-config.js";
 import AbilityConfig from "../../apps/ability-config.js";
@@ -21,7 +20,9 @@ import { ItemDescriptionsHelper } from "../../item/helpers/itemDescriptionsHelpe
 import { ActorWealthHelper } from "../helpers/actorWealthHelper.js";
 import { ItemEnhancementHelper } from "../../item/helpers/itemEnhancementHelper.js";
 import { StatblockGenerator } from "../../utils/statblock-generator.js";
-import { LootSheetActions } from '../../lootsheet/actions.js'
+import { LootSheetActions } from "../../lootsheet/actions.js";
+import { ItemDrawerHelper } from "./helpers/itemDrawerHelper.js";
+import {CompendiumBrowser} from '../../apps/compendium-browser.js';
 
 /**
  * Extend the basic ActorSheet class to do all the PF things!
@@ -33,9 +34,12 @@ export class ActorSheetPF extends ActorSheet {
   constructor(...args) {
     super(...args);
 
+    this.itemDrawerHelper = new ItemDrawerHelper(this);
+
     this.options.submitOnClose = false;
     this.randomUuid = uuidv4();
     this.alreadyOpening = false;
+
     /**
      * The scroll position on the active tab
      * @type {number}
@@ -77,15 +81,20 @@ export class ActorSheetPF extends ActorSheet {
   /**
    * Add some extra data when rendering the sheet to reduce the amount of logic required within the template.
    */
-  getData() {
+  async getData() {
     // Basic data
     let isOwner = this.document.isOwner;
     const sheetData = {
       owner: isOwner,
+      uuid: this.entity.uuid,
       name: this.document.name,
       limited: this.document.limited,
       options: this.options,
       editable: this.isEditable,
+      rendered: {
+        biography: await TextEditor.enrichHTML(this.actor.system.details.biography.value),
+        notes: await TextEditor.enrichHTML(this.actor.system.details.notes.value),
+      },
       cssClass: isOwner ? "editable" : "locked",
       actorId: this.actor.id || this.actor._id,
       isCharacter: this.entity.data.type === "character",
@@ -108,7 +117,7 @@ export class ActorSheetPF extends ActorSheet {
       i.id = item.id;
       i.hasAttack = item.hasAttack;
       i.possibleUpdate = item.system.possibleUpdate;
-      i.hasMultiAttack = item.hasMultiAttack;
+      i.hasMultipleAttacks = item.hasMultipleAttacks;
       i.containerId = getProperty(item.system, "containerId");
       i.hasDamage = item.hasDamage;
       i.hasEffect = item.hasEffect;
@@ -126,9 +135,7 @@ export class ActorSheetPF extends ActorSheet {
       i.showUnidentifiedData = item.showUnidentifiedData;
       i.unmetRequirements =
         item.type === "feat" || item.type === "class" ? item.hasUnmetRequirements(featRollData) : false;
-      if (i.showUnidentifiedData)
-        i.name = getProperty(item.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
-      else i.name = getProperty(item.system, "identifiedName") || item.name;
+      i.name = item.displayName;
       return i;
     });
     sheetData.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
@@ -185,16 +192,6 @@ export class ActorSheetPF extends ActorSheet {
         sheetData.sourceDetails != null && sheetData.sourceDetails.system.skills[s] != null
           ? duplicate(sheetData.sourceDetails.system.skills[s].changeBonus)
           : [];
-      if (sheetData.actor.data.attributes.acp.total && skl.acp)
-        skl.sourceDetails.push({
-          name: game.i18n.localize("D35E.ACP"),
-          value: `-${sheetData.actor.data.attributes.acp.total}`,
-        });
-      if (skl.ability)
-        skl.sourceDetails.push({
-          name: game.i18n.localize("D35E.Ability"),
-          value: getProperty(sheetData.actor, `data.abilities.${skl.ability}.mod`),
-        });
       if (!sheetData.actor.data.details.levelUpProgression && !skl.cls && skl.points)
         // We do not display this as this is already calculated
         skl.sourceDetails.push({
@@ -312,8 +309,8 @@ export class ActorSheetPF extends ActorSheet {
     // Prepare skillsets
     sheetData.skillsets = this._prepareSkillsets(sheetData.actor.data.skills);
 
-    sheetData.energyResistance = DamageTypes.computeERTags(DamageTypes.getERForActor(this.actor));
-    sheetData.damageReduction = DamageTypes.computeDRTags(DamageTypes.getDRForActor(this.actor));
+    sheetData.energyResistance = ActorDamageHelper.computeERTags(ActorDamageHelper.getERForActor(this.actor));
+    sheetData.damageReduction = ActorDamageHelper.computeDRTags(ActorDamageHelper.getDRForActor(this.actor));
 
     // Skill rank counting
     const skillRanks = { allowed: 0, used: 0, bgAllowed: 0, bgUsed: 0, sentToBG: 0 };
@@ -419,7 +416,10 @@ export class ActorSheetPF extends ActorSheet {
 
     sheetData.maxDexBonus.sourceDetails.push({
       name: game.i18n.localize("D35E.Gear"),
-      value: this.actor.system.attributes?.maxDex?.gear || game.i18n.localize("D35E.NotLimited"),
+      value:
+        this.actor.system.attributes?.maxDex?.gear !== null
+          ? this.actor.system.attributes?.maxDex?.gear
+          : game.i18n.localize("D35E.NotLimited"),
     });
     sheetData.maxDexUnlimited = this.actor.system.attributes?.maxDex?.total === 999;
 
@@ -733,6 +733,19 @@ export class ActorSheetPF extends ActorSheet {
       li.setAttribute("draggable", true);
       li.addEventListener("dragstart", handler, false);
     });
+    html.find("li.skill").each((i, li) => {
+      li.setAttribute("draggable", true);
+      li.addEventListener("dragstart", handler, false);
+    });
+
+    // Limited Sheet Actions
+    html.find('[data-action=show-image]').on('click', (ev) => {
+        const actor = this.actor;
+        new ImagePopout(ev.currentTarget.src, {
+            title: actor.name,
+            uuid: actor.uuid
+        }).render(true);
+    });
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
@@ -836,7 +849,7 @@ export class ActorSheetPF extends ActorSheet {
       this._onItemChangeContainer(ev);
     });
     html.find(".fix-containers").click((ev) => this._onCharacterClearContainers(ev));
-    html.find(".check-updates").click((ev) => this._onCharacterCheckUpdates(ev))
+    html.find(".check-updates").click((ev) => this._onCharacterCheckUpdates(ev));
     html.find(".generate-statblock").click((ev) => this._onCharacterGenerateStatblock(ev));
 
     html.find(".spell-add-uses").click((ev) => this._onSpellAddUses(ev));
@@ -1024,17 +1037,16 @@ export class ActorSheetPF extends ActorSheet {
       });
     }
     {
-      //console.log("D35E | Item Browser | Loading pack inline browser on load")
+      //game.D35E.logger.log("Item Browser | Loading pack inline browser on load")
       let entityType = sessionStorage.getItem(`D35E-last-ent-type-${this.id}`);
       let type = sessionStorage.getItem(`D35E-last-type-${this.id}`);
       let subType = sessionStorage.getItem(`D35E-last-subtype-${this.id}`);
       let filter = sessionStorage.getItem(`D35E-filter-${this.id}`);
       let label = sessionStorage.getItem(`D35E-label-${this.id}`);
-      let previousData = JSON.parse(sessionStorage.getItem(`D35E-data-${this.id}`));
       let opened = sessionStorage.getItem(`D35E-opened-${this.id}`) === "true";
       let scrollPosition = parseInt(sessionStorage.getItem(`D35E-position-${this.id}`) || "0");
       if (opened) {
-        await this.loadData(entityType, type, subType, filter, previousData, label);
+        await this.loadData(entityType, type, subType, filter, label);
         $(`#${this.randomUuid}-itemList`).scrollTop(scrollPosition);
       }
     }
@@ -1376,7 +1388,7 @@ export class ActorSheetPF extends ActorSheet {
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
    * @private
    */
-  _onItemSummary(event) {
+  async _onItemSummary(event) {
     event.preventDefault();
     let li = $(event.currentTarget).closest(".item"),
       item = this.actor.getOwnedItem(li.attr("data-item-id"));
@@ -1392,13 +1404,13 @@ export class ActorSheetPF extends ActorSheet {
     } else {
       let summary = li.children(".item-summary");
       if (!summary.length && item) {
-        let chatData = item.getChatData({ secrets: this.actor.isOwner });
+        let chatData = await item.getChatData({ secrets: this.actor.isOwner });
         let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
         let subElements = $(`<ul class="item-enh-list"></ul>`);
         let props = $(`<div class="item-properties"></div>`);
         chatData.properties.forEach((p) => props.append(`<span class="tag">${p}</span>`));
         if (!item.showUnidentifiedData) {
-          //console.log('D35E | Enchancement item data', getProperty(item.system, `enhancements.items`) || []);
+          //game.D35E.logger.log('Enchancement item data', getProperty(item.system, `enhancements.items`) || []);
           (getProperty(item.system, `enhancements.items`) || []).forEach((__enh) => {
             const _enh = duplicate(__enh);
             delete _enh._id;
@@ -1656,7 +1668,7 @@ export class ActorSheetPF extends ActorSheet {
       if (item.system.originVersion && item.system.originPack && item.system.originId) {
         let compendiumItem = await game.packs.get(item.system.originPack).getDocument(item.system.originId);
         if (!compendiumItem) {
-          console.log("Item missing from compendium...");
+          game.D35E.logger.log("Item missing from compendium...");
         } else {
           if (compendiumItem.system.originVersion > item.system.originVersion)
             itemUpdates.push({ _id: item.id, "system.possibleUpdate": true });
@@ -1833,16 +1845,10 @@ export class ActorSheetPF extends ActorSheet {
         if (itemData.enhancements && itemData.enhancements && itemData.enhancements.items) {
           let enhItems = duplicate(itemData.enhancements.items);
           for (let _item of enhItems) {
-            if (_item.system.uses.rechargeFormula) {
-              _item.system.uses.value = Math.min(
-                _item.system.uses.value + new Roll35e(_item.system.uses.rechargeFormula, _item.system).roll().total,
-                _item.system.uses.max
-              );
-            } else {
-              _item.system.uses.value = _item.system.uses.max;
-            }
+            let enhancementData = ItemEnhancementHelper.getEnhancementData(_item);
+            ItemEnhancementHelper.restoreEnhancementUses(enhancementData, false);
           }
-          itemUpdate[`data.enhancements.items`] = enhItems;
+          itemUpdate[`system.enhancements.items`] = enhItems;
         }
         this.actor.updateOwnedItem(itemUpdate);
         button.disabled = false;
@@ -1962,15 +1968,9 @@ export class ActorSheetPF extends ActorSheet {
 
       for (const i of metamagicFeats) {
         if (optionalFeatIds.indexOf(i._id) !== -1) {
-          await eval("(async () => {" + i.system.metamagic.code + "})()");
+          await eval("(async () => {" + i.system.metamagic.code.replaceAll(".data", ".system") + "})()");
         }
       }
-
-      newSpell.data.description.value = await renderTemplate(
-        "systems/D35E/templates/internal/spell-description.html",
-        new Item35E(newSpell)._generateSpellDescription(newSpell)
-      );
-
       let x = await this.actor.createEmbeddedEntity("Item", newSpell, { ignoreSpellbookAndLevel: true });
     };
 
@@ -2273,7 +2273,7 @@ export class ActorSheetPF extends ActorSheet {
             }
           }
 
-          //console.log(`D35E | Item container | ${item.name}, ${item.system.containerId} |`, item)
+          //game.D35E.logger.log(`Item container | ${item.name}, ${item.system.containerId} |`, item)
           if (item.system.containerId && item.system.containerId !== "none") {
             if (!containerItems.has(item.system.containerId)) {
               containerItems.set(item.system.containerId, []);
@@ -2559,13 +2559,13 @@ export class ActorSheetPF extends ActorSheet {
     for (let f of feats) {
       let k = f.system.featType;
 
-      if (f.system.source) {
+      if (f.system.source && f.system.source !== "") {
         let className = f.system.source.split(" ");
         className.pop();
         let sourceClassName = className.join(" ");
         if (!classFeaturesMap.has(sourceClassName)) classFeaturesMap.set(sourceClassName, []);
         classFeaturesMap.get(sourceClassName).push(f);
-        if (!!game.settings.get("D35E", "classFeaturesInTabs") || k === "racial") {
+        if (sourceClassName === "" || !!game.settings.get("D35E", "classFeaturesInTabs") || k === "racial") {
           features[k].items.push(f);
         }
       } else {
@@ -2594,7 +2594,7 @@ export class ActorSheetPF extends ActorSheet {
     const buffSections = {
       temp: {
         label: game.i18n.localize("D35E.Temporary"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -2602,7 +2602,7 @@ export class ActorSheetPF extends ActorSheet {
       },
       perm: {
         label: game.i18n.localize("D35E.Permanent"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -2610,7 +2610,7 @@ export class ActorSheetPF extends ActorSheet {
       },
       item: {
         label: game.i18n.localize("D35E.Item"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -2618,7 +2618,7 @@ export class ActorSheetPF extends ActorSheet {
       },
       misc: {
         label: game.i18n.localize("D35E.Misc"),
-        pack: "browser:buffs",
+        pack: "browser:buffs:Item",
         hasPack: true,
         items: [],
         hasActions: false,
@@ -2973,7 +2973,6 @@ export class ActorSheetPF extends ActorSheet {
     let dataType = "";
     const actor = this.actor;
 
-
     let itemData = {};
     // Case 1 - Import from a Compendium pack
     if (game?.release?.generation >= 10 && dropData.uuid) {
@@ -2984,9 +2983,10 @@ export class ActorSheetPF extends ActorSheet {
       const pack = game.packs.find((p) => p.metadata.id === dropData.pack);
       const packItem = await pack.getDocument(dropData.id || dropData._id);
       if (packItem != null) {
-        itemData = packItem.data.toObject(false);
-        itemData.data.originPack = dropData.pack;
-        itemData.data.originId = packItem.id;
+        itemData = packItem.toObject(false);
+        itemData.system.originPack = dropData.pack;
+        itemData.system.originId = packItem.id;
+        ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid);
       }
     }
 
@@ -2998,7 +2998,7 @@ export class ActorSheetPF extends ActorSheet {
       if (dropData?.parent?.sheet?.id) {
         if (dropData?.parent?.sheet.id.indexOf("ActorSheetPFNPCLoot") !== -1) {
           if (dropData.parent.getFlag("D35E", "lootsheettype") === "loot")
-            return LootSheetActions.lootItem(this.actor, dropData.parent, this.actor, dropData.id, null)
+            return LootSheetActions.lootItem(this.actor, dropData.parent, this.actor, dropData.id, null);
         }
       }
 
@@ -3013,29 +3013,29 @@ export class ActorSheetPF extends ActorSheet {
     }
     if (itemData.data.uniqueId) {
       return new Dialog(
-          {
-            title: `${game.i18n.localize("D35E.DropItemWithUIDTitle")}`,
-            content: `<div class="flexrow form-group">
+        {
+          title: `${game.i18n.localize("D35E.DropItemWithUIDTitle")}`,
+          content: `<div class="flexrow form-group">
           <span style="flex: 1">${game.i18n.localize("D35E.DropItemWithUID")}</span>
         </div>`,
-            buttons: {
-              confirm: {
-                label: game.i18n.localize("D35E.ImportStripUid"),
-                callback: (html) => {
-                  delete itemData.data.uniqueId;
-                  this.enrichDropData(itemData);
-                  return this.importItem(itemData, dataType);
-                },
-              },
-              cancel: {
-                label: game.i18n.localize("Cancel"),
+          buttons: {
+            confirm: {
+              label: game.i18n.localize("D35E.ImportStripUid"),
+              callback: (html) => {
+                delete itemData.data.uniqueId;
+                this.enrichDropData(itemData);
+                return this.importItem(itemData, dataType);
               },
             },
-            default: "confirm",
+            cancel: {
+              label: game.i18n.localize("Cancel"),
+            },
           },
-          {
-            classes: ["dialog", "D35E", "duplicate-initiative"],
-          }
+          default: "confirm",
+        },
+        {
+          classes: ["dialog", "D35E", "duplicate-initiative"],
+        }
       ).render(true);
     } else {
       this.enrichDropData(itemData);
@@ -3095,7 +3095,7 @@ export class ActorSheetPF extends ActorSheet {
     let div = $(event.currentTarget),
       pack = div.attr("data-pack");
     if (pack.startsWith("browser")) {
-      CompendiumDirectoryPF.browseCompendium(pack.split(":")[1]);
+      CompendiumBrowser.browseCompendium(pack.split(":")[1], pack.split(":")[2]);
     } else if (pack.startsWith("inline")) {
       await this.loadData(
         pack.split(":")[1],
@@ -3180,138 +3180,8 @@ export class ActorSheetPF extends ActorSheet {
     new LevelUpDataDialog(this.actor, options).render(true);
   }
 
-  async loadData(entityType, type, subtype, filter, previousData, label) {
-    if ($(`.item-add-${this.randomUuid}-overlay`).css("display") !== "none") {
-      //console.log("D35E | Item Browser | Skipping, its already visible", this.randomUuid)
-      return;
-    }
-
-    $(`#items-add-${this.randomUuid}-label`).text(`${game.i18n.localize("D35E.Add")} ${label}`);
-    //console.log("D35E | Item Browser | Loading pack inline browser", this.randomUuid, `.item-add-${this.randomUuid}-overlay`, $(`.item-add-${this.randomUuid}-overlay`).css('display'))
-    function _filterItems(item, entityType, type, subtype) {
-      if (item.system.uniqueId) return false;
-      if (entityType === "spells" && item.type !== type) return false;
-      if (
-        entityType === "items" &&
-        type.split(",").indexOf(item.type) !== -1 &&
-        (item.system.subType === subtype || subtype === "-")
-      )
-        return true;
-      if (entityType === "feats" && item.type === type && item.system.featType === subtype && !item.system.uniqueId)
-        return true;
-      if (entityType === "buffs" && item.type !== type) return false;
-      if (entityType === "enhancements" && item.type !== "enhancement") return false;
-      return false;
-    }
-    $(`.item-add-${this.randomUuid}-overlay`).show();
-    $(`.items-add-${this.randomUuid}-working-item`).show();
-    $(`.items-add-${this.randomUuid}-list`).hide();
-    sessionStorage.setItem(`D35E-last-ent-type-${this.id}`, entityType);
-    sessionStorage.setItem(`D35E-last-type-${this.id}`, type);
-    sessionStorage.setItem(`D35E-last-subtype-${this.id}`, subtype);
-    sessionStorage.setItem(`D35E-opened-${this.id}`, true);
-    sessionStorage.setItem(`D35E-label-${this.id}`, label);
-    $(`#${this.randomUuid}-itemList`).empty();
-    let addedItems = [];
-    if (!previousData) {
-      for (let p of game.packs.values()) {
-        if (p.private && !game.user.isGM) continue;
-        if ((p.entity || p.documentName) !== "Item") continue;
-
-        const items = await p.getDocuments();
-        for (let i of items) {
-          if (!_filterItems(i, entityType, type, subtype)) continue;
-          let li = $(
-            `<li class="item-list-item item" data-item-id="${i.id}">
-                               <div class="item-name non-rollable flexrow">
-                               <div class="item-image non-rollable" style="background-image: url('${i.img}')"></div>
-                                <span onclick="$(this).parent().parent().children('.item-browser-details').slideToggle()">${i.name}</span>
-                                <a class="item-control"  style="flex: 0; margin: 0 4px;" title="Remove Quantity" onclick="modifyInputValue('amount-add-${i.id}',-1)">
-                                    <i class="fas fa-minus remove-skill"></i>
-                                </a>
-                                <input type="text"  class="skill-value" name='amount-add-${i.id}' value="1" readonly style="border: none; flex: 0 25px; text-align: center;" placeholder="0"/>
-                                <a class="item-control" title="Add Quantity" style="flex: 0 20px; margin: 0 4px;" onclick="modifyInputValue('amount-add-${i.id}',1)">
-                                    <i class="fas fa-plus add-skill"></i>
-                                </a>
-                                <a class="add-from-compendium blue-button" style="flex: 0 40px; text-align: center">Add</a> </div>
-                                <div style="display: none" class="item-browser-details flexcol">
-                                <div style="max-height:100px; overflow: hidden;  -webkit-mask-image: linear-gradient(to bottom, black 75px, transparent 100px); mask-image: linear-gradient(to bottom, black 75px, transparent 100px);">${i.system.description.value}</div>
-                                ` +
-              (i.type !== "feat"
-                ? `<div style="flex: 0 20px; opacity: 0.8" ><i class="fas fa-coins"></i> ${i.system.price} gp</div>`
-                : "") +
-              `
-                                </div>
-                        </li>`
-          );
-          li.find(".add-from-compendium").mouseup((ev) => {
-            sessionStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop());
-            this._addItemFromBrowser(p.metadata.id, i.id, ev);
-          });
-          if (!$(`#${this.randomUuid}-itemList li[data-item-id='${i.id}']`).length) {
-            $(`#${this.randomUuid}-itemList`).append(li);
-            addedItems.push({
-              id: i.id,
-              name: i.name,
-              pack: p.metadata.id,
-              img: i.img,
-              description: i.system.description,
-              price: i.system.price,
-              type: i.type,
-            });
-          }
-        }
-
-        sessionStorage.setItem(`D35E-data-${this.id}`, JSON.stringify(addedItems));
-      }
-    } else {
-      for (let i of previousData) {
-        let li = $(
-          `<li class="item-list-item item" data-item-id="${i.id}">
-                               <div class="item-name non-rollable flexrow">
-                               <div class="item-image non-rollable" style="background-image: url('${i.img}')"></div>
-                                <span onclick="$(this).parent().parent().children('.item-browser-details').slideToggle()">${i.name}</span>
-                                <a class="item-control"  style="flex: 0; margin: 0 4px;" title="Remove Quantity" onclick="modifyInputValue('amount-add-${i.id}',-1)">
-                                    <i class="fas fa-minus remove-skill"></i>
-                                </a>
-                                <input type="text"  class="skill-value" name='amount-add-${i.id}' value="1" readonly style="border: none; flex: 0 25px; text-align: center;" placeholder="0"/>
-                                <a class="item-control" title="Add Quantity" style="flex: 0 20px; margin: 0 4px;" onclick="modifyInputValue('amount-add-${i.id}',1)">
-                                    <i class="fas fa-plus add-skill"></i>
-                                </a>
-                                <a class="add-from-compendium blue-button" style="flex: 0 40px; text-align: center">Add</a> </div>
-                                <div style="display: none" class="item-browser-details flexcol">
-                                <div style="max-height: 100px; overflow: hidden;  -webkit-mask-image: linear-gradient(to bottom, black 75px, transparent 100px); mask-image: linear-gradient(to bottom, black 75px, transparent 100px);">${i.description.value}</div>
-                                ` +
-            (i.type !== "feat"
-              ? `<div style="flex: 0 20px; opacity: 0.8" ><i class="fas fa-coins"></i> ${i.price} gp</div>`
-              : "") +
-            `
-                                </div>
-                        </li>`
-        );
-        li.find(".add-from-compendium").mouseup((ev) => {
-          sessionStorage.setItem(`D35E-position-${this.id}`, $(`#${this.randomUuid}-itemList`).scrollTop());
-          this._addItemFromBrowser(i.pack, i.id, ev);
-        });
-        if (!$(`#${this.randomUuid}-itemList li[data-item-id='${i.id}']`).length) {
-          $(`#${this.randomUuid}-itemList`).append(li);
-        }
-      }
-    }
-    $(`.items-add-${this.randomUuid}-openCompendium`).unbind("mouseup");
-    $(`.items-add-${this.randomUuid}-openCompendium`).mouseup((ev) => {
-      sessionStorage.setItem(`D35E-opened-${this.id}`, false);
-      $(`.item-add-${this.randomUuid}-overlay`).hide();
-      CompendiumDirectoryPF.browseCompendium(entityType);
-    });
-    $(`.items-add-${this.randomUuid}-working-item`).hide();
-    $(`.items-add-${this.randomUuid}-list`).show();
-    if (filter) {
-      $(`#${this.randomUuid}-itemList-filter`).val(filter);
-      $(`#${this.randomUuid}-itemList li`).filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(filter) > -1);
-      });
-    }
+  async loadData(entityType, type, subtype, filter, label) {
+    await this.itemDrawerHelper.loadDrawerData(label, entityType, type, subtype, filter);
   }
 
   _closeInlineData(ev) {
@@ -3329,13 +3199,14 @@ export class ActorSheetPF extends ActorSheet {
     const pack = game.packs.find((p) => p.metadata.id === packId);
     const packItem = await pack.getDocument(itemId);
     if (packItem != null) {
-      itemData = packItem.data.toObject(false);
-      itemData.data.originPack = packId;
-      itemData.data.originId = packItem.id;
+      itemData = packItem.toObject(false);
+      itemData.system.originPack = packId;
+      itemData.system.originId = packItem.id;
+      ItemDescriptionsHelper.linkItemDescription(itemData, packItem.uuid);
     }
     itemData.data.quantity = quantity;
     this.enrichDropData(itemData);
-    console.log("D35E | Adding Quantity", quantity, itemData);
+    game.D35E.logger.log("Adding Quantity", quantity, itemData);
     await this.importItem(itemData, dataType);
     $(ev.target).prop("disabled", false);
   }
@@ -3409,7 +3280,11 @@ export class ActorSheetPF extends ActorSheet {
       }
     };
     let template = "systems/D35E/templates/apps/advance-monster.html";
-    console.log(JSON.stringify(advancement));
+    game.D35E.logger.log(JSON.stringify(advancement));
+    if (!this.actor.racialHD?.system) {
+      ui.notifications.error("No Racial HD found for this creature. Please add a Racial HD to this creature before advancing")
+      return;
+    }
     let dialogData = {
       advancement: JSON.stringify(advancement),
       hdData: this.actor.racialHD.system,
@@ -3450,5 +3325,15 @@ export class ActorSheetPF extends ActorSheet {
   _onCharacterGenerateStatblock(event) {
     event.preventDefault();
     StatblockGenerator.generateStatblock(this.actor);
+  }
+
+
+  _onDragStart(event) {
+    const li = event.currentTarget;
+    if (li.dataset.type === "skill") {
+      event.dataTransfer.setData("text/plain", JSON.stringify(li.dataset));
+    } else {
+      super._onDragStart(event);
+    }
   }
 }

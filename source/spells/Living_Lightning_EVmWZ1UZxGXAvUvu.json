@@ -1,0 +1,230 @@
+{
+  "_id": "EVmWZ1UZxGXAvUvu",
+  "name": "Living Lightning",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/living-lightning.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {},
+  "system": {
+    "originVersion": 109,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;evocation&nbsp;[electricity];\n    <br>\n    \n    \n    \n    \n    \n    <br>\n    \n    \n      <strong>Casting Time:</strong>&nbsp;1 round<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    <strong>Area:</strong>&nbsp;a bolt 5 ft. wide by 300 ft. long, or 10 ft. wide by 150 ft. long<br>\n    \n    \n    <strong>Duration:</strong>&nbsp;Instantaneous<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;Reflex half\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The character develops a spell that he or she can cast; thereafter, the spell can effectively “cast itself.” When the character casts the spell, a stroke of energy deals 10d6 points of electricity damage to each creature within the spell’s area. <i>Living lightning</i> follows all the standard rules for epic spell casting when the character casts it. <i>Living lightning</i> is sentient and generally friendly toward the character. It has the character’s mental ability scores, but it has no physical ability scores. It senses the world through the character’s senses and communicates with him or her by thought. As a self-triggering spell, it isn’t truly alive but is a fragment of the character’s personality. It cares little for the world around it, but at the character’s urging (and sometimes at its own discretion) it casts itself at his or her foes. Casters who prepare spells before casting must prepare <i>living lightning</i> normally in order for it to cast itself. When the spell casts itself, it acts on the character’s initiative but does not count against his or her own actions in the round. The character cannot simultaneously cast <i>living lightning</i> while it is casting its own effect, even if it has been prepared more than once. <i>Living lightning</i> uses up one of the character’s epic spell slots for the day whenever it casts itself. When the character has used up all his or her epic spell slots for the day (or has cast all his or her prepared <i>living lightning</i> spells, if a caster who must prepare spells), <i>living lightning</i> becomes quiescent. It remains so until the character has rested to regain his or her epic spell slots for the next day.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "circle",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Reflex half",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "evo",
+    "subschool": "",
+    "types": "electricity",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "\n\n<p>The character develops a spell that he or she can cast; thereafter, the spell can effectively “cast itself.” When the character casts the spell, a stroke of energy deals 10d6 points of electricity damage to each creature within the spell’s area. <i>Living lightning</i> follows all the standard rules for epic spell casting when the character casts it. <i>Living lightning</i> is sentient and generally friendly toward the character. It has the character’s mental ability scores, but it has no physical ability scores. It senses the world through the character’s senses and communicates with him or her by thought. As a self-triggering spell, it isn’t truly alive but is a fragment of the character’s personality. It cares little for the world around it, but at the character’s urging (and sometimes at its own discretion) it casts itself at his or her foes. Casters who prepare spells before casting must prepare <i>living lightning</i> normally in order for it to cast itself. When the spell casts itself, it acts on the character’s initiative but does not count against his or her own actions in the round. The character cannot simultaneously cast <i>living lightning</i> while it is casting its own effect, even if it has been prepared more than once. <i>Living lightning</i> uses up one of the character’s epic spell slots for the day whenever it casts itself. When the character has used up all his or her epic spell slots for the day (or has cast all his or her prepared <i>living lightning</i> spells, if a caster who must prepare spells), <i>living lightning</i> becomes quiescent. It remains so until the character has rested to regain his or her epic spell slots for the next day.\n</p>\n<hr/>\n\n\n",
+    "snip": "",
+    "spellDuration": "Instantaneous",
+    "spellEffect": "",
+    "spellArea": "a bolt 5 ft. wide by 300 ft. long, or 10 ft. wide by 150 ft. long",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Living Lightning",
+    "changes": [],
+    "combatChanges": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "spellDurationData": {
+      "value": "",
+      "units": "inst",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846676481,
+    "modifiedTime": 1678394290134,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!EVmWZ1UZxGXAvUvu"
+}

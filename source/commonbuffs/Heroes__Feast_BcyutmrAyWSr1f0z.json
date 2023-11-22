@@ -1,0 +1,247 @@
+{
+  "_id": "BcyutmrAyWSr1f0z",
+  "name": "Heroes' Feast",
+  "type": "buff",
+  "img": "systems/D35E/icons/spells/buffs/buff/heroes-feast.png",
+  "effects": [],
+  "folder": null,
+  "sort": 2700000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.wW6tVfib9YOmnJt9"
+    },
+    "cf": {
+      "id": "temp_0b5fizi5atqg"
+    }
+  },
+  "system": {
+    "originVersion": 4,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><em>Manually add&nbsp;</em><em style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">1d8+min(@item.level,10) (</em><em style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">[[1d8+min(@item.level,10)]]) temporary hit points.</em></p>\n<hr />\n<p>You bring forth a great feast, including a magnificent table, chairs, service, and food and drink. The feast takes 1 hour to consume, and the beneficial effects do not set in until this hour is over. Every creature partaking of the feast is cured of all <a href=\"https://www.d20srd.org/srd/specialAbilities.htm#disease\">diseases</a>, sickness, and nausea; becomes immune to <a href=\"https://www.d20srd.org/srd/specialAbilities.htm#poison\">poison</a> for 12 hours; and gains <a class=\"diceRoller\" title=\"Roll the dice!\">1d8</a> temporary hit points +1 point per two caster levels (maximum +10) after imbibing the nectar-like beverage that is part of the feast. The ambrosial food that is consumed grants each creature that partakes a +1 <a href=\"https://www.d20srd.org/srd/theBasics.htm#moraleModifier\">morale bonus</a> on <a href=\"https://www.d20srd.org/srd/combat/combatStatistics.htm#attackRoll\">attack rolls</a> and <a href=\"https://www.d20srd.org/srd/combat/combatStatistics.htm#will\">Will saves</a> and immunity to <a href=\"https://www.d20srd.org/srd/specialAbilities.htm#fear\">fear</a> effects for 12 hours.</p>\n<p>If the feast is interrupted for any reason, the spell is ruined and all effects of the spell are negated.&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "addedLevel": 0,
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "changes": [
+      [
+        "1",
+        "attack",
+        "attack",
+        "untyped"
+      ],
+      [
+        "1",
+        "savingThrows",
+        "will",
+        "untyped"
+      ]
+    ],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [
+      [
+        "savingThrowOptional",
+        "",
+        "Heroes' Feast (vs fear + poison)",
+        "featSavingThrow",
+        "99",
+        ""
+      ]
+    ],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": ""
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "light": {
+      "color": "",
+      "radius": 0,
+      "opacity": 0,
+      "alpha": 0.5,
+      "lightAngle": 360,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "emitLight": false
+    },
+    "buffType": "temp",
+    "active": false,
+    "level": "",
+    "timeline": {
+      "elapsed": 0,
+      "total": 7200,
+      "formula": "7200",
+      "enabled": true,
+      "deleteOnExpiry": true,
+      "tickOnEnd": false
+    },
+    "damagePool": {
+      "current": 0,
+      "max": 0,
+      "formula": "",
+      "enabled": false,
+      "deleteOnDamagePoolEmpty": false
+    },
+    "shapechange": {
+      "source": {},
+      "type": "polymorph"
+    },
+    "activateActions": [
+      {
+        "name": "Heroes' Feast",
+        "action": "Remove buff insanity from target; Remove buff contagion from target; Condition set sickened to false on target;",
+        "condition": "",
+        "img": ""
+      }
+    ],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "hideFromToken": false,
+    "senses": {
+      "lowLight": false,
+      "lowLightMultiplier": null,
+      "blindsight": null,
+      "darkvision": null,
+      "tremorsense": null,
+      "truesight": null
+    },
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "attackParts": [],
+    "conditionals": [],
+    "specialActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Heroes' Feast",
+    "summon": [],
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "XSGi1UY5kAehVomp": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.309",
+    "createdTime": null,
+    "modifiedTime": 1696106427749,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
+  },
+  "_key": "!items!BcyutmrAyWSr1f0z"
+}

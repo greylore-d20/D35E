@@ -212,6 +212,9 @@
   </select>
   <select name="system.ability.damageMult" data-dtype="Number">
     {{#select data.system.ability.damageMult}}
+    {{#if isNaturalAttack}}
+    <option value="-1">{{localize "D35E.Auto"}}</option>
+    {{/if}}
     <option value="0.5">x0.5</option>
     <option value="1" {{#unless data.system.ability.damageMult}}selected="selected"{{/unless}}>x1</option>
     <option value="1.5">x1.5</option>
@@ -383,7 +386,8 @@
 <div class="flexcol special-actions">
   <h4 class="in-header">
     {{localize "D35E.SpecialActions"}}
-    <a class="special-control add-special"><i class="fas fa-plus"></i></a>
+    <a class="special-control add-special"><i class="fas fa-plus"></i> Add</a>
+    <a class="special-control add-special-template"><i class="fas fa-plus"></i> From Template</a>
   </h4>
   <ol class="special-parts form-group">
     {{#each data.system.specialActions as |part a|}}
@@ -392,14 +396,15 @@
       <div class="flexrow"><span>Action:</span><input type="text" name="system.specialActions.{{a}}.action" placeholder="{{localize "D35E.Action"}}" value="{{lookup this "action"}}"/></div>
       <div class="flexrow"><span>Condition:</span><input type="text" name="system.specialActions.{{a}}.condition" placeholder="{{localize "D35E.Condition"}}" value="{{lookup this "condition"}}"/></div>
       <div class="flexrow"><span>Icon path:</span><input type="text" name="system.specialActions.{{a}}.img" placeholder="{{localize "D35E.Image"}}" value="{{lookup this "img"}}"/></div>
-      <a class="special-control delete-special"><i class="fas fa-minus"></i>Remove</a>
-
+      <div style="width: 100%">
+      <a class="special-control delete-special" style="width: auto; float: right"><i class="fas fa-minus"></i>Remove</a>
+      </div>
     </li>
     {{/each}}
   </ol>
   <div class="spellbuff-link flexcol">
     <div style="width: 100%; text-align: center; padding: 12px">
-      You can drop a buff from compendium here to create a special action.
+      Drop a buff from compendium here to create a special action
     </div>
   </div>
 </div>

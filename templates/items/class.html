@@ -97,7 +97,7 @@
                     <section class="description-body" style="display: block; height: 100%">
                         <div class="tab description-group flexcol" data-group="description"
                              data-tab="sub-description">
-                            {{editor content=data.system.description.value target="system.description.value" button=true owner=owner
+                            {{editor content=enriched.description.value target="system.description.value" button=true owner=owner
                             editable=editable}}
                         </div>
                         <div class="tab description-group flexcol" data-group="description" data-tab="sub-progression">
@@ -182,9 +182,9 @@
                         {{#if isNonPsionSpellcaster}}
                         <div class="tab description-group flexcol" data-group="description" data-tab="sub-spellcasting">
 
-                            {{{data.systemspellcastingDescription}}}
+                            {{{data.system.spellcastingDescription}}}
 
-                            <h2>{{data.systemspellcastingSpellname}} Progression Table</h2>
+                            <h2>{{data.system.spellcastingSpellname}} Progression Table</h2>
                             <div class="inventory-group flexcol">
                                 <ol class="inventory-list sub-scroll" style="padding: 0">
                                     <li class="flexrow inventory-header spellbook-header">
@@ -227,7 +227,7 @@
                             </div>
 
                             {{#if hasKnownSpells}}
-                            <h2>{{data.systemspellcastingSpellnamePl}} Known</h2>
+                            <h2>{{data.system.spellcastingSpellnamePl}} Known</h2>
                             <div class="inventory-group flexcol">
                                 <ol class="inventory-list sub-scroll" style="padding: 0">
                                     <li class="flexrow inventory-header spellbook-header">
@@ -274,9 +274,9 @@
                         {{#if isPsionSpellcaster}}
                         <div class="tab description-group flexcol" data-group="description" data-tab="sub-psionics">
 
-                            {{{data.systemspellcastingDescription}}}
+                            {{{data.system.spellcastingDescription}}}
 
-                            <h2>{{data.systemspellcastingSpellname}} Progression Table</h2>
+                            <h2>{{data.system.spellcastingSpellname}} Progression Table</h2>
                             <div class="inventory-group flexcol">
                                 <ol class="inventory-list sub-scroll" style="padding: 0">
                                     <li class="flexrow inventory-header spellbook-header">
@@ -319,8 +319,7 @@
 
             <div class="tab flexcol active" data-group="primary" data-tab="description">
         <section class="description-body flexcol" style="height: 385px">
-                {{editor content=data.system.description.value target="data.description.value" button=true owner=owner
-                editable=editable}}
+                {{editor enriched.description.value target="system.description.value" button=true editable=editable}}
         </section>
         </div>
         {{/if}}
@@ -637,7 +636,7 @@
                             </label>
                         </div>
                         <label>{{localize "D35E.SpellcastingDescription"}}</label>
-                        {{editor content=data.system.spellcastingDescription target="data.spellcastingDescription" button=true owner=owner
+                        {{editor content=data.system.spellcastingDescription target="system.spellcastingDescription" button=true owner=owner
                         editable=editable}}
 
 

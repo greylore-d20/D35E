@@ -26,7 +26,7 @@ export class WorldDefaultConfig extends FormApplication {
   async getData() {
     let settings = await game.settings.get("D35E", "worldDefaults")
     settings = mergeObject(WorldDefaultConfig.defaultSettings, settings)
-    console.log(settings)
+    game.D35E.logger.log(settings)
     const entries = this.entries.map(o => {
       return o.map((o2, a) => {
         return [o2, this.dtypes[a]];
@@ -118,7 +118,7 @@ export class WorldDefaultConfig extends FormApplication {
     const index = parseInt(tr.dataset.index);
     const index2 = parseInt(a.dataset.index);
     const value = a.value;
-    console.log(tr.dataset, a.dataset, a.value)
+    game.D35E.logger.log(tr.dataset, a.dataset, a.value)
     if (a.dataset.dtype === "Number") {
       let v = parseFloat(value);
       if (isNaN(v)) v = 0;

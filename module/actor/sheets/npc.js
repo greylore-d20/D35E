@@ -16,7 +16,7 @@ export class ActorSheetPFNPC extends ActorSheetPF {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["D35E", "sheet", "actor", "npc"],
-      width: 725,
+      width: 920,
       height: 800
     });
   }
@@ -35,17 +35,13 @@ export class ActorSheetPFNPC extends ActorSheetPF {
     return "systems/D35E/templates/actors/npc-sheet.html";
   }
 
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFNPC");
-  }
-
   /* -------------------------------------------- */
 
   /**
    * Add some extra data when rendering the sheet to reduce the amount of logic required within the template.
    */
-  getData() {
-    const sheetData = super.getData();
+  async getData() {
+    const sheetData = await super.getData();
 
     // Challenge Rating
     const cr = parseFloat(sheetData.system.details.cr || 0);
@@ -74,7 +70,7 @@ export class ActorSheetPFNPC extends ActorSheetPF {
   async _updateObject(event, formData) {
     // Format NPC Challenge Rating
 
-    let crv = "data.details.cr";
+    let crv = "system.details.cr";
     let cr = formData[crv];
     if (cr) formData[crv] = CR.fromString(cr);
 

@@ -19,10 +19,10 @@ export class TopPortraitBar {
             $('#navigation').append($portraitBarDiv)
             var $portraitBarHandle = $("<div id='portrait-bar-handle'><a><i class='fas fa-arrows-alt'></i></a></div>")
             $portraitBarDiv.append($portraitBarHandle)
-            //console.log($portraitBarHandle)
+            //game.D35E.logger.log($portraitBarHandle)
             $portraitBarHandle.on({
                 mousedown: function (e) {
-                    //console.log('S')
+                    //game.D35E.logger.log('S')
                     dragging = true;
                     dragX = e.clientX - $(this).parent().position().left;
                     dragY = e.clientY - $(this).parent().position().top;
@@ -33,7 +33,7 @@ export class TopPortraitBar {
                     localStorage.setItem("D35E-portraitbar-x-location", $(this).parent().position().left)
                 },
                 mousemove: function (e) {
-                    //console.log('D')
+                    //game.D35E.logger.log('D')
                     if (dragging)
                         $(this).parent().offset({ top: e.clientY - dragY, left: e.clientX - dragX });
 
@@ -42,7 +42,7 @@ export class TopPortraitBar {
         }
         let height = $('#scene-list').height()
         portraitBar = $('#portrait-bar')
-        // //console.log('Bar', portraitBar, actor)
+        // //game.D35E.logger.log('Bar', portraitBar, actor)
         if (actor == null)
             return;
         // if (actor.data.type !== "character")

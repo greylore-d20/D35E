@@ -1,0 +1,256 @@
+{
+  "_id": "A6OzqkKDwOdfSCFq",
+  "name": "Contagion",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/contagion.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {},
+  "system": {
+    "originVersion": 109,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;necromancy&nbsp;[evil];\n    <br>\n    <strong>Level:</strong>&nbsp;Blackguard 3, Cleric 3, Druid 3, Sorcerer 4, Wizard 4;\n    <strong>Domain:</strong>&nbsp;Destruction 3;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 standard action<br>\n    <strong>Range:</strong>&nbsp;touch<br>\n    \n    <strong>Target:</strong>&nbsp;living creature touched<br>\n    \n    <strong>Duration:</strong>&nbsp;Instantaneous<br>\n    \n        <strong>Saving Throw:</strong>&nbsp;Fortitude negates\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;yes<br>\n  </p>\n  <h2>Description</h2>\n  <p>The subject contracts a disease selected from the table below, which strikes immediately (no incubation period). The DC noted is for the subsequent saves (use <em>contagion</em>’s normal save DC for the initial saving throw).</p>\n<table style=\"height: 136px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\"><strong>Disease</strong></td>\n<td style=\"height: 17px; width: 169px;\"><strong>DC</strong></td>\n<td style=\"height: 17px; width: 169px;\"><strong>Damage</strong></td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Blinding sickness</td>\n<td style=\"height: 17px; width: 169px;\">16</td>\n<td style=\"height: 17px; width: 169px;\">1d4 Str<sup>1</sup></td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Cackle fever</td>\n<td style=\"height: 17px; width: 169px;\">16</td>\n<td style=\"height: 17px; width: 169px;\">1d6 Wis</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Filth fever</td>\n<td style=\"height: 17px; width: 169px;\">12</td>\n<td style=\"height: 17px; width: 169px;\">1d3 Dex and 1d3 Con</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Mindfire</td>\n<td style=\"height: 17px; width: 169px;\">12</td>\n<td style=\"height: 17px; width: 169px;\">1d4 Int</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Red ache</td>\n<td style=\"height: 17px; width: 169px;\">15</td>\n<td style=\"height: 17px; width: 169px;\">1d6 Str</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Shakes</td>\n<td style=\"height: 17px; width: 169px;\">13</td>\n<td style=\"height: 17px; width: 169px;\">1d8 Dex</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Slimy doom</td>\n<td style=\"height: 17px; width: 169px;\">14</td>\n<td style=\"height: 17px; width: 169px;\">1d4 Con</td>\n</tr>\n</tbody>\n</table>\n<p><small><sup>1 </sup>Each time a victim takes 2 or more points of Strength damage from blinding sickness, he or she must make another Fortitude save (using the disease’s save DC) or be permanently blinded. </small></p>\n<hr>\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "standard"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "living creature touched"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Fortitude negates",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": true,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Blackguard",
+          3
+        ],
+        [
+          "Cleric",
+          3
+        ],
+        [
+          "Druid",
+          3
+        ],
+        [
+          "Wizard",
+          4
+        ],
+        [
+          "Sorcerer",
+          4
+        ]
+      ],
+      "domain": [
+        [
+          "Destruction",
+          3
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "nec",
+    "subschool": "",
+    "types": "evil",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 0,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "<p>The subject contracts a disease selected from the table below, which strikes immediately (no incubation period). The DC noted is for the subsequent saves (use <em>contagion</em>’s normal save DC for the initial saving throw).</p>\n<table style=\"height: 136px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\"><strong>Disease</strong></td>\n<td style=\"height: 17px; width: 169px;\"><strong>DC</strong></td>\n<td style=\"height: 17px; width: 169px;\"><strong>Damage</strong></td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Blinding sickness</td>\n<td style=\"height: 17px; width: 169px;\">16</td>\n<td style=\"height: 17px; width: 169px;\">1d4 Str<sup>1</sup></td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Cackle fever</td>\n<td style=\"height: 17px; width: 169px;\">16</td>\n<td style=\"height: 17px; width: 169px;\">1d6 Wis</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Filth fever</td>\n<td style=\"height: 17px; width: 169px;\">12</td>\n<td style=\"height: 17px; width: 169px;\">1d3 Dex and 1d3 Con</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Mindfire</td>\n<td style=\"height: 17px; width: 169px;\">12</td>\n<td style=\"height: 17px; width: 169px;\">1d4 Int</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Red ache</td>\n<td style=\"height: 17px; width: 169px;\">15</td>\n<td style=\"height: 17px; width: 169px;\">1d6 Str</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Shakes</td>\n<td style=\"height: 17px; width: 169px;\">13</td>\n<td style=\"height: 17px; width: 169px;\">1d8 Dex</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"height: 17px; width: 168px;\">Slimy doom</td>\n<td style=\"height: 17px; width: 169px;\">14</td>\n<td style=\"height: 17px; width: 169px;\">1d4 Con</td>\n</tr>\n</tbody>\n</table>\n<p><small><sup>1 </sup>Each time a victim takes 2 or more points of Strength damage from blinding sickness, he or she must make another Fortitude save (using the disease’s save DC) or be permanently blinded. </small></p>\n<hr>",
+    "snip": "Infects subject with chosen disease.",
+    "spellDuration": "Instantaneous",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "changes": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Contagion",
+    "combatChanges": [],
+    "customReferenceId": "",
+    "spellDurationData": {
+      "value": "",
+      "units": "inst",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846676112,
+    "modifiedTime": 1678394288945,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!A6OzqkKDwOdfSCFq"
+}

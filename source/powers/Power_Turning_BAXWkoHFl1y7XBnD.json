@@ -1,0 +1,221 @@
+{
+  "_id": "BAXWkoHFl1y7XBnD",
+  "name": "Power Turning",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/kin.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n    <strong>Discipline</strong>&nbsp;psychokinesis&nbsp;(con);\n    <strong>Level</strong>&nbsp;Psion 7;\n    \n    \n    \n    \n  </p>\n  <p>\n    <strong>Manifesting Time</strong>&nbsp;1 round<br>\n    \n  </p>\n  <p>\n    <strong>Power Display</strong>&nbsp;Vi, Me\n<br>\n    <strong>Range</strong>&nbsp;touch<br>\n    \n    <strong>Targets</strong>&nbsp;personal\n<br>\n    \n    <strong>Duration</strong>&nbsp;You\n<br>\n    <strong>Power Points/Spell Points Cost</strong>&nbsp;9<br>\n    <strong>Saving Throw</strong>&nbsp;none;&nbsp;<strong>Power Resistance</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>Duration: Until completely expended or 10 minutes/level\n</p><p>Power Points: 13\n</p><p>Powers (and spell-like effects) targeted against the manifester rebound on the original manifester. This power only turns psionic powers that have the manifester as a target. Effect and area powers are not affected. Power turning also fails to affect touch range powers.\n</p><p>From 7 to 10 (1d4+6) power levels are affected by the turning. The GM secretly rolls the exact number. Each power turned subtracts its level from the amount of power turning left.\n</p><p>A power might be only partially turned. Subtract these from the power level of the incoming psionic power. Divide the number of the remaining levels of the incoming power by the power level of the incoming power to see what fraction of the effect gets through. For damaging power, the power turning manifester and the original manifester each suffer a fraction of the damage. For nondamaging powers, each has a proportional chance to be affected.\n</p><p>If the manifester and an attacker are both warded by power turning effects in operation, a resonating field is created. Roll randomly to determine the result:\n</p><p>d% Effect\n</p><p>0170 Power drains away without effect.\n</p><p>7180 Power affects both characters equally at full effect.\n</p><p>8197 Both turning effects are rendered nonfunctional for 1d4 minutes.\n</p><p>98100\tBoth characters go through a rift into another plane.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "personal\n"
+    },
+    "range": {
+      "value": null,
+      "units": "touch",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "kin",
+    "subschool": "con",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 9,
+    "display": "Vi, Me\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>Duration: Until completely expended or 10 minutes/level\n</p><p>Power Points: 13\n</p><p>Powers (and spell-like effects) targeted against the manifester rebound on the original manifester. This power only turns psionic powers that have the manifester as a target. Effect and area powers are not affected. Power turning also fails to affect touch range powers.\n</p><p>From 7 to 10 (1d4+6) power levels are affected by the turning. The GM secretly rolls the exact number. Each power turned subtracts its level from the amount of power turning left.\n</p><p>A power might be only partially turned. Subtract these from the power level of the incoming psionic power. Divide the number of the remaining levels of the incoming power by the power level of the incoming power to see what fraction of the effect gets through. For damaging power, the power turning manifester and the original manifester each suffer a fraction of the damage. For nondamaging powers, each has a proportional chance to be affected.\n</p><p>If the manifester and an attacker are both warded by power turning effects in operation, a resonating field is created. Roll randomly to determine the result:\n</p><p>d% Effect\n</p><p>0170 Power drains away without effect.\n</p><p>7180 Power affects both characters equally at full effect.\n</p><p>8197 Both turning effects are rendered nonfunctional for 1d4 minutes.\n</p><p>98100\tBoth characters go through a rift into another plane.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "",
+    "spellDuration": "You\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394287296,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!BAXWkoHFl1y7XBnD"
+}

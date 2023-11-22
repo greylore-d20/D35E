@@ -2,8 +2,8 @@
  * Measure the distance between two pixel coordinates
  * See BaseGrid.measureDistance for more details
  */
-export const measureDistances = function(segments, options={}) {
-  if ( !options.gridSpaces ) return BaseGrid.prototype.measureDistances.call(this, segments, options);
+export const measureDistances = function (segments, options = {}) {
+  if (!options.gridSpaces) return BaseGrid.prototype.measureDistances.call(this, segments, options);
 
   // Track the total number of diagonals
   let nDiagonal = 0;
@@ -11,7 +11,7 @@ export const measureDistances = function(segments, options={}) {
   const d = canvas.dimensions;
 
   // Iterate over measured segments
-  return segments.map(s => {
+  return segments.map((s) => {
     let r = s.ray;
 
     // Determine the total distance traveled
@@ -26,7 +26,7 @@ export const measureDistances = function(segments, options={}) {
     // Alternative DMG Movement
     if (rule === "5105") {
       let nd10 = Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
-      let spaces = (nd10 * 2) + (nd - nd10) + ns;
+      let spaces = nd10 * 2 + (nd - nd10) + ns;
       return spaces * canvas.dimensions.distance;
     }
 
@@ -35,26 +35,34 @@ export const measureDistances = function(segments, options={}) {
   });
 };
 
-export const measureDistance = function(p0, p1, {gridSpaces=true}={}) {
-  if ( !gridSpaces ) return BaseGrid.prototype.measureDistance.bind(this)(p0, p1, {gridSpaces});
-  let gs = canvas.dimensions.size,
-      ray = new Ray(p0, p1),
-      nx = Math.abs(Math.ceil(ray.dx / gs)),
-      ny = Math.abs(Math.ceil(ray.dy / gs));
+export const measureDistance = function (
+  p0,
+  p1,
+  { ray = null, diagonalRule = "5105", state = { diagonals: 0, cells: 0 } } = {}
+) {
+  // TODO: Optionally adjust start and end point to closest grid
+  ray ??= new Ray(p0, p1);
+  const gs = canvas.dimensions.size,
+    nx = Math.ceil(Math.abs(ray.dx / gs)),
+    ny = Math.ceil(Math.abs(ray.dy / gs));
 
   // Get the number of straight and diagonal moves
-  let nDiagonal = Math.min(nx, ny),
-      nStraight = Math.abs(ny - nx);
+  const nDiagonal = Math.min(nx, ny),
+    nStraight = Math.abs(ny - nx);
 
-  // Alternative DMG Movement
-  if ( this.parent.diagonalRule === "5105" ) {
-    let nd10 = Math.floor(nDiagonal / 2);
-    let spaces = (nd10 * 2) + (nDiagonal - nd10) + nStraight;
-    return spaces * canvas.dimensions.distance;
+  state.diagonals += nDiagonal;
+
+  let cells = 0;
+  // Standard Pathfinder diagonals: double distance for every odd.
+  if (diagonalRule === "5105") {
+    const nd10 = Math.floor(state.diagonals / 2) - Math.floor((state.diagonals - nDiagonal) / 2);
+    cells = nd10 * 2 + (nDiagonal - nd10) + nStraight;
   }
+  // Equal distance diagonals
+  else cells = nStraight + nDiagonal;
 
-  // Standard PHB Movement
-  else return (nStraight + nDiagonal) * canvas.scene.data.gridDistance;
+  state.cells += cells;
+  return cells * canvas.dimensions.distance;
 };
 
 /* -------------------------------------------- */
@@ -64,26 +72,27 @@ export const measureDistance = function(p0, p1, {gridSpaces=true}={}) {
  * TODO: This should probably be replaced with a formal Token class extension
  */
 const _TokenGetBarAttribute = Token.prototype.getBarAttribute;
-Token.prototype.getBarAttribute = function(barName, {alternative=null}={}) {
+Token.prototype.getBarAttribute = function (barName, { alternative = null } = {}) {
   let data;
   try {
-    data = _TokenGetBarAttribute.call(this, barName, {alternative: alternative});
+    data = _TokenGetBarAttribute.call(this, barName, { alternative: alternative });
   } catch (e) {
     data = null;
   }
   if (data != null && data.attribute === "attributes.hp") {
-    data.value += parseInt(data['temp'] || 0);
+    data.value += parseInt(data["temp"] || 0);
   }
   return data;
 };
-
 
 /**
  * Condition/ status effects section
  */
 export const getConditions = function () {
   var core = CONFIG.statusEffects,
-      sys = Object.keys(CONFIG.D35E.conditions).filter(c => c !== 'wildshaped' && c !== 'polymorphed').map((c) => {
+    sys = Object.keys(CONFIG.D35E.conditions)
+      .filter((c) => c !== "wildshaped" && c !== "polymorphed")
+      .map((c) => {
         return { id: c, label: CONFIG.D35E.conditions[c], icon: CONFIG.D35E.conditionTextures[c] };
       });
   if (game.settings.get("D35E", "coreEffects")) sys.push(...core);
@@ -94,7 +103,7 @@ export const getConditions = function () {
 const _TokenHUD_getStatusEffectChoices = TokenHUD.prototype._getStatusEffectChoices;
 TokenHUD.prototype._getStatusEffectChoices = function () {
   let core = _TokenHUD_getStatusEffectChoices.call(this),
-      buffs = {};
+    buffs = {};
   Object.entries(this.object.actor.buffs.calcBuffTextures()).forEach((obj) => {
     let [idx, buff] = obj;
     if (buffs[buff.icon] && buff.label) buffs[buff.icon].title = buff.label;
@@ -117,10 +126,8 @@ TokenHUD.prototype._onToggleEffect = function (event, { overlay = false } = {}) 
   event.preventDefault();
   let img = event.currentTarget;
   const effect =
-      img.dataset.statusId && this.object.actor
-          ? CONFIG.statusEffects.find((e) => e.id === img.dataset.statusId) ?? img.dataset.statusId
-          : img.getAttribute("src");
+    img.dataset.statusId && this.object.actor
+      ? CONFIG.statusEffects.find((e) => e.id === img.dataset.statusId) ?? img.dataset.statusId
+      : img.getAttribute("src");
   return this.object.toggleEffect(effect, { overlay });
 };
-
-

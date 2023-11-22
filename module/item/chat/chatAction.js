@@ -1,5 +1,6 @@
 import { ActorPF } from "../../actor/entity.js";
 import { ChatHelper } from "../../helpers/chatHelper.js";
+import {ActorDamageHelper} from '../../actor/helpers/actorDamageHelper.js';
 
 export class ItemChatAction {
   /* -------------------------------------------- */
@@ -11,6 +12,7 @@ export class ItemChatAction {
     const button = event.currentTarget;
     button.disabled = true;
     const canBeUsedByEveryone = $(button).hasClass("everyone");
+    const noActor = $(button).hasClass("no-actor");
     const singleUse = $(button).hasClass("single-use");
     const card = button.closest(".chat-card");
     const messageId = card.closest(".message").dataset.messageId;
@@ -24,20 +26,24 @@ export class ItemChatAction {
     let isOwnerOfToken = false;
     if (_actor) isOwnerOfToken = _actor.testUserPermission(game.user, "OWNER");
     if (!(isTargetted || game.user.isGM || message.isAuthor || isOwnerOfToken || canBeUsedByEveryone)) {
-      //console.log('No permission', isTargetted, game.user.isGM, isOwnerOfToken)
+      //game.D35E.logger.log('No permission', isTargetted, game.user.isGM, isOwnerOfToken)
       button.disabled = false;
       return;
     }
 
     // Get the Actor from a synthetic Token
     const actor = ChatHelper.getChatCardActor(card);
-    if (!actor) {
+    if (!actor && !noActor) {
       button.disabled = false;
       return;
     }
 
     // Get the Item
-    const item = actor.getOwnedItem(card.dataset.itemId);
+
+    let item = null;
+    if (!noActor) {
+      item = actor.getOwnedItem(card.dataset.itemId);
+    }
 
     // Get card targets
     const targets = isTargetted ? ChatHelper.getChatCardTargets(card) : [];
@@ -68,7 +74,7 @@ export class ItemChatAction {
       const touch = button.dataset.touch === "true";
       const incorporeal = button.dataset.incorporeal === "true";
       event.applyHalf = action === "applyDamageHalf";
-      ActorPF.applyDamage(
+      ActorDamageHelper.applyDamage(
         event,
         roll,
         critroll,
@@ -92,7 +98,7 @@ export class ItemChatAction {
       );
     } else if (action === "applyHealing") {
       const value = button.dataset.value;
-      ActorPF.applyDamage(event, roll, null, null, null, null, null, value, null, null, null, null, false, true);
+      ActorDamageHelper.applyDamage(event, roll, null, null, null, null, null, value, null, null, null, null, false, true);
     }
 
     // Roll saving throw
@@ -100,7 +106,13 @@ export class ItemChatAction {
       const type = button.dataset.value;
       const ability = button.dataset.ability;
       const target = button.dataset.target;
-      if (type) ActorPF._rollSave(type, ability, target);
+      const targetRollType = button.dataset.targetrollmode;
+      if (type) ActorPF._rollSave(type, ability, target, {rollMode: targetRollType});
+    } else if (action === "rollSkill") {
+      const type = button.dataset.value;
+      const target = button.dataset.target;
+      const targetRollType = button.dataset.targetrollmode;
+      if (type) ActorPF._rollSkill(type, {target: target, rollMode: targetRollType});
     } else if (action === "rollPR") {
       const spellPenetration = button.dataset.spellpen;
       ActorPF._rollPowerResistance(spellPenetration);
@@ -133,7 +145,7 @@ export class ItemChatAction {
           `<button disabled class="disabled-action-button">${button.innerText}</button>`
         ),
       });
-      //console.log(message, button)
+      //game.D35E.logger.log(message, button)
     }
   }
 

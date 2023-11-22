@@ -1,0 +1,222 @@
+{
+  "_id": "6Ig6EsSnttmJjZjJ",
+  "name": "Mind Switch",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/tel.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;telepathy&nbsp;(cha);\n    <br>\n    <strong>Level:</strong>&nbsp;Psion 6;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Vi\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 round<br>\n    <strong>Range:</strong>&nbsp;medium (100 ft. + 10 ft./level)<br>\n    \n    <strong>Target:</strong>&nbsp;you and one other living medium-size or smaller creature\n<br>\n    \n    <strong>Duration:</strong>&nbsp;Until you return to your body\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;11<br>\n        <strong>Saving Throw:</strong>&nbsp;Will negates (see text)\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The manifester can attempt to take control of a nearby living creature, forcing its mind (and soul) into the manifester's body. The manifester may move his or her mind back into his or her own body whenever he or she desirse (which returns the subject's mind to its own body). The power ends when the manifester sends his or her mind back to his or her own body.\n</p><p>Attempting to switch minds is a full-round action. It is blocked by protection from evil or a similar magical or psionic ward. The manifester possesses the body and forces the creature's mind into the manifester's body unless it succeeds at a Will save.\n</p><p>If successful, the manifester's life force occupies the host body, and the host's life force takes over the manifester's. The manifester can call on rudimentary or instinctive knowledge of the subject creature, but not upon its real or acquired knowledge (as can it in the manifester's body). Each retains his or her own alignment, Intelligence, Wisdom, and Charisma scores, class, level, skills, base attack bonus, base saving throw bonuses, hit points (regardless of new Constitution score), power points (if any), and power resistance (if any). Each gains the new body's Strength, Constitution, and Dexterity scores (including modifiers based on these abilities), as well as natural (but not magical) armor. Neither gains the other's special abilities.\n</p><p>As a standard action, the manifester can return to his or her own body, if within range (which ends the power).\n</p><p>If the manifester's new body is slain, he or she returns to his or her own body, if within range, and the life force of the original body departs. If the new body is slain beyond the range of the power, the manifester dies, but the switched creature lives on in the manifester's body permanently. If the manifester's body is slain while inhabited by the power's subject, it dies, and the manifester continues to inhabit the new body permanently. Any life force with nowhere to go is treated as slain.\n</p><p>A successful targeted negate psionics manifested on either switched body causes both minds to return to their original bodies, if within range. If they are out of range, negate psionics has no effect.\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "you and one other living medium-size or smaller creature\n"
+    },
+    "range": {
+      "value": null,
+      "units": "medium",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will negates (see text)\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          6
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 6,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "tel",
+    "subschool": "cha",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 11,
+    "display": "Vi\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The manifester can attempt to take control of a nearby living creature, forcing its mind (and soul) into the manifester's body. The manifester may move his or her mind back into his or her own body whenever he or she desirse (which returns the subject's mind to its own body). The power ends when the manifester sends his or her mind back to his or her own body.\n</p><p>Attempting to switch minds is a full-round action. It is blocked by protection from evil or a similar magical or psionic ward. The manifester possesses the body and forces the creature's mind into the manifester's body unless it succeeds at a Will save.\n</p><p>If successful, the manifester's life force occupies the host body, and the host's life force takes over the manifester's. The manifester can call on rudimentary or instinctive knowledge of the subject creature, but not upon its real or acquired knowledge (as can it in the manifester's body). Each retains his or her own alignment, Intelligence, Wisdom, and Charisma scores, class, level, skills, base attack bonus, base saving throw bonuses, hit points (regardless of new Constitution score), power points (if any), and power resistance (if any). Each gains the new body's Strength, Constitution, and Dexterity scores (including modifiers based on these abilities), as well as natural (but not magical) armor. Neither gains the other's special abilities.\n</p><p>As a standard action, the manifester can return to his or her own body, if within range (which ends the power).\n</p><p>If the manifester's new body is slain, he or she returns to his or her own body, if within range, and the life force of the original body departs. If the new body is slain beyond the range of the power, the manifester dies, but the switched creature lives on in the manifester's body permanently. If the manifester's body is slain while inhabited by the power's subject, it dies, and the manifester continues to inhabit the new body permanently. Any life force with nowhere to go is treated as slain.\n</p><p>A successful targeted negate psionics manifested on either switched body causes both minds to return to their original bodies, if within range. If they are out of range, negate psionics has no effect.\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "You switch minds with another.",
+    "spellDuration": "Until you return to your body\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Mind Switch",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394285810,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!6Ig6EsSnttmJjZjJ"
+}

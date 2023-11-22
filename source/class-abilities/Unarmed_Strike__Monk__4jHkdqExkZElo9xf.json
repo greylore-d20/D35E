@@ -1,0 +1,361 @@
+{
+  "_id": "4jHkdqExkZElo9xf",
+  "name": "Unarmed Strike (Monk)",
+  "type": "attack",
+  "img": "systems/D35E/icons/classfeatures/unarmed-strike.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "exportSource": {
+      "world": "monster-importer",
+      "system": "D35E",
+      "coreVersion": "0.7.9",
+      "systemVersion": "0.92"
+    },
+    "core": {
+      "sourceId": "Compendium.D35E.class-abilities.4jHkdqExkZElo9xf"
+    }
+  },
+  "system": {
+    "originVersion": 108,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>At 1st level, a monk gains Improved Unarmed Strike as a bonus feat. A monk’s attacks may be with either fist interchangeably or even from elbows, knees, and feet. This means that a monk may even make unarmed strikes with her hands full. There is no such thing as an off-hand attack for a monk striking unarmed. A monk may thus apply her full Strength bonus on damage rolls for all her unarmed strikes.</p>\n<p>Usually a monk’s unarmed strikes deal lethal damage, but she can choose to deal nonlethal damage instead with no penalty on her attack roll. She has the same choice to deal lethal or nonlethal damage while grappling.</p>\n<p>A monk’s unarmed strike is treated both as a manufactured weapon and a natural weapon for the purpose of spells and effects that enhance or improve either manufactured weapons or natural weapons.</p>\n<p>A monk also deals more damage with her unarmed strikes than a normal person would, as shown on table below.</p>\n<table class=\"t2\" style=\"box-sizing: border-box; user-select: text; width: 374px; color: #191813; font-size: 13px; height: 239px;\" cellspacing=\"0\" cellpadding=\"0\">\n<tbody style=\"box-sizing: border-box; user-select: text;\">\n<tr style=\"height: 29px;\">\n<td style=\"width: 372px; height: 29px;\" colspan=\"4\" valign=\"top\">\n<p>Table: Monk Unarmed Damage</p>\n</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 30px;\">\n<td class=\"td12\" style=\"box-sizing: border-box; user-select: text; width: 81px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>Level</p>\n</td>\n<td style=\"width: 70px; height: 30px;\" valign=\"bottom\">\n<p>Damage (Small Monk)</p>\n</td>\n<td style=\"box-sizing: border-box; user-select: text; width: 115px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\">\n<p>Damage (Medium Monk)</p>\n</td>\n<td class=\"td14\" style=\"box-sizing: border-box; user-select: text; width: 106px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>Damage (Large Monk)</p>\n</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 30px;\">\n<td class=\"td12\" style=\"box-sizing: border-box; user-select: text; width: 81px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"top\">\n<p>1st–3rd&nbsp;</p>\n</td>\n<td style=\"width: 70px; height: 30px;\" valign=\"bottom\">\n<p>1d4</p>\n</td>\n<td style=\"box-sizing: border-box; user-select: text; width: 115px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\">\n<p>1d6</p>\n</td>\n<td class=\"td14\" style=\"box-sizing: border-box; user-select: text; width: 106px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>1d8</p>\n</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 30px;\">\n<td class=\"td12\" style=\"box-sizing: border-box; user-select: text; width: 81px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"top\">\n<p>4th–7th&nbsp;</p>\n</td>\n<td style=\"width: 70px; height: 30px;\" valign=\"bottom\">\n<p>1d6</p>\n</td>\n<td style=\"box-sizing: border-box; user-select: text; width: 115px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\">\n<p>1d8</p>\n</td>\n<td class=\"td14\" style=\"box-sizing: border-box; user-select: text; width: 106px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>2d6</p>\n</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 30px;\">\n<td class=\"td12\" style=\"box-sizing: border-box; user-select: text; width: 81px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"top\">\n<p>8th–11th&nbsp;</p>\n</td>\n<td style=\"width: 70px; height: 30px;\" valign=\"bottom\">\n<p>1d8</p>\n</td>\n<td style=\"box-sizing: border-box; user-select: text; width: 115px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\">\n<p>1d10</p>\n</td>\n<td class=\"td14\" style=\"box-sizing: border-box; user-select: text; width: 106px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>2d8</p>\n</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 30px;\">\n<td class=\"td12\" style=\"box-sizing: border-box; user-select: text; width: 81px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"top\">\n<p>12th–15th&nbsp;</p>\n</td>\n<td style=\"width: 70px; height: 30px;\" valign=\"bottom\">\n<p>1d10</p>\n</td>\n<td style=\"box-sizing: border-box; user-select: text; width: 115px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\">\n<p>2d6</p>\n</td>\n<td class=\"td14\" style=\"box-sizing: border-box; user-select: text; width: 106px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>3d6</p>\n</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 30px;\">\n<td class=\"td12\" style=\"box-sizing: border-box; user-select: text; width: 81px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"top\">\n<p>16th–19th&nbsp;</p>\n</td>\n<td style=\"width: 70px; height: 30px;\" valign=\"bottom\">\n<p>2d6</p>\n</td>\n<td style=\"box-sizing: border-box; user-select: text; width: 115px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\">\n<p>2d8</p>\n</td>\n<td class=\"td14\" style=\"box-sizing: border-box; user-select: text; width: 106px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>3d8</p>\n</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 30px;\">\n<td class=\"td12\" style=\"box-sizing: border-box; user-select: text; width: 81px; border-style: solid; border-width: 0.5px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"top\">\n<p>20th&nbsp;</p>\n</td>\n<td style=\"width: 70px; height: 30px;\" valign=\"bottom\">\n<p>2d8</p>\n</td>\n<td style=\"box-sizing: border-box; user-select: text; width: 115px; border-style: solid; border-width: 0.5px 1px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\">\n<p>2d10</p>\n</td>\n<td class=\"td16\" style=\"box-sizing: border-box; user-select: text; width: 106px; border-style: solid; border-width: 0.5px 1px 1px; border-color: #bfbfbf; padding: 0px 5px; height: 30px;\" valign=\"bottom\">\n<p>4d8</p>\n</td>\n</tr>\n</tbody>\n</table>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": false,
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "mkn-unarmed-strike-v4",
+    "addedLevel": 0,
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "attack"
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "mwak",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [
+        [
+          "sizeMonkDamageRoll(@classes.monk.level,@size,@critMult)",
+          null,
+          "damage-bludg"
+        ]
+      ],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "str",
+      "damage": "str",
+      "damageMult": 1,
+      "critRange": "20",
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": true,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "associations": {
+      "classes": [
+        [
+          "Monk",
+          0
+        ]
+      ]
+    },
+    "attackType": "weapon",
+    "autoScaleOption": "always",
+    "weaponSubtype": "light",
+    "masterwork": false,
+    "threatRangeExtended": false,
+    "finesseable": false,
+    "enh": null,
+    "incorporeal": false,
+    "proficient": true,
+    "primaryAttack": true,
+    "showInQuickbar": true,
+    "melded": false,
+    "baseWeaponType": "Unarmed Strike",
+    "nonLethal": false,
+    "originalWeaponCreated": true,
+    "originalWeaponId": null,
+    "originalWeaponName": "",
+    "originalWeaponImg": "",
+    "originalWeaponProperties": {},
+    "conditionals": [],
+    "thrown": false,
+    "returning": false,
+    "magic": false,
+    "alignment": {
+      "good": false,
+      "evil": false,
+      "lawful": false,
+      "chaotic": false
+    },
+    "hp": {
+      "max": 10,
+      "value": 10
+    },
+    "unidentified": {
+      "price": 0,
+      "name": ""
+    },
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "uncannyDodge": false,
+      "noCon": false,
+      "noInt": false,
+      "multiAttack": false,
+      "multiweaponAttack": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "enhancements": {
+      "uses": {
+        "value": 0,
+        "max": 0,
+        "per": null,
+        "autoDeductCharges": true,
+        "allowMultipleUses": false,
+        "commonPool": false,
+        "rechargeFormula": null
+      },
+      "automation": {
+        "updateName": false,
+        "updatePrice": false
+      },
+      "items": []
+    },
+    "light": {
+      "color": "#000000",
+      "radius": 0,
+      "opacity": 0,
+      "emitLight": false,
+      "alpha": 0.5,
+      "type": "",
+      "animationSpeed": "",
+      "animationIntensity": "",
+      "dimRadius": "",
+      "lightAngle": 360
+    },
+    "properties": {
+      "blc": false,
+      "brc": false,
+      "dbl": false,
+      "dis": false,
+      "fin": false,
+      "frg": false,
+      "grp": false,
+      "imp": false,
+      "mnk": true,
+      "nnl": false,
+      "prf": false,
+      "rch": false,
+      "snd": false,
+      "thr": false,
+      "trp": false
+    },
+    "weaponData": {
+      "damageRoll": "sizeMonkDamageRoll(@classes.monk.level,@size,@critMult)",
+      "damageType": "B",
+      "critRange": "20",
+      "critMult": "2",
+      "range": null,
+      "attackFormula": "",
+      "damageFormula": "",
+      "size": "med",
+      "damageTypeId": "damage-bludg",
+      "alignment": {
+        "good": false,
+        "evil": false,
+        "chaotic": false,
+        "lawful": false
+      }
+    },
+    "bonus": {
+      "value": 0,
+      "_deprecated": true
+    },
+    "damageType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2": {
+      "value": "",
+      "_deprecated": true
+    },
+    "damage2Type": {
+      "value": "",
+      "_deprecated": true
+    },
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "attack": {
+      "parts": []
+    },
+    "custom": {},
+    "selectedMaterial": "none",
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Unarmed Strike (Monk)",
+    "index": {
+      "subType": null,
+      "uniqueId": "mkn-unarmed-strike-v3"
+    },
+    "nonLethalNoPenalty": true,
+    "isNaturalEquivalent": true
+  },
+  "ownership": {
+    "default": 0,
+    "z68FsxziQNbZVumc": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.0",
+    "coreVersion": "11.299",
+    "createdTime": null,
+    "modifiedTime": 1686240511929,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!4jHkdqExkZElo9xf"
+}

@@ -43,8 +43,7 @@
       {{/if}}
     {{/if}}
   </p>
-  {{#if data.shortDescription}}
-  <h2>{{localize "D35E.Description"}}</h2>
-  {{{data.shortDescription}}}
+  {{#if renderTextDescription}}
+  {{{renderedShortDescription}}}
   {{/if}}
 </div>

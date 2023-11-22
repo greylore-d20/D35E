@@ -484,7 +484,6 @@ export const registerSystemSettings = function() {
     // type: Boolean,
   // });
 
-
   game.settings.register("D35E", '__onboarding', {
     name: `Tutorial shown`,
     hint: 'Basic system usage tutorial already shown. Uncheck to view again after reload.',
@@ -722,6 +721,67 @@ export const registerSystemSettings = function() {
     onChange: () => {
       window.location.reload();
     },
+  });
+
+
+  game.settings.register("D35E", "additionalCachedCompendiums_classAbilities", {
+    name: "SETTINGS.D35EAdditionalCachedCompendiumsClassAbilitiesN",
+    hint: "SETTINGS.D35EAdditionalCachedCompendiumsClassAbilitiesH",
+    scope: "world",
+    config: true,
+    default: "",
+    type: String,
+    onChange: () => {
+      window.location.reload();
+    }
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_racialAbilities", {
+    name: "SETTINGS.D35EAdditionalCachedCompendiumsRacialAbilitiesN",
+    hint: "SETTINGS.D35EAdditionalCachedCompendiumsRacialAbilitiesH",
+    scope: "world",
+    config: true,
+    default: "",
+    type: String,
+    onChange: () => {
+      window.location.reload();
+    }
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_spellLikeAbilities", {
+    name: "SETTINGS.D35EAdditionalCachedCompendiumsSpellLikeAbilitiesN",
+    hint: "SETTINGS.D35EAdditionalCachedCompendiumsSpellLikeAbilitiesH",
+    scope: "world",
+    config: true,
+    default: "",
+    type: String,
+    onChange: () => {
+      window.location.reload();
+    }
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_materials", {
+    name: "SETTINGS.D35EAdditionalCachedCompendiumsMaterialsN",
+    hint: "SETTINGS.D35EAdditionalCachedCompendiumsMaterialsH",
+    scope: "world",
+    config: true,
+    default: "",
+    type: String,
+    onChange: () => {
+      window.location.reload();
+    }
+  });
+
+  game.settings.register("D35E", "additionalCachedCompendiums_damageTypes", {
+    name: "SETTINGS.D35EAdditionalCachedCompendiumsDamageTypesN",
+    hint: "SETTINGS.D35EAdditionalCachedCompendiumsDamageTypesH",
+    scope: "world",
+    config: true,
+    default: "",
+    type: String,
+    onChange: () => {
+      window.location.reload();
+    }
   });
 
   // game.settings.register("D35E", 'displayItemsInContainers', {

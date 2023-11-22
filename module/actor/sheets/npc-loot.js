@@ -74,30 +74,30 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
     // Prepare GM Settings
     this._prepareGMSettings(sheetData.actor);
-    //console.log(sheetData)
+    //game.D35E.logger.log(sheetData)
 
     // Prepare isGM attribute in sheet Data
 
-    //console.log("game.user: ", game.user);
+    //game.D35E.logger.log("game.user: ", game.user);
     if (game.user.isGM) sheetData.isGM = true;
     else sheetData.isGM = false;
-    //console.log("sheetData.isGM: ", sheetData.isGM);
-    //console.log(this.actor);
+    //game.D35E.logger.log("sheetData.isGM: ", sheetData.isGM);
+    //game.D35E.logger.log(this.actor);
 
     let lootsheettype = await this.actor.getFlag("D35E", "lootsheettype");
     if (!lootsheettype) {
       lootsheettype = "Loot"
       await this.actor.setFlag("D35E", "lootsheettype", lootsheettype);
     }
-    console.log(`Loot Sheet | Loot sheet type = ${lootsheettype}`);
+    game.D35E.logger.log(`Loot Sheet | Loot sheet type = ${lootsheettype}`);
 
     let rolltable = await this.actor.getFlag("D35E", "rolltable");
-    console.log(`Loot Sheet | Rolltable = ${rolltable}`);
+    game.D35E.logger.log(`Loot Sheet | Rolltable = ${rolltable}`);
 
 
     let priceModifier = 1.0;
     let priceModifierBuy = 1.0;
-    console.log("D35E LootSheet | ", lootsheettype)
+    game.D35E.logger.log("D35E LootSheet | ", lootsheettype)
     if (lootsheettype === "Merchant") {
       priceModifier = await this.actor.getFlag("D35E", "priceModifier");
       if (!priceModifier) await this.actor.setFlag("D35E", "priceModifier", 1.0);
@@ -160,7 +160,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    * @param html {HTML}   The prepared HTML object ready to be rendered into the DOM
    */
   async activateListeners(html) {
-    //console.log("Loot Sheet | activateListeners")
+    //game.D35E.logger.log("Loot Sheet | activateListeners")
     super.activateListeners(html);
 
     const dragEnabled = this.actor.getFlag("D35E", "dragEnabled") && this.actor.getFlag("D35E", "lootsheettype") === "Loot";
@@ -226,7 +226,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    */
   async _merchantSettingChange(event, html) {
     event.preventDefault();
-    console.log("Loot Sheet | Merchant settings changed", event);
+    game.D35E.logger.log("Loot Sheet | Merchant settings changed", event);
 
     if(!game.user.isGM) {
       return;
@@ -236,7 +236,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     let targetKey = event.target.name.split('.')[3];
 
     if (expectedKeys.indexOf(targetKey) === -1) {
-      console.log(`Loot Sheet | Error changing stettings for "${targetKey}".`);
+      game.D35E.logger.log(`Loot Sheet | Error changing stettings for "${targetKey}".`);
       return ui.notifications.error(game.i18n.format("ERROR.lsChangingSettingsFor", {name: targetKey}));
     }
 
@@ -259,7 +259,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       if( name.length === 3 ) { // Ex : data.flags.lootsheetnpcpf1.dragEnabled
         // check if has changed
         if(this.actor.getFlag(name[1], name[2]) != value) {
-          console.log(`Setting flag ${name[1]}.${name[2]} to ${value}`)
+          game.D35E.logger.log(`Setting flag ${name[1]}.${name[2]} to ${value}`)
           await this.actor.setFlag(name[1], name[2], value)
         }
       }
@@ -277,7 +277,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    */
   async _merchantInventoryUpdate(event, html) {
     event.preventDefault();
-    //console.log("Loot Sheet | _merchantInventoryUpdate")
+    //game.D35E.logger.log("Loot Sheet | _merchantInventoryUpdate")
 
     if(!game.user.isGM) {
       return;
@@ -294,7 +294,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
     let rolltable = await fromUuid(rolltableUUID)
     if (!rolltable) {
-      console.log(`Loot Sheet | No Rollable Table found with UUID "${rolltableUUID}".`);
+      game.D35E.logger.log(`Loot Sheet | No Rollable Table found with UUID "${rolltableUUID}".`);
       return ui.notifications.error(game.i18n.format("ERROR.lsNoRollableTableFound", {name: rolltableUUID}));
     }
 
@@ -304,17 +304,17 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
       let currentItems = this.actor.items.map(i => i._id);
       await this.actor.deleteEmbeddedEntity("Item", currentItems);
-      console.log(currentItems);
+      game.D35E.logger.log(currentItems);
     }
     //return;
     let shopQtyRoll = new Roll(shopQtyFormula);
 
     shopQtyRoll.roll();
-    console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
+    game.D35E.logger.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
     let itemsToAdd = []
     for (let i = 0; i < shopQtyRoll.result; i++) {
       const rollResult = await rolltable.roll();
-      console.log(rollResult);
+      game.D35E.logger.log(rollResult);
       let uuid = null;
       if (rollResult.results[0].documentCollection === "Item") uuid = `${rollResult.results[0].documentCollection}.${rollResult.results[0].documentId}`
       else uuid = `Compendium.${rollResult.results[0].documentCollection}.${rollResult.results[0].documentId}`
@@ -322,7 +322,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
       let itemQtyRoll = new Roll(itemQtyFormula);
       itemQtyRoll.roll();
-      console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
+      game.D35E.logger.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
       let newItemData = newItem.toObject(false)
       if (itemStack) {
         let existingItem = this.actor.items.find(i => i.name === newItem.name);
@@ -343,7 +343,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
   }
 
   _createRollTable() {
-    //console.log("Loot Sheet | _createRollTable")
+    //game.D35E.logger.log("Loot Sheet | _createRollTable")
 
     let type = "weapon";
 
@@ -357,13 +357,13 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
     pack.getIndex().then(index => index.forEach(function(arrayItem) {
       var x = arrayItem._id;
-      //console.log(arrayItem);
+      //game.D35E.logger.log(arrayItem);
       i++;
       pack.getDocument(arrayItem._id).then(packItem => {
 
         if (packItem.type === type) {
 
-          //console.log(packItem);
+          //game.D35E.logger.log(packItem);
 
           let newItem = {
             "_id": packItem._id,
@@ -422,7 +422,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       }, options);
       d.render(true);
     } else {
-      console.log("Loot Sheet | No active character for user");
+      game.D35E.logger.log("Loot Sheet | No active character for user");
       return ui.notifications.error(game.i18n.localize("ERROR.lsNoActiveCharacter"));
     }
   }
@@ -453,7 +453,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       }, options);
       d.render(true);
     } else {
-      console.log("Loot Sheet | No active character for user");
+      game.D35E.logger.log("Loot Sheet | No active character for user");
       return ui.notifications.error(game.i18n.localize("ERROR.lsNoActiveCharacter"));
     }
   }
@@ -466,7 +466,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    */
   _lootItem(event) {
     event.preventDefault();
-    //console.log("Loot Sheet | _lootItem")
+    //game.D35E.logger.log("Loot Sheet | _lootItem")
 
     let targetGm = null;
     game.users.forEach((u) => {
@@ -504,12 +504,12 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
           quantity: quantity,
           processorId: targetGm.id
         };
-        console.log("LootSheetPf1", "Sending loot request to " + targetGm.name, packet);
+        game.D35E.logger.log("LootSheetPf1", "Sending loot request to " + targetGm.name, packet);
         LootSheetActions.moveItem(this.actor, game.user.character, itemId, quantity)
       }, options);
       d.render(true);
     } else {
-      console.log("Loot Sheet | No active character for user");
+      game.D35E.logger.log("Loot Sheet | No active character for user");
       return ui.notifications.error(game.i18n.localize("ERROR.lsNoActiveCharacter"));
     }
   }
@@ -562,7 +562,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    */
   async _priceModifier(event) {
     event.preventDefault();
-    //console.log("Loot Sheet | _priceModifier")
+    //game.D35E.logger.log("Loot Sheet | _priceModifier")
 
     let priceModifier = await this.actor.getFlag("D35E", "priceModifier");
     if (!priceModifier) priceModifier = 1.0;
@@ -591,11 +591,11 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
           two: {
             icon: '<i class="fas fa-times"></i>',
             label: game.i18n.localize("D35E.ls.cancel"),
-            callback: () => console.log("Loot Sheet | Price Modifier Cancelled")
+            callback: () => game.D35E.logger.log("Loot Sheet | Price Modifier Cancelled")
           }
         },
         default: "two",
-        close: () => console.log("Loot Sheet | Price Modifier Closed")
+        close: () => game.D35E.logger.log("Loot Sheet | Price Modifier Closed")
       }).render(true);
     });
 
@@ -612,7 +612,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     let item = this.actor.items.get(itemId);
     if(item) {
-      console.log(item)
+      game.D35E.logger.log(item)
       if(!item.getFlag("D35E", "secret")) {
         item.setFlag("D35E", "secret", true);
       } else {
@@ -633,7 +633,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    */
   async _convertLoot(event) {
     event.preventDefault();
-    //console.log("Loot Sheet | _convertLoot")
+    //game.D35E.logger.log("Loot Sheet | _convertLoot")
 
     Dialog.confirm({
       title: game.i18n.localize("D35E.ls.convertLootTitle"),
@@ -674,26 +674,26 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    */
   async _distributeCoins(event) {
     event.preventDefault();
-    //console.log("Loot Sheet | Split Coins clicked");
+    //game.D35E.logger.log("Loot Sheet | Split Coins clicked");
 
     let actorData = this.actor.data
     let owners = [];
-    //console.log("Loot Sheet | actorData", actorData);
+    //game.D35E.logger.log("Loot Sheet | actorData", actorData);
     // Calculate owners
     for (let u in actorData.permission) {
       if (u != "default" && actorData.permission[u] == 2) {
-        //console.log("Loot Sheet | u in actorData.permission", u);
+        //game.D35E.logger.log("Loot Sheet | u in actorData.permission", u);
         let player = game.users.get(u);
         if(player) {
-          //console.log("Loot Sheet | player", player);
+          //game.D35E.logger.log("Loot Sheet | player", player);
           let actor = game.actors.get(player.character);
-          //console.log("Loot Sheet | actor", actor);
+          //game.D35E.logger.log("Loot Sheet | actor", actor);
           if (actor !== null && (player.role === 1 || player.role === 2)) owners.push(actor);
         }
       }
     }
 
-    //console.log("Loot Sheet | owners", owners);
+    //game.D35E.logger.log("Loot Sheet | owners", owners);
     if (owners.length === 0) return;
 
     // Calculate split of currency
@@ -701,7 +701,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     let altCurrencySplit = duplicate(actorData.data.altCurrency);
     let currencyRemains = duplicate(actorData.data.currency);
     let altCurrencyRemains = duplicate(actorData.data.altCurrency);
-    //console.log("Loot Sheet | Currency data", currencySplit);
+    //game.D35E.logger.log("Loot Sheet | Currency data", currencySplit);
     for (let c in currencySplit) {
       if (owners.length) {
         currencySplit[c] = Math.floor(currencySplit[c] / owners.length);
@@ -717,7 +717,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
 
     let msg = [];
     for (let u of owners) {
-      //console.log("Loot Sheet | u of owners", u);
+      //game.D35E.logger.log("Loot Sheet | u of owners", u);
       if (u === null) continue;
 
       msg = [];
@@ -726,7 +726,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       let newCurrency = duplicate(u.system.currency);
       let newAltCurrency = duplicate(u.system.altCurrency);
 
-      //console.log("Loot Sheet | Current Currency", currency);
+      //game.D35E.logger.log("Loot Sheet | Current Currency", currency);
       for (let c in currency) {
         if (currencySplit[c]) {
           msg.push(game.i18n.format("D35E.ls.splitcoins", {quantity: currencySplit[c], currency: game.i18n.localize("D35E.ls." + c)}));
@@ -767,7 +767,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    */
   async _onCyclePermissionProficiency(event) {
     event.preventDefault();
-    //console.log("Loot Sheet | this.actor.data.permission", this.actor.data.permission);
+    //game.D35E.logger.log("Loot Sheet | this.actor.data.permission", this.actor.data.permission);
 
     let actorData = this.actor.data;
 
@@ -813,7 +813,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    * @private
    */
   _prepareItems(actorData) {
-    console.log("Loot Sheet | _prepareItems")
+    game.D35E.logger.log("Loot Sheet | _prepareItems")
     // Actions
     const itemGroups = {
       weapons: {
@@ -846,7 +846,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
       return;
     }
 
-    //console.log("Loot Sheet | Prepare Items");
+    //game.D35E.logger.log("Loot Sheet | Prepare Items");
 
     // Iterate through items, allocating to containers
     this.#splitItemsToGroups(actorData, itemGroups);
@@ -927,7 +927,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    * @private
    */
   _getPermissionDescription(level) {
-    //console.log("Loot Sheet | _getPermissionDescription")
+    //game.D35E.logger.log("Loot Sheet | _getPermissionDescription")
     const description = {
       0: game.i18n.localize("D35E.ls.permissionNoaccess"),
       1: game.i18n.localize("D35E.ls.permissionLimited"),
@@ -943,23 +943,23 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
    * @private
    */
   _prepareGMSettings(actorData) {
-    //console.log("Loot Sheet | _prepareGMSettings")
+    //game.D35E.logger.log("Loot Sheet | _prepareGMSettings")
 
     const players = [],
         owners = [];
     let users = game.users.values();
 
-    //console.log("Loot Sheet _prepareGMSettings | actorData.permission", actorData.permission);
+    //game.D35E.logger.log("Loot Sheet _prepareGMSettings | actorData.permission", actorData.permission);
 
     for (let u of users) {
-      console.log("Loot Sheet | Checking user " + u?.name, u);
+      game.D35E.logger.log("Loot Sheet | Checking user " + u?.name, u);
 
       //check if the user is a player
       if (u.role === 1 || u.role === 2) {
 
         // get the name of the primary actor for a player
         const actor = u.character;
-        console.log("Loot Sheet | Checking actor", actor);
+        game.D35E.logger.log("Loot Sheet | Checking actor", actor);
 
         if (actor) {
 
@@ -970,7 +970,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
           //Check if there are default permissions to the actor
           if (typeof actorData.permission.default !== "undefined") {
 
-            console.log("Loot Sheet | default permissions", actorData.permission.default);
+            game.D35E.logger.log("Loot Sheet | default permissions", actorData.permission.default);
 
             u.lootPermission = actorData.permission.default;
 
@@ -982,15 +982,15 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
           } else {
 
             u.lootPermission = 0;
-            console.log("Loot Sheet | assigning 0 permission to hidden field");
+            game.D35E.logger.log("Loot Sheet | assigning 0 permission to hidden field");
           }
 
           //if the player has some form of permission to the object update the actorData
           if (u.data._id in actorData.permission && !owners.includes(actor._id)) {
-            console.log("Loot Sheet | Found individual actor permission");
+            game.D35E.logger.log("Loot Sheet | Found individual actor permission");
 
             u.lootPermission = actorData.permission[u._id];
-            console.log("Loot Sheet | assigning " + actorData.permission[u._id] + " permission to hidden field");
+            game.D35E.logger.log("Loot Sheet | assigning " + actorData.permission[u._id] + " permission to hidden field");
 
             if (actorData.permission[u._id] === 3) {
               owners.push(actor._id);
@@ -998,7 +998,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
           }
 
           //Set icons and permission texts for html
-          console.log("Loot Sheet | lootPermission", u.lootPermission);
+          game.D35E.logger.log("Loot Sheet | lootPermission", u.lootPermission);
           u.icon = this._getPermissionIcon(u.lootPermission);
           u.lootPermissionDescription = this._getPermissionDescription(u.lootPermission);
           players.push(u);
@@ -1042,7 +1042,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     } catch (err) {
       return false;
     }
-    console.log(data)
+    game.D35E.logger.log(data)
     let item = await fromUuid(data.uuid)
     // Item is from compendium
     if(data.uuid.indexOf("Actor.") === -1) {

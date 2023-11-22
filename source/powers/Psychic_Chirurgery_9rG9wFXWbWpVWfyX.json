@@ -1,0 +1,222 @@
+{
+  "_id": "9rG9wFXWbWpVWfyX",
+  "name": "Psychic Chirurgery",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/tel.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>Psionic Discipline:</strong>&nbsp;telepathy&nbsp;[mind-affecting];\n    <br>\n    <strong>Level:</strong>&nbsp;Telepath 9;\n    \n    \n    \n    \n    <br>\n    \n    <strong>Power Display:</strong>&nbsp;Auditory, mental, and visual\n<br>\n      <strong>Manifesting Time:</strong>&nbsp;1 minute<br>\n    <strong>Range:</strong>&nbsp;close (25 ft. + 5 ft./2 levels)<br>\n    \n    <strong>Target:</strong>&nbsp;one creature\n<br>\n    \n    <strong>Duration:</strong>&nbsp;Instantaneous\n<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;17<br>\n        <strong>Saving Throw:</strong>&nbsp;Will negates\n\n        <br>\n        <strong>Power Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>You can repair psychic damage or grant another creature knowledge of powers you know, depending on the version of this power you manifest.\n</p><p><i>Repair Psychic Damage: </i>You can remove any compulsions and charms affecting the subject. In fact, you can remove any instantaneous or permanent effect caused by a psychic power with <i>psychic chirurgery</i>. Unlike with <i>aura alteration</i>, these effects end or are negated as soon as this power is manifested, with no need for another saving throw.\n</p><p>You can remove all negative levels affecting the subject, regardless of how it lost those levels, restoring it to the highest level it had previously attained. Also, you can restore levels lost to energy drain or a similar effect if the level drain occurred within a number of hours equal to your manifester level.\n</p><p>You can also remove all psionic effects penalizing the subject’s ability scores, heal all ability damage, and remove any ability drain affecting the subject. <i>Psychic chirurgery</i> negates all forms of insanity, confusion, the effect of such powers as <i>microcosm, </i>and so on, but it does not restore levels or Constitution points lost due to death.\n</p><p><i>Transfer Knowledge: </i>If desired, you can use this power to directly transfer knowledge of a power you know to another psionic character. You can give a character knowledge of a power of any level that she can manifest, even if the power is not normally on the character’s power list. Knowledge of powers gained through <i>psychic chirurgery </i>does not count toward the maximum number of powers a character can know per level.\n</p><p><i>XP Cost: </i>Each time you use psychic chirurgery to implant knowledge of a power in another creature, you pay an XP cost equal to 1,000 x the level of the power implanted. If you and the subject are both willing to do so, you can split this cost evenly.\n</p>\n<hr/>\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "minute"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "one creature\n"
+    },
+    "range": {
+      "value": null,
+      "units": "close",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will negates\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": true,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Telepath",
+          9
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 9,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "tel",
+    "subschool": "",
+    "types": "mind-affecting",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 17,
+    "display": "Auditory, mental, and visual\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>You can repair psychic damage or grant another creature knowledge of powers you know, depending on the version of this power you manifest.\n</p><p><i>Repair Psychic Damage: </i>You can remove any compulsions and charms affecting the subject. In fact, you can remove any instantaneous or permanent effect caused by a psychic power with <i>psychic chirurgery</i>. Unlike with <i>aura alteration</i>, these effects end or are negated as soon as this power is manifested, with no need for another saving throw.\n</p><p>You can remove all negative levels affecting the subject, regardless of how it lost those levels, restoring it to the highest level it had previously attained. Also, you can restore levels lost to energy drain or a similar effect if the level drain occurred within a number of hours equal to your manifester level.\n</p><p>You can also remove all psionic effects penalizing the subject’s ability scores, heal all ability damage, and remove any ability drain affecting the subject. <i>Psychic chirurgery</i> negates all forms of insanity, confusion, the effect of such powers as <i>microcosm, </i>and so on, but it does not restore levels or Constitution points lost due to death.\n</p><p><i>Transfer Knowledge: </i>If desired, you can use this power to directly transfer knowledge of a power you know to another psionic character. You can give a character knowledge of a power of any level that she can manifest, even if the power is not normally on the character’s power list. Knowledge of powers gained through <i>psychic chirurgery </i>does not count toward the maximum number of powers a character can know per level.\n</p><p><i>XP Cost: </i>Each time you use psychic chirurgery to implant knowledge of a power in another creature, you pay an XP cost equal to 1,000 x the level of the power implanted. If you and the subject are both willing to do so, you can split this cost evenly.\n</p>\n<hr/>\n\n\n",
+    "snip": "You repair psychic damage or impart knowledge of new powers.",
+    "spellDuration": "Instantaneous\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Psychic Chirurgery",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394286944,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!9rG9wFXWbWpVWfyX"
+}

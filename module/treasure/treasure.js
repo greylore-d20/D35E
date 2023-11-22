@@ -16,7 +16,7 @@ import {ItemConsumableConverter} from "../item/converters/consumable.js";
 function log(message) {
 	if (CONFIG.debug['treasure-gen']) {
 		// eslint-disable-next-line no-console
-		//console.log(message)
+		//game.D35E.logger.log(message)
 	}
 }
 
@@ -175,11 +175,11 @@ export default class TreasureGenerator {
 	async _makeItem(item) {
 		if (item.id) {
 			try {
-				// //console.log("fetchin " + item.id);
+				// //game.D35E.logger.log("fetchin " + item.id);
 				let _it = (await getItem(item.id)).toObject(false)
 				delete _it._id;
 				let it = new Item35E(_it, {temporary: true})
-				// //console.log(it);
+				// //game.D35E.logger.log(it);
 				if (item.consumableType) {
 					//TODO handle caster Level, not every item has it defined, others have it at 0 when not needed (been added automatically)
 					await it.updateSource({'system.quantity':item.amount})
@@ -254,13 +254,13 @@ export default class TreasureGenerator {
 					return it.toObject()
 				}
 			} catch (err) {
-				console.error(`D35E | TREASURE | error fetching item ${item.type} - ${item.id}`)
-				console.error(err)
-				console.error(this._rolls)
+				game.D35E.logger.error(`TREASURE | error fetching item ${item.type} - ${item.id}`)
+				game.D35E.logger.error(err)
+				game.D35E.logger.error(this._rolls)
 				this._treasureErr.items.push(item)
 			}
 		} else {
-			console.error(`D35E | TREASURE | no item generated for ${item.type}`)
+			game.D35E.logger.error(`TREASURE | no item generated for ${item.type}`)
 			this._treasureErr.items.push(item)
 		}
 	}
@@ -268,7 +268,7 @@ export default class TreasureGenerator {
 	// toItemPfArr() {
 	//   let promises = [];
 
-	//   //console.log(this._treasure.items)
+	//   //game.D35E.logger.log(this._treasure.items)
 	//   for (let item of this._treasure.items) {
 	//     promises.push(this._makeItem(item));
 	//   }
@@ -727,7 +727,7 @@ export default class TreasureGenerator {
 					}
 			}
 		} catch (err) {
-			// console.error(magicItemData)
+			// game.D35E.logger.error(magicItemData)
 			err.message += ' ' + magicItemRoll
 			throw err
 		}
@@ -814,7 +814,7 @@ export default class TreasureGenerator {
 							} catch (err) {
 								err.message +=
 									' --- ' + JSON.stringify(this._rolls)
-								console.error(this._rolls)
+								game.D35E.logger.error(this._rolls)
 								throw err
 							}
 							break
@@ -839,7 +839,7 @@ export default class TreasureGenerator {
 							} catch (err) {
 								err.message +=
 									' --- ' + JSON.stringify(this._rolls)
-								console.error(this._rolls)
+								game.D35E.logger.error(this._rolls)
 								throw err
 							}
 
@@ -868,7 +868,7 @@ export default class TreasureGenerator {
 						)
 					} catch (err) {
 						err.message += ' --- ' + JSON.stringify(this._rolls)
-						console.error(this._rolls)
+						game.D35E.logger.error(this._rolls)
 						throw err
 					}
 				})
@@ -1037,7 +1037,7 @@ export async function genTreasureFromToken(
 		overrideNames: true,
 	}
 ) {
-	// //console.log("generating treasure for: ", token.name);
+	// //game.D35E.logger.log("generating treasure for: ", token.name);
 	let TreasureLevels = []
 	let actor = token.actor
 	let TreasureLevel = getActorCrAndMultiplier(actor)
@@ -1063,15 +1063,15 @@ export async function genTreasureFromToken(
 					.includes(item._id)
 		)
 		.map((it) => it._id)
-	//console.log('D35E |  Layer TOKEN', token)
+	//game.D35E.logger.log(' Layer TOKEN', token)
 	await token.actor.deleteEmbeddedEntity(
 		'Item',
 		Array.from(itemsToDelete),
 		{ stopUpdates: true }
 	)
 
-	// //console.log("actor:", game.actors.get(token.data.actorId));
-	// //console.log("items:", game.actors.get(token.data.actorId).data.items);
+	// //game.D35E.logger.log("actor:", game.actors.get(token.data.actorId));
+	// //game.D35E.logger.log("items:", game.actors.get(token.data.actorId).data.items);
 
 	//TODO adding items to actor, verify 0.8 compatibility
 
@@ -1079,7 +1079,7 @@ export async function genTreasureFromToken(
 	let itemsToCreate = []
     for await (let it of treasureGen.toItemPfArr()) {
       if (it === null || it === undefined) continue;
-      //console.log("item: ", item);
+      //game.D35E.logger.log("item: ", item);
       itemsToCreate.push(it);
       
     }
@@ -1101,8 +1101,8 @@ export async function genTreasureFromToken(
 		},
 	})
 
-	// //console.log("token after treasure gen:", canvas.tokens.get(token.data._id));
-	// //console.log("treasure rolls:", treasureGen._rolls);
+	// //game.D35E.logger.log("token after treasure gen:", canvas.tokens.get(token.data._id));
+	// //game.D35E.logger.log("treasure rolls:", treasureGen._rolls);
 	return treasure
 }
 

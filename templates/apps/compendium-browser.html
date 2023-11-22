@@ -1,4 +1,21 @@
-<div class="compendium-browser flexrow" data-type="{{type}}">
+<div class="flexcol" style="max-height: 100%">
+<div class="flexrow" style="flex: 0">
+  <nav class="compendium-browser-tabs">
+    <a class='item browser {{#ifeq type "items" }}active{{/ifeq}}' data-type="items" data-entity-type="Item">{{ localize "D35E.Items" }}</a>
+    <a class='item browser {{#ifeq type "spells" }}active{{/ifeq}}' data-type="spells" data-entity-type="Item">{{ localize "D35E.Spells" }}</a>
+    <a class='item browser {{#ifeq type "feats" }}active{{/ifeq}}' data-type="feats" data-entity-type="Item">{{ localize "D35E.FeatPlural" }}</a>
+    <a class='item browser {{#ifeq type "enhancements" }}active{{/ifeq}}' data-type="enhancements" data-entity-type="Item">{{ localize "D35E.Enhancements" }}</a>
+    <a class='item browser {{#ifeq type "buffs" }}active{{/ifeq}}' data-type="buffs" data-entity-type="Item">{{ localize "D35E.Buffs" }}</a>
+    <a class='item browser {{#ifeq type "bestiary" }}active{{/ifeq}}' data-type="bestiary" data-entity-type="Actor">{{ localize "D35E.Bestiary" }}</a>
+    <div class="loader-div flexcol">
+      <div id="d35e-compendium-browser-loader" style="display: none" class="loader">
+        <span id="d35e-compendium-browser-loader-bar" class="loader-bar" style="width:54.5945945945946%"></span>
+        <span id="d35e-compendium-browser-loader-label" class="loader-label">Light Load (37)</span>
+      </div>
+    </div>
+  </nav>
+</div>
+<div class="compendium-browser flexrow" data-type="{{type}}" style="height: calc(100% - 32px);">
   <header class="header">
     <div class="search">
       <i class="fas fa-search"></i>
@@ -56,4 +73,5 @@
       {{/each}}
     </ol>
   </div>
+</div>
 </div>

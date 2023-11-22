@@ -38,10 +38,13 @@ export class ItemChargeUpdateHelper {
    * @param actorRollData
    */
   static updateMaxUses(item, data, { srcData = null, actorData = null, actorRollData = null } = {}) {
-    if (data["system.uses.max"] !== undefined) return;
+
+    if (data["system.uses.max"] !== undefined) {
+      return;
+    }
     let doLinkData = true;
     if (srcData == null) {
-      srcData = item.system;
+      srcData = item;
       doLinkData = false;
     }
     let rollData = {};

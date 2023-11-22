@@ -42,8 +42,7 @@
 
             {{!-- Description Tab --}}
             <div class="tab flexcol active" data-group="primary" data-tab="description">
-                {{editor content=data.description.value target="system.description.value" button=true owner=owner
-                editable=editable}}
+                {{editor enriched.description.value target="system.description.value" button=true editable=editable}}
             </div>
 
             {{!-- Details Tab --}}
@@ -93,10 +92,7 @@
 
                     {{#if isGM}}
                     <h3 class="form-header">System Properties</h3>
-                    <div class="form-group">
-                        <label>UID</label>
-                        <input type="text" name="system.uniqueId" value="{{data.system.uniqueId}}" data-dtype="String"/>
-                    </div>
+                    {{> "systems/D35E/templates/items/components/uid-input.html"}}
                     {{/if}}
                 </div>
             </div>

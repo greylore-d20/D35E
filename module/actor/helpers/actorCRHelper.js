@@ -31,7 +31,7 @@ export class ActorCRHelper {
         let hpCR = adjustedHP/15.0;
         let acCR = this.actor.system.attributes.ac.normal.total * 0.75 - 10;
         let srAdjustment = this.actor.system.attributes.sr.total ? 2 : 0;
-        //console.log(this.actor.name,"Defensive CR:", Math.floor((hpCR + acCR + hdCR) /3)+srAdjustment,hpCR, acCR, srAdjustment)
+        //game.D35E.logger.log(this.actor.name,"Defensive CR:", Math.floor((hpCR + acCR + hdCR) /3)+srAdjustment,hpCR, acCR, srAdjustment)
         return Math.floor((hpCR + acCR + hdCR) /3)+srAdjustment;
     }
 
@@ -83,7 +83,7 @@ export class ActorCRHelper {
         let spellCR = Math.min(spellCount, 5);
         let miscAttackCR = Math.min(specialAttackCount, 5);
         let offensiveCR = Math.floor((attackCR + damageCR)/2)+Math.ceil((spellCR+miscAttackCR)/2);
-        //console.log(this.actor.name,"Offensive CR:", offensiveCR, attackCR, damageCR, spellCR, miscAttackCR)
+        //game.D35E.logger.log(this.actor.name,"Offensive CR:", offensiveCR, attackCR, damageCR, spellCR, miscAttackCR)
         return offensiveCR;
     }
 }

@@ -13,7 +13,7 @@ export async function PatchCore() {
           const compiled = Handlebars.compile(resp.html, { preventIndent: true });
           Handlebars.registerPartial(id ?? path, compiled);
           _templateCache[path] = compiled;
-          //console.log(`Foundry VTT | Retrieved and compiled template ${path}`);
+          //game.D35E.logger.log(`Foundry VTT | Retrieved and compiled template ${path}`);
           resolve(compiled);
         });
       });
@@ -49,7 +49,7 @@ export async function PatchCore() {
   const Token_animateMovement = Token.prototype.animateMovement;
   Token.prototype.animateMovement = async function (...args) {
     await Token_animateMovement.call(this, ...args);
-    //console.log("D35E | Calling _calculateMinionDistance")
+    //game.D35E.logger.log("Calling _calculateMinionDistance")
     ActorMinionsHelper.calculateMinionDistance(this.actor, {});
     // Do something?
   };

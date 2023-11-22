@@ -1,5 +1,11 @@
 @import "./variables.less";
 .D35E.sheet.item {
+  .document-uid-link {
+    margin-left: 0.25rem;
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
   min-height: 420px;
 
   /* ----------------------------------------- */
@@ -130,6 +136,16 @@
     }
   }
 
+
+  .tag-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    li {
+      font-family: "Signika", "Palatino Linotype", serif;
+    }
+  }
   .sheet-navigation {
     margin-bottom: 5px;
     .item {
@@ -524,6 +540,10 @@
     float: right;
     text-align: right;
     color: @colorTan;
+  }
+
+  .special-control {
+    width: unset;
   }
 
   .recharge {
@@ -1029,5 +1049,17 @@
     padding: 9px;
     font-size: 16px;
     color: #6d2c2c;
+  }
+
+  .generate-uid {
+    flex: 0 100px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    margin-left: 4px;
+  }
+
+  input.invalid {
+    border: 2px solid darkred !important;
   }
 }

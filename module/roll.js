@@ -13,8 +13,8 @@ export class Roll35e extends Roll {
         }
         if (roll.warning) roll.err = Error("This formula had a value replaced with null.");
         if (roll.err) {
-            if (context && !options.suppressError) console.error(context, roll.err);
-            else if (CONFIG.debug.roll) console.error(roll.err);
+            if (context && !options.suppressError) game.D35E.logger.error(context, roll.err);
+            else if (CONFIG.debug.roll) game.D35E.logger.error(roll.err);
         }
         return roll;
     }

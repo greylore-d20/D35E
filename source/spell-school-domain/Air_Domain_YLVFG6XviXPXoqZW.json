@@ -1,0 +1,310 @@
+{
+  "name": "Air Domain",
+  "type": "feat",
+  "flags": {
+    "core": {
+      "sourceId": "Item.0gsFl4g9fVwl96CY"
+    }
+  },
+  "img": "systems/D35E/icons/spells/domain/air.png",
+  "effects": [],
+  "_id": "YLVFG6XviXPXoqZW",
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p>Turn or destroy earth creatures as a good cleric turns undead. Rebuke, command, or bolster air creatures as an evil cleric rebukes undead. Use these abilities a total number of times per day equal to 3 + your Charisma modifier. This granted power is a supernatural ability.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0,
+      "value": null,
+      "charged": false,
+      "_deprecated": true
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": null,
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 0,
+      "description": "",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "changes": [],
+    "changeFlags": {
+      "loseDexToAC": false,
+      "noStr": false,
+      "noDex": false,
+      "noInt": false,
+      "noCon": false,
+      "oneInt": false,
+      "oneWis": false,
+      "oneCha": false,
+      "noEncumbrance": false,
+      "mediumArmorFullSpeed": false,
+      "heavyArmorFullSpeed": false,
+      "multiAttack": false,
+      "multiweaponAttack": false,
+      "uncannyDodge": false
+    },
+    "conditionFlags": {
+      "dazzled": false,
+      "wildshaped": false,
+      "polymorphed": false
+    },
+    "combatChanges": [],
+    "combatChangesRange": {
+      "maxFormula": "",
+      "max": 0
+    },
+    "combatChangesAdditionalRanges": {
+      "hasAdditionalRanges": false,
+      "slider1": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider2": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      },
+      "slider3": {
+        "maxFormula": "",
+        "max": 0,
+        "name": ""
+      }
+    },
+    "combatChangesUsesCost": "chargesPerUse",
+    "combatChangesApplySpecialActionsOnce": true,
+    "combatChangeCustomDisplayName": "",
+    "combatChangeCustomReferenceName": "",
+    "sizeOverride": "",
+    "counterName": "",
+    "resistances": [],
+    "damageReduction": [],
+    "requirements": [],
+    "creationChanges": [],
+    "contextNotes": [],
+    "featType": "spellSpecialization",
+    "abilityType": "",
+    "associations": {
+      "classes": []
+    },
+    "crOffset": "",
+    "spellSpecializationName": "air",
+    "spellSpecializationForbiddenNames": "",
+    "linkedItems": [],
+    "metamagic": {
+      "enabled": false,
+      "shortDesc": "",
+      "code": ""
+    },
+    "spellSpecialization": {
+      "isDomain": true,
+      "spells": {
+        "level1": {
+          "level": 1,
+          "name": "Obscuring Mist",
+          "img": "systems/D35E/icons/spells/named-spells/obscuring-mist.png",
+          "pack": "D35E.spells",
+          "id": "kdC23NoqRSKjBHzY"
+        },
+        "level2": {
+          "level": 2,
+          "name": "Wind Wall",
+          "img": "systems/D35E/icons/spells/named-spells/wind-wall.png",
+          "pack": "D35E.spells",
+          "id": "3d8BnUiZndbJ7PAe"
+        },
+        "level3": {
+          "level": 3,
+          "name": "Gaseous Form",
+          "img": "systems/D35E/icons/spells/named-spells/gaseous-form.png",
+          "pack": "D35E.spells",
+          "id": "WnffsVkcpoGRh7pW"
+        },
+        "level4": {
+          "level": 4,
+          "name": "Air Walk",
+          "img": "systems/D35E/icons/spells/named-spells/air-walk.png",
+          "pack": "D35E.spells",
+          "id": "nreHcYonQMUKiQLB"
+        },
+        "level5": {
+          "level": 5,
+          "name": "Control Winds",
+          "img": "systems/D35E/icons/spells/named-spells/control-winds.png",
+          "pack": "D35E.spells",
+          "id": "ollx1hOpJvtk3tyN"
+        },
+        "level6": {
+          "level": 6,
+          "name": "Chain Lightning",
+          "img": "systems/D35E/icons/spells/named-spells/chain-lightning.png",
+          "pack": "D35E.spells",
+          "id": "o6Hx4ks8FB0nn2zD"
+        },
+        "level7": {
+          "level": 7,
+          "name": "Control Weather",
+          "img": "systems/D35E/icons/spells/named-spells/control-weather.png",
+          "pack": "D35E.spells",
+          "id": "gPrhyHACnFtybVfh"
+        },
+        "level8": {
+          "level": 8,
+          "name": "Whirlwind",
+          "img": "systems/D35E/icons/spells/named-spells/whirlwind.png",
+          "pack": "D35E.spells",
+          "id": "USUYHtfCs1wRzqeL"
+        },
+        "level9": {
+          "level": 9,
+          "name": "Elemental Swarm",
+          "img": "systems/D35E/icons/spells/named-spells/elemental-swarm.png",
+          "pack": "D35E.spells",
+          "id": "gl974KOYdXBh6ics"
+        }
+      }
+    },
+    "showInQuickbar": false,
+    "links": {
+      "charges": []
+    },
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": "spellSpecialization",
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0,
+    "VIfT2pClvTXfstmc": 3
+  },
+  "folder": null,
+  "sort": 0,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394278061,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!YLVFG6XviXPXoqZW"
+}

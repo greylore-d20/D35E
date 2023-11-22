@@ -9,10 +9,9 @@ export default class D35ELayer extends InteractionLayer {
 
     static get layerOptions() {
         return mergeObject(super.layerOptions, {
-            objectClass: Note,
-            sheetClass: NoteConfig,
-            canDragCreate: false,
-            zIndex: 180
+          name: "d35e",
+          sortActiveTop: true,
+          zIndex: 999,
         });
     }
 
@@ -25,10 +24,10 @@ export default class D35ELayer extends InteractionLayer {
           return Number.between(c.x, x, x+width) && Number.between(c.y, y, y+height);
         });
         // Release objects no longer controlled
-        //console.log(oldSet)
-        //console.log(newSet)
+        //game.D35E.logger.log(oldSet)
+        //game.D35E.logger.log(newSet)
         const toRelease = oldSet.filter(obj => !newSet.includes(obj));
-        //console.log(toRelease)
+        //game.D35E.logger.log(toRelease)
         toRelease.forEach(obj => obj.release(releaseOptions));
         // Control new objects
         if ( isEmpty(controlOptions) ) controlOptions.releaseOthers = false;
@@ -40,7 +39,7 @@ export default class D35ELayer extends InteractionLayer {
 
     /** @override */
     selectObjects({x, y, width, height, releaseOptions={}, controlOptions={}}={}) {
-        //console.log('selectObjects')
+        //game.D35E.logger.log('selectObjects')
         releaseOptions = { updateSight: false };
         controlOptions = { releaseOthers: false, updateSight: false };
         const changed = this.selectObjectsFromTokenLayer({x, y, width, height, releaseOptions, controlOptions});
@@ -50,12 +49,12 @@ export default class D35ELayer extends InteractionLayer {
 
       /** @override */
       _onClickLeft(event) {
-        canvas.tokens.controlled.forEach(token => token.release())
+        //canvas.tokens.controlled.forEach(token => token.release())
       }
 
       activate() {
           super.activate()
-          canvas.tokens.interactiveChildren = true;
+          //canvas.tokens.interactiveChildren = true;
       }
 
       deactivate() {

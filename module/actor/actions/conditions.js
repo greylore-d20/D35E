@@ -18,7 +18,7 @@ export class ActorConditions {
         const buffTextures = this.actor.buffs.calcBuffTextures();
 
         for (let t of tokens) {
-            LogHelper.log("D35E | toggleConditionStatusIcons")
+            LogHelper.log("toggleConditionStatusIcons")
             // const isLinkedToken = getProperty(this.actor.data, "token.actorLink");
             const actor = t.actor ? t.actor : this;
             if (!actor.testUserPermission(game.user, "OWNER")) continue;

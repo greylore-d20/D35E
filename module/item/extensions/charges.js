@@ -78,7 +78,7 @@ export class ItemCharges {
     if (rechargeFormula) {
       rechargeTime = new Roll35e(rechargeFormula, {}).roll().total;
     }
-    console.log("D35E | Recharge and uses", data, newUses, rechargeFormula, rechargeTime);
+    game.D35E.logger.log("Recharge and uses", data, newUses, rechargeFormula, rechargeTime);
     if (data != null && !isChargeLinked) {
       if (this.item.isSingleUse) {
         data["system.quantity"] = newUses;
@@ -133,7 +133,7 @@ export class ItemCharges {
     if (getProperty(this.item.system, "atWill")) return;
     //if (getProperty(this.item.system,"level") === 0) return;
 
-    //console.log(`D35E | Adding spell uses ${value}`)
+    //game.D35E.logger.log(`Adding spell uses ${value}`)
     const spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${this.item.system.spellbook}`),
       isSpontaneous = spellbook.spontaneous,
       usePowerPoints = spellbook.usePowerPoints,

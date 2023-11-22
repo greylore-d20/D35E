@@ -1,0 +1,264 @@
+{
+  "_id": "D0QchsP9kjfreRLL",
+  "name": "Minor Creation",
+  "type": "spell",
+  "img": "systems/D35E/icons/spells/named-spells/minor-creation.png",
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.yvcczJOhM53YI75L"
+    }
+  },
+  "system": {
+    "originVersion": 109,
+    "originPack": "D35E.spells",
+    "originId": "D0QchsP9kjfreRLL",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n      <strong>School:</strong>&nbsp;conjuration&nbsp;(creation);\n    <br>\n    <strong>Level:</strong>&nbsp;Sorcerer 4, Wizard 4;\n    <strong>Domain:</strong>&nbsp;Artifice 4, Creation 4;\n    \n    \n    \n    <br>\n    <strong>Components:</strong>&nbsp;V, S, M (a tiny piece of matter of the same sort of item you plan to create with minor creation)<br>\n    \n      <strong>Casting Time:</strong>&nbsp;1 minute<br>\n    <strong>Range:</strong>&nbsp;0 feet<br>\n    \n    \n    <strong>Effect:</strong>&nbsp;Unattended, nonmagical object of nonliving plant matter, up to 1 cu. ft./level<br>\n    <strong>Duration:</strong>&nbsp;1 Hours/Level (D)<br>\n    <strong>Power Points/Spell Points Cost:</strong>&nbsp;7<br>\n        <strong>Saving Throw:</strong>&nbsp;None\n        <br>\n        <strong>Spell Resistance:</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  <p>You create a nonmagical, unattended object of nonliving, vegetable matter. The volume of the item created cannot exceed 1 cubic foot per caster level. You must succeed on an appropriate skill check to make a complex item.</p>\n<p>Attempting to use any created object as a material component causes the spell to fail.</p>\n<p><em>Material Component: </em>A tiny piece of matter of the same sort of item you plan to create with <em>minor creation</em>.</p>\n<table class=\"right\" cellspacing=\"0\">\n<thead>\n<tr>\n<th style=\"text-align: left;\" align=\"left\">Hardness and Rarity Examples</th>\n<th style=\"text-align: left;\" align=\"left\">Duration</th>\n</tr>\n</thead>\n<tfoot>\n<tr>\n<td style=\"text-align: left;\" colspan=\"2\">\n<ol>\n<li>Includes <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#adamantine\">adamantine</a>, <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#silverAlchemical\">alchemical silver</a>, and <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#mithral\">mithral</a>. You can&rsquo;t use major creation to create a <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#ironCold\">cold iron</a> item.</li>\n</ol>\n</td>\n</tr>\n</tfoot>\n<tbody>\n<tr>\n<td style=\"text-align: left;\">Vegetable matter</td>\n<td style=\"text-align: left;\">2 hr./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Stone, crystal, base metals</td>\n<td style=\"text-align: left;\">1 hr./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Precious metals</td>\n<td style=\"text-align: left;\">20 min./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Gems</td>\n<td style=\"text-align: left;\">10 min./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Rare metal<sup>1</sup></td>\n<td style=\"text-align: left;\">1 round/level</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "minute"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": "0",
+      "units": "ft",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "None",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Minor Creation",
+        "action": "Create unique \"Minor Creation\" from \"D35E.commonbuffs\" on self;Set buff \"Minor Creation\" field data.level to max(1,(@cl)) on self;Activate buff \"Minor Creation\" on self;",
+        "condition": "",
+        "img": "icons/svg/item-bag.svg"
+      }
+    ],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Wizard",
+          4
+        ],
+        [
+          "Sorcerer",
+          4
+        ]
+      ],
+      "domain": [
+        [
+          "Artifice",
+          4
+        ],
+        [
+          "Creation",
+          4
+        ]
+      ],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 4,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "con",
+    "subschool": "creation",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": true,
+      "somatic": true,
+      "material": true,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "a tiny piece of matter of the same sort of item you plan to create with minor creation",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 7,
+    "display": "",
+    "isPower": false,
+    "shortDescription": "<p>You create a nonmagical, unattended object of nonliving, vegetable matter. The volume of the item created cannot exceed 1 cubic foot per caster level. You must succeed on an appropriate skill check to make a complex item.</p>\n<p>Attempting to use any created object as a material component causes the spell to fail.</p>\n<p><em>Material Component: </em>A tiny piece of matter of the same sort of item you plan to create with <em>minor creation</em>.</p>\n<table class=\"right\" cellspacing=\"0\">\n<thead>\n<tr>\n<th style=\"text-align: left;\" align=\"left\">Hardness and Rarity Examples</th>\n<th style=\"text-align: left;\" align=\"left\">Duration</th>\n</tr>\n</thead>\n<tfoot>\n<tr>\n<td style=\"text-align: left;\" colspan=\"2\">\n<ol>\n<li>Includes <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#adamantine\">adamantine</a>, <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#silverAlchemical\">alchemical silver</a>, and <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#mithral\">mithral</a>. You can&rsquo;t use major creation to create a <a href=\"https://www.d20srd.org/srd/specialMaterials.htm#ironCold\">cold iron</a> item.</li>\n</ol>\n</td>\n</tr>\n</tfoot>\n<tbody>\n<tr>\n<td style=\"text-align: left;\">Vegetable matter</td>\n<td style=\"text-align: left;\">2 hr./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Stone, crystal, base metals</td>\n<td style=\"text-align: left;\">1 hr./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Precious metals</td>\n<td style=\"text-align: left;\">20 min./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Gems</td>\n<td style=\"text-align: left;\">10 min./level</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Rare metal<sup>1</sup></td>\n<td style=\"text-align: left;\">1 round/level</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>",
+    "snip": "Creates one cloth or wood object.",
+    "spellDuration": "1 hour/level (D)",
+    "spellEffect": "Unattended, nonmagical object of nonliving plant matter, up to 1 cu. ft./level",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "identifiedName": "Minor Creation",
+    "changes": [],
+    "combatChanges": [],
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "customReferenceId": "",
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "perRoundActions": [],
+    "spellDurationData": {
+      "value": "1*@cl",
+      "units": "hourPerLevel",
+      "dismissable": false
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": 1668846676400,
+    "modifiedTime": 1678394289834,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!D0QchsP9kjfreRLL"
+}

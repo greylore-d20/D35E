@@ -32,7 +32,7 @@ export class QuantityDialog extends Dialog {
                     var quantity = Number('quantity' in options ? options['quantity'] : document.getElementById('quantity').value)
 
                     if (isNaN(quantity)) {
-                        console.log("Loot Sheet | Item quantity invalid");
+                        game.D35E.logger.log("Loot Sheet | Item quantity invalid");
                         return ui.notifications.error(game.i18n.localize("ERROR.lsItemInvalidQuantity"));
                     }
 

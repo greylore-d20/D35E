@@ -263,7 +263,7 @@ export class ActorUpdater {
       }
       if (hasContainerChanged) itemUpdates.push(itemUpdateData);
     }
-    // //LogHelper.log('D35E | Item updates', itemUpdates)
+    // //LogHelper.log('Item updates', itemUpdates)
     if (itemUpdates.length > 0) await this.actor.updateOwnedItem(itemUpdates, { stopUpdates: true });
     // Send resource updates to item
     let updatedResources = [];
@@ -379,9 +379,9 @@ export class ActorUpdater {
         (updated["system.details.level.available"] || getProperty(this.actor.system, "details.level.available")) +
         raceLA +
         racialHD;
-      //LogHelper.log('D35E | ActorPF | _updateExp | Update exp data from class level count', dataLevel)
+      //LogHelper.log('ActorPF | _updateExp | Update exp data from class level count', dataLevel)
     }
-    //LogHelper.log('D35E | ActorPF | _updateExp | Race LA, racial HD, level', raceLA, racialHD,dataLevel)
+    //LogHelper.log('ActorPF | _updateExp | Race LA, racial HD, level', raceLA, racialHD,dataLevel)
     // Translate update exp value to number
     let newExp = updated["system.details.xp.value"],
       resetExp = false;
@@ -426,6 +426,7 @@ export class ActorUpdater {
       .filter((obj) => {
         let z = obj.type;
         if (obj.type === "buff") return obj.system.active;
+        if (obj.type === "aura") return obj.system.active;
         if (obj.type === "equipment" || obj.type === "weapon")
           return obj.system.equipped && !obj.system.melded && !obj.broken;
         return true;
@@ -530,7 +531,7 @@ export class ActorUpdater {
                   subtype: this.#getChangeItemSubtype(item),
                   name: item.name,
                   item: item.system,
-                  itemRollData: new Item35E(item.data, { temporary: true }).getRollData(),
+                  itemRollData: new Item35E(item.toObject(), { temporary: true }).getRollData(),
                 },
               });
             }
@@ -550,6 +551,7 @@ export class ActorUpdater {
       }
       if (!obj.system.changeFlags) continue;
       for (let [flagKey, flagValue] of Object.entries(obj.system.changeFlags)) {
+        flags[flagKey] = flags[flagKey] || false;
         if (flagValue === true) {
           flags[flagKey] = true;
 
@@ -654,12 +656,12 @@ export class ActorUpdater {
       options,
       updateData
     );
-    //LogHelper.log('D35E | Sorting Changes');
+    //LogHelper.log('Sorting Changes');
     // Sort changes
     allChanges.sort(this.#sortChanges.bind(this));
     // Parse changes
     let temp = [];
-    //LogHelper.log('D35E | Master Changes');
+    //LogHelper.log('Master Changes');
     const origData = mergeObject(this.actor.toObject(false), updated != null ? expandObject(updated) : {});
     updateData = flattenObject({
       system: mergeObject(origData.system, expandObject(updateData).system, { inplace: false }),
@@ -671,11 +673,11 @@ export class ActorUpdater {
       allChanges = allChanges.filter((c) => (c.raw[0] || "").indexOf("@master") === -1);
       if (_changesLength !== allChanges.length) {
         return ui.notifications.warn(game.i18n.localize("D35E.FamiliarNoMaster"));
-        //LogHelper.log('D35E | Minion has some changes removed |', _changesLength,allChanges.length);
+        //LogHelper.log('Minion has some changes removed |', _changesLength,allChanges.length);
       }
     }
 
-    //LogHelper.log('D35E | Rolling Changes');
+    //LogHelper.log('Rolling Changes');
     let currentChangeTarget = null;
     let changeRollData = null;
     // All changes are sorted and lumped together
@@ -792,7 +794,7 @@ export class ActorUpdater {
       }
     }
 
-    //LogHelper.log('D35E | ACP and spell slots');
+    //LogHelper.log('ACP and spell slots');
     // Reduce final speed under certain circumstances
     let armorItems = source.items.filter((o) => o.type === "equipment");
     for (let speedKey of Object.keys(source.system.attributes.speed)) {
@@ -1020,7 +1022,10 @@ export class ActorUpdater {
     // Add dex mod to AC
     if (updateData["system.abilities.dex.mod"] < 0 || !flags.loseDexToAC) {
       const maxDexBonus =
-        updateData["system.attributes.maxDexBonus"] || getProperty(this.actor.system, "attributes.maxDexBonus") || null;
+        updateData["system.attributes.maxDexBonus"] !== null &&
+        updateData["system.attributes.maxDexBonus"] !== undefined
+          ? updateData["system.attributes.maxDexBonus"]
+          : getProperty(this.actor.system, "attributes.maxDexBonus") || null;
       const dexBonus =
         maxDexBonus != null
           ? Math.min(maxDexBonus, updateData["system.abilities.dex.mod"])
@@ -1075,7 +1080,7 @@ export class ActorUpdater {
     } else {
       if (updateData["system.attributes.hp.max"]) {
         const hpDiff = updateData["system.attributes.hp.max"] - prevValues.mhp;
-        LogHelper.log("D35E | HP Diff", prevValues.mhp, hpDiff, updateData["system.attributes.hp.max"]);
+        LogHelper.log("HP Diff", prevValues.mhp, hpDiff, updateData["system.attributes.hp.max"]);
         if (hpDiff !== 0) {
           linkData(
             source,
@@ -1131,14 +1136,16 @@ export class ActorUpdater {
           let tokens = [];
           tokens.push(this.actor.token);
           for (const o of tokens) {
-            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
+            if (shapechangeImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: shapechangeImg } }, { stopUpdates: true });
           }
         }
         if (!this.actor.isToken) {
           let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
 
           for (const o of tokens) {
-            if (shapechangeImg !== o.img) ActorPF._updateToken(o, { texture: {src: shapechangeImg} }, { stopUpdates: true });
+            if (shapechangeImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: shapechangeImg } }, { stopUpdates: true });
           }
           if (source !== null) source["token.img"] = shapechangeImg;
         }
@@ -1147,14 +1154,16 @@ export class ActorUpdater {
           let tokens = [];
           tokens.push(this.actor.token);
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: tokenImg} }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: tokenImg } }, { stopUpdates: true });
           }
         }
         if (!this.actor.isToken) {
           let tokens = this.actor.getActiveTokens().filter((o) => o?.document.actorLink);
 
           for (const o of tokens) {
-            if (tokenImg && tokenImg !== o.img) ActorPF._updateToken(o, { texture: {src: tokenImg} }, { stopUpdates: true });
+            if (tokenImg && tokenImg !== o.img)
+              ActorPF._updateToken(o, { texture: { src: tokenImg } }, { stopUpdates: true });
           }
 
           if (source !== null) {
@@ -1283,9 +1292,9 @@ export class ActorUpdater {
       }
     }
 
-    for (let [changeTarget, value] of Object.entries(changes)) {
+    for (let [changeType, value] of Object.entries(changes)) {
       if (value.positive !== 0 || value.negative !== 0) {
-        let flatTargets = ActorChangesHelper.getChangeFlat(buffTarget, changeTarget, rollData.data);
+        let flatTargets = ActorChangesHelper.getChangeFlat(buffTarget, changeType, rollData.data);
         if (flatTargets == null) continue;
 
         if (!(flatTargets instanceof Array)) flatTargets = [flatTargets];
@@ -1310,12 +1319,14 @@ export class ActorUpdater {
                 name: changeSource.name,
                 type: changeSource.type,
                 value: changeSource.value,
+                bonusType: changeType,
               });
             if (changeSource.value < 0)
               sourceInfo[target].negative.push({
                 name: changeSource.name,
                 type: changeSource.type,
                 value: changeSource.value,
+                bonusType: changeType,
               });
           }
         }
@@ -1381,7 +1392,14 @@ export class ActorUpdater {
     //linkData(data, updateData, "system.attributes.hd.racialClass", data1.details.level.value - raceLA);
 
     let cr = data1.details.cr || 0;
-    linkData(source, updateData, "system.details.totalCr", cr < 1 ? cr : Math.floor(cr));
+    let crVal = cr;
+    if (typeof cr === "string") {
+      if (cr.includes("/")) {
+        crVal = parseInt(cr.split("/")[0]) / parseInt(cr.split("/")[1]);
+      } else crVal = parseFloat(cr);
+    }
+    linkData(source, updateData, "system.details.cr", crVal < 1 ? crVal.toFixed(2) : Math.floor(crVal));
+    linkData(source, updateData, "system.details.totalCr", crVal < 1 ? crVal.toFixed(2) : Math.floor(crVal));
 
     // Reset abilities
     for (let [a, abl] of Object.entries(data1.abilities)) {
@@ -1445,7 +1463,7 @@ export class ActorUpdater {
 
     let levelUpData = duplicate(data1.details.levelUpData) || [];
     if (levelUpData.length !== data1.details.level.available) {
-      LogHelper.log("D35E | ActorPF | Will update actor level");
+      LogHelper.log("ActorPF | Will update actor level");
       while (levelUpData.length < data1.details.level.available) {
         levelUpData.push({
           level: levelUpData.length + 1,
@@ -1463,7 +1481,7 @@ export class ActorUpdater {
         levelUpData.pop();
       }
       await this.actor.updateClassProgressionLevel(source, updateData, data1, levelUpData);
-      //LogHelper.log('D35E | LevelUpData | ', levelUpData)
+      //LogHelper.log('LevelUpData | ', levelUpData)
       linkData(source, updateData, "system.details.levelUpData", levelUpData);
     }
 
@@ -1528,7 +1546,7 @@ export class ActorUpdater {
               classes.reduce((cur, obj, idx) => {
                 const saveScale = getProperty(obj, `system.savingThrows.${a}.value`) || "";
                 if (saveScale === "high") {
-                  const acc = (highStart || idx) ? 0 : 2;
+                  const acc = highStart || idx ? 0 : 2;
                   highStart = true;
                   return cur + obj.system.levels / 2 + acc;
                 }
@@ -1622,6 +1640,11 @@ export class ActorUpdater {
         }
       });
 
+    let naturalAttackCount = (items || []).filter(
+      (o) => o.type === "attack" && o.system.attackType === "natural"
+    )?.length;
+    flags.naturalAttackCount = naturalAttackCount;
+
     // Reset specific skill bonuses
     for (let sklKey of ActorChangesHelper.getChangeFlat("skills", "", this.actor.system)) {
       if (hasProperty(source, sklKey)) linkData(source, updateData, sklKey, 0);
@@ -1692,7 +1715,7 @@ export class ActorUpdater {
           sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
           sourceInfo[k].positive.push({ name: "Epic Levels", value: epicBab });
         }
-        linkData(source, updateData, k, bab + epicBab)
+        linkData(source, updateData, k, bab + epicBab);
         linkData(source, updateData, l, bab);
         linkData(source, updateData, j, bab + epicBab);
       }
@@ -1879,6 +1902,12 @@ export class ActorUpdater {
     // Reset initiative
     linkData(source, updateData, "system.attributes.init.total", 0);
 
+    //Set flags on actor so they are accessible
+
+    for (let flagKey of Object.keys(flags)) {
+      linkData(source, updateData, `flags.D35E.${flagKey}`, flags[flagKey]);
+    }
+
     // Reset class skills
     for (let [k, s] of Object.entries(getProperty(source, "system.skills"))) {
       if (!s) continue;
@@ -1898,7 +1927,7 @@ export class ActorUpdater {
         return cur + o.system.levels;
       }, 0);
 
-      //LogHelper.log(`D35E | Setting attributes hd total | ${level}`)
+      //LogHelper.log(`Setting attributes hd total | ${level}`)
       linkData(source, updateData, "system.attributes.hd.total", level);
 
       linkData(source, updateData, "system.attributes.hd.racialClass", level);
@@ -1932,7 +1961,7 @@ export class ActorUpdater {
         itemsWithUid.set(i.system.uniqueId, i.id);
       }
 
-      //LogHelper.log('D35E | Adding Features', level, data, getProperty(this.actor.system,"classLevels"), updateData)
+      //LogHelper.log('Adding Features', level, data, getProperty(this.actor.system,"classLevels"), updateData)
 
       if (true) {
         linkData(source, updateData, "system.details.level.value", level);
@@ -1957,10 +1986,10 @@ export class ActorUpdater {
         await itemPack.getIndex().then((index) => (items = index));
 
         for (const classInfo of classNames) {
-          //LogHelper.log('D35E | Adding Features', classInfo)
+          //LogHelper.log('Adding Features', classInfo)
           let added = false;
           for (let feature of classInfo[2]) {
-            LogHelper.log("D35E | Adding Features", feature);
+            LogHelper.log("Adding Features", feature);
             let e = CACHE.AllAbilities.get(feature.uid);
             const level = parseInt(feature.level);
             let uniqueId = e?.system?.uniqueId;
@@ -1985,7 +2014,7 @@ export class ActorUpdater {
             );
           }
           for (let e of CACHE.ClassFeatures.get(classInfo[0]) || []) {
-            //LogHelper.log('D35E | Adding Features', e)
+            //LogHelper.log('Adding Features', e)
             if (e.system.associations === undefined || e.system.associations.classes === undefined) continue;
             let levels = e.system.associations.classes.filter((el) => el[0] === classInfo[0]);
             for (let _level of levels) {
@@ -2021,7 +2050,9 @@ export class ActorUpdater {
             let e = CACHE.AllAbilities.get(feature.uid);
             let uniqueId = e?.system?.uniqueId;
             if (!uniqueId || uniqueId === "") {
-              ui.notifications.warn(game.i18n.localize("D35E.NotAddingAbilityWithNoUID").format(e?.name || "[Ability not found]"));
+              ui.notifications.warn(
+                game.i18n.localize("D35E.NotAddingAbilityWithNoUID").format(e?.name || "[Ability not found]")
+              );
               continue;
             }
             if (uniqueId.endsWith("*")) {
@@ -2036,6 +2067,7 @@ export class ActorUpdater {
                 delete eItem._id;
                 eItem.system.uniqueId = uniqueId;
                 eItem.system.source = `${raceObject.name}`;
+                eItem.system.addedLevel = 1;
                 eItem.system.userNonRemovable = true;
                 if (e.type === "spell") {
                   eItem.system.spellbook = "spelllike";
@@ -2079,6 +2111,7 @@ export class ActorUpdater {
                 Item35E.setMaxUses(eItem, this.actor.getRollData());
                 eItem.system.uniqueId = uniqueId;
                 eItem.system.source = `${raceObject.name}`;
+                eItem.system.addedLevel = 1;
                 eItem.system.userNonRemovable = true;
                 if (e.type === "spell") {
                   eItem.system.spellbook = "spelllike";
@@ -2108,7 +2141,7 @@ export class ActorUpdater {
 
       for (let abilityUid of existingAbilities) {
         if (!addedAbilities.has(abilityUid)) {
-          //LogHelper.log(`D35E | Removing existing ability ${abilityUid}`, changes)
+          //LogHelper.log(`Removing existing ability ${abilityUid}`, changes)
           changes.splice(
             changes.findIndex((change) => change.source.item.uniqueId === abilityUid),
             1
@@ -2139,7 +2172,7 @@ export class ActorUpdater {
     itemsToAdd,
     added
   ) {
-    //LogHelper.log('D35E | Adding Features', addedAbilities)
+    //LogHelper.log('Adding Features', addedAbilities)
     let canAdd = !addedAbilities.has(uniqueId);
     if (canAdd) {
       if (level <= classInfo[1]) {
@@ -2149,6 +2182,7 @@ export class ActorUpdater {
           eItem.system.uniqueId = uniqueId;
           delete eItem._id;
           eItem.system.source = `${classInfo[0]} ${level}`;
+          eItem.system.addedLevel = level;
           eItem.system.userNonRemovable = true;
           if (e.type === "spell") {
             eItem.system.spellbook = "spelllike";
@@ -2464,11 +2498,14 @@ export class ActorUpdater {
           energyDrainPenalty
       );
       linkData(data, updateData, `system.skills.${sklKey}.mod`, sklValue);
+      linkData(data, updateData, `system.skills.${sklKey}.acpPenalty`, acpPenalty);
+      linkData(data, updateData, `system.skills.${sklKey}.energyDrainPenalty`, energyDrainPenalty);
+      linkData(data, updateData, `system.skills.${sklKey}.abilityModifier`, ablMod);
       linkData(
         data,
         updateData,
         `system.skills.${sklKey}.rank`,
-        Math.floor(cs && skl.points > 0 ? (skl.points || 0) : (skl.points || 0) / 2)
+        Math.floor(cs && skl.points > 0 ? skl.points || 0 : (skl.points || 0) / 2)
       );
       // Parse sub-skills
       for (let [subSklKey, subSkl] of Object.entries(skl.subSkills || {})) {
@@ -2485,13 +2522,22 @@ export class ActorUpdater {
         ablMod = 0;
         if (subSkl.ability !== "") ablMod = subSkl.ability ? systemData.abilities[subSkl.ability].mod : 0;
         specificSkillBonus = subSkl.changeBonus || 0;
+
         sklValue =
-          Math.floor(scs && subSkl.points > 0 ? (subSkl.points || 0) : (subSkl.points || 0) / 2) +
+          Math.floor(scs && subSkl.points > 0 ? subSkl.points || 0 : (subSkl.points || 0) / 2) +
           ablMod +
           specificSkillBonus -
           acpPenalty -
           energyDrainPenalty;
         linkData(data, updateData, `system.skills.${sklKey}.subSkills.${subSklKey}.mod`, sklValue);
+        linkData(data, updateData, `system.skills.${sklKey}.subSkills.${subSklKey}.acpPenalty`, acpPenalty);
+        linkData(
+          data,
+          updateData,
+          `system.skills.${sklKey}.subSkills.${subSklKey}.energyDrainPenalty`,
+          energyDrainPenalty
+        );
+        linkData(data, updateData, `system.skills.${sklKey}.subSkills.${subSklKey}.abilityModifier`, ablMod);
         linkData(
           data,
           updateData,
@@ -2852,7 +2898,12 @@ export class ActorUpdater {
             lightAngle = i.system.light.lightAngle;
             animationSpeed = i.system.light.animationSpeed;
           }
-        } else if (i.type === "race" || i.type === "class" || (i.type === "buff" && i.system.active)) {
+        } else if (
+          i.type === "race" ||
+          i.type === "class" ||
+          (i.type === "buff" && i.system.active) ||
+          (i.type === "aura" && i.system.active)
+        ) {
           if (i.system.light?.emitLight) {
             dimLight = i.system.light.dimRadius ? i.system.light.dimRadius : Math.floor(2 * i.system.light.radius);
             brightLight = Math.floor(i.system.light.radius);

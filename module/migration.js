@@ -3,13 +3,13 @@ export const migrateActor = async function(a) {
 
     let itemsToAdd = []
     const updateData = await migrateActorData(a, itemsToAdd);
-    //console.log(`Migrating Actor entity ${a.name}`);
+    //game.D35E.logger.log(`Migrating Actor entity ${a.name}`);
     await a.update(updateData);
-    //console.log(`Adding missing items to ${a.name}`);
+    //game.D35E.logger.log(`Adding missing items to ${a.name}`);
     if (itemsToAdd.length)
       await a.createEmbeddedEntity("OwnedItem", itemsToAdd, {stopUpdates: true});
   } catch (err) {
-    console.error(err);
+    game.D35E.logger.error(err);
   }
 }
 
@@ -18,7 +18,7 @@ export const migrateItem = async function(i) {
     const updateData = await migrateItemData(i);
     await i.update(updateData);
   } catch (err) {
-    console.error(err);
+    game.D35E.logger.error(err);
   }
 }
 
@@ -30,7 +30,7 @@ export const migrateItem = async function(i) {
 export const migrateWorld = async function() {
   if (!game.user.isGM) return ui.notifications.error(game.i18n.localize("D35E.ErrorUnauthorizedAction"));
   ui.notifications.info(`Applying D35E System Migration for version ${game.system.data.version}. Please stand by.`);
-  //console.log(`Applying D35E System Migration for version ${game.system.data.version}. Please stand by.`);
+  //game.D35E.logger.log(`Applying D35E System Migration for version ${game.system.data.version}. Please stand by.`);
 
   // Migrate World Actors
   for ( let a of game.actors.contents ) {
@@ -41,19 +41,19 @@ export const migrateWorld = async function() {
   for ( let i of game.items.contents ) {
     try {
       const updateData = migrateItemData(i);
-      //console.log(`Migrating Item entity ${i.name}`);
+      //game.D35E.logger.log(`Migrating Item entity ${i.name}`);
       await i.update(updateData, {enforceTypes: false});
     } catch(err) {
-      console.error(err);
+      game.D35E.logger.error(err);
     }
   }
 
-  console.log("Migrating Scene documents.");
+  game.D35E.logger.log("Migrating Scene documents.");
   for (const s of game.scenes.contents) {
     try {
       const updateData = migrateSceneData(s.data);
       if (!foundry.utils.isEmpty(updateData)) {
-        console.log(`Migrating Scene document ${s.name}`);
+        game.D35E.logger.log(`Migrating Scene document ${s.name}`);
         await s.update(updateData, { enforceTypes: false });
         // If we do not do this, then synthetic token actors remain in cache
         // with the un-updated actorData.
@@ -62,7 +62,7 @@ export const migrateWorld = async function() {
         });
       }
     } catch (err) {
-      console.error(`Error migrating scene document ${s.name}`, err);
+      game.D35E.logger.error(`Error migrating scene document ${s.name}`, err);
     }
   }
 
@@ -97,10 +97,10 @@ export const migrateCompendium = async function(pack) {
     content = await pack.getDocuments();
   } catch(err) {
     ui.notifications.error(game.i18n.localize("D35E.ErrorProblemWithMigratingPack") + pack.collection);
-    console.error(err);
+    game.D35E.logger.error(err);
   }
 
-  console.log(`D35E | Starting migration of ${pack.collection}`)
+  game.D35E.logger.log(`Starting migration of ${pack.collection}`)
   // Iterate over compendium entries - applying fine-tuned migration functions
   for ( let ent of content ) {
     try {
@@ -109,12 +109,12 @@ export const migrateCompendium = async function(pack) {
       else if (entity === "Actor") await migrateActor(ent)
       else if ( entity === "Scene" ) updateData = await migrateSceneData(ent);
 
-      //console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
+      //game.D35E.logger.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
     } catch(err) {
-      console.error(err);
+      game.D35E.logger.error(err);
     }
   }
-  console.log(`D35E | Migrated all ${entity} entities from Compendium ${pack.collection}`);
+  game.D35E.logger.log(`Migrated all ${entity} entities from Compendium ${pack.collection}`);
 };
 
 /* -------------------------------------------- */
@@ -345,7 +345,7 @@ const _migrateCharacterLevel = function(ent, updateData) {
   }
   let k = "details.levelUpProgression"
   const value = getProperty(ent.data.data, k);
-  //console.log(`D35E | Migrate | Level up progression ${value}`)
+  //game.D35E.logger.log(`Migrate | Level up progression ${value}`)
   if (value === null || value === undefined) {
 
     updateData["data.details.levelUpProgression"] = false;

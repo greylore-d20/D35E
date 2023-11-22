@@ -33,17 +33,13 @@ export class ActorSheetObject extends ActorSheetPF {
     return "systems/D35E/templates/actors/object-sheet.html";
   }
 
-  static get name() {
-    return game.i18n.localize("D35E.ActorSheetPFNPC");
-  }
-
   /* -------------------------------------------- */
 
   /**
    * Add some extra data when rendering the sheet to reduce the amount of logic required within the template.
    */
-  getData() {
-    const sheetData = super.getData();
+  async getData() {
+    const sheetData = await super.getData();
     sheetData.material = this.actor.material;
     sheetData.attackFeatures = [];
     sheetData.items

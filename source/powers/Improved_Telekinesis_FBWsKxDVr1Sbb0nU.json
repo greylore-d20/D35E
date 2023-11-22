@@ -1,0 +1,221 @@
+{
+  "_id": "FBWsKxDVr1Sbb0nU",
+  "name": "Improved Telekinesis",
+  "type": "spell",
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/powers/discipline/kin.png",
+  "effects": [],
+  "system": {
+    "originVersion": 99,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<div class=\"spell-description\">\n  <p>\n    <strong>Discipline</strong>&nbsp;psychokinesis&nbsp;(con);\n    <strong>Level</strong>&nbsp;Psion 7;\n    \n    \n    \n    \n  </p>\n  <p>\n    <strong>Manifesting Time</strong>&nbsp;1 round<br>\n    \n  </p>\n  <p>\n    <strong>Power Display</strong>&nbsp;Vi\n<br>\n    <strong>Range</strong>&nbsp;long (400 ft. + 40 ft./level)<br>\n    \n    <strong>Targets</strong>&nbsp;see text\n<br>\n    \n    <strong>Duration</strong>&nbsp;Concentration, up to 10 minutes/level, or instantaneous (see text)\n<br>\n    <strong>Power Points/Spell Points Cost</strong>&nbsp;13<br>\n    <strong>Saving Throw</strong>&nbsp;Will negates (object) (see text)\n;&nbsp;<strong>Power Resistance</strong>&nbsp;no<br>\n  </p>\n  <h2>Description</h2>\n  \n\n<p>The manifester moves objects or creatures by concentrating on them. The power can provide either a gentle, sustained force or a single short, violent thrust (manifester's choice).\n</p><p>Sustained Force: A sustained force moves a creature or object weighing up to 100 pounds per manifester level up to 50 feet per round. A creature can negate the effect against itself or against an object it possesses with a successful Will save or with power resistance.\n</p><p>This version of the power lasts up to 1 round per manifester level, but it ends if the manifester ceases concentration. The weight can be moved vertically, horizontally, or both. An object cannot be moved beyond the range of the power. The power ends if the object is forced beyond the range. If the manifester ceases concentration for any reason, the object falls or stops.\n</p><p>An object can be telekinetically manipulated as if with one hand. The manifester might even be able to untie simple knots, though fine actions such as these require Intelligence checks against a DC set by the GM.\n</p><p>Violent Thrust: Alternatively, the telekinetic power can be expended in a single round. The manifester can hurl one or more objects or creatures that are within range and all within 10 feet of each other toward any target within 10 feet/level of all the objects. A manifester can hurl up to a total weight of 25 pounds per manifester level.\n</p><p>The manifester must succeed at attack rolls (one per creature or object thrown) to hit the target with the items, using his or her base attack plus Intelligence modifier. Weapons cause standard damage (with no Strength bonus). Other objects cause damage ranging from 1 point per 25 pounds (for less dangerous objects) to 1d6 points of damage per 25 pounds for hard, dense objects.\n</p><p>Creatures who fall within the weight capacity of the power can be hurled, but they are allowed Will saves to negate the effect, as are those whose held possessions are targeted by the power. If creatures are telekinetically hurled against solid surfaces, they take damage as if they had fallen 60 feet (6d6 points).\n</p>\n<hr/>\n\n\n\n\n\n</div>\n",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": "",
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "round"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": "see text\n"
+    },
+    "range": {
+      "value": null,
+      "units": "long",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "other",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": "",
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": "0",
+      "description": "Will negates (object) (see text)\n",
+      "ability": "",
+      "type": "",
+      "dcAutoType": "",
+      "dcAutoAbility": "",
+      "originVersion": 97
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [],
+    "favorite": false,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "learnedAt": {
+      "class": [
+        [
+          "Psion",
+          7
+        ]
+      ],
+      "domain": [],
+      "subDomain": [],
+      "elementalSchool": [],
+      "bloodline": []
+    },
+    "level": 7,
+    "clOffset": 0,
+    "slOffset": 0,
+    "school": "kin",
+    "subschool": "con",
+    "types": "",
+    "components": {
+      "value": "",
+      "verbal": false,
+      "somatic": false,
+      "material": false,
+      "focus": false,
+      "divineFocus": 0
+    },
+    "castTime": "",
+    "conditionals": [],
+    "materials": {
+      "value": "",
+      "consumed": {
+        "value": false,
+        "_deprecated": true
+      },
+      "focus": ""
+    },
+    "isSpellSpontaneousReplacement": false,
+    "spellbook": "primary",
+    "preparation": {
+      "preparedAmount": 0,
+      "maxAmount": 0,
+      "autoDeductCharges": true,
+      "mode": "prepared"
+    },
+    "atWill": false,
+    "powerPointsCost": 13,
+    "display": "Vi\n",
+    "isPower": true,
+    "shortDescription": "\n\n<p>The manifester moves objects or creatures by concentrating on them. The power can provide either a gentle, sustained force or a single short, violent thrust (manifester's choice).\n</p><p>Sustained Force: A sustained force moves a creature or object weighing up to 100 pounds per manifester level up to 50 feet per round. A creature can negate the effect against itself or against an object it possesses with a successful Will save or with power resistance.\n</p><p>This version of the power lasts up to 1 round per manifester level, but it ends if the manifester ceases concentration. The weight can be moved vertically, horizontally, or both. An object cannot be moved beyond the range of the power. The power ends if the object is forced beyond the range. If the manifester ceases concentration for any reason, the object falls or stops.\n</p><p>An object can be telekinetically manipulated as if with one hand. The manifester might even be able to untie simple knots, though fine actions such as these require Intelligence checks against a DC set by the GM.\n</p><p>Violent Thrust: Alternatively, the telekinetic power can be expended in a single round. The manifester can hurl one or more objects or creatures that are within range and all within 10 feet of each other toward any target within 10 feet/level of all the objects. A manifester can hurl up to a total weight of 25 pounds per manifester level.\n</p><p>The manifester must succeed at attack rolls (one per creature or object thrown) to hit the target with the items, using his or her base attack plus Intelligence modifier. Weapons cause standard damage (with no Strength bonus). Other objects cause damage ranging from 1 point per 25 pounds (for less dangerous objects) to 1d6 points of damage per 25 pounds for hard, dense objects.\n</p><p>Creatures who fall within the weight capacity of the power can be hurled, but they are allowed Will saves to negate the effect, as are those whose held possessions are targeted by the power. If creatures are telekinetically hurled against solid surfaces, they take damage as if they had fallen 60 feet (6d6 points).\n</p>\n<hr/>\n\n\n\n\n",
+    "snip": "",
+    "spellDuration": "Concentration, up to 10 minutes/level, or instantaneous (see text)\n",
+    "spellEffect": "",
+    "spellArea": "",
+    "spellType": {
+      "value": "",
+      "_deprecated": true
+    },
+    "showInQuickbar": false,
+    "specialPrepared": false,
+    "isDomainSpell": false,
+    "specialId": null,
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "folder": null,
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.1.3",
+    "coreVersion": "10.291",
+    "createdTime": null,
+    "modifiedTime": 1678394288895,
+    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+  },
+  "_key": "!items!FBWsKxDVr1Sbb0nU"
+}

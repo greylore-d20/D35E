@@ -3,11 +3,9 @@
  * Pre-loaded templates are compiled and cached for fast access when rendering
  * @return {Promise}
  */
-export const preloadHandlebarsTemplates = async function() {
-
+export const preloadHandlebarsTemplates = async function () {
   // Define template paths to load
   const templatePaths = [
-
     // Actor Sheet Partials
     "systems/D35E/templates/actors/parts/actor-traits.html",
     "systems/D35E/templates/actors/parts/actor-inventory.html",
@@ -42,6 +40,7 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/D35E/templates/items/parts/item-senses.html",
     "systems/D35E/templates/items/parts/item-spellbook.html",
     "systems/D35E/templates/items/parts/item-spellbook-list.html",
+    "systems/D35E/templates/items/components/uid-input.html",
 
     // Misc
     "systems/D35E/templates/internal/token-config.html",
