@@ -3966,6 +3966,7 @@ export class ActorPF extends Actor {
           {
             size: Object.keys(CONFIG.D35E.sizeChart).
                 indexOf(getProperty(data, 'traits.actualSize')) - 4,
+            uuid: this.uuid,
           },
           {inplace: false},
       );
