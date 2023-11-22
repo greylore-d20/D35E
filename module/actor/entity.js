@@ -4021,8 +4021,8 @@ export class ActorPF extends Actor {
       if (_action.indexOf('://') !== -1) return false;
       return (
           /^(.*?[0-9]d[0-9]+.*?)$/.test(_action) ||
-          _action.indexOf('max') !== -1 ||
-          _action.indexOf('min') !== -1 ||
+          _action.indexOf('max(') !== -1 ||
+          _action.indexOf('min(') !== -1 ||
           _action.indexOf('+') !== -1 ||
           _action.indexOf(',') !== -1 ||
           _action.indexOf('@') !== -1
