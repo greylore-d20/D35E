@@ -1874,7 +1874,7 @@ export class ActorPF extends Actor {
           let enrichedNote = await TextEditor.enrichHTML(
               Item35E._fillTemplate(_note, rollData), {
                 rollData: rollData,
-              });
+              }, {parent: this});
           notes.push(enrichedNote);
         }
       }
@@ -3469,6 +3469,27 @@ export class ActorPF extends Actor {
     return Promise.all(promises);
   }
 
+  static async _rollAbilityCheck(type, options = {}) {
+    let tokensList;
+    if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);
+    else tokensList = canvas.tokens.controlled;
+    const promises = [];
+    if (!tokensList.length) {
+      ui.notifications.warn(game.i18n.localize('D35E.NoTokensSelected'));
+      return;
+    }
+    for (let t of tokensList) {
+      if (t.actor == null) continue;
+      let a = t.actor;
+      if (!a.testUserPermission(game.user, 'OWNER')) {
+        ui.notifications.warn(
+            game.i18n.localize('D35E.ErrorNoActorPermission'));
+        continue;
+      }
+      promises.push(t.actor.rollAbility(type, options));
+    }
+    return Promise.all(promises);
+  }
   static async _rollPowerResistance(spellPenetration) {
     let tokensList;
     if (game.user.targets.size > 0) tokensList = Array.from(game.user.targets);

@@ -92,8 +92,8 @@ export class ActorSheetPF extends ActorSheet {
       options: this.options,
       editable: this.isEditable,
       rendered: {
-        biography: await TextEditor.enrichHTML(this.actor.system.details.biography.value),
-        notes: await TextEditor.enrichHTML(this.actor.system.details.notes.value),
+        biography: await TextEditor.enrichHTML(this.actor.system.details.biography.value, {rollData: this.actor.getRollData()}),
+        notes: await TextEditor.enrichHTML(this.actor.system.details.notes.value, {rollData: this.actor.getRollData()}),
       },
       cssClass: isOwner ? "editable" : "locked",
       actorId: this.actor.id || this.actor._id,

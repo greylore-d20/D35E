@@ -1178,6 +1178,28 @@ ${game.i18n.localize("D35E.RollSkillCheck")}
       </div>`,
     };
     createCustomChatMessage("systems/D35E/templates/chat/request-roll.html", chatTemplateData, {}, {});
+  } else if (rollType === "ability") {
+    let buttonCode = `<div class="flexcol card-buttons"><button class="everyone no-actor" data-action="rollAbility" data-value="${rollTarget}" data-ability="${dcTarget}" data-targetrollmode="${rollMode}" data-target="${dcTarget}">
+${game.i18n.localize("D35E.RollSkillCheck")}
+            </button></div>`;
+    let abilityName = CONFIG.D35E.abilities[rollTarget];
+    let chatTemplateData = {
+      name: `${game.i18n.localize("D35E.RollAbilityCheck")} (${abilityName})`,
+      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      rollMode: rollMode,
+      text: buttonCode,
+      // DC target text
+      targetText: `
+      <div class="dice-result box">
+          <h4 class="box-title">
+          DC
+          </h4>
+          <h4 class="dice-total rolled-roll">
+          ${dcTarget}
+          </h4>
+      </div>`,
+    };
+    createCustomChatMessage("systems/D35E/templates/chat/request-roll.html", chatTemplateData, {}, {});
   }
 
 }

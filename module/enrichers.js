@@ -23,7 +23,24 @@ export class EnrichersHelper {
           console.log("D35E | Enriching Linked Description");
           let item = await fromUuid(match[1]);
           const a = document.createElement("div");
-          a.innerHTML = await TextEditor.enrichHTML(getProperty(item, match[2]), { async: true });
+          a.innerHTML = await TextEditor.enrichHTML(getProperty(item, match[2]), { async: true, rollData: item.getActorItemRollData() });
+          return a;
+        },
+      },
+    ]);
+
+    CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
+      {
+        pattern: /@DynamicField\[(.+?)\]/gm,
+        enricher: async (match, options) => {
+          console.log("D35E | Enriching Dynamic Field Description", match, options);
+          // Roll the match and return the result
+          let roll = new Roll35e(match[1], options.rollData);
+          let rollResult = await roll.roll();
+          const a = document.createElement("span");
+          a.innerHTML = `<span class="tooltipcontent">${match[1]}</span>` + rollResult.total;
+          a.setAttribute("style", "border-bottom: 1px dotted #999; cursor: help");
+          a.setAttribute("class", "tooltip");
           return a;
         },
       },
@@ -36,6 +53,23 @@ export class EnrichersHelper {
           // The data is in the format of @SkillCheck[DC,skillId] and we want rollName to be DC 15 Skill Name
           let rollName = `${CONFIG.D35E.skills[match[2]]} DC ${match[1]}`;
           let contentLink = `<a class="content-link d35e-skill-check" data-skill="${match[2]}" data-dc="${match[1]}"><i class="fas fa-chess-rook"></i>${rollName}</a>`
+
+          var template = document.createElement('template');
+          template.innerHTML = contentLink;
+          return template.content.firstChild;
+
+        },
+      },
+    ]);
+
+    CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
+      {
+        pattern: /@AbilityCheck\[(.+?),(.+?)\]/gm,
+        enricher: async (match, options) => {
+          console.log("D35E | Enriching Ability Check");
+          // The data is in the format of @SkillCheck[DC,skillId] and we want rollName to be DC 15 Skill Name
+          let rollName = `${CONFIG.D35E.abilities[match[2]]} DC ${match[1]}`;
+          let contentLink = `<a class="content-link d35e-ability-check" data-ability="${match[2]}" data-dc="${match[1]}"><i class="fas fa-hand-rock"></i>${rollName}</a>`
 
           var template = document.createElement('template');
           template.innerHTML = contentLink;
@@ -112,6 +146,20 @@ export class EnrichersHelper {
       game.D35E.requestRoll({
         rollType: 'save',
         rollTarget: save,
+        dcTarget: dc,
+        rollMode: rollMode,
+      });
+    });
+    $("body").on("click", "a.d35e-ability-check", async (event) => {
+      event.preventDefault();
+      let ability = event.currentTarget.dataset.ability;
+      let dc = event.currentTarget.dataset.dc;
+      let rollMode = event.currentTarget.dataset.rollMode ??
+          game.settings.get('core', 'rollMode');
+      // request the roll
+      game.D35E.requestRoll({
+        rollType: 'ability',
+        rollTarget: ability,
         dcTarget: dc,
         rollMode: rollMode,
       });

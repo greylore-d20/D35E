@@ -113,6 +113,11 @@ export class ItemChatAction {
       const target = button.dataset.target;
       const targetRollType = button.dataset.targetrollmode;
       if (type) ActorPF._rollSkill(type, {target: target, rollMode: targetRollType});
+    } else if (action === "rollAbility") {
+      const type = button.dataset.value;
+      const target = button.dataset.target;
+      const targetRollType = button.dataset.targetrollmode;
+      if (type) ActorPF._rollAbilityCheck(type, {target: target, rollMode: targetRollType});
     } else if (action === "rollPR") {
       const spellPenetration = button.dataset.spellpen;
       ActorPF._rollPowerResistance(spellPenetration);

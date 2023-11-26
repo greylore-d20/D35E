@@ -176,6 +176,7 @@ export class ItemSheetPF extends ItemSheet {
     sheetData.enriched.description = {};
     sheetData.enriched.description.value = await TextEditor.enrichHTML(await this.item.getDescription(), {
       async: true,
+      rollData: this.item.getActorItemRollData()
     });
     sheetData.enriched.description.unidentified = await TextEditor.enrichHTML(
       await this.item.getUnidentifiedDescription(),
@@ -437,7 +438,7 @@ export class ItemSheetPF extends ItemSheet {
               sheetData.abilitiesDescription.push({
                 level: level,
                 name: e.name,
-                description: await TextEditor.enrichHTML(e.system.description.value),
+                description: await TextEditor.enrichHTML(e.system.description.value, {rollData: this.getActorItemRollData()}),
               });
               alreadyAddedDescriptions.add(e._id);
             }
@@ -463,7 +464,7 @@ export class ItemSheetPF extends ItemSheet {
               sheetData.abilitiesDescription.push({
                 level: ability.level,
                 name: e.name,
-                description: await TextEditor.enrichHTML(e.system.description.value),
+                description: await TextEditor.enrichHTML(e.system.description.value, {rollData: this.getActorItemRollData()}),
               });
               alreadyAddedDescriptions.add(e._id);
             }

@@ -12,7 +12,7 @@ export class Card35E extends Item35E {
     }
 
     async getDescription(unidentified = false) {
-        return TextEditor.enrichHTML(getProperty(this.system, "shortDescription"), {async: true})
+        return TextEditor.enrichHTML(getProperty(this.system, "shortDescription"), {async: true, rollData: this.getActorItemRollData()})
     }
 
     async getChatDescription() {
