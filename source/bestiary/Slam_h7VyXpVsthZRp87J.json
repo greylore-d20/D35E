@@ -2,7 +2,12 @@
   "_id": "h7VyXpVsthZRp87J",
   "name": "Slam",
   "type": "attack",
-  "data": {
+  "sort": 1200000,
+  "flags": {},
+  "img": "systems/D35E/icons/attack/monster/slam.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -101,7 +107,7 @@
     "ability": {
       "attack": "str",
       "damage": "str",
-      "damageMult": 1,
+      "damageMult": -1,
       "critRange": 20,
       "critMult": 2,
       "twoHandedOnly": false,
@@ -175,15 +181,22 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
     }
   },
-  "sort": 1200000,
-  "flags": {},
-  "img": "systems/D35E/icons/attack/monster/slam.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168141615,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!Rfz7cSTVHjiBxEse.h7VyXpVsthZRp87J"
 }

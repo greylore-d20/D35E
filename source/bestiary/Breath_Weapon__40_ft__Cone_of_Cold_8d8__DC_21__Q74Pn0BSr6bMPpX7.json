@@ -2,7 +2,12 @@
   "_id": "Q74Pn0BSr6bMPpX7",
   "name": "Breath Weapon (40 ft. Cone of Cold 8d8, DC 21)",
   "type": "attack",
-  "data": {
+  "sort": 500000,
+  "flags": {},
+  "img": "systems/D35E/icons/attack/monster/breath.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -174,15 +180,22 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
     }
   },
-  "sort": 500000,
-  "flags": {},
-  "img": "systems/D35E/icons/attack/monster/breath.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168298130,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!4wlX24k6hlqNY2mH.Q74Pn0BSr6bMPpX7"
 }

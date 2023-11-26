@@ -2,13 +2,18 @@
   "_id": "mhDnjWeV6LBezoCd",
   "name": "Ethereal jaunt",
   "type": "feat",
-  "data": {
+  "sort": 200000,
+  "flags": {},
+  "img": "systems/D35E/icons/spells/named-spells/ethereal-jaunt.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
     "description": {
-      "value": "<p><em>This ability was imported automatically does not have actions or changes.</em></p><div level=\"8\" topic=\"Ethereal Jaunt\"><p> A phase spider can shift from the Ethereal Plane to the Material Plane as a free action, and shift back again as a move action (or during a move action). The ability is otherwise identical with <i>ethereal jaunt</i> (caster level 15th).</p></div>",
+      "value": "<div>\n<p>A phase spider can shift from the Ethereal Plane to the Material Plane as a free action, and shift back again as a move action (or during a move action). The ability is otherwise identical with&nbsp;<em>ethereal jaunt</em> (caster level 15th).</p>\n</div>",
       "chat": "",
       "unidentified": ""
     },
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -149,7 +155,10 @@
       "heavyArmorFullSpeed": false,
       "multiAttack": false,
       "multiweaponAttack": false,
-      "uncannyDodge": false
+      "uncannyDodge": false,
+      "improvedMultiattack": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -191,7 +200,7 @@
     "creationChanges": [],
     "contextNotes": [],
     "featType": "trait",
-    "abilityType": "",
+    "abilityType": "su",
     "associations": {
       "classes": []
     },
@@ -279,15 +288,36 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
-    }
+    },
+    "index": {
+      "subType": "trait",
+      "uniqueId": ""
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "bookSource": "",
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Ethereal jaunt"
   },
-  "sort": 200000,
-  "flags": {},
-  "img": "systems/D35E/icons/special-abilities/imported.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699170809049,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!Warss0J4XvYIAPMx.mhDnjWeV6LBezoCd"
 }

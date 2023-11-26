@@ -2,7 +2,12 @@
   "_id": "PDEveliaBRaa9XSG",
   "name": "Oversized weapon",
   "type": "feat",
-  "data": {
+  "sort": 500000,
+  "flags": {},
+  "img": "systems/D35E/icons/special-abilities/oversized-weapons.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -290,15 +296,22 @@
     "perRoundActions": [],
     "container": "None",
     "containerWeightless": false,
-    "identifiedName": "Oversized weapon"
+    "identifiedName": "Oversized weapon",
+    "index": {
+      "subType": "trait",
+      "uniqueId": ""
+    }
   },
-  "sort": 500000,
-  "flags": {},
-  "img": "systems/D35E/icons/special-abilities/oversized-weapons.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168100264,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!KDDPNCnqRwbAYht3.PDEveliaBRaa9XSG"
 }

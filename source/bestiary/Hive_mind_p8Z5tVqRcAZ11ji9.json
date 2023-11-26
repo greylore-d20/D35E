@@ -2,13 +2,18 @@
   "_id": "p8Z5tVqRcAZ11ji9",
   "name": "Hive mind",
   "type": "feat",
-  "data": {
+  "sort": 500000,
+  "flags": {},
+  "img": "icons/creatures/invertebrates/wasp-swarm-movement.webp",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
     "description": {
-      "value": "<p><em>This ability was imported automatically does not have actions or changes.</em></p><div level=\"8\" topic=\"Hive Mind\"><p> Any hellwasp swarm with at least 1 hit point per Hit Die (or 12 hit points, for a standard hellwasp swarm) forms a hive mind, giving it an Intelligence of 6. When a hellwasp swarm is reduced below this hit point threshold, it becomes mindless.</p><p></p></div>",
+      "value": "<div>\n<p>Any hellwasp swarm with at least 1 hit point per Hit Die (or 12 hit points, for a standard hellwasp swarm) forms a hive mind, giving it an Intelligence of 6. When a hellwasp swarm is reduced below this hit point threshold, it becomes mindless.</p>\n<p>&nbsp;</p>\n</div>",
       "chat": "",
       "unidentified": ""
     },
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -149,7 +155,10 @@
       "heavyArmorFullSpeed": false,
       "multiAttack": false,
       "multiweaponAttack": false,
-      "uncannyDodge": false
+      "uncannyDodge": false,
+      "improvedMultiattack": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -279,15 +288,36 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
-    }
+    },
+    "index": {
+      "subType": "trait",
+      "uniqueId": ""
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "bookSource": "",
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Hive mind"
   },
-  "sort": 500000,
-  "flags": {},
-  "img": "systems/D35E/icons/special-abilities/imported.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1700430637310,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!fV8sinlnWxyWpRpE.p8Z5tVqRcAZ11ji9"
 }

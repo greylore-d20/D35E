@@ -2,7 +2,7 @@
   "_id": "AxpyJ6khDUwpw9Xv",
   "name": "Bearded Devil",
   "type": "npc",
-  "img": "systems/D35E/icons/bestiary/token/devil.png",
+  "img": "systems/D35E/icons/bestiary/token/devil-bearded.png",
   "items": [
     "Eedi7Mi55m6lgoqU",
     "pgbZRCsDq9Sy67Q6",
@@ -23,9 +23,7 @@
   "folder": null,
   "sort": 0,
   "flags": {
-    "core": {
-      "sourceId": "Compendium.D35E.bestiary.AxpyJ6khDUwpw9Xv"
-    },
+    "core": {},
     "D35E": {
       "loseDexToAC": false,
       "noStr": false,
@@ -46,7 +44,7 @@
   },
   "system": {
     "shapechangeImg": "icons/svg/mystery-man.svg",
-    "tokenImg": "systems/D35E/icons/bestiary/token/devil.png",
+    "tokenImg": "systems/D35E/icons/bestiary/token/devil-bearded.png",
     "companionUuid": "",
     "companionPublicId": "",
     "companionUsePersonalKey": false,
@@ -158,7 +156,7 @@
         "carriedWeight": 10
       },
       "senses": {
-        "darkvision": 0,
+        "darkvision": 60,
         "blindsight": 0,
         "tremorsense": 0,
         "truesight": 0,
@@ -199,13 +197,14 @@
         }
       },
       "concealment": {
-        "value": 0,
+        "value": null,
         "total": 0
       },
       "bab": {
         "value": 0,
         "total": 6,
-        "base": 6
+        "base": 6,
+        "nonepic": 6
       },
       "cmd": {
         "value": 0,
@@ -1549,7 +1548,8 @@
         "points": null,
         "acpPenalty": 0,
         "energyDrainPenalty": 0,
-        "abilityModifier": -2
+        "abilityModifier": -2,
+        "visibility": "default"
       },
       "kpl": {
         "value": 0,
@@ -1741,7 +1741,7 @@
         "mod": 0,
         "background": false,
         "visibility": "default",
-        "points": 0,
+        "points": null,
         "cs": false,
         "acpPenalty": 0,
         "energyDrainPenalty": 0,
@@ -2278,7 +2278,9 @@
     ],
     "shieldType": "none",
     "canLevelUp": false,
-    "naturalAttackCount": 1
+    "naturalAttackCount": 1,
+    "isPartyMember": false,
+    "displayNonRTSkills": false
   },
   "ownership": {
     "default": 0,
@@ -2355,11 +2357,11 @@
   },
   "_stats": {
     "systemId": "D35E",
-    "systemVersion": "2.3.0",
-    "coreVersion": "11.299",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
     "createdTime": 1686244134891,
-    "modifiedTime": 1686244135062,
-    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+    "modifiedTime": 1700984473902,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors!AxpyJ6khDUwpw9Xv"
 }

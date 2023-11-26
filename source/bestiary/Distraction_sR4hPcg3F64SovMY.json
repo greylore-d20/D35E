@@ -2,7 +2,12 @@
   "_id": "sR4hPcg3F64SovMY",
   "name": "Distraction",
   "type": "feat",
-  "data": {
+  "sort": 200000,
+  "flags": {},
+  "img": "icons/magic/control/fear-fright-white.webp",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -31,14 +37,14 @@
     "createdBy": "",
     "activation": {
       "cost": 1,
-      "type": ""
+      "type": "passive"
     },
     "duration": {
       "value": null,
       "units": ""
     },
     "target": {
-      "value": ""
+      "value": "Creature in Hellwasp space"
     },
     "range": {
       "value": null,
@@ -56,7 +62,7 @@
     "uses": {
       "value": 0,
       "max": 0,
-      "per": null,
+      "per": "",
       "autoDeductCharges": true,
       "allowMultipleUses": false,
       "chargesPerUse": 1,
@@ -81,7 +87,7 @@
       "overrideTexture": false,
       "customTexture": ""
     },
-    "actionType": "",
+    "actionType": "save",
     "attackBonus": "",
     "critConfirmBonus": "",
     "damage": {
@@ -97,7 +103,7 @@
     "maxDamageDiceFormula": "",
     "ability": {
       "attack": null,
-      "damage": null,
+      "damage": "",
       "damageMult": 1,
       "critRange": 20,
       "critMult": 2,
@@ -105,12 +111,12 @@
       "vsTouchAc": false
     },
     "save": {
-      "dc": 0,
+      "dc": 18,
       "description": "",
       "ability": "",
       "type": "",
-      "dcAutoType": "",
-      "dcAutoAbility": ""
+      "dcAutoType": "halfHD",
+      "dcAutoAbility": "con"
     },
     "baseCl": "0",
     "sr": false,
@@ -149,7 +155,10 @@
       "heavyArmorFullSpeed": false,
       "multiAttack": false,
       "multiweaponAttack": false,
-      "uncannyDodge": false
+      "uncannyDodge": false,
+      "improvedMultiattack": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -279,15 +288,36 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
-    }
+    },
+    "index": {
+      "subType": "trait",
+      "uniqueId": ""
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "bookSource": "",
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Distraction"
   },
-  "sort": 200000,
-  "flags": {},
-  "img": "systems/D35E/icons/special-abilities/imported.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1700430496161,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!fV8sinlnWxyWpRpE.sR4hPcg3F64SovMY"
 }

@@ -2,13 +2,18 @@
   "_id": "QE0v8i8faJ8naVl0",
   "name": "Spell-like abilities",
   "type": "feat",
-  "data": {
+  "sort": 300000,
+  "flags": {},
+  "img": "systems/D35E/icons/special-abilities/spelllike.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
     "description": {
-      "value": "<p><em>This ability was imported automatically does not have actions or changes.</em></p><div level=\"8\" topic=\"Spell-Like Abilities\"><p> At will-<i>detect good</i>,  <i>detect magic</i>,  <i>invisibility</i> (self only); 1/day-<i>suggestion</i> (DC 15). Caster level 6th. The save DC is Charisma-based.</p><p>Once per week an imp can use <i>commune</i> to ask six questions. The ability otherwise works as the spell (caster level 12th).</p></div>",
+      "value": "<div>\n<p>At will-<em>detect good</em>, <em>detect magic</em>, <em>invisibility</em> (self only); 1/day-<em>suggestion</em> (DC 15). Caster level 6th. The save DC is Charisma-based.</p>\n<p>Once per week an imp can use <em>commune</em> to ask six questions. The ability otherwise works as the spell (caster level 12th).</p>\n</div>",
       "chat": "",
       "unidentified": ""
     },
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -149,7 +155,10 @@
       "heavyArmorFullSpeed": false,
       "multiAttack": false,
       "multiweaponAttack": false,
-      "uncannyDodge": false
+      "uncannyDodge": false,
+      "improvedMultiattack": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -279,15 +288,36 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
-    }
+    },
+    "index": {
+      "subType": "trait",
+      "uniqueId": ""
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "bookSource": "",
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Spell-like abilities"
   },
-  "sort": 300000,
-  "flags": {},
-  "img": "systems/D35E/icons/special-abilities/imported.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1700430348559,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!WtQlAMtogjJfvXCz.QE0v8i8faJ8naVl0"
 }

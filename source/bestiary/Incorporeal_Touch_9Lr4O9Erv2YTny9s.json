@@ -2,7 +2,12 @@
   "_id": "9Lr4O9Erv2YTny9s",
   "name": "Incorporeal Touch",
   "type": "attack",
-  "data": {
+  "sort": 900000,
+  "flags": {},
+  "img": "systems/D35E/icons/attack/monster/touch.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -78,17 +84,11 @@
       "overrideTexture": false,
       "customTexture": ""
     },
-    "actionType": "mwak",
+    "actionType": "msak",
     "attackBonus": "",
     "critConfirmBonus": "",
     "damage": {
-      "parts": [
-        [
-          "1d8",
-          "Touch",
-          ""
-        ]
-      ],
+      "parts": [],
       "alternativeParts": []
     },
     "summon": [],
@@ -101,8 +101,8 @@
     "ability": {
       "attack": "dex",
       "damage": "",
-      "damageMult": 1,
-      "critRange": 20,
+      "damageMult": -1,
+      "critRange": "20",
       "critMult": 2,
       "twoHandedOnly": false,
       "vsTouchAc": true
@@ -129,7 +129,14 @@
     },
     "effectNotes": "",
     "attackNotes": "",
-    "specialActions": [],
+    "specialActions": [
+      {
+        "name": "Strength Drain",
+        "action": "AbilityDamage str 1d8 on target;",
+        "condition": "",
+        "img": "systems/D35E/icons/attack/monster/touch.png"
+      }
+    ],
     "favorite": true,
     "rollTableDraw": {
       "formula": "",
@@ -175,15 +182,38 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
-    }
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    },
+    "selectedMaterial": "none",
+    "nonLethalNoPenalty": false,
+    "isNaturalEquivalent": false,
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "identifiedName": "Incorporeal Touch"
   },
-  "sort": 900000,
-  "flags": {},
-  "img": "systems/D35E/icons/attack/monster/touch.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168479866,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!tyLpIZ8zhrW3N78m.9Lr4O9Erv2YTny9s"
 }

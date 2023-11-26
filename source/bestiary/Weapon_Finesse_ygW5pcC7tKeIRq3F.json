@@ -2,7 +2,16 @@
   "_id": "ygW5pcC7tKeIRq3F",
   "name": "Weapon Finesse",
   "type": "feat",
-  "data": {
+  "sort": 1100000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.VRtT3xXZmFtLFN8G"
+    }
+  },
+  "img": "systems/D35E/icons/feats/weapon-finesse.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +27,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -295,19 +305,22 @@
     },
     "attack": {
       "parts": []
+    },
+    "index": {
+      "subType": "feat",
+      "uniqueId": ""
     }
   },
-  "sort": 1100000,
-  "flags": {
-    "core": {
-      "sourceId": "Item.VRtT3xXZmFtLFN8G"
-    }
-  },
-  "img": "systems/D35E/icons/feats/weapon-finesse.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168314805,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!J9Z4MJNCbpLkfhjv.ygW5pcC7tKeIRq3F"
 }

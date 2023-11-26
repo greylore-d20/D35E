@@ -3,7 +3,11 @@
   "name": "Morningstar",
   "type": "weapon",
   "img": "systems/D35E/icons/items/weapons/Club_v2_07.png",
-  "data": {
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -19,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -150,6 +155,7 @@
     "masterwork": false,
     "weaponType": "simple",
     "weaponSubtype": "1h",
+    "weaponBaseType": "",
     "properties": {
       "blc": false,
       "brc": false,
@@ -219,16 +225,24 @@
     "deactivateActions": [],
     "perRoundActions": [],
     "threatRangeExtended": false,
-    "finesseable": false
+    "finesseable": false,
+    "index": {
+      "subType": "simple",
+      "uniqueId": ""
+    }
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
+  "ownership": {
     "default": 0,
     "3kN9BoRjo6UlMT5m": 3,
     "XSGi1UY5kAehVomp": 3
   },
-  "flags": {},
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168100649,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
+  },
   "_key": "!actors.items!KDDPNCnqRwbAYht3.lYhautL98QVlDAU4"
 }

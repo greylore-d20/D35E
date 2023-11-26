@@ -3,7 +3,11 @@
   "name": "Rock",
   "type": "attack",
   "img": "systems/D35E/icons/special-abilities/rock-catching.png",
-  "data": {
+  "effects": [],
+  "folder": null,
+  "sort": 1200000,
+  "flags": {},
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -19,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -185,15 +190,23 @@
     "perRoundActions": [],
     "container": "None",
     "containerWeightless": false,
-    "identifiedName": "Rock"
+    "identifiedName": "Rock",
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    }
   },
-  "effects": [],
-  "folder": null,
-  "sort": 1200000,
-  "permission": {
+  "ownership": {
     "default": 0,
     "XSGi1UY5kAehVomp": 3
   },
-  "flags": {},
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168100631,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
+  },
   "_key": "!actors.items!KDDPNCnqRwbAYht3.TsqyClkyl5zMIRkS"
 }

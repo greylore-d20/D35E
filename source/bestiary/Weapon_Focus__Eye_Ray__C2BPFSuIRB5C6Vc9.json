@@ -2,7 +2,16 @@
   "_id": "C2BPFSuIRB5C6Vc9",
   "name": "Weapon Focus (Eye Ray)",
   "type": "feat",
-  "data": {
+  "sort": 3000000,
+  "flags": {
+    "core": {
+      "sourceId": "Item.rNxDYcefUovvrUTb"
+    }
+  },
+  "img": "systems/D35E/icons/feats/weapon-focus.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +27,7 @@
     "nameFromFormula": true,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -301,19 +311,23 @@
     },
     "attack": {
       "parts": []
+    },
+    "identifiedName": "Weapon Focus (Eye Ray)",
+    "index": {
+      "subType": "feat",
+      "uniqueId": ""
     }
   },
-  "sort": 3000000,
-  "flags": {
-    "core": {
-      "sourceId": "Item.rNxDYcefUovvrUTb"
-    }
-  },
-  "img": "systems/D35E/icons/feats/weapon-focus.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168050091,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!dimQP9idAZDZJ142.C2BPFSuIRB5C6Vc9"
 }

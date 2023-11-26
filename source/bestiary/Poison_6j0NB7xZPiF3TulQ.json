@@ -1,0 +1,233 @@
+{
+  "_id": "6j0NB7xZPiF3TulQ",
+  "name": "Poison",
+  "type": "attack",
+  "sort": 100000,
+  "flags": {
+    "core": {
+      "sourceId": "Actor.NnQLDHPfyt2K57V9.Item.b4tGezsoeRryohOc"
+    }
+  },
+  "img": "systems/D35E/icons/special-abilities/poison.png",
+  "effects": [],
+  "folder": null,
+  "system": {
+    "originVersion": 0,
+    "originPack": "",
+    "originId": "",
+    "possibleUpdate": false,
+    "description": {
+      "value": "<p><em>This ability was imported automatically does not have actions or changes.</em></p><div level=\"8\" topic=\"Poison\"><p> Injury or contact, Fortitude DC 19, initial and secondary damage 1d10 Con. The save DC is Constitution-based.</p></div>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "epic": false,
+    "psionic": "",
+    "nameFormula": "",
+    "nameFromFormula": false,
+    "tags": [],
+    "uniqueId": "",
+    "addedLevel": 0,
+    "linkId": "",
+    "linkSourceId": "",
+    "linkImported": false,
+    "linkSourceName": "",
+    "source": "",
+    "classSource": "",
+    "userNonRemovable": false,
+    "customAttributes": {},
+    "customAttributesLocked": false,
+    "customTag": "",
+    "createdBy": "",
+    "activation": {
+      "cost": 1,
+      "type": "special"
+    },
+    "duration": {
+      "value": null,
+      "units": "seeText"
+    },
+    "target": {
+      "value": ""
+    },
+    "range": {
+      "value": null,
+      "units": "",
+      "long": null
+    },
+    "recharge": {
+      "enabled": false,
+      "formula": "",
+      "current": 0
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": "",
+      "autoDeductCharges": true,
+      "allowMultipleUses": false,
+      "chargesPerUse": 1,
+      "maxPerUse": null,
+      "maxPerUseFormula": "",
+      "maxFormula": "",
+      "rechargeFormula": null,
+      "isResource": false,
+      "canBeLinked": false
+    },
+    "requiresPsionicFocus": false,
+    "linkedChargeItem": {
+      "id": null,
+      "img": null,
+      "name": null
+    },
+    "measureTemplate": {
+      "type": "",
+      "size": 0,
+      "overrideColor": false,
+      "customColor": "",
+      "overrideTexture": false,
+      "customTexture": ""
+    },
+    "actionType": "save",
+    "attackBonus": "",
+    "critConfirmBonus": "",
+    "damage": {
+      "parts": [],
+      "alternativeParts": []
+    },
+    "summon": [],
+    "attackParts": [],
+    "autoscaleAttackParts": "",
+    "formula": "",
+    "attackCountFormula": "",
+    "maxDamageDice": 0,
+    "maxDamageDiceFormula": "",
+    "ability": {
+      "attack": null,
+      "damage": "",
+      "damageMult": 1,
+      "critRange": 20,
+      "critMult": 2,
+      "twoHandedOnly": false,
+      "vsTouchAc": false
+    },
+    "save": {
+      "dc": 19,
+      "description": "",
+      "ability": "",
+      "type": "fortitudenegates",
+      "dcAutoType": "",
+      "dcAutoAbility": ""
+    },
+    "baseCl": "0",
+    "sr": false,
+    "pr": false,
+    "metamagicFeats": {
+      "maximized": false,
+      "empowered": false,
+      "enlarged": false,
+      "intensified": false,
+      "enhanced": false,
+      "enhancedHalf": false,
+      "widened": false
+    },
+    "effectNotes": "",
+    "attackNotes": "",
+    "specialActions": [
+      {
+        "name": "Initial Damage",
+        "action": "AbilityDamage con 1d10 on target;",
+        "img": "systems/D35E/icons/special-abilities/poison-initial.png"
+      },
+      {
+        "name": "Secondary Damage",
+        "action": "AbilityDamage con 1d10 on target;",
+        "img": "systems/D35E/icons/special-abilities/poison-secondary.png"
+      },
+      {
+        "name": "Apply Poison",
+        "action": "Create unique \"Poisoned\" from \"D35E.commonbuffs\" on target;Set buff \"Poisoned\" field data.level to max(1,19) on target;Set buff \"Poisoned\" field system.description.value exact \"Fortitude DC 19, secondary damage 1d10 Con\" on target;Set buff \"Poisoned\" field name to \"Poisoned (Guardian Naga)\" on target;Activate buff \"Poisoned (Guardian Naga)\" on target;",
+        "img": "systems/D35E/icons/special-abilities/poison.png"
+      }
+    ],
+    "favorite": true,
+    "rollTableDraw": {
+      "formula": "",
+      "name": "",
+      "pack": "",
+      "id": ""
+    },
+    "material": {
+      "data": null
+    },
+    "associations": {
+      "classes": []
+    },
+    "attackType": "racialAbility",
+    "autoScaleOption": "default",
+    "weaponSubtype": "light",
+    "masterwork": false,
+    "threatRangeExtended": false,
+    "finesseable": false,
+    "enh": null,
+    "incorporeal": false,
+    "proficient": true,
+    "primaryAttack": true,
+    "showInQuickbar": true,
+    "melded": false,
+    "baseWeaponType": "",
+    "nonLethal": false,
+    "originalWeaponCreated": false,
+    "originalWeaponId": null,
+    "originalWeaponName": "",
+    "originalWeaponImg": "",
+    "originalWeaponProperties": {},
+    "conditionals": [],
+    "thrown": false,
+    "returning": false,
+    "magic": false,
+    "alignment": {
+      "good": false,
+      "evil": false,
+      "lawful": false,
+      "chaotic": false
+    },
+    "customReferenceId": "",
+    "attack": {
+      "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
+    },
+    "selectedMaterial": "none",
+    "nonLethalNoPenalty": false,
+    "isNaturalEquivalent": false,
+    "contextNotes": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "changes": [],
+    "combatChanges": [],
+    "requirements": [],
+    "creationChanges": [],
+    "resistances": [],
+    "damageReduction": [],
+    "identifiedName": "Poison"
+  },
+  "ownership": {
+    "default": 0,
+    "qG24w3IqZQgON3kE": 3
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": 1697920234306,
+    "modifiedTime": 1699168372473,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
+  },
+  "_key": "!actors.items!9bAvv3TXHy8PT2eO.6j0NB7xZPiF3TulQ"
+}

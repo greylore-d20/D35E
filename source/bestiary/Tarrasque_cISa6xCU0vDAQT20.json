@@ -5,7 +5,6 @@
   "img": "systems/D35E/icons/bestiary/token/tarrasque.png",
   "items": [
     "aueDP0YcaHZ96IFf",
-    "tqlfsgzRmkIkvtWy",
     "XciSavG31D4dgX0w",
     "SaB6dPbtXYKGGfPE",
     "vzuKM2w2mBjBIF2V",
@@ -33,9 +32,7 @@
   "folder": null,
   "sort": 0,
   "flags": {
-    "core": {
-      "sourceId": "Compendium.D35E.bestiary.cISa6xCU0vDAQT20"
-    },
+    "core": {},
     "D35E": {
       "loseDexToAC": false,
       "noStr": false,
@@ -219,7 +216,8 @@
       "bab": {
         "value": 0,
         "total": 48,
-        "base": 48
+        "base": 48,
+        "nonepic": 48
       },
       "cmd": {
         "value": 0,
@@ -1960,7 +1958,11 @@
         "custom": ""
       },
       "ci": {
-        "value": [],
+        "value": [
+          "disease",
+          "energyDrain",
+          "poison"
+        ],
         "custom": ""
       },
       "perception": {
@@ -2164,11 +2166,11 @@
   },
   "_stats": {
     "systemId": "D35E",
-    "systemVersion": "2.3.0",
-    "coreVersion": "11.299",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
     "createdTime": 1686244343281,
-    "modifiedTime": 1686244343461,
-    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+    "modifiedTime": 1700984473902,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors!cISa6xCU0vDAQT20"
 }

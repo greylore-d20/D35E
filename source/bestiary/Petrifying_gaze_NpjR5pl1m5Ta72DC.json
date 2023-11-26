@@ -2,13 +2,18 @@
   "_id": "NpjR5pl1m5Ta72DC",
   "name": "Petrifying gaze",
   "type": "feat",
-  "data": {
+  "sort": 200000,
+  "flags": {},
+  "img": "icons/creatures/eyes/humanoid-single-blind.webp",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
     "description": {
-      "value": "<p><em>This ability was imported automatically does not have actions or changes.</em></p><div level=\"8\" topic=\"Petrifying Gaze\"><p> Turn to stone permanently, 30 feet, Fortitude DC 15 negates. The save DC is Charisma-based.</p></div>",
+      "value": "<div>\n<p>Turn to stone permanently, 30 feet, Fortitude DC 15 negates. The save DC is Charisma-based.</p>\n</div>",
       "chat": "",
       "unidentified": ""
     },
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -31,7 +37,7 @@
     "createdBy": "",
     "activation": {
       "cost": 1,
-      "type": ""
+      "type": "special"
     },
     "duration": {
       "value": null,
@@ -41,8 +47,8 @@
       "value": ""
     },
     "range": {
-      "value": null,
-      "units": "",
+      "value": "30",
+      "units": "ft",
       "long": null
     },
     "recharge": {
@@ -56,7 +62,7 @@
     "uses": {
       "value": 0,
       "max": 0,
-      "per": null,
+      "per": "",
       "autoDeductCharges": true,
       "allowMultipleUses": false,
       "chargesPerUse": 1,
@@ -81,7 +87,7 @@
       "overrideTexture": false,
       "customTexture": ""
     },
-    "actionType": "",
+    "actionType": "save",
     "attackBonus": "",
     "critConfirmBonus": "",
     "damage": {
@@ -97,7 +103,7 @@
     "maxDamageDiceFormula": "",
     "ability": {
       "attack": null,
-      "damage": null,
+      "damage": "",
       "damageMult": 1,
       "critRange": 20,
       "critMult": 2,
@@ -105,12 +111,12 @@
       "vsTouchAc": false
     },
     "save": {
-      "dc": 0,
+      "dc": 15,
       "description": "",
       "ability": "",
       "type": "",
-      "dcAutoType": "",
-      "dcAutoAbility": ""
+      "dcAutoType": "halfHD",
+      "dcAutoAbility": "cha"
     },
     "baseCl": "0",
     "sr": false,
@@ -124,7 +130,7 @@
       "enhancedHalf": false,
       "widened": false
     },
-    "effectNotes": "",
+    "effectNotes": "Turn to stone permanently.",
     "attackNotes": "",
     "specialActions": [],
     "favorite": false,
@@ -149,7 +155,10 @@
       "heavyArmorFullSpeed": false,
       "multiAttack": false,
       "multiweaponAttack": false,
-      "uncannyDodge": false
+      "uncannyDodge": false,
+      "improvedMultiattack": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -191,7 +200,7 @@
     "creationChanges": [],
     "contextNotes": [],
     "featType": "trait",
-    "abilityType": "",
+    "abilityType": "su",
     "associations": {
       "classes": []
     },
@@ -279,15 +288,36 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
-    }
+    },
+    "index": {
+      "subType": "trait",
+      "uniqueId": ""
+    },
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "bookSource": "",
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Petrifying gaze"
   },
-  "sort": 200000,
-  "flags": {},
-  "img": "systems/D35E/icons/special-abilities/imported.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1700430178769,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!ID7UgnYkUMFqWvl2.NpjR5pl1m5Ta72DC"
 }

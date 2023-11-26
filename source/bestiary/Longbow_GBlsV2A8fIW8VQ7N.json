@@ -2,7 +2,12 @@
   "_id": "GBlsV2A8fIW8VQ7N",
   "name": "Longbow",
   "type": "weapon",
-  "data": {
+  "sort": 1100000,
+  "flags": {},
+  "img": "systems/D35E/icons/items/weapons/Bow_08.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -148,6 +154,7 @@
     "masterwork": false,
     "weaponType": "martial",
     "weaponSubtype": "ranged",
+    "weaponBaseType": "",
     "properties": {
       "blc": false,
       "brc": false,
@@ -208,15 +215,22 @@
       "parts": []
     },
     "threatRangeExtended": false,
-    "finesseable": false
+    "finesseable": false,
+    "index": {
+      "subType": "martial",
+      "uniqueId": ""
+    }
   },
-  "sort": 1100000,
-  "flags": {},
-  "img": "systems/D35E/icons/items/weapons/Bow_08.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168257192,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!hz9Pwzs6ze1rIgPc.GBlsV2A8fIW8VQ7N"
 }

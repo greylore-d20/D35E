@@ -3,7 +3,11 @@
   "name": "Incorporeal Touch",
   "type": "attack",
   "img": "systems/D35E/icons/attack/monster/touch.png",
-  "data": {
+  "effects": [],
+  "folder": null,
+  "sort": 700000,
+  "flags": {},
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -19,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -96,7 +101,7 @@
     "ability": {
       "attack": "dex",
       "damage": "",
-      "damageMult": 1,
+      "damageMult": -1,
       "critRange": 20,
       "critMult": 2,
       "twoHandedOnly": false,
@@ -176,15 +181,23 @@
     },
     "attack": {
       "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
     }
   },
-  "effects": [],
-  "folder": null,
-  "sort": 700000,
-  "permission": {
+  "ownership": {
     "default": 0,
     "XSGi1UY5kAehVomp": 3
   },
-  "flags": {},
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168034816,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
+  },
   "_key": "!actors.items!v6bx79D2V5MPRk0P.SnR1KzhVT4a6KTIy"
 }

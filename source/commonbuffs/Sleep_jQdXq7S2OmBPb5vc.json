@@ -2,7 +2,7 @@
   "_id": "jQdXq7S2OmBPb5vc",
   "name": "Sleep",
   "type": "buff",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/D35E/icons/buffs/sleep.png",
   "effects": [],
   "folder": null,
   "sort": 13500000,
@@ -12,7 +12,7 @@
     }
   },
   "system": {
-    "originVersion": 3,
+    "originVersion": 5,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
@@ -56,7 +56,8 @@
       "multiweaponAttack": false,
       "uncannyDodge": false,
       "hasted": false,
-      "firstChangeTargetSelectableOnDescription": false
+      "firstChangeTargetSelectableOnDescription": false,
+      "improvedMultiattack": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -138,15 +139,15 @@
       "name": null
     },
     "light": {
-      "color": "",
+      "color": "#000000",
       "radius": 0,
       "opacity": 0,
       "alpha": 0.5,
       "lightAngle": 360,
       "type": "",
-      "animationSpeed": "",
-      "animationIntensity": "",
-      "dimRadius": "",
+      "animationSpeed": 6,
+      "animationIntensity": 6,
+      "dimRadius": null,
       "emitLight": false
     },
     "buffType": "temp",
@@ -210,7 +211,8 @@
     "index": {
       "subType": null,
       "uniqueId": ""
-    }
+    },
+    "summon": []
   },
   "ownership": {
     "default": 0,
@@ -219,9 +221,9 @@
   "_stats": {
     "systemId": "D35E",
     "systemVersion": "2.3.2",
-    "coreVersion": "11.309",
+    "coreVersion": "11.311",
     "createdTime": null,
-    "modifiedTime": 1696106427749,
+    "modifiedTime": 1699169601587,
     "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!items!jQdXq7S2OmBPb5vc"

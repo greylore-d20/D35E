@@ -5,17 +5,15 @@
   "img": "systems/D35E/icons/bestiary/token/fungus.png",
   "items": [
     "EwQ9YQf5lZTkFvtx",
-    "QfK6bd4pSdALuTxi",
     "G5HdEqyeRMG09U6S",
-    "XEsFjNRjZzwqApDA"
+    "XEsFjNRjZzwqApDA",
+    "13WFC8r8G0kuEdHC"
   ],
   "effects": [],
   "folder": null,
   "sort": 0,
   "flags": {
-    "core": {
-      "sourceId": "Compendium.D35E.bestiary.2TyTAjFIjk1vIoDQ"
-    },
+    "core": {},
     "D35E": {
       "loseDexToAC": false,
       "noStr": false,
@@ -147,7 +145,7 @@
         "blindsight": 0,
         "tremorsense": 0,
         "truesight": 0,
-        "lowLight": false,
+        "lowLight": true,
         "lowLightMultiplier": 2,
         "special": ""
       },
@@ -190,7 +188,8 @@
       "bab": {
         "value": 0,
         "total": 1,
-        "base": 1
+        "base": 1,
+        "nonepic": 1
       },
       "cmd": {
         "value": 0,
@@ -2025,7 +2024,7 @@
       "blindsight": 0,
       "tremorsense": 0,
       "truesight": 0,
-      "lowLight": false,
+      "lowLight": true,
       "special": "",
       "modified": {},
       "lowLightMultiplier": 2
@@ -2113,11 +2112,11 @@
   },
   "_stats": {
     "systemId": "D35E",
-    "systemVersion": "2.3.0",
-    "coreVersion": "11.299",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
     "createdTime": 1686244114641,
-    "modifiedTime": 1686244114812,
-    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+    "modifiedTime": 1700984473902,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors!2TyTAjFIjk1vIoDQ"
 }

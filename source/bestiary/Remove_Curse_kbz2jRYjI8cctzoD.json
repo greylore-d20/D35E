@@ -2,7 +2,12 @@
   "_id": "kbz2jRYjI8cctzoD",
   "name": "Remove Curse",
   "type": "spell",
-  "data": {
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/spells/school/abj.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -216,15 +222,22 @@
     "customReferenceId": "",
     "attack": {
       "parts": []
+    },
+    "index": {
+      "subType": null,
+      "uniqueId": ""
     }
   },
-  "sort": 600000,
-  "flags": {},
-  "img": "systems/D35E/icons/spells/school/abj.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168320879,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!51wTcMzDBAsEiiNp.kbz2jRYjI8cctzoD"
 }

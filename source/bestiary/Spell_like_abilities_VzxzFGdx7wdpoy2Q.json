@@ -2,7 +2,12 @@
   "_id": "VzxzFGdx7wdpoy2Q",
   "name": "Spell-like abilities",
   "type": "feat",
-  "data": {
+  "sort": 600000,
+  "flags": {},
+  "img": "systems/D35E/icons/special-abilities/spelllike.png",
+  "effects": [],
+  "folder": null,
+  "system": {
     "originVersion": 0,
     "originPack": "",
     "originId": "",
@@ -18,6 +23,7 @@
     "nameFromFormula": false,
     "tags": [],
     "uniqueId": "",
+    "addedLevel": 0,
     "linkId": "",
     "linkSourceId": "",
     "linkImported": false,
@@ -290,15 +296,22 @@
     "perRoundActions": [],
     "container": "None",
     "containerWeightless": false,
-    "identifiedName": "Spell-like abilities"
+    "identifiedName": "Spell-like abilities",
+    "index": {
+      "subType": "trait",
+      "uniqueId": ""
+    }
   },
-  "sort": 600000,
-  "flags": {},
-  "img": "systems/D35E/icons/special-abilities/spelllike.png",
-  "effects": [],
-  "folder": null,
-  "permission": {
+  "ownership": {
     "default": 0
+  },
+  "_stats": {
+    "systemId": "D35E",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
+    "createdTime": null,
+    "modifiedTime": 1699168100290,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors.items!KDDPNCnqRwbAYht3.VzxzFGdx7wdpoy2Q"
 }

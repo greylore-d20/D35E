@@ -6,8 +6,6 @@
   "items": [
     "5lOW3rwZ0VWAoWhv",
     "jUVDQPcj9hpdbfM0",
-    "TquMGIPF8E5Ski8E",
-    "OVCfGEHFJXaKPn8y",
     "0He5WiJTqsjMBuA4",
     "LO8PIZySfidvcHwG",
     "BZMFgxLhBAb16vjm",
@@ -17,15 +15,15 @@
     "e8ybJVNAMGhQ38Zv",
     "xMWwRkCujCy4pWX0",
     "XucFzv8A6klPKegO",
-    "5x6HY5yQv13dbX10"
+    "5x6HY5yQv13dbX10",
+    "rFqbjOEouAORhazs",
+    "s1PjzXMaY45rQfav"
   ],
   "effects": [],
   "folder": null,
   "sort": 0,
   "flags": {
-    "core": {
-      "sourceId": "Compendium.D35E.bestiary.530aZomiApFnJZ7d"
-    },
+    "core": {},
     "D35E": {
       "loseDexToAC": false,
       "noStr": false,
@@ -41,7 +39,10 @@
       "multiAttack": false,
       "multiweaponAttack": false,
       "uncannyDodge": false,
-      "naturalAttackCount": 2
+      "naturalAttackCount": 2,
+      "hasted": false,
+      "improvedMultiattack": false,
+      "firstChangeTargetSelectableOnDescription": false
     }
   },
   "system": {
@@ -205,7 +206,8 @@
       "bab": {
         "value": 0,
         "total": 16,
-        "base": 16
+        "base": 16,
+        "nonepic": 16
       },
       "cmd": {
         "value": 0,
@@ -2137,11 +2139,11 @@
   },
   "_stats": {
     "systemId": "D35E",
-    "systemVersion": "2.3.0",
-    "coreVersion": "11.299",
+    "systemVersion": "2.3.2",
+    "coreVersion": "11.311",
     "createdTime": 1686244122543,
-    "modifiedTime": 1686244122692,
-    "lastModifiedBy": "cB3ob9BYxSFYX7sd"
+    "modifiedTime": 1700984473902,
+    "lastModifiedBy": "qG24w3IqZQgON3kE"
   },
   "_key": "!actors!530aZomiApFnJZ7d"
 }
