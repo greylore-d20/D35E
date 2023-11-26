@@ -438,7 +438,7 @@ export class ItemSheetPF extends ItemSheet {
               sheetData.abilitiesDescription.push({
                 level: level,
                 name: e.name,
-                description: await TextEditor.enrichHTML(e.system.description.value, {rollData: this.getActorItemRollData()}),
+                description: await TextEditor.enrichHTML(e.system.description.value, {rollData: e.getActorItemRollData()}),
               });
               alreadyAddedDescriptions.add(e._id);
             }
@@ -464,7 +464,7 @@ export class ItemSheetPF extends ItemSheet {
               sheetData.abilitiesDescription.push({
                 level: ability.level,
                 name: e.name,
-                description: await TextEditor.enrichHTML(e.system.description.value, {rollData: this.getActorItemRollData()}),
+                description: await TextEditor.enrichHTML(e.system.description.value, {rollData: e.getActorItemRollData()}),
               });
               alreadyAddedDescriptions.add(e._id);
             }
