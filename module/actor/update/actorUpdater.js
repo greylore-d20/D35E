@@ -1658,16 +1658,17 @@ export class ActorUpdater {
 
     // Reset BAB, CMB and CMD
     {
-      const k = "system.attributes.bab.total";
-      const l = "system.attributes.bab.nonepic";
-      const j = "system.attributes.bab.base";
+      const totalBab = "system.attributes.bab.total";
+      const nonEpicBab = "system.attributes.bab.nonepic";
+      const epicBab = "system.attributes.bab.epic";
+      const baseBab = "system.attributes.bab.base";
       let totalLevel = 0;
       let epicLevels = 0;
       if (useFractionalBaseBonuses) {
         linkData(
           source,
           updateData,
-          k,
+          totalBab,
           Math.floor(
             classes.reduce((cur, obj) => {
               const babScale = getProperty(obj.system, "bab") || "";
@@ -1679,10 +1680,10 @@ export class ActorUpdater {
           )
         );
 
-        const v = updateData[k];
+        const v = updateData[totalBab];
         if (v !== 0) {
-          sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
-          sourceInfo[k].positive.push({ name: game.i18n.localize("D35E.Base"), value: v });
+          sourceInfo[totalBab] = sourceInfo[totalBab] || { positive: [], negative: [] };
+          sourceInfo[totalBab].positive.push({ name: game.i18n.localize("D35E.Base"), value: v });
         }
       } else {
         let epicBab = 0;
@@ -1704,20 +1705,20 @@ export class ActorUpdater {
           const v = new Roll35e(formula, { level: classLevel }).roll().total;
 
           if (v !== 0) {
-            sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
-            sourceInfo[k].positive.push({ name: getProperty(obj, "name"), value: v });
+            sourceInfo[totalBab] = sourceInfo[totalBab] || { positive: [], negative: [] };
+            sourceInfo[totalBab].positive.push({ name: getProperty(obj, "name"), value: v });
           }
 
           return cur + v;
         }, 0);
         if (epicLevels > 0) {
           epicBab = new Roll35e("ceil(@level/2)", { level: epicLevels }).roll().total;
-          sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
-          sourceInfo[k].positive.push({ name: "Epic Levels", value: epicBab });
+          sourceInfo[totalBab] = sourceInfo[totalBab] || { positive: [], negative: [] };
+          sourceInfo[totalBab].positive.push({ name: "Epic Levels", value: epicBab });
         }
-        linkData(source, updateData, k, bab + epicBab);
-        linkData(source, updateData, l, bab);
-        linkData(source, updateData, j, bab + epicBab);
+        linkData(source, updateData, totalBab, bab + epicBab);
+        linkData(source, updateData, nonEpicBab, bab);
+        linkData(source, updateData, baseBab, bab + epicBab);
       }
     }
 
