@@ -84,6 +84,7 @@ export class ActorSheetPF extends ActorSheet {
   async getData() {
     // Basic data
     let isOwner = this.document.isOwner;
+    let actorRollData = this.actor.getRollData();
     const sheetData = {
       owner: isOwner,
       uuid: this.entity.uuid,
@@ -92,8 +93,8 @@ export class ActorSheetPF extends ActorSheet {
       options: this.options,
       editable: this.isEditable,
       rendered: {
-        biography: await TextEditor.enrichHTML(this.actor.system.details.biography.value, {rollData: this.actor.getRollData()}),
-        notes: await TextEditor.enrichHTML(this.actor.system.details.notes.value, {rollData: this.actor.getRollData()}),
+        biography: await TextEditor.enrichHTML(this.actor.system.details.biography.value, {rollData: this.actor.getRollData(), secrets: isOwner}),
+        notes: await TextEditor.enrichHTML(this.actor.system.details.notes.value, {rollData: this.actor.getRollData(), secrets: isOwner}),
       },
       cssClass: isOwner ? "editable" : "locked",
       actorId: this.actor.id || this.actor._id,
@@ -109,7 +110,6 @@ export class ActorSheetPF extends ActorSheet {
     };
     // The Actor and its Items
     sheetData.actor = this.actor.data.toObject(false);
-    let featRollData = this.actor.getRollData();
     sheetData.items = sheetData.actor.items.map((i) => {
       const item = this.actor.items.get(i._id);
       i.system = item.toObject(false).system;
@@ -127,14 +127,14 @@ export class ActorSheetPF extends ActorSheet {
       i.hasTimedRecharge = item.hasTimedRecharge;
       i.container = getProperty(i.system, "container");
       i.hasAction = item.hasAction || item.isCharged;
-      i.attackDescription = item.type === "attack" ? ItemDescriptionsHelper.attackDescription(item, featRollData) : "";
-      i.damageDescription = item.type === "attack" ? ItemDescriptionsHelper.damageDescription(item, featRollData) : "";
+      i.attackDescription = item.type === "attack" ? ItemDescriptionsHelper.attackDescription(item, actorRollData) : "";
+      i.damageDescription = item.type === "attack" ? ItemDescriptionsHelper.damageDescription(item, actorRollData) : "";
       i.range = item.type === "attack" ? ItemDescriptionsHelper.rangeDescription(item) : "";
       i.isCurseKnown = getProperty(item.system, "curseActive") || getProperty(item.system, "identifiedCurse");
       i.timelineLeftText = item.getTimelineTimeLeftDescriptive();
       i.showUnidentifiedData = item.showUnidentifiedData;
       i.unmetRequirements =
-        item.type === "feat" || item.type === "class" ? item.hasUnmetRequirements(featRollData) : false;
+        item.type === "feat" || item.type === "class" ? item.hasUnmetRequirements(actorRollData) : false;
       i.name = item.displayName;
       return i;
     });
