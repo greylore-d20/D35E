@@ -12,7 +12,7 @@
     }
   },
   "system": {
-    "originVersion": 101,
+    "originVersion": 103,
     "originPack": "",
     "originId": "",
     "possibleUpdate": false,
@@ -160,7 +160,10 @@
       "heavyArmorFullSpeed": false,
       "multiAttack": false,
       "multiweaponAttack": false,
-      "uncannyDodge": false
+      "uncannyDodge": false,
+      "improvedMultiattack": false,
+      "hasted": false,
+      "firstChangeTargetSelectableOnDescription": false
     },
     "conditionFlags": {
       "dazzled": false,
@@ -302,7 +305,20 @@
       "subType": "feat",
       "uniqueId": ""
     },
-    "bookSource": ""
+    "bookSource": "",
+    "equippedWeightless": false,
+    "carried": false,
+    "resalePrice": null,
+    "brokenResalePrice": null,
+    "fullResalePrice": false,
+    "constantWeight": false,
+    "conditionals": [],
+    "activateActions": [],
+    "deactivateActions": [],
+    "perRoundActions": [],
+    "container": "None",
+    "containerWeightless": false,
+    "identifiedName": "Ability Focus"
   },
   "ownership": {
     "default": 0,
@@ -310,10 +326,10 @@
   },
   "_stats": {
     "systemId": "D35E",
-    "systemVersion": "2.3.2",
-    "coreVersion": "11.309",
+    "systemVersion": "2.4.0",
+    "coreVersion": "11.311",
     "createdTime": null,
-    "modifiedTime": 1696072211096,
+    "modifiedTime": 1701108634891,
     "lastModifiedBy": "cB3ob9BYxSFYX7sd"
   },
   "_key": "!items!btFxZnSXUHqGUffu"
