@@ -1169,6 +1169,7 @@ export class Item35E extends ItemBase35E {
           propData?.selectListArray || false ? propData.selectListArray[propData.value] : propData.value;
       }
     }
+    result.uuid = this.uuid;
     //game.D35E.logger.log('Roll data', result)
     return result;
   }
