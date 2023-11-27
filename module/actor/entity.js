@@ -4752,7 +4752,7 @@ export class ActorPF extends Actor {
             );
             return;
           }
-          await macroToRun.execute();
+          await macroToRun.execute({ actionRollData });
         } else
           ui.notifications.error(
               game.i18n.format('D35E.ErrorActionFormula', {
