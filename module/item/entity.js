@@ -1878,6 +1878,7 @@ export class Item35E extends ItemBase35E {
     let unmetRequirements = [];
     rollData.item = this.getRollData();
     for (const _requirement of getProperty(this.system, "requirements") || []) {
+      if (!_requirement[1]) continue;
       if (_requirement[2] === "generic") {
         if (!new Roll35e(_requirement[1], rollData).roll().total) {
           unmetRequirements.push(_requirement[0]);

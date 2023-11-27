@@ -69,7 +69,6 @@ export class TokenDocumentPF extends TokenDocument {
     if (darkvisionRange > 0) {
       this.sight.range = this.actor?.system?.senses?.darkvision;
       this.sight.visionMode = "darkvision";
-      this.sight.saturation = -1;
     }
 
     // Set basic detection mode
@@ -131,6 +130,14 @@ export class TokenDocumentPF extends TokenDocument {
 
     // Sort detection modes
     this.detectionModes.sort(this._sortDetectionModes.bind(this));
+
+    const visionDefaults = CONFIG.Canvas.visionModes[this.sight.visionMode]?.vision?.defaults || {};
+    for (const fieldName of ["attenuation", "brightness", "saturation", "contrast"]) {
+      if (fieldName in visionDefaults) {
+        this.sight[fieldName] = visionDefaults[fieldName];
+      }
+    }
+
   }
 
   _sortDetectionModes(a, b) {
