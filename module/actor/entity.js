@@ -4008,9 +4008,9 @@ export class ActorPF extends Actor {
     }
   }
 
-  async autoApplyActionsOnSelf(actions) {
+  async autoApplyActionsOnSelf(actions, originatingAttackId = null) {
     LogHelper.log('AUTO APPLY ACTION ON SELF', this.name);
-    await this.applyActionOnSelf(actions, this, null, 'self');
+    await this.applyActionOnSelf(actions, this, null, 'self', originatingAttackId);
   }
 
   static applyAction(actions, actor) {
@@ -4859,7 +4859,7 @@ export class ActorPF extends Actor {
     }
   }
 
-  async applyActionOnSelf(actions, actor, buff = null, target = 'self') {
+  async applyActionOnSelf(actions, actor, buff = null, target = 'self', originatingAttackId = null) {
     if (!actions) return;
     if (!this.testUserPermission(game.user, 'OWNER'))
       return ui.notifications.warn(
@@ -4938,6 +4938,11 @@ export class ActorPF extends Actor {
       } else {
         actionRollData.self = this.getRollData(); //This is roll data of actor that *clicked* the roll
       }
+    }
+
+    if (originatingAttackId) {
+      actionRollData.baseAttack = (await fromUuid(originatingAttackId))
+        ?.getRollData();
     }
 
     let itemUpdates = [];
