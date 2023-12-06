@@ -5918,9 +5918,23 @@ export class ActorPF extends Actor {
     return Promise.resolve(createdItems);
   }
 
+  #correlateUpdateObjectsById(data) {
+    const correlatedHashmap = data.reduce((result, item) => {
+      result[item._id] = result[item._id]
+        ? {
+          ...result[item._id],
+          ...item,
+        }
+        : item;
+      return result;
+    }, {});
+    return Object.values(correlatedHashmap);
+  }
+
   async updateEmbeddedDocuments(type, data, options = {}) {
     LogHelper.log('updateEmbeddedDocuments');
-    let updatedItems = await super.updateEmbeddedDocuments(type, data, options);
+    const _data = this.#correlateUpdateObjectsById(data);
+    let updatedItems = await super.updateEmbeddedDocuments(type, _data, options);
     if (options.massUpdate && !options.stopUpdates) await this.refresh({});
     return Promise.resolve(updatedItems);
   }
