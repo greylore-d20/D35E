@@ -3173,11 +3173,13 @@ export class ActorSheetPF extends ActorSheet {
   _onLevelDataUp(event) {
     event.preventDefault();
     const a = event.currentTarget;
-    const options = {
-      id: a.getAttribute("for"),
-      skillset: this._prepareSkillsets(this.getData().actor.system.skills),
-    };
-    new LevelUpDataDialog(this.actor, options).render(true);
+    this.getData().then( (data) => {
+      const options = {
+        id: a.getAttribute("for"),
+        skillset: this._prepareSkillsets(data.actor.system.skills),
+      };
+      new LevelUpDataDialog(this.actor, options).render(true);
+    });
   }
 
   async loadData(entityType, type, subtype, filter, label) {
