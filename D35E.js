@@ -70,6 +70,7 @@ import {ItemChatListener} from './module/item/chat/chatListener.js';
 import {D35ECombatTracker} from './module/combat/combat-tracker.js';
 import {TokenDocumentPF} from './module/token/tokenDocument.js';
 import {
+  darkvision,
   DetectionModeBlindSightD35E,
   DetectionModeInvisibilityD35E,
   DetectionModeTremorD35E,
@@ -167,7 +168,7 @@ Hooks.once("init", async function () {
   CONFIG.Combatant.documentClass = CombatantD35E;
   CONFIG.Token.objectClass = TokenPF;
   CONFIG.Token.documentClass = TokenDocumentPF;
-
+  CONFIG.Canvas.visionModes.darkvision = darkvision;
   CONFIG.Canvas.detectionModes[DetectionModeInvisibilityD35E.ID] = new DetectionModeInvisibilityD35E({
     id: DetectionModeInvisibilityD35E.ID,
     label: DetectionModeInvisibilityD35E.LABEL,
