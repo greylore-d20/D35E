@@ -47,10 +47,9 @@ export const patchCoreForLowLightVision = function () {
     if (data.dim !== undefined) data.dim = dim;
     if (data.bright !== undefined) data.bright = bright;
 
-    data.dim = dim;
-    data.bright = bright;
     return LightSource_initialize.call(this, data);
   };
+
 
   LightSource.prototype.getRadius = function (dim, bright) {
     const result = { dim, bright };
