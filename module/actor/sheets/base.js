@@ -3102,7 +3102,6 @@ export class ActorSheetPF extends ActorSheet {
         pack.split(":")[2],
         pack.split(":")[3],
         "",
-        undefined,
         pack.split(":")[4]
       );
     } else if (pack !== "actor-race" && pack !== "actor-first-class") {

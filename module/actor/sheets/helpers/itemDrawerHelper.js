@@ -13,11 +13,11 @@ export class ItemDrawerHelper {
     if (
       entityType === "items" &&
       type.split(",").indexOf(indexedItem.type) !== -1 &&
-      (indexedItem.system.index.subType === subtype || subtype === "-")
+      (indexedItem?.system?.index?.subType === subtype || subtype === "-")
     )
       return true;
     if (entityType === "feats")
-      if (indexedItem.type === type && indexedItem.system.index.subType === subtype && !indexedItem.system.index.uniqueId)
+      if (indexedItem.type === type && indexedItem?.system?.index?.subType === subtype && !indexedItem?.system?.index?.uniqueId)
       return true;
     if (entityType === "buffs" && indexedItem.type !== type) return false;
     if (entityType === "enhancements" && indexedItem.type !== "enhancement") return false;

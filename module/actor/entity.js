@@ -29,6 +29,7 @@ import {ActorCRHelper} from './helpers/actorCRHelper.js';
 import {CombatChange} from '../item/extensions/combatChange.js';
 import {ItemActiveHelper} from '../item/helpers/itemActiveHelper.js';
 import {CACHE} from '../cache.js';
+import {ActorPrepareSourceHelper} from './helpers/actorPrepareSourceHelper.js';
 
 /**
  * Extend the base Actor class to implement additional logic specialized for D&D5e.
@@ -36,8 +37,8 @@ import {CACHE} from '../cache.js';
 export class ActorPF extends Actor {
   /* -------------------------------------------- */
   static LOG_V10_COMPATIBILITY_WARNINGS = false;
-  //API_URI = "https://companion.legaciesofthedragon.com/";
-  API_URI = 'http://localhost:5000';
+  API_URI = "https://companion.legaciesofthedragon.com/";
+  //API_URI = 'http://localhost:5000';
   static SPELL_AUTO_HIT = -1337;
   socketRoomConnected = false;
   socket = null;
@@ -1893,6 +1894,9 @@ export class ActorPF extends Actor {
     if (!this.testUserPermission(game.user, 'OWNER'))
       return ui.notifications.warn(
           game.i18n.localize('D35E.ErrorNoActorPermission'));
+    // This refreshes the source details if actor has not been touched before
+    if(!this.sourceDetails) { await this.refresh({stopUpdates: false}); }
+
     if (_savingThrow === 'fort') _savingThrow = 'fortitudenegates';
     if (_savingThrow === 'ref') _savingThrow = 'reflexnegates';
     if (_savingThrow === 'will') _savingThrow = 'willnegates';
@@ -2213,6 +2217,9 @@ export class ActorPF extends Actor {
     if (!this.testUserPermission(game.user, 'OWNER'))
       return ui.notifications.warn(
           game.i18n.localize('D35E.ErrorNoActorPermission'));
+
+    // This refreshes the source details if actor has not been touched before
+    if(!this.sourceDetails) { await this.refresh({stopUpdates: false}); }
 
     const _roll = async function(
         target, form, props, sklName, skillRollFormula, sourceSkillId,
