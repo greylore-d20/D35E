@@ -17,6 +17,6 @@ export class Spell35E extends Item35E {
 
     async getChatDescription() {
         const data = await ItemSpellHelper.generateSpellDescription(this, true);
-        return await renderTemplate("systems/D35E/templates/internal/spell-description.html", data);
+        return renderTemplate("systems/D35E/templates/internal/spell-description.html", data);
     }
 }

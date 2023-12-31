@@ -125,7 +125,7 @@ export class Item35E extends ItemBase35E {
     return getProperty(this.system, "combatChangeCustomDisplayName") || this.name;
   }
 
-  get getChatDescription() {
+  async getChatDescription() {
     return this.getDescription(this.showUnidentifiedData);
   }
 
