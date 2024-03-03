@@ -6241,7 +6241,7 @@ export class ActorPF extends Actor {
     let worldDefaultsSettings = game.settings.get('D35E', 'worldDefaults');
     for (let skill of worldDefaultsSettings.worldDefaults.customSkills) {
       this.__addNewCustomSkill(createData, skill[0], skill[1],
-          skill[2] === 'true', skill[3] === 'true');
+          (skill[2] || 'true') === 'true', (skill[3] || 'true') === 'true');
     }
     this.data.update(createData);
   }
@@ -6252,7 +6252,7 @@ export class ActorPF extends Actor {
   __addNewCustomSkill(createData, name, ability, rt, acp) {
     const skillData = {
       name: name,
-      ability: ability,
+      ability: ability || 'str',
       rank: 0,
       notes: '',
       mod: 0,
@@ -6264,6 +6264,12 @@ export class ActorPF extends Actor {
       worldCustom: true,
     };
 
+    // see if the worldCustom skill of the same name is not already present (in case of actor duplicate)
+    for (let skill of Object.values(this.data.system.skills)) {
+      if (skill.name === skillData.name && skill.worldCustom) {
+        return
+      }
+    }
     let tag = createTag(skillData.name || 'skill');
     let count = 1;
     while (this.system.skills[tag] != null) {
