@@ -3742,7 +3742,7 @@ export class ActorPF extends Actor {
       }
       // Adjust weight on drop from compendium
       if (
-          ['weapon', 'equipment', 'loot'].includes(obj.type) &&
+          ['weapon', 'equipment', 'loot', 'valuable'].includes(obj.type) &&
           options.dataType !== 'data' &&
           !obj.system.constantWeight &&
           !options.keepWeight
