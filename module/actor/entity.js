@@ -3898,8 +3898,43 @@ export class ActorPF extends Actor {
       if (obj.system?.creationChanges && obj.system.creationChanges.length) {
         for (let creationChange of obj.system.creationChanges) {
           if (creationChange) {
-            setProperty(obj.system, creationChange[0],
-                new Roll35e(creationChange[1], {}).roll().total);
+            let creationChangeValue = null;
+            // If the creation change value starts and ends with [], we assume its a set of delimeted string
+            if (creationChange[1].startsWith('[') &&
+                creationChange[1].endsWith(']')) {
+              // split the string by the delimiter ("|")
+              let possibleValues = creationChange[1].substring(1, creationChange[1].length - 1).split('|');
+              // randomly select one of the values
+              creationChangeValue = possibleValues[Math.floor(Math.random() * possibleValues.length)];
+            } else if (creationChange[1].startsWith('@UUID[') && creationChange[1].endsWith(']')) {
+               let table = fromUuidSync(creationChange[1].substring(6, creationChange[1].length - 1));
+               // check if the table has only text results
+                if (table.results.values().every((r) => r.type === 0)) {
+                  let roll = await table.roll()
+                  let result = roll.results[0].text;
+                  creationChangeValue = result;
+                } else {
+                  ui.notifications.error(
+                      game.i18n.localize('D35E.CreationChangeTableHasNonTextResults'));
+                }
+            }
+            else {
+              creationChangeValue = new Roll35e(creationChange[1], {}).roll().total;
+            }
+            if (creationChangeValue !== null) {
+              if (creationChange[0] === "name") {
+                setProperty(obj, "name", creationChangeValue)
+                setProperty(obj.system, "identifiedName", creationChangeValue)
+              } else {
+                setProperty(obj.system, creationChange[0], creationChangeValue);
+                if (creationChange[0] === "identifiedName") {
+                  setProperty(obj, "name", creationChangeValue)
+                }
+              }
+            } else {
+              ui.notifications.error(
+                  game.i18n.localize('D35E.CreationChangeFailed'));
+            }
           }
         }
         setProperty(obj.system, 'creationChanges', []);

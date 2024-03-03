@@ -352,6 +352,9 @@ export class ItemSheetPF extends ItemSheet {
     }
 
     sheetData.fieldList = Object.keys(flattenObject(this.item.system));
+    sheetData.fieldList.push("name"); // we add name field, it is custom handled but we need it
+    // sort the field list
+    sheetData.fieldList.sort();
 
     if (this.item.type === "buff") {
       sheetData.hasCombatChanges = true;
