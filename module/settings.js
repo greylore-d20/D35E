@@ -724,6 +724,29 @@ export const registerSystemSettings = function() {
   });
 
 
+  game.settings.register("D35E", "threatened-show-squares", {
+    name: "Display Threatened Squares",
+    hint: "Hide or show threatened squares of current token",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+    onChange: () => {
+      game.socket.emit("system.D35E", { eventType: "redrawCanvas" });
+    },
+  });
+
+  game.settings.register("D35E", "automate-flanking-threat", {
+    name: "Automate Flanking/Threat Detection (Patreon-Only)",
+    // patreon only
+    hint: "Enables or disables automatic flanking/threat detection",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+
   game.settings.register("D35E", "additionalCachedCompendiums_classAbilities", {
     name: "SETTINGS.D35EAdditionalCachedCompendiumsClassAbilitiesN",
     hint: "SETTINGS.D35EAdditionalCachedCompendiumsClassAbilitiesH",
