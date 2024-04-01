@@ -72,14 +72,18 @@ export class DistanceHelper {
       // for each expanded token, draw a small circle around it
 
       // remove tokens that are too small (their size is less than i + 1 squares)
+      // In the first expanded square, size 2 and 3 tokens are left as they are adjecent (this is because token of size 3)
+      // will have the center in the middle of the square, so it will be in the first expanded square. In the second expanded
+      // square, only size 4 tokens are threatening
+      let minTokenSize = i === 1 ? canvas.grid.size * 2 : canvas.grid.size * 4
       expandedTokens = expandedTokens.filter(
-          e => e.w >= (canvas.grid.size * (i + 1)))
+          e => e.w >= minTokenSize)
       tokens = tokens.concat(expandedTokens)
 
       let g3 = new PIXI.Graphics();
       g3.beginFill("orange", 0.1*i).drawRect(expandedSquare.x, expandedSquare.y, expandedSquare.width, expandedSquare.height).beginHole().drawRect(square.x, square.y, square.width, square.height).endHole();
-      //let check3 = canvas.layers.find((l) => l.name === "DrawingsLayer").addChild(g3);
-      //check3.boundingCheck = true;
+      let check3 = canvas.layers.find((l) => l.name === "DrawingsLayer").addChild(g3);
+      check3.boundingCheck = true;
     }
     // now remove all tokens that are too small - their
     // remove tokens that are too close
