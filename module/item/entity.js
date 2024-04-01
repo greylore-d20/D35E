@@ -511,6 +511,10 @@ export class Item35E extends ItemBase35E {
     if (
       this.type === "class" ||
       srcData.system?.changes?.length > 0 ||
+      srcData.system?.sizeChange ||
+      srcData.system?.sizeChangeUpperBound ||
+      srcData.system?.sizeChangeLowerBound ||
+      srcData.system?.sizeOverride ||
       srcData.system?.damageReduction?.length > 0 ||
       srcData.system?.resistances?.length > 0 ||
       srcData.system?.requirements?.length > 0 ||

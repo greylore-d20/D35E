@@ -6,6 +6,9 @@ export class ItemSpellHelper {
    * @private
    */
   static adjustSpellCL(item, itemData, rollData) {
+    let hookData = { itemData: itemData, rollData: rollData };
+    Hooks.call("D35E.ItemSpellHelper.preAdjustSpellCL", item, hookData, game.userId);
+    let { itemData: hookItemData, rollData: hookRollData } = hookData;
     let cl = 0;
     if (itemData.spellbook) {
       const spellbookIndex = itemData.spellbook;
@@ -27,6 +30,7 @@ export class ItemSpellHelper {
     }
     rollData.cl = Math.max(new Roll35e(`${itemData.baseCl}`, rollData).roll().total, cl);
     rollData.spellPenetration = rollData.cl + (new Roll35e(rollData?.featSpellPenetrationBonus || "0", rollData).roll().total || 0);
+    Hooks.call("D35E.ItemSpellHelper.postAdjustSpellCL", item, rollData, game.userId);
   }
 
   static async generateSpellDescription(sourceItem, renderTextDescription = false) {

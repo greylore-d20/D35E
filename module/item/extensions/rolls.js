@@ -322,6 +322,10 @@ export class ItemRolls {
     modifiers = {},
     replacedEnh = 0,
   } = {}) {
+    let hookData = { critical, extraParts, primaryAttack, modifiers, replacedEnh };
+    Hooks.call("D35E.ItemRolls.preRollDamage", this.item, hookData, game.userId);
+    let { critical: hookCritical, extraParts: hookExtraParts, primaryAttack: hookPrimaryAttack, modifiers: hookModifiers, replacedEnh: hookReplacedEnh } = hookData;
+
     const itemData = this.item.system;
     let rollData = null;
     let baseModifiers = [];
@@ -524,10 +528,12 @@ export class ItemRolls {
       }
     }
     // //game.D35E.logger.log(rolls);
+    Hooks.call("D35E.ItemRolls.postRollDamage", this.item, rolls, game.userId);
     return rolls;
   }
 
   rollAlternativeDamage({ data = null } = {}) {
+    Hooks.call("D35E.ItemRolls.preRollAlternativeDamage", this.item, data, game.userId);
     const itemData = this.item.system;
     let rollData = null;
     let baseModifiers = [];
@@ -556,6 +562,7 @@ export class ItemRolls {
       };
       rolls.push(roll);
     }
+    Hooks.call("D35E.ItemRolls.postRollAlternativeDamage", this.item, rolls, game.userId);
     return rolls;
   }
 

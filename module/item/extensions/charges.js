@@ -39,6 +39,11 @@ export class ItemCharges {
    * @returns {Promise}
    */
   async addCharges(value, data = null) {
+    // make value an object that can be passed to hooks and modified
+    let hookValue = { value: value };
+    Hooks.call("D35E.ItemCharges.preAddCharges", this.item, data, hookValue, game.userId);
+    value = hookValue.value;
+
     let chargeItem = this.item;
     let isChargeLinked = false;
     if (this.item.system?.linkedChargeItem?.id) {
@@ -94,6 +99,7 @@ export class ItemCharges {
           { stopUpdates: true }
         );
     }
+    Hooks.call("D35E.ItemCharges.postAddCharges", this.item, data, value, game.userId);
   }
 
   #getSpellUses() {

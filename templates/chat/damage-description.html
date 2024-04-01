@@ -76,15 +76,16 @@
                                     {{/if}}
                                 </h4>
                                 <h4 class="dice-total rolled-roll {{#if atk.attack.isCrit}} success{{/if}}{{#if atk.attack.isFumble}} failure{{/if}}  {{#unless revealed}}target-hidden{{/unless}}">
+
                                     {{#if damageData.isHealing}}
                                     <i class="fas fa-heart" style="font-size: 16px;"></i>
-                                    {{/if}}
-
-                                    {{#if damageData.lower}}
-                                        <i class="fas fa-arrow-circle-down reduced" style="font-size: 16px; color: darkred; position: absolute; bottom: 10px; right: 10px;"></i>
-                                    {{/if}}
-                                    {{#if damageData.higher}}
-                                        <i class="fas fa-arrow-circle-up improved" style="font-size: 16px; color: darkgreen; position: absolute; bottom: 10px; right: 10px"></i>
+                                    {{else}}
+                                        {{#if damageData.lower}}
+                                            <i class="fas fa-arrow-circle-down reduced" style="font-size: 16px; color: darkred; position: absolute; bottom: 10px; right: 10px;"></i>
+                                        {{/if}}
+                                        {{#if damageData.higher}}
+                                            <i class="fas fa-arrow-circle-up improved" style="font-size: 16px; color: darkgreen; position: absolute; bottom: 10px; right: 10px"></i>
+                                        {{/if}}
                                     {{/if}}
                                     {{numberFormat damageData.displayDamage decimals=0 sign=false}}</h4>
                             </div>
@@ -251,6 +252,7 @@
                                     {{damageData.beforeDamage}}</h4>
                             </div>
                         </div>
+                        {{#unless damageData.isHealing}}
                         {{#if damageData.lower}}
                         <div class="resistance damage-divider">
                             <i class="fas fa-arrow-circle-down"></i>
@@ -266,6 +268,11 @@
                             <i class="fas fa-arrow-circle-up"></i>
                         </div>
                         {{/if}}
+                        {{else}}
+                        <div class="resistance damage-divider">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        {{/unless}}
                         <div class="flexcol">
                             <div class="dice-flavor">Applied</div>
                             <div class="dice-result">
@@ -349,6 +356,7 @@
                                 {{damage.before}}</h4>
                         </div>
                         {{#unless damage.nonLethal}}
+                        {{#unless damage.isHealing}}
                         {{#if damage.lower}}
                         <div class="resistance damage-divider">
                             <i class="fas fa-arrow-circle-down"></i>
@@ -365,13 +373,24 @@
                         </div>
                         {{/if}}
                         {{else}}
+                        <!-- Heart -->
+                        <div class="resistance damage-divider">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        {{/unless}}
+                        {{else}}
                         <div class="nonlethal damage-divider">
                             <i class="fas fa-tint-slash"></i>
                         </div>
                         {{/unless}}
                         <div class="dice-result" style="flex: 0 50px;">
+                            {{#if damage.useDisplayDamage}}
+                            <h4 class="dice-total">
+                                {{damage.displayDamage}}</h4>
+                            {{else}}
                             <h4 class="dice-total">
                                 {{damage.after}}</h4>
+                            {{/if}}
                         </div>
                     </div>
                     {{/each}}

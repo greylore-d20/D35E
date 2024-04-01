@@ -88,6 +88,8 @@ import {Sockets} from './module/sockets/sockets.js';
 import {CompendiumBrowser} from './module/apps/compendium-browser.js';
 import {Logger} from './module/utils/logger.js';
 import {EnrichersHelper} from './module/enrichers.js';
+import {DistanceHelper} from './module/canvas/distance-helper.js';
+import {ItemEquipHook} from './module/item/hooks/itemEquipHook.js';
 
 // Add String.format
 if (!String.prototype.format) {
@@ -792,6 +794,12 @@ Hooks.on("canvasReady", async (canvas, options, userId) => {
 });
 
 Hooks.on("updateToken", async (token, data, options, userId) => {
+
+  if (canvas && canvas.tokens.controlled.length === 1) {
+    await CanvasAnimation.getAnimation(token.object.animationName)?.promise;
+    var tokens = DistanceHelper.getThreatenedTokens(
+        canvas.tokens.controlled[0]);
+  }
   if (userId !== game.user.id) return false;
   if (options?.stopAuraUpdate) return;
   if (options.tokenOnly) return;
@@ -799,6 +807,32 @@ Hooks.on("updateToken", async (token, data, options, userId) => {
 });
 
 Hooks.on("preUpdateToken", (token, data, options, userId) => {
+  // if token is selected by the user, we need to update the threatened tokens
+  if (canvas && canvas.tokens.controlled.length > 0) {
+    DistanceHelper.clearThreatenedTokensGraphics();
+    if (data?.x || data?.y) {
+
+      var rawToken = canvas.tokens.placeables.find((t) => t.id === token.id);
+      // if the movement length is lesser then sqrt(2)*canvas.grid.size, then the token moved only one square
+      var movedDistance = Math.sqrt(Math.pow((data.x || rawToken.x) - rawToken.x, 2) + Math.pow((data.y || rawToken.y) - rawToken.y, 2));
+      var movedOnlyOneSquare = movedDistance <= Math.sqrt(2) * canvas.grid.size;
+      if (!movedOnlyOneSquare) {
+        // Go through all tokens and check if the token is threatened by any of them
+        let threateningTokens = [];
+        for (let enemyToken of canvas.tokens.placeables) {
+          var threatened = DistanceHelper.isThreatened(enemyToken, rawToken)
+          if (threatened) {
+            threateningTokens.push(enemyToken);
+          }
+        }
+        let result = Hooks.call("D35E.Threatened.tokenThreatened", rawToken, threateningTokens, game.user.id);
+        if (result === false) {
+          // if the result of a tokenThreatened hook is false, then we need to cancel the movement
+          return false;
+        }
+      }
+    }
+  }
   if (userId !== game.user.id) return false;
   if (token.actor.getFlag("D35E", "lootsheettype")) {
     if (data?.x || data?.y) {
@@ -810,6 +844,7 @@ Hooks.on("preUpdateToken", (token, data, options, userId) => {
 });
 
 Hooks.on("deleteToken", async (token, options, userId) => {
+  DistanceHelper.clearThreatenedTokensGraphics();
   if (options?.stopAuraUpdate) return;
   if (options.tokenOnly) return;
   debouncedCollate(canvas.scene.id, true, true, "updateToken");
@@ -923,6 +958,11 @@ Hooks.on("controlToken", (token, selected) => {
     refreshSounds: true,
     refreshTiles: true,
   });
+  if (canvas.tokens.controlled.length === 1) {
+    var tokens = DistanceHelper.getThreatenedTokens(token);
+  } else {
+    DistanceHelper.clearThreatenedTokensGraphics();
+  }
 });
 
 /* -------------------------------------------- */
@@ -1335,3 +1375,4 @@ Hooks.on("renderItemSheet", (app, html) => {
 });
 
 EnrichersHelper.setupHooks();
+ItemEquipHook.register();

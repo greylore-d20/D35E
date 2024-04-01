@@ -166,7 +166,11 @@
             {{else}}
           <span style='font-family: "Signika", sans-serif; font-size: 13px; opacity: 0.7;'>{{{ localize 'D35E.DropFromRaceCompendium' }}}</span>
             {{/if}}
-            <div class="item-controls flexrow" style="flex: 0 40px;">
+            <div class="item-controls flexrow" style="flex: 0 60px;">
+              {{#if warnings.tooManyRaces}}<span style='color:darkred;     font-size: 12px; flex: 0 15px;' class="tooltip" ><i class="fas fa-exclamation-triangle"></i><span class="tooltipcontent">{{ localize 'D35E.WarningTooManyRaces' }}</span></span>
+              {{else}}
+              <span style='flex: 0 25px;'></span>
+              {{/if}}
               {{#if owner}}
                 {{#unless race}}
                 <a class="item-control add" title="{{ localize 'D35E.CreateItem' }}">

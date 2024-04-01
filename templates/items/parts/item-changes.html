@@ -56,14 +56,48 @@
   </div>
 </div>
 
-<div class="form-group">
-  <div class="form-group">
-    <label>{{localize "D35E.Size"}}</label>
+<div>
+  <h3 class="form-header">{{localize "D35E.Size"}}</h3>
+  <div class="form-group uses-per">
+    <label>{{localize "D35E.BaseSize"}}</label>
     <select class="actor-size" name="system.sizeOverride">
       <option value="">None</option>
       {{#select data.system.sizeOverride}}
       {{#each config.actorSizes as |label size|}}
       <option value="{{size}}">{{label}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+  </div>
+  <div class="form-group uses-per">
+    <label>{{localize "D35E.SizeChange"}}</label>
+    <select class="actor-size" name="system.sizeChange">
+      <option value="0">None</option>
+      {{#select data.system.sizeChange}}
+      <!-- from -4 to 4 -->
+        <option value="-4">-4</option>
+        <option value="-3">-3</option>
+        <option value="-2">-2</option>
+        <option value="-1">-1</option>
+        <option value="1">+1</option>
+        <option value="2">+2</option>
+        <option value="3">+3</option>
+        <option value="4">+4</option>
+      {{/select}}
+    </select>
+    <select class="actor-size" name="system.sizeChangeLowerBound">
+      <option value="">No size reduction limit</option>
+      {{#select data.system.sizeChangeLowerBound}}
+      {{#each config.actorSizes as |label size|}}
+      <option value="{{size}}">Down to {{label}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    <select class="actor-size" name="system.sizeChangeUpperBound">
+      <option value="">No size enlargement limit</option>
+      {{#select data.system.sizeChangeUpperBound}}
+      {{#each config.actorSizes as |label size|}}
+      <option value="{{size}}">Up to {{label}}</option>
       {{/each}}
       {{/select}}
     </select>

@@ -7,7 +7,7 @@
             <label>{{localize "D35E.Targets"}}</label>
             <div>
             {{#each targets as |target|}}
-                <img src="{{target.document.texture.src}}" width="36" height="36">
+                <img src="{{target.document.texture.src}}" width="36" height="36" style="{{#if ../isThreatening}}border: none !important{{else}}border-radius: 40px; border-color: red; border-width: 2px{{/if}}" class="">
             {{/each}}</div>
 
             <input type="hidden" name="target-ids" value="{{#each targets as |target|}}{{target.data._id}};{{/each}}"/>
@@ -41,9 +41,12 @@
     <div class="flexrow">
         <div class="form-group">
             <label class="checkbox" style="margin-right: 8px; position: relative">
-                <input type="checkbox" class="stylized" name="flanking"/>
+                <input type="checkbox" class="stylized" name="flanking" {{#if isFlanking}}checked{{/if}}/>
                 <span class="checkmark right"></span>
                 <span class="label-right">{{localize "D35E.Flanking"}} (+2)</span>
+                {{#if isFlanking}}
+                <img src="{{flankingImg}}" width="24" height="24" style="float: right;     margin-right: 20px; border: none !important">
+                {{/if}}
             </label>
         </div>
         {{#unless isRangedWeapon}}

@@ -10,6 +10,8 @@ import { ItemSpellHelper as ItemSpellHelper } from "../helpers/itemSpellHelper.j
 import { ItemCombatChangesHelper } from "../helpers/itemCombatChangesHelper.js";
 import { Item35E } from "../entity.js";
 import { ItemActiveHelper } from "../helpers/itemActiveHelper.js";
+import {DistanceHelper} from '../../canvas/distance-helper.js';
+import {PatreonIntegrationFactory} from '../../patreon-integration.js';
 
 export class ItemUse {
   /**
@@ -26,6 +28,23 @@ export class ItemUse {
     if (tempActor !== null) {
       actor = tempActor;
     }
+
+    let hookValues = {replacementId, ev, skipDialog, rollModeOverride, temporaryItem, skipChargeCheck, customUse: false};
+    /**
+     * @hook D35E.ItemUse.preUseItem
+     * The hook is called before an item is used. While it can change some values, its main purpose is to make a custom use of the item.
+     * You can find examples of custom uses in the module's code - for Tome of Ability line of items, Deck of Illustions (which also uses D35E.ItemCreate.postCreateItem hook),
+     *
+     */
+    Hooks.call("D35E.ItemUse.preUseItem", this.item, actor, hookValues);
+    if (hookValues.customUse) return; // here we assume that the custom hook will handle everything
+    replacementId = hookValues.replacementId;
+    ev = hookValues.ev;
+    skipDialog = hookValues.skipDialog;
+    rollModeOverride = hookValues.rollModeOverride;
+    temporaryItem = hookValues.temporaryItem;
+    skipChargeCheck = hookValues.skipChargeCheck;
+
 
     if (getProperty(this.item.system, "requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus)
       return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
@@ -463,6 +482,7 @@ export class ItemUse {
     this.#_applyMetamagicModifiers(damageModifiers, rollModifiers);
 
     let attacks = [];
+
     if (this.item.hasAttack) {
       let attackId = 0;
       // Scaling number of attacks for spells (based on formula provided)
@@ -478,9 +498,12 @@ export class ItemUse {
           });
         }
       }
+      rollData.ammoMaterial = ammoMaterial;
+      rollData.ammoEnh = ammoEnh;
+      Hooks.call("D35E.ItemUse.preRollAllAttacks", this.item, rollData, allAttacks, game.userId);
       for (let atk of allAttacks) {
         // Create attack object
-        let attack = new ChatAttack(this.item, atk.label, actor, rollData, ammoMaterial, ammoEnh);
+        let attack = new ChatAttack(this.item, atk.label, actor, rollData, rollData.ammoMaterial, rollData.ammoEnh);
         let localAttackExtraParts = duplicate(attackExtraParts);
         for (let aepConditional of attackEnhancementMap.get(`attack.${attackId}`) || []) {
           localAttackExtraParts.push(aepConditional);
@@ -963,6 +986,54 @@ export class ItemUse {
         }
       }
     }
+    var anyFlanking = false;
+    var flankingName = "";
+    var flankingImg = "";
+    var isRanged =  getProperty(this.item.system, "attackType") === "weapon" &&
+        getProperty(this.item.system, "actionType") === "rwak";
+    var isThreatening = isRanged;
+    var isPatreonActive =  PatreonIntegrationFactory.getInstance().isPatreonActive();
+    if (game.user.targets && game.user.targets.size === 1) {
+        var surroundingTokens = DistanceHelper.getSurroundingTokens(game.user.targets.first());
+
+        let itemUserToken = null;
+        if (actor.token) {
+          itemUserToken = canvas.tokens.placeables.find((t) => t.document.id === actor.token.id);
+        } else {
+          itemUserToken = canvas.tokens.placeables.find((t) => t.actor.id === actor.id);
+        }
+        for (let token of surroundingTokens) {
+          // Get the user's actor token
+          // ignore the user's actor token
+          if (token.id === itemUserToken.id) {
+            continue;
+          }
+          // if token disposition is different than the user's actor token, then its not flanking
+          var tokenDisposition = token.document ? token.document.disposition : token.disposition;
+          var itemUserTokenDisposition = itemUserToken.document ? itemUserToken.document.disposition : itemUserToken.disposition;
+          if (tokenDisposition !== itemUserTokenDisposition) {
+            continue;
+          }
+          if (!isPatreonActive) {
+            continue;
+          }
+          var isTokenFlanking = DistanceHelper.isFlanking(itemUserToken, game.user.targets.first(), token);
+          if (isTokenFlanking) {
+            flankingImg = token.document.texture.src;
+            flankingName = token.document.name;
+          }
+          anyFlanking = anyFlanking || isTokenFlanking;
+        }
+        if (isPatreonActive) {
+          isThreatening = isThreatening ||
+              DistanceHelper.isAttackThreatening(itemUserToken, this.item,
+                  game.user.targets.first());
+        } else {
+          isThreatening = true;
+        }
+    } else {
+      isThreatening = true;
+    }
     let dialogData = {
       data: rollData,
       id: this.item.id,
@@ -995,9 +1066,11 @@ export class ItemUse {
       isNaturalAttack: getProperty(this.item.system, "attackType") === "natural",
       isPrimaryAttack: getProperty(this.item.system, "primaryAttack") || false,
       isWeaponAttack: getProperty(this.item.system, "attackType") === "weapon",
-      isRangedWeapon:
-        getProperty(this.item.system, "attackType") === "weapon" &&
-        getProperty(this.item.system, "actionType") === "rwak",
+      isFlanking: anyFlanking,
+      flankingName: flankingName,
+      flankingImg: flankingImg,
+      isThreatening: isThreatening,
+      isRangedWeapon: isRanged,
       ammunition: getProperty(this.item.system, "thrown")
         ? actor.items.filter((o) => o._id === getProperty(this.item.system, "originalWeaponId"))
         : actor.items.filter((o) => o.type === "loot" && o.system.subType === "ammo" && o.system.quantity > 0),
@@ -1415,6 +1488,7 @@ export class ItemUse {
       selectedTargetIds = form.find('[name="target-ids"]').val();
       let targetIdSet = new Set(selectedTargetIds.split(";"));
       selectedTargets = canvas.tokens.objects.children.filter((t) => targetIdSet.has(t.data._id));
+
     }
     $(form)
       .find('[data-type="optional"]')

@@ -5,7 +5,7 @@ import {
   getOriginalNameIfExists,
   isMinimumCoreVersion,
   linkData,
-  shuffle,
+  shuffle, sizeDie,
   uuidv4,
 } from '../lib.js';
 import {createCustomChatMessage} from '../chat.js';
@@ -1070,12 +1070,20 @@ export class ActorPF extends Actor {
     });
   }
 
-  async createAttackFromWeapon(item) {
+  async createAttackFromWeapon(item, options = {deleteExistingAttack: true}) {
     if (!this.testUserPermission(game.user, 'OWNER'))
       return ui.notifications.warn(
           game.i18n.localize('D35E.ErrorNoActorPermission'));
     if (item.type !== 'weapon') throw new Error('Wrong Item type');
     //LogHelper.log('Creating attack for', item)
+
+    // Delete old attack if it exists
+    let oldAttack = this.items.find(
+        (i) => i.type === 'attack' && i.system.originalWeaponId === item._id);
+    if (oldAttack) {
+      if (options.deleteExistingAttack) await oldAttack.delete();
+      else return;
+    }
 
     let isKeen = false;
     let isSpeed = false;
@@ -1219,11 +1227,7 @@ export class ActorPF extends Actor {
       if (die.match(/^([0-9]+)d([0-9]+)$/)) {
         dieCount = parseInt(RegExp.$1);
         dieSides = parseInt(RegExp.$2);
-        let weaponSize = '@size';
-        if (!game.settings.get('D35E', 'autosizeWeapons'))
-          weaponSize = Object.keys(CONFIG.D35E.sizeChart).
-              indexOf(item.system.weaponData.size) - 4;
-        part = `sizeRoll(${dieCount}, ${dieSides}, ${weaponSize}, @critMult)`;
+        part = `sizeRoll(${dieCount}, ${dieSides}, @sizeDifference, @critMult)`;
       }
       const bonusFormula = getProperty(item.system, 'weaponData.damageFormula');
       if (bonusFormula != null &&
@@ -2292,7 +2296,6 @@ export class ActorPF extends Actor {
       this._addCombatChangesToRollData(allCombatChanges, rollData);
 
       rollData.skillModTotal = 0;
-      skillRollFormula = skillRollFormula;
       let skillSourceDetails = this.sourceDetails[sourceSkillId] || [];
       if (rollAbility !== skl.ability) {
         // Replace "Abilitiy Modifier" with the correct ability modifier in skillSourceDetails
@@ -2304,6 +2307,22 @@ export class ActorPF extends Actor {
           skillSourceDetails[abilityModIndex].value = this.system.abilities[rollAbility].mod;
         }
       }
+
+      let hookData = { skillRollFormula, skillSourceDetails, skillManualBonus, target}
+      /**
+       * @hook D35E.preRollSkill
+       * This hook is called before a skill roll is made. It can be used to modify the skill roll formula, skill source details (containing the list of bonuses), and skill manual bonus.
+       *
+       * Params:
+       * @param{sklName} the name of the skill being rolled
+       * @param{hookData} An object containing the skillRollFormula, skillSourceDetails, skillManualBonus and target
+       * @param{rollData} - The roll data
+       * @param{userId} - The user id
+       */
+      Hooks.call('D35E.preRollSkill', sklName, hookData, rollData, game.userId);
+      let { skillRollFormula: newSkillRollFormula, skillSourceDetails: newSkillSourceDetails, skillManualBonus: newSkillManualBonus, target: newTarget } = hookData;
+
+
       if (skillManualBonus) {
         skillSourceDetails.push(
             {value: skillManualBonus, name: 'Situational Modifier'});
@@ -2321,9 +2340,18 @@ export class ActorPF extends Actor {
         }
       }
       rollData.skillManualBonus = skillManualBonus;
-
       let roll = new Roll35e(skillRollFormula, rollData).roll();
 
+      /**
+       * @hook D35E.postRollRollSkill
+       * This hook is called just after skill roll is made. You can edit the roll there before success is evaluated
+       *
+       * Params:
+       * <b>sklName</b> - The name of the skill being rolled
+       * <b>roll</b> - The roll object
+       * <b>rollData</b> - The roll data
+       */
+      Hooks.call('D35E.postRollRollSkill', sklName, roll, rollData, game.userId);
       rollData.rollTotal = roll.total;
       rollData.success = target ? roll.total >= target : true;
       let actions = await this.getAndApplyCombatChangesSpecialActions(
@@ -2397,6 +2425,7 @@ export class ActorPF extends Actor {
             rolls: [roll],
           });
 
+      Hooks.call('D35E.postRollSkill', sklName, roll, rollData.success, game.userId);
       return roll;
     };
 
@@ -2482,6 +2511,16 @@ export class ActorPF extends Actor {
     let roll;
     const buttons = {};
     let wasRolled = false;
+
+    if (options.skipDialog ||
+        (options.event && (options.event.shiftKey || options.event.button === 2))
+    ) {
+      wasRolled = true;
+      roll = _roll.call(this, options.target, null, props, sklName, '1d20',
+          sourceChangesSkillId, options.rollMode);
+      return Promise.resolve(roll);
+    }
+
     buttons.takeTen = {
       label: game.i18n.localize('D35E.Take10'),
       callback: (html) => {
@@ -3742,17 +3781,40 @@ export class ActorPF extends Actor {
       }
       // Adjust weight on drop from compendium
       if (
-          ['weapon', 'equipment', 'loot', 'valuable'].includes(obj.type) &&
+          ['weapon', 'equipment'].includes(obj.type) &&
           options.dataType !== 'data' &&
           !obj.system.constantWeight &&
           !options.keepWeight
       ) {
         let newSize = Object.keys(CONFIG.D35E.sizeChart).
             indexOf(getProperty(this.system, 'traits.actualSize'));
+        let newSizeKey = Object.keys(CONFIG.D35E.sizeChart)[newSize];
+        let newSizeName = CONFIG.D35E.actorSizes[newSizeKey];
         let oldSize = Object.keys(CONFIG.D35E.sizeChart).indexOf('med');
         LogHelper.log('Resize Object', newSize, oldSize);
         let weightChange = Math.pow(2, newSize - oldSize);
         obj.system.weight = obj.system.weight * weightChange;
+        obj.name = `${obj.name} (${newSizeName})`;
+        if (obj.type === 'weapon') {
+
+          obj.system.weaponData.size = newSizeKey;
+
+          let weaponSize = Object.keys(CONFIG.D35E.sizeChart).
+              indexOf(obj.system.weaponData.size) - 4;
+          let dieCount = 0;
+          let dieSides = 0;
+          if (obj.system.weaponData.damageRoll) {
+            // use regex to get the die count and die sides
+            let regex = /(\d+)d(\d+)/;
+            let match = obj.system.weaponData.damageRoll.match(regex);
+            if (match) {
+              dieCount = parseInt(match[1]);
+              dieSides = parseInt(match[2]);
+              let newDamageRoll = sizeDie(dieCount, dieSides, weaponSize, 1)
+              obj.system.weaponData.damageRoll = newDamageRoll;
+            }
+          }
+        }
       }
       if (['weapon', 'equipment', 'loot'].includes(obj.type)) {
         LogHelper.log('Create Object', obj);
@@ -4968,6 +5030,7 @@ export class ActorPF extends Actor {
           otherActions.push(action);
           break;
         default:
+
           break;
       }
     }
@@ -5154,6 +5217,34 @@ export class ActorPF extends Actor {
       },
       default: 'tattoo',
     }).render(true);
+  }
+
+  async _createRaceAddDialog(itemData, dataType) {
+    // If actor does not have race already, we can just add it as is
+    if (!this.race) {
+      this.createEmbeddedEntity("Item", itemData, {dataType: dataType})
+    } else {
+      new Dialog({
+        title: game.i18n.localize('D35E.AddDuplicateRaceForActor').format(itemData.name, this.race.name),
+        content: game.i18n.localize('D35E.AddDuplicateRaceForActorD').format(itemData.name, this.race.name),
+        buttons: {
+          replace: {
+            icon: '<i class="fas fa-exchange-alt"></i>',
+            label: 'Replace',
+            callback: async () => {
+              await this.race.delete();
+              await this.createEmbeddedEntity("Item", itemData, {dataType: dataType});
+            }
+          },
+          cancel: {
+            icon: '<i class="fas fa-times"></i>',
+            label: 'Cancel',
+            callback: () => {}
+          }
+        },
+        default: 'replace'
+      }).render(true);
+    }
   }
 
   _createPolymorphBuffDialog(itemData) {

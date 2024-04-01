@@ -88,29 +88,57 @@ export class ActorDamageHelper {
                 let concealRoll = 0;
                 let concealTarget = 0;
                 let concealRolled = false;
+                let forceConcealRoll = false;
+                let preCheckConcealmentHooksValues = {finalAc: finalAc, forceConcealRoll: forceConcealRoll}
+                Hooks.call("D35E.DamageRoll.preCheckConcealment", a, preCheckConcealmentHooksValues, game.user.id);
+                finalAc = preCheckConcealmentHooksValues.finalAc;
+                forceConcealRoll = preCheckConcealmentHooksValues.forceConcealRoll;
                 if (
                     (finalAc.conceal ||
+                        forceConcealRoll ||
                         finalAc.fullConceal ||
                         a.system.attributes?.concealment?.total ||
                         finalAc.concealOverride) &&
                     roll !== ActorPF.SPELL_AUTO_HIT
                 ) {
-                    concealRolled = true;
-                    concealRoll = new Roll35e("1d100").roll().total;
                     if (finalAc.fullConceal) concealTarget = 50;
                     if (finalAc.conceal) concealTarget = 20;
                     if (finalAc.concealOverride) concealTarget = finalAc.concealOverride;
+                    let preConcealHooksValues = {concealTarget: concealTarget}
+                    Hooks.call("D35E.DamageRoll.preRollConcealment", a, preConcealHooksValues, game.user.id);
+                    concealTarget = preConcealHooksValues.concealTarget;
+                    concealRolled = true;
+                    concealRoll = new Roll35e("1d100").roll().total;
                     concealTarget = Math.max(a.system.attributes?.concealment?.total || 0, concealTarget);
                     if (concealRoll <= concealTarget) {
                         concealMiss = true;
                     }
+                    let concealHooksValues = {concealMiss: concealMiss, concealRoll: concealRoll, concealTarget: concealTarget}
+                    Hooks.call("D35E.DamageRoll.rollConcealment", a, concealHooksValues, game.user.id);
+                    concealMiss = concealHooksValues.concealMiss;
+                    concealRoll = concealHooksValues.concealRoll;
+                    concealTarget = concealHooksValues.concealTarget;
                 }
+                let preHitHookValues = {roll: roll, finalAc: finalAc, natural20: natural20}
+                Hooks.call("D35E.DamageRoll.preHitCheck", a, preHitHookValues, game.user.id);
+                roll = preHitHookValues.roll;
+                finalAc = preHitHookValues.finalAc;
+                natural20 = preHitHookValues.natural20;
                 let achit = roll >= finalAc.ac || natural20;
                 hit = ((roll >= finalAc.ac || roll === ActorPF.SPELL_AUTO_HIT || natural20) && !concealMiss) || finalAc.noCheck; // This is for spells and natural 20
                 crit =
                     (critroll >= finalAc.ac || (critroll && finalAc.noCheck) || natural20Crit) &&
                     !finalAc.noCritical &&
                     !fumble20Crit;
+                let hitHooksValues = {hit: hit, crit: crit, finalAc: finalAc, roll: roll, critroll: critroll, natural20: natural20, natural20Crit: natural20Crit, fumble20Crit: fumble20Crit}
+                Hooks.call("D35E.DamageRoll.hit", a, hitHooksValues, game.user.id);
+                hit = hitHooksValues.hit;
+                crit = hitHooksValues.crit;
+                finalAc = hitHooksValues.finalAc;
+                roll = hitHooksValues.roll;
+                critroll = hitHooksValues.critroll;
+                natural20 = hitHooksValues.natural20;
+                natural20Crit = hitHooksValues.natural20Crit;
                 let damageData = null;
                 let noPrecision = false;
                 // Fortitifcation / crit resistance
@@ -118,15 +146,37 @@ export class ActorDamageHelper {
                 let fortifySuccessfull = false;
                 let fortifyValue = 0;
                 let fortifyRoll = 0;
+                let forceFortifyRoll = false;
+                let preFortifyHookValues = {finalAc: finalAc, forceFortifyRoll: forceFortifyRoll}
+                Hooks.call("D35E.DamageRoll.preCheckFortify", a, preFortifyHookValues, game.user.id);
+                finalAc = preFortifyHookValues.finalAc;
+                forceFortifyRoll = preFortifyHookValues.forceFortifyRoll;
                 if (hit && a.system.attributes.fortification?.total) {
                     fortifyRolled = true;
                     fortifyValue = a.system.attributes.fortification?.total;
+                    let preFortifyRollHookValues = {fortifyValue: fortifyValue}
+                    Hooks.call("D35E.DamageRoll.preRollFortify", a, preFortifyRollHookValues, game.user.id);
+                    fortifyValue = preFortifyRollHookValues.fortifyValue;
                     fortifyRoll = new Roll35e("1d100").roll().total;
                     if (fortifyRoll <= fortifyValue) {
                         fortifySuccessfull = true;
                         crit = false;
                         if (!finalAc.applyPrecision) noPrecision = true;
                     }
+                    let fortifyHookValues = {fortifySuccessfull: fortifySuccessfull, fortifyValue: fortifyValue, fortifyRoll: fortifyRoll}
+                    /**
+                     * @hook D35E.DamageRoll.rollFortify
+                     * The roll fortify hook is called after the fortify roll is made and the result is known. You can use this hook to modify the result of the fortify roll.
+                     *
+                     * Params:
+                     * @param{actor} the actor that is being attacked
+                     * @param{fortifyHookValues} the hook values {fortifySuccessfull: boolean, fortifyValue: number, fortifyRoll: number}
+                     * @param{userId} the user that called the hook
+                     */
+                    Hooks.call("D35E.DamageRoll.rollFortify", a, fortifyHookValues, game.user.id);
+                    fortifySuccessfull = fortifyHookValues.fortifySuccessfull;
+                    fortifyValue = fortifyHookValues.fortifyValue;
+                    fortifyRoll = fortifyHookValues.fortifyRoll;
                 }
                 if (crit) {
                     damageData = ActorDamageHelper.calculateDamageToActor(
@@ -171,7 +221,7 @@ export class ActorDamageHelper {
                 nonLethal += damageData.nonLethalDamage;
 
                 damageData.nonLethalDamage = nonLethal;
-                damageData.displayDamage = value;
+                damageData.displayDamage = Math.abs(value);
                 let props = [];
                 if ((finalAc.rollModifiers || []).length > 0)
                     props.push({
@@ -590,6 +640,21 @@ export class ActorDamageHelper {
         //Checks for slashing/piercing/bludgeonign damage and typeless damage
         let hasAnyTypeDamage = false;
         let baseIsNonLethal = nonLethal || false;
+
+        let preHookValues = {damage:damage,hasRegeneration:hasRegeneration,dr:dr,er:er,nonLethalDamage:nonLethalDamage,applyHalf:applyHalf,hasAnyTypeDamage:hasAnyTypeDamage,baseIsNonLethal:baseIsNonLethal,damageBeforeDr:damageBeforeDr,bypassedDr:bypassedDr, noPrecision:noPrecision}
+        Hooks.call("D35E.DamageRoll.preCalculateDamage", actor, preHookValues);
+        damage = preHookValues.damage;
+        hasRegeneration = preHookValues.hasRegeneration;
+        dr = preHookValues.dr;
+        er = preHookValues.er;
+        nonLethalDamage = preHookValues.nonLethalDamage;
+        applyHalf = preHookValues.applyHalf;
+        hasAnyTypeDamage = preHookValues.hasAnyTypeDamage;
+        baseIsNonLethal = preHookValues.baseIsNonLethal;
+        damageBeforeDr = preHookValues.damageBeforeDr;
+        bypassedDr = preHookValues.bypassedDr;
+        noPrecision = preHookValues.noPrecision;
+
         // Sum the damage for each damageTypeUid in the damage array, and remove duplicates from the damage array
         damage = this.mergeDamageTypes(damage);
         damage.forEach(d => {
@@ -685,7 +750,18 @@ export class ActorDamageHelper {
                         value = game.i18n.localize("D35E.NoER")
                     }
                     let damageDifference = realDamage-damageAfterEr;
-                    energyDamage.push({nonLethal: hasRegeneration && !erValue?.lethal,name:_damage.name,uid:_damage.system.uniqueId,before:d.roll.total,after:damageAfterEr,value:value || 0,lower:damageAfterEr<d.roll.total,higher:damageAfterEr>d.roll.total,equal:d.roll.total===damageAfterEr});
+                    energyDamage.push({
+                        nonLethal: hasRegeneration && !erValue?.lethal,
+                        name:_damage.name,uid:_damage.system.uniqueId,
+                        before:d.roll.total,
+                        after:damageAfterEr,
+                        value:value || 0,
+                        lower:damageAfterEr<d.roll.total,
+                        higher:damageAfterEr>d.roll.total,
+                        equal:d.roll.total===damageAfterEr,
+                        displayDamage: Math.abs(damageAfterEr),
+                        useDisplayDamage: true,
+                        isHealing:damageAfterEr<0});
                     energyDamageAfterEr += damageAfterEr;
                     energyDamageBeforeEr += d.roll.total;
                     if (damageDifference && erValue?.providedBy && erValue?.isPool)
@@ -715,7 +791,7 @@ export class ActorDamageHelper {
                 incorporealMiss = true;
             }
         }
-        return {
+        let finalDamage = {
             beforeDamage: beforeDamage,
             damage: afterDamage,
             baseIsNonLethal: baseIsNonLethal,
@@ -735,6 +811,17 @@ export class ActorDamageHelper {
             incorporealRolled: incorporealRolled,
             damagePoolPossibleReductionsUpdate: damagePoolPossibleReductionsUpdate,
             incorporealMiss: incorporealMiss};
+        let postHooksValues = {finalDamage: finalDamage}
+        /**
+         * @hook D35E.DamageRoll.calculateDamage
+         * This hook is called after the damage is calculated, with the final damage object that can be modified
+         *
+         * Params:
+         * @param{actor} the actor that is being damaged
+         * @param{finalDamage} the final damage object, after all calculations
+         */
+        Hooks.call("D35E.DamageRoll.calculateDamage", actor, postHooksValues, game.user.id);
+        return postHooksValues.finalDamage;
     }
 
     static mergeDamageTypes(damage) {

@@ -293,6 +293,8 @@ export class ActorSheetPF extends ActorSheet {
 
     // Prepare owned items
     this._prepareItems(sheetData);
+    sheetData.warnings = {}
+    sheetData.warnings.tooManyRaces = sheetData.items.filter((i) => i.type === "race").length > 1;
 
     let classNamesAndLevels = [];
 
@@ -3066,6 +3068,10 @@ export class ActorSheetPF extends ActorSheet {
 
     if (itemData.type === "actor") {
       return this.actor._createConsumablePowerDialog(itemData);
+    }
+
+    if (itemData.type === "race") {
+      return this.actor._createRaceAddDialog(itemData, dataType);
     }
 
     if (itemData._id) delete itemData._id;

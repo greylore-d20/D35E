@@ -416,6 +416,7 @@ export class ActorUpdater {
     source.items = this.actor.items;
 
     let sizeOverride = "";
+    let sizeChange = {};
     // Add conditions
     let fullConditions = source.system.attributes.conditions || {};
 
@@ -549,6 +550,13 @@ export class ActorUpdater {
       if (obj.system.sizeOverride !== undefined && obj.system.sizeOverride !== null && obj.system.sizeOverride !== "") {
         sizeOverride = obj.system.sizeOverride;
       }
+      if (obj.system.sizeChange !== undefined && obj.system.sizeChange !== null && obj.system.sizeChange !== "" && obj.system.sizeChange !== "0") {
+        sizeChange = {
+          change: parseInt(obj.system.sizeChange),
+          upperBound: obj.system.sizeChangeUpperBound,
+          lowerBound: obj.system.sizeChangeLowerBound,
+        }
+      }
       if (!obj.system.changeFlags) continue;
       for (let [flagKey, flagValue] of Object.entries(obj.system.changeFlags)) {
         flags[flagKey] = flags[flagKey] || false;
@@ -653,6 +661,7 @@ export class ActorUpdater {
       sourceInfo,
       fullConditions,
       sizeOverride,
+      sizeChange,
       options,
       updateData
     );
@@ -2619,7 +2628,7 @@ export class ActorUpdater {
     }
   }
 
-  async #addDefaultChanges(source, changes, flags, sourceInfo, fullConditions, sizeOverride, options = {}, updateData) {
+  async #addDefaultChanges(source, changes, flags, sourceInfo, fullConditions, sizeOverride, sizeChange, options = {}, updateData) {
     // Class hit points
     const classes = source.items
       .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
@@ -2779,11 +2788,27 @@ export class ActorUpdater {
     // Add size bonuses to various attributes
     let sizeKey = source.system.traits.size;
     let tokenSizeKey = source.system.traits.tokenSize || "actor";
+    let isTokenActorSize = source.system.traits.tokenSize;
     if (sizeOverride !== undefined && sizeOverride !== null && sizeOverride !== "") {
       sizeKey = sizeOverride;
-      tokenSizeKey = sizeOverride;
+      if (isTokenActorSize) {
+        tokenSizeKey = sizeOverride;
+      }
     }
-    if (tokenSizeKey === "actor") {
+    let sizeIndex = Object.keys(CONFIG.D35E.actorSizes).indexOf(sizeKey);
+    if (sizeChange && sizeChange.change !== undefined && sizeChange.change !== 0) {
+      sizeIndex = Math.min(
+        Math.max(0, sizeIndex + sizeChange.change),
+        Object.keys(CONFIG.D35E.actorSizes).length - 1
+      );
+      // check if the new size is between lower and upper bounds
+      let lowerBoundIndex = Object.keys(CONFIG.D35E.actorSizes).indexOf(sizeChange.lowerBound || "fine");
+      let upperBoundIndex = Object.keys(CONFIG.D35E.actorSizes).indexOf(sizeChange.upperBound || "col");
+      if (sizeIndex < lowerBoundIndex) sizeIndex = lowerBoundIndex;
+      if (sizeIndex > upperBoundIndex) sizeIndex = upperBoundIndex;
+      sizeKey = Object.keys(CONFIG.D35E.actorSizes)[sizeIndex];
+    }
+    if (isTokenActorSize) {
       tokenSizeKey = sizeKey;
     }
     linkData(source, updateData, "system.traits.actualSize", sizeKey);

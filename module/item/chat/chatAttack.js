@@ -217,6 +217,14 @@ export class ChatAttack {
   async addDamage({ extraParts = [], primaryAttack = true, critical = false, multiattack = 0, modifiers = {} } = {}) {
     if (!this.item) return;
 
+    let hookValue = { extraParts: extraParts, primaryAttack: primaryAttack, critical: critical, multiattack: multiattack, modifiers: modifiers };
+    Hooks.call("D35E.ChatAttack.preAddDamage", this, hookValue, game.userId);
+    extraParts = hookValue.extraParts;
+    primaryAttack = hookValue.primaryAttack;
+    critical = hookValue.critical;
+    multiattack = hookValue.multiattack;
+    modifiers = hookValue.modifiers;
+
     let isMultiattack = multiattack > 0;
     this.hasDamage = true;
     let data = this.damage;
@@ -457,6 +465,10 @@ export class ChatAttack {
   }
 
   async addSpecial(actor = null, useAmount = 1, cl = null, spellPenetration = null) {
+    let hookValues = { actor: actor, useAmount: useAmount, cl: cl, spellPenetration: spellPenetration };
+    Hooks.call("D35E.ChatAttack.preAddSpecial", this, hookValues, game.userId);
+    let { actor: hookActor, useAmount: hookUseAmount, cl: hookCl, spellPenetration: hookSpellPenetration } = hookValues;
+
     let _actor = this.item.actor;
     if (actor != null) _actor = actor;
     if (!this.item) return;
@@ -489,6 +501,10 @@ export class ChatAttack {
         .replace(/\(@attack\)/g, `${this.attack.total}`)
         .replace(/\(@damage\)/g, `${this.damage.total}`);
 
+      let parseHookValues = { actionData: actionData, rollData: this.rollData };
+      Hooks.call("D35E.ChatAttack.parseAddSpecial", this, parseHookValues, game.userId);
+      actionData = parseHookValues.actionData;
+
       // If this is self action, run it on the actor on the time of render
       await _actor.autoApplyActionsOnSelf(actionData);
       this.special.push({
@@ -500,6 +516,7 @@ export class ChatAttack {
         hasImg: action.img !== undefined && action.img !== null && action.img !== "",
       });
     }
+    Hooks.call("D35E.ChatAttack.postAddSpecial", this, this.special, game.userId);
   }
 
   async addCommandAsSpecial(

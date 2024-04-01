@@ -337,6 +337,88 @@ export const sizeDie = function (origCount, origSides, targetSize = "M", crit = 
   return formula;
 };
 
+export const sizeDieValues = function (origCount, origSides, targetSize = "M", crit = 1) {
+
+  if (typeof targetSize === "string") {
+    if (targetSize.length > 1) {
+      targetSize = CONFIG.D35E.sizeChart[targetSize.toLowerCase()]
+      // replace targetsize with the one letter value
+      targetSize = targetSize ? targetSize : "M";
+    }
+    targetSize = Object.values(CONFIG.D35E.sizeChart).
+        indexOf(targetSize.toUpperCase());
+  }
+  else if (typeof targetSize === "number")
+    targetSize = Math.max(
+        0,
+        Math.min(
+            Object.values(CONFIG.D35E.sizeChart).length - 1,
+            Object.values(CONFIG.D35E.sizeChart).indexOf("M") + targetSize
+        )
+    );
+  let sizeDieMap = duplicate(CONFIG.D35E.sizeDie);
+
+  const mediumDie = `${origCount}d${origSides}`;
+  const mediumDieMax = origCount * origSides;
+  if (sizeDieMap.indexOf(mediumDie) === -1) {
+    sizeDieMap = sizeDieMap.map((d) => {
+      if (d.match(/^([0-9]+)d([0-9]+)$/)) {
+        const dieCount = parseInt(RegExp.$1),
+            dieSides = parseInt(RegExp.$2),
+            dieMaxValue = dieCount * dieSides;
+
+        if (dieMaxValue === mediumDieMax) return mediumDie;
+      }
+
+      return d;
+    });
+  }
+
+  // Pick an index from the chart
+  let index = sizeDieMap.indexOf(mediumDie),
+      formula = mediumDie;
+  if (index >= 0) {
+    const d6Index = sizeDieMap.indexOf("1d6");
+    let d8Index = sizeDieMap.indexOf("1d8");
+    if (d8Index === -1) d8Index = sizeDieMap.indexOf("2d4");
+    let curSize = 4;
+
+    // When decreasing in size (e.g. from medium to small)
+    while (curSize > targetSize) {
+      if (curSize <= 4 || index <= d8Index) {
+        index--;
+        curSize--;
+      } else {
+        index -= 2;
+        curSize--;
+      }
+    }
+    // When increasing in size (e.g. from medium to large)
+    while (curSize < targetSize) {
+      if (curSize <= 3 || index <= d6Index) {
+        index++;
+        curSize++;
+      } else {
+        index += 2;
+        curSize++;
+      }
+    }
+
+    // Alter crit
+    index = Math.max(0, Math.min(sizeDieMap.length - 1, index));
+    formula = sizeDieMap[index];
+  }
+
+  // get the values of the die using regex (XdY)
+  let diceCount = 0;
+  let dice = 0;
+  if (formula.match(/^([0-9]+)d([0-9]+)(.*)/)) {
+    diceCount = parseInt(RegExp.$1);
+    dice = parseInt(RegExp.$2);
+  }
+  return [diceCount, dice];
+};
+
 export const sizeMonkDamageDie = function (level, targetSize = "M", crit = 1) {
   if (typeof targetSize === "number") {
     targetSize = Math.max(
