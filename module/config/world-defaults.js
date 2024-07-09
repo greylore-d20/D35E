@@ -2,7 +2,7 @@ export class WorldDefaultConfig extends FormApplication {
   constructor(object, options) {
     super(object || WorldDefaultConfig.defaultSettings, options)
     let settings = game.settings.get("D35E", "worldDefaults")
-    settings = mergeObject(WorldDefaultConfig.defaultSettings, settings)
+    settings = foundry.utils.mergeObject(WorldDefaultConfig.defaultSettings, settings)
     this.entries = settings.worldDefaults.customSkills
   }
 
@@ -25,7 +25,7 @@ export class WorldDefaultConfig extends FormApplication {
   /** Collect data for the template. @override */
   async getData() {
     let settings = await game.settings.get("D35E", "worldDefaults")
-    settings = mergeObject(WorldDefaultConfig.defaultSettings, settings)
+    settings = foundry.utils.mergeObject(WorldDefaultConfig.defaultSettings, settings)
     game.D35E.logger.log(settings)
     const entries = this.entries.map(o => {
       return o.map((o2, a) => {
@@ -43,7 +43,7 @@ export class WorldDefaultConfig extends FormApplication {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       title:  game.i18n.localize("SETTINGS.D35EWorldDefaults"),
       id: 'world-defaults',
       template: "systems/D35E/templates/settings/world-defaults.html",

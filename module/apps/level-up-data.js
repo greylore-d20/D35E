@@ -9,7 +9,7 @@ export class LevelUpDataDialog extends FormApplication {
   }
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "level-up-data",
       classes: ["D35E", "entry", "level-up-data"],
       title: "Level Data",

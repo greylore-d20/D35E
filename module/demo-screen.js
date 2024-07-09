@@ -3,8 +3,8 @@ import { createTabs } from "./lib.js";
 export default function renderWelcomeScreen() {
     const system = game.system;
     const moduleId = system.id;
-    const title = system.data.title;
-    const moduleVersion = system.data.version;
+    const title = system.title;
+    const moduleVersion = system.version;
 
     class DemoScreen extends Application {
         static get defaultOptions() {

@@ -532,8 +532,8 @@ Hooks.once("ready", async function () {
 
   // Edit next line to match module.
   const system = game.system;
-  const title = system.data.title;
-  const moduleVersion = system.data.version;
+  const title = system.title;
+  const moduleVersion = system.version;
   game.settings.register(title, "version", {
     name: `${title} Version`,
     default: "0.0.0",
@@ -645,18 +645,18 @@ Hooks.on("deleteActor", function () {
 });
 
 Hooks.on("createActor", (actor, data, options) => {
-  if (actor.data.type === "character") {
+  if (actor.type === "character") {
     let updateData = {};
     if (
-      actor.data.data.details?.levelUpProgression === undefined ||
-      actor.data.data.details?.levelUpProgression === null
+      actor.system.details?.levelUpProgression === undefined ||
+      actor.system.details?.levelUpProgression === null
     ) {
       updateData["data.details.levelUpProgression"] = true;
     }
     updateData["token.vision"] = true;
     updateData["token.actorLink"] = true;
     if (updateData) actor.update(updateData);
-  } else if (actor.data.type === "npc") {
+  } else if (actor.type === "npc") {
     let updateData = {};
     updateData["token.bar1"] = { attribute: "attributes.hp" };
     updateData["token.displayName"] = 20;
@@ -750,7 +750,7 @@ Hooks.on("renderAmbientLightConfig", (app, html) => {
 Hooks.on("createToken", async (token, options, userId) => {
   if (userId !== game.user.id) return;
 
-  const actor = game.actors.tokens[token.id] ?? game.actors.get(token.data.actorId);
+  const actor = game.actors.tokens[token.id] ?? game.actors.get(token.actorId);
   actor.conditions.toggleConditionStatusIcons();
 
   // Update changes and generate sourceDetails to ensure valid actor data
@@ -763,16 +763,16 @@ Hooks.on("createToken", async (token, options, userId) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     let itemUpdates = [];
-    token.actor.data.items
+    token.actor.items
       .filter((obj) => {
         return obj.type === "class";
       })
       .forEach((item) => {
-        if (item.data.data.classType === "template") return;
-        if (item.data.data.classType === "minion") return;
-        let hd = item.data.data.hd;
+        if (item.system.classType === "template") return;
+        if (item.system.classType === "minion") return;
+        let hd = item.system.hd;
         let hp = 0;
-        let levels = item.data.data.levels;
+        let levels = item.system.levels;
         for (let i = 0; i < levels; i++) {
           hp += getRandomInt(1, hd);
         }
@@ -888,7 +888,7 @@ Hooks.on("updateCombat", async (combat, combatant, info, data) => {
 });
 
 Hooks.on("createMeasuredTemplate", (template, _template, data, user) => {
-  game.D35E.createdMeasureTemplates.add(template.data._id);
+  game.D35E.createdMeasureTemplates.add(template._id);
 });
 
 // Create race on actor
@@ -943,7 +943,7 @@ Hooks.on("updateActor", (actor, data, options, user) => {
     if (canvas.scene) {
       debouncedCollate(canvas.scene.id, true, true, "updateToken");
     }
-    if (actor.data.data.companionAutosync) {
+    if (actor.system.companionAutosync) {
       actor.syncToCompendium();
     }
   }
@@ -1256,7 +1256,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
         onClick: async () => {
           let selectedTokens = canvas.tokens.controlled.filter(
               (t) =>
-                  game.actors.get(t.data.actorId).type === "npc" || game.actors.get(t.data.actorId).type === "character"
+                  game.actors.get(t.actorId).type === "npc" || game.actors.get(t.actorId).type === "character"
           );
           if (selectedTokens.length === 0) {
             ui.notifications.error(`Please select at least one token`);
@@ -1279,14 +1279,14 @@ Hooks.on("getSceneControlButtons", (controls) => {
         icon: "fas fa-gem",
         onClick: async () => {
           let selectedNpcTokens = canvas.tokens.controlled.filter(
-              (t) => game.actors.get(t.data.actorId).data.type === "npc"
+              (t) => game.actors.get(t.actorId).type === "npc"
           );
           if (selectedNpcTokens.length === 0) {
             ui.notifications.error(`Please select at least a token`);
             return;
           }
           for (let token of canvas.tokens.controlled.filter(
-              (t) => game.actors.get(t.data.actorId).data.type === "npc"
+              (t) => game.actors.get(t.actorId).type === "npc"
           )) {
             await genTreasureFromToken(token);
           }
@@ -1342,7 +1342,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
             SimpleCalendar.api.changeDate({ hour: 8 });
           }
           let restingPromises = [];
-          for (let actor of game.actors.filter((a) => a.data.data.isPartyMember)) {
+          for (let actor of game.actors.filter((a) => a.system.isPartyMember)) {
             restingPromises.push(actor.rest(true, true, false));
           }
           Promise.all(restingPromises).then(() => {

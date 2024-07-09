@@ -29,8 +29,8 @@ export const migrateItem = async function(i) {
  */
 export const migrateWorld = async function() {
   if (!game.user.isGM) return ui.notifications.error(game.i18n.localize("D35E.ErrorUnauthorizedAction"));
-  ui.notifications.info(`Applying D35E System Migration for version ${game.system.data.version}. Please stand by.`);
-  //game.D35E.logger.log(`Applying D35E System Migration for version ${game.system.data.version}. Please stand by.`);
+  ui.notifications.info(`Applying D35E System Migration for version ${game.system.version}. Please stand by.`);
+  //game.D35E.logger.log(`Applying D35E System Migration for version ${game.system.version}. Please stand by.`);
 
   // Migrate World Actors
   for ( let a of game.actors.contents ) {
@@ -76,8 +76,8 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("D35E", "systemMigrationVersion", game.system.data.version);
-  ui.notifications.info(`D35E System Migration to version ${game.system.data.version} succeeded!`);
+  game.settings.set("D35E", "systemMigrationVersion", game.system.version);
+  ui.notifications.info(`D35E System Migration to version ${game.system.version} succeeded!`);
 };
 
 /* -------------------------------------------- */
@@ -221,12 +221,12 @@ export const migrateItemData = function(item) {
         const updates = new Map(update[embeddedName].map((u) => [u._id, u]));
         t.actorData[embeddedName].forEach((original) => {
           const update = updates.get(original._id);
-          if (update) mergeObject(original, update);
+          if (update) foundry.utils.mergeObject(original, update);
         });
         delete update[embeddedName];
       });
 
-      mergeObject(t.actorData, update);
+      foundry.utils.mergeObject(t.actorData, update);
     }
     return t;
   });
@@ -1197,8 +1197,8 @@ const migrateTokenStatuses = function (token, updateData) {
     var effects = token.data.effects;
     effects = effects.filter((e) => {
       const [key, tex] = Object.entries(CONFIG.D35E.conditionTextures).find((t) => e === t[1]) ?? [];
-      if (key && token.actor.data.data.attributes.conditions[key]) return false;
-      if (token.actor.items.find((i) => i.type === "buff" && i.data.data.active && i.img === e)) return false;
+      if (key && token.actor.system.attributes.conditions[key]) return false;
+      if (token.actor.items.find((i) => i.type === "buff" && i.system.active && i.img === e)) return false;
       return true;
     });
   }

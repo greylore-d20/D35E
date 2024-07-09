@@ -25,7 +25,7 @@ export class TreasureGeneratorDialog extends FormApplication {
 
   //Window option stuff
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "treasure-generator",
       title: "Treasure Generator",
       template: "systems/D35E/templates/apps/treasure-generator-dialog.html",

@@ -269,7 +269,7 @@ export class ActorDamageHelper {
                     type: CONST.CHAT_MESSAGE_TYPES.OTHER,
                     rollMode: finalAc.rollMode || "gmroll",
                 };
-                const templateData = mergeObject(
+                const templateData = foundry.utils.mergeObject(
                     chatTemplateData,
                     {
                         actor: a,

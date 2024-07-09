@@ -8,7 +8,7 @@ export default class D35ELayer extends InteractionLayer {
     }
 
     static get layerOptions() {
-        return mergeObject(super.layerOptions, {
+        return foundry.utils.mergeObject(super.layerOptions, {
           name: "d35e",
           sortActiveTop: true,
           zIndex: 999,

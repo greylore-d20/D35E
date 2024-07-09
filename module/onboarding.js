@@ -4,7 +4,7 @@ export default function renderOnboardingScreen() {
     const system = game.system;
     const moduleId = system.id;
     const title = "D35E";
-    const moduleVersion = system.data.version;
+    const moduleVersion = system.version;
 
 
     const onboarding = game.settings.get(title, "__onboarding") || game.settings.get(title, "__onboardingHidden");

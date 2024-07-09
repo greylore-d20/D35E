@@ -66,7 +66,7 @@ export class ActorPF extends Actor {
   /* -------------------------------------------- */
 
   get isCharacterType() {
-    return this.data.type !== 'trap' && this.data.type !== 'object';
+    return this.type !== 'trap' && this.type !== 'object';
   }
 
   isInvisible() {
@@ -700,7 +700,7 @@ export class ActorPF extends Actor {
 
     let returnActor = null;
     if (Object.keys(diff).length) {
-      let updateOptions = mergeObject(options, {diff: true});
+      let updateOptions = foundry.utils.mergeObject(options, {diff: true});
       returnActor = await super.update(diff, updateOptions);
     }
 
@@ -724,7 +724,7 @@ export class ActorPF extends Actor {
       } catch (e) {}
     }
 
-    let actorRollData = mergeObject(this.getRollData(), updated,
+    let actorRollData = foundry.utils.mergeObject(this.getRollData(), updated,
         {inplace: false});
     for (let i of this.items.values()) {
       let itemUpdateData = {};
@@ -944,7 +944,7 @@ export class ActorPF extends Actor {
         initial['system.spellbook'] = this.sheet._spellbookTab;
       }
     }
-    mergeObject(itemData, initial);
+    foundry.utils.mergeObject(itemData, initial);
 
     return this.createEmbeddedEntity('Item', itemData, options);
   }
@@ -1094,10 +1094,10 @@ export class ActorPF extends Actor {
     // Get attack template
     let attackData = {data: {}};
     for (const template of game.system.template.Item.attack.templates) {
-      mergeObject(attackData.data,
+      foundry.utils.mergeObject(attackData.data,
           game.system.template.Item.templates[template]);
     }
-    mergeObject(attackData.data, duplicate(game.system.template.Item.attack));
+    foundry.utils.mergeObject(attackData.data, duplicate(game.system.template.Item.attack));
     attackData = flattenObject(attackData);
     let isIncorporeal = false;
 
@@ -1464,7 +1464,7 @@ export class ActorPF extends Actor {
     let roll = new Roll35e('1d20 + @skills.coc.mod', rollData).roll();
     // Set chat data
     let chatData = {
-      speaker: ChatMessage.getSpeaker({actor: this.data}),
+      speaker: ChatMessage.getSpeaker({actor: this}),
       rollMode: 'public',
       sound: CONFIG.sounds.dice,
       'flags.D35E.noRollRender': true,
@@ -1474,7 +1474,7 @@ export class ActorPF extends Actor {
       type: CONST.CHAT_MESSAGE_TYPES.OTHER,
       rollMode: 'public',
     };
-    const templateData = mergeObject(
+    const templateData = foundry.utils.mergeObject(
         chatTemplateData,
         {
           img: this.img,
@@ -1745,7 +1745,7 @@ export class ActorPF extends Actor {
 
       // Set chat data
       let chatData = {
-        speaker: ChatMessage.getSpeaker({actor: this.data}),
+        speaker: ChatMessage.getSpeaker({actor: this}),
         rollMode: rollMode || 'gmroll',
         sound: CONFIG.sounds.dice,
         'flags.D35E.noRollRender': true,
@@ -1757,7 +1757,7 @@ export class ActorPF extends Actor {
         tokenId: token ? `${token.parent.id}.${token.id}` : null,
         actorId: this.id,
       };
-      const templateData = mergeObject(
+      const templateData = foundry.utils.mergeObject(
           chatTemplateData,
           {
             actor: this,
@@ -2020,7 +2020,7 @@ export class ActorPF extends Actor {
       // Set chat data
       let chatData = {
         speaker: options.speaker ? options.speaker : ChatMessage.getSpeaker(
-            {actor: this.data}),
+            {actor: this}),
         rollMode: rollMode || 'gmroll',
         sound: CONFIG.sounds.dice,
         'flags.D35E.noRollRender': true,
@@ -2030,7 +2030,7 @@ export class ActorPF extends Actor {
         type: CONST.CHAT_MESSAGE_TYPES.OTHER,
         rollMode: rollMode || 'gmroll',
       };
-      const templateData = mergeObject(
+      const templateData = foundry.utils.mergeObject(
           chatTemplateData,
           {
             actor: this,
@@ -2385,7 +2385,7 @@ export class ActorPF extends Actor {
       // Set chat data
       let chatData = {
         speaker: options.speaker ? options.speaker : ChatMessage.getSpeaker(
-            {actor: this.data}),
+            {actor: this}),
         rollMode: rollMode || 'gmroll',
         sound: CONFIG.sounds.dice,
         'flags.D35E.noRollRender': true,
@@ -2397,7 +2397,7 @@ export class ActorPF extends Actor {
         tokenId: token ? `${token.parent.id}.${token.id}` : null,
         actor: this,
       };
-      const templateData = mergeObject(
+      const templateData = foundry.utils.mergeObject(
           chatTemplateData,
           {
             revealed: false,
@@ -2669,7 +2669,7 @@ export class ActorPF extends Actor {
 
       // Set chat data
       let chatData = {
-        speaker: ChatMessage.getSpeaker({actor: this.data}),
+        speaker: ChatMessage.getSpeaker({actor: this}),
         rollMode: rollMode || 'gmroll',
         sound: CONFIG.sounds.dice,
         'flags.D35E.noRollRender': true,
@@ -2681,7 +2681,7 @@ export class ActorPF extends Actor {
         tokenId: token ? `${token.parent.id}.${token.id}` : null,
         actorId: this.id,
       };
-      const templateData = mergeObject(
+      const templateData = foundry.utils.mergeObject(
           chatTemplateData,
           {
             actor: this,
@@ -4040,7 +4040,7 @@ export class ActorPF extends Actor {
 
       let data = ent.data.toObject();
       if (this.sheet != null && this.sheet.rendered) {
-        data = mergeObject(data, this.sheet.getDropData(data));
+        data = foundry.utils.mergeObject(data, this.sheet.getDropData(data));
       }
       delete data._id;
       return this.createOwnedItem(data);
@@ -4086,7 +4086,7 @@ export class ActorPF extends Actor {
 
   getRollData(data = null, force = false) {
     if (data != null) {
-      const result = mergeObject(
+      const result = foundry.utils.mergeObject(
           data,
           {
             size: Object.keys(CONFIG.D35E.sizeChart).
@@ -4099,7 +4099,7 @@ export class ActorPF extends Actor {
     } else {
       if (!this._cachedRollData || force) {
         data = this.system;
-        const result = mergeObject(
+        const result = foundry.utils.mergeObject(
             data,
             {
               size: Object.keys(CONFIG.D35E.sizeChart).
@@ -4521,7 +4521,7 @@ export class ActorPF extends Actor {
           } else {
             tooltip[0].outerHTML;
           }
-          const templateData = mergeObject(
+          const templateData = foundry.utils.mergeObject(
               chatTemplateData,
               {
                 flavor: `<img src="systems/D35E/icons/damage-type/${damageIcon}.svg" title="${
@@ -4671,7 +4671,7 @@ export class ActorPF extends Actor {
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             rollMode: 'public',
           };
-          const templateData = mergeObject(
+          const templateData = foundry.utils.mergeObject(
               chatTemplateData,
               {
                 flavor: name,
@@ -4718,7 +4718,7 @@ export class ActorPF extends Actor {
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             rollMode: 'public',
           };
-          const templateData = mergeObject(
+          const templateData = foundry.utils.mergeObject(
               chatTemplateData,
               {
                 flavor: name,
@@ -5391,7 +5391,7 @@ export class ActorPF extends Actor {
   async _calculateMinionDistance() {
     if (this == null) return;
     if (!this.testUserPermission(game.user, 'OWNER')) return;
-    if (this.data.type === 'npc') {
+    if (this.type === 'npc') {
       let myToken = this.getActiveTokens()[0];
       let masterId = this.system?.master?.id;
       let master = game.actors.get(masterId);
@@ -5412,7 +5412,7 @@ export class ActorPF extends Actor {
             attributes: {minionDistance: {}},
           },
         };
-        minionData.data.attributes.minionDistance[this.data.name.toLowerCase().
+        minionData.data.attributes.minionDistance[this.name.toLowerCase().
             replace(/ /g, '').
             replace(/,/g, '')] =
             distance;
@@ -5420,7 +5420,7 @@ export class ActorPF extends Actor {
             {stopUpdates: true, skipToken: true, skipMinions: true});
         this.update(masterData, {stopUpdates: true, skipToken: true});
       }
-    } else if (this.data.type === 'character') {
+    } else if (this.type === 'character') {
       let myToken = this.getActiveTokens()[0];
       let minionData = {
         data: {
@@ -5501,7 +5501,7 @@ export class ActorPF extends Actor {
     if (restoreDailyUses) {
       let items = [],
           hasItemUpdates = false;
-      for (let item of this.data.items) {
+      for (let item of this.items) {
         let itemUpdate = {};
         const itemData = item.system;
         rollData.item = duplicate(itemData);
@@ -5693,7 +5693,7 @@ export class ActorPF extends Actor {
       });
     }
     if (actions.length) {
-      const templateData = mergeObject(
+      const templateData = foundry.utils.mergeObject(
           chatTemplateData,
           {
             actions: actions,
@@ -5722,7 +5722,7 @@ export class ActorPF extends Actor {
       crossDomain: true,
       dataType: 'json',
       contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(this.data),
+      data: JSON.stringify(this),
       success: function(data) {
         if (manual) {
           ui.notifications.info(
@@ -5974,7 +5974,7 @@ export class ActorPF extends Actor {
         });
     }
     if (actions.length) {
-      const templateData = mergeObject(
+      const templateData = foundry.utils.mergeObject(
           chatTemplateData,
           {
             actions: actions,
@@ -6334,7 +6334,7 @@ export class ActorPF extends Actor {
       this.__addNewCustomSkill(createData, skill[0], skill[1],
           (skill[2] || 'true') === 'true', (skill[3] || 'true') === 'true');
     }
-    this.data.update(createData);
+    this.update(createData);
   }
 
   /**
@@ -6356,7 +6356,7 @@ export class ActorPF extends Actor {
     };
 
     // see if the worldCustom skill of the same name is not already present (in case of actor duplicate)
-    for (let skill of Object.values(this.data.system.skills)) {
+    for (let skill of Object.values(this.system.skills)) {
       if (skill.name === skillData.name && skill.worldCustom) {
         return
       }

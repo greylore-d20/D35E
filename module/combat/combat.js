@@ -150,7 +150,7 @@ export class CombatD35E extends Combat {
       const [notes, notesHTML] = c.actor.getInitiativeContextNotes();
 
       // Create roll template data
-      const rollData = mergeObject(
+      const rollData = foundry.utils.mergeObject(
         {
           user: game.user.id,
           formula: roll.formula,
@@ -161,7 +161,7 @@ export class CombatD35E extends Combat {
       );
 
       // Create chat data
-      const chatData = mergeObject(
+      const chatData = foundry.utils.mergeObject(
         {
           user: game.user.id,
           type: CONST.CHAT_MESSAGE_TYPES.CHAT,

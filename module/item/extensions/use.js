@@ -807,7 +807,7 @@ export class ItemUse {
         };
       });
       const token = actor ? actor.token : null;
-      const templateData = mergeObject(
+      const templateData = foundry.utils.mergeObject(
         chatTemplateData,
         {
           extraText: extraText,

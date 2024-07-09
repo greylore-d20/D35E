@@ -4,7 +4,7 @@ export class ItemConsumableConverter {
     static async toConsumable(origData, type, cl, scrollType) {
         let data = duplicate(game.system.template.Item.consumable);
         for (let t of data.templates) {
-            mergeObject(data, duplicate(game.system.template.Item.templates[t]));
+            foundry.utils.mergeObject(data, duplicate(game.system.template.Item.templates[t]));
         }
         delete data.templates;
         data = {

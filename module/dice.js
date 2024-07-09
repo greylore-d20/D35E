@@ -74,7 +74,7 @@ export class DicePF {
         if (chatTemplate) {
           // Create roll template data
           const d20 = roll.terms[0];
-          const rollData = mergeObject({
+          const rollData = foundry.utils.mergeObject({
             user: game.user.id,
             formula: roll.formula,
             tooltip: await roll.getTooltip(),
@@ -130,7 +130,7 @@ export class DicePF {
 
           // Send message
           rolled = true;
-          chatData = mergeObject(await roll.toMessage({flavor}, { create: false }), chatData);
+          chatData = foundry.utils.mergeObject(await roll.toMessage({flavor}, { create: false }), chatData);
           // Dice So Nice integration
           // if (game.dice3d != null) {
           //   await game.dice3d.showForRoll(roll, chatData.whisper, chatData.blind);
@@ -249,7 +249,7 @@ export class DicePF {
       // Convert the roll to a chat message
       if (chatTemplate) {
         // Create roll template data
-        const rollData = mergeObject({
+        const rollData = foundry.utils.mergeObject({
           user: game.user.id,
           formula: roll.formula,
           tooltip: await roll.getTooltip(),

@@ -42,7 +42,7 @@ export class ItemSpellHelper {
       types: "",
     };
     const renderData = {
-      data: mergeObject(sourceItem?.system || {}, { inplace: false }),
+      data: foundry.utils.mergeObject(sourceItem?.system || {}, { inplace: false }),
       label: label,
     };
 

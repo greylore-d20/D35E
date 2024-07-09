@@ -6,7 +6,7 @@ export class MonsterImporterDialog extends FormApplication {
 
     //Window option stuff
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "encounter-generator",
             title: "Encounter Generator",
             template: "systems/D35E/templates/apps/encounter-generator-dialog.html",
@@ -583,7 +583,7 @@ export class MonsterImporterDialog extends FormApplication {
                         let spellIndex = spellPack.index.find(e => spell.toLowerCase() === e.name.toLowerCase())
                         if (spellIndex) {
                             let spellItem = await spellPack.getEntity(spellIndex._id)
-                            spellItem.data.data.spellbook = "primary"
+                            spellItem.system.spellbook = "primary"
                             itemData = spellItem.data
                             if (itemData._id) delete itemData._id;
                             spellsToAdd.push(itemData)
@@ -603,25 +603,25 @@ export class MonsterImporterDialog extends FormApplication {
                             let spellIndex = spellPack.index.find(e => spell.toLowerCase() === e.name.toLowerCase())
                             if (spellIndex) {
                                 let spellItem = await spellPack.getEntity(spellIndex._id)
-                                spellItem.data.data.spellbook = "spelllike"
+                                spellItem.system.spellbook = "spelllike"
                                 if (spelllikeblock.toLowerCase().indexOf("at will") !== -1) {
-                                    spellItem.data.data.atWill = true
-                                    spellItem.data.data.level = 0
+                                    spellItem.system.atWill = true
+                                    spellItem.system.level = 0
                                 } else if (spelllikeblock.toLowerCase().indexOf("1/day") !== -1) {
-                                    spellItem.data.data.preparation.preparedAmount = 1
-                                    spellItem.data.data.preparation.maxAmount = 1
+                                    spellItem.system.preparation.preparedAmount = 1
+                                    spellItem.system.preparation.maxAmount = 1
                                 } else if (spelllikeblock.toLowerCase().indexOf("2/day") !== -1) {
-                                    spellItem.data.data.preparation.preparedAmount = 2
-                                    spellItem.data.data.preparation.maxAmount = 2
+                                    spellItem.system.preparation.preparedAmount = 2
+                                    spellItem.system.preparation.maxAmount = 2
                                 } else if (spelllikeblock.toLowerCase().indexOf("3/day") !== -1) {
-                                    spellItem.data.data.preparation.preparedAmount = 3
-                                    spellItem.data.data.preparation.maxAmount = 3
+                                    spellItem.system.preparation.preparedAmount = 3
+                                    spellItem.system.preparation.maxAmount = 3
                                 } else if (spelllikeblock.toLowerCase().indexOf("4/day") !== -1) {
-                                    spellItem.data.data.preparation.preparedAmount = 4
-                                    spellItem.data.data.preparation.maxAmount = 4
+                                    spellItem.system.preparation.preparedAmount = 4
+                                    spellItem.system.preparation.maxAmount = 4
                                 } else if (spelllikeblock.toLowerCase().indexOf("5/day") !== -1) {
-                                    spellItem.data.data.preparation.preparedAmount = 5
-                                    spellItem.data.data.preparation.maxAmount = 5
+                                    spellItem.system.preparation.preparedAmount = 5
+                                    spellItem.system.preparation.maxAmount = 5
                                 }
                                 itemData = spellItem.data
                                 if (itemData._id) delete itemData._id;
@@ -816,8 +816,8 @@ export class MonsterImporterDialog extends FormApplication {
             for (let skill of Object.values(monster.skill_list)) {
                 itemUpdateData[`data.classSkills.${skill.code}`] = true
                 if (skill.code) {
-                    let abl = actor.data.data.skills[skill.code].ability;
-                    let ablMod = actor.data.data.abilities[abl].mod;
+                    let abl = actor.system.skills[skill.code].ability;
+                    let ablMod = actor.system.abilities[abl].mod;
                     updateData[`data.skills.${skill.code}.rank`] = skill.value - ablMod + (featSkillMod[skill.code] || 0) - (sizeSkillMod[skill.code] ? sizeSkillMod[skill.code][monster.mapped_size] : 0)
                 }
             }

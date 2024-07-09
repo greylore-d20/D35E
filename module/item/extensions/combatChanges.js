@@ -13,7 +13,7 @@ export class ItemCombatChanges {
     let combatChanges = getProperty(this.item.system, "combatChanges") || [];
     let attackType = getProperty(rollData, "item.actionType") || "";
     let combatChangesRollData = duplicate(rollData);
-    combatChangesRollData.self = mergeObject(this.item.system, this.item.getRollData(), { inplace: false });
+    combatChangesRollData.self = foundry.utils.mergeObject(this.item.system, this.item.getRollData(), { inplace: false });
     combatChangesRollData.source = combatChangesRollData.self;
     try {
       combatChanges.forEach((change) => {
@@ -41,7 +41,7 @@ export class ItemCombatChanges {
     let combatChanges = getProperty(this.item.system, "combatChanges") || [];
     let attackType = getProperty(rollData, "item.actionType") || "";
     let combatChangesRollData = duplicate(rollData);
-    combatChangesRollData.self = mergeObject(this.item.system, this.item.getRollData(), { inplace: false });
+    combatChangesRollData.self = foundry.utils.mergeObject(this.item.system, this.item.getRollData(), { inplace: false });
     combatChangesRollData.source = combatChangesRollData.self;
     combatChangesRollData.range = range.base || 0;
     combatChangesRollData.range1 = range.slider1 || 0;

@@ -64,7 +64,7 @@ export class ItemRolls {
     const template = `systems/D35E/templates/chat/${templateType}-card.html`;
 
     // Basic chat message data
-    const chatData = mergeObject(
+    const chatData = foundry.utils.mergeObject(
       {
         user: game.user.id,
         type: CONST.CHAT_MESSAGE_TYPES.OTHER,
@@ -87,7 +87,7 @@ export class ItemRolls {
     let rollData;
     if (!options.data) {
       rollData = this.item.actor.getRollData();
-      rollData.item = mergeObject(duplicate(itemData), this.item.getRollData(), { inplace: false });
+      rollData.item = foundry.utils.mergeObject(duplicate(itemData), this.item.getRollData(), { inplace: false });
     } else rollData = options.data;
 
     // Add CL
@@ -243,10 +243,10 @@ export class ItemRolls {
     }
 
     const actorData = actor.system;
-    const rollData = mergeObject(
+    const rollData = foundry.utils.mergeObject(
       duplicate(actorData),
       {
-        item: mergeObject(itemData, this.item.getRollData(), { inplace: false }),
+        item: foundry.utils.mergeObject(itemData, this.item.getRollData(), { inplace: false }),
         ablMult: 0,
       },
       { inplace: false }
@@ -282,7 +282,7 @@ export class ItemRolls {
       rollData.item = {};
       //if (noteObj.item != null) rollData.item = duplicate(noteObj.item.system);
       if (noteObj.item != null)
-        rollData.item = mergeObject(duplicate(noteObj.item.system), noteObj.item.getRollData(), { inplace: false });
+        rollData.item = foundry.utils.mergeObject(duplicate(noteObj.item.system), noteObj.item.getRollData(), { inplace: false });
 
       for (let note of noteObj.notes) {
         for (let _note of note.split(/[\n\r]+/)) {

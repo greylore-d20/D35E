@@ -8,7 +8,7 @@ export class CurrencyConfig extends FormApplication {
     super(object || CurrencyConfig.defaultSettings, options)
 
     let settings = game.settings.get("D35E", "currencyConfig")
-    settings = mergeObject(CurrencyConfig.defaultSettings, settings)
+    settings = foundry.utils.mergeObject(CurrencyConfig.defaultSettings, settings)
     this.entries = settings.currency
   }
 
@@ -39,7 +39,7 @@ export class CurrencyConfig extends FormApplication {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       title:  game.i18n.localize("SETTINGS.D35ECurrencyConfigName"),
       id: 'currency-config',
       classes: ["D35E", "entry"],

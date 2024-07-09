@@ -11,7 +11,7 @@ export class DamageReductionSetting extends FormApplication {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "dr-setting",
             classes: ["D35E", "dr-setting"],
             title: "Damage Reduction and Energy Resistance",

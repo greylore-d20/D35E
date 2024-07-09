@@ -13,7 +13,7 @@ export class ActorSheetPFCharacter extends ActorSheetPF {
    * @return {Object}
    */
 	static get defaultOptions() {
-	  return mergeObject(super.defaultOptions, {
+	  return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["D35E", "sheet", "actor", "character"],
       width: 920,
       height: 840
@@ -45,7 +45,7 @@ export class ActorSheetPFCharacter extends ActorSheetPF {
     data["disableExperience"] = game.settings.get("D35E", "disableExperienceTracking");
 
     data.hasClasses = this.actor.items.filter(o => o.type === "class")?.length > 0;
-    data.notAllLevelsAssigned = this.actor.data.data.details.levelUpProgression && (this.actor.data.data.details.levelUpData || []).filter(o => o.classId).length < (this.actor.data.data.details.levelUpData || []).length;
+    data.notAllLevelsAssigned = this.actor.system.details.levelUpProgression && (this.actor.system.details.levelUpData || []).filter(o => o.classId).length < (this.actor.system.details.levelUpData || []).length;
 
     // Return data for rendering
     return data;
@@ -81,14 +81,14 @@ export class ActorSheetPFCharacter extends ActorSheetPF {
     event.preventDefault();
     const itemId = event.currentTarget.closest(".item").dataset.itemId;
     const item = this.actor.getOwnedItem(itemId);
-    return item.update({"data.preparation.prepared": !item.data.data.preparation.prepared});
+    return item.update({"data.preparation.prepared": !item.system.preparation.prepared});
   }
 
   /* -------------------------------------------- */
 
   async _onConvertCurrency(event) {
     event.preventDefault();
-    const curr = duplicate(this.actor.data.data.currency);
+    const curr = duplicate(this.actor.system.currency);
     const convert = {
       cp: {into: "sp", each: 10},
       sp: {into: "gp", each: 10 },

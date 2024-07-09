@@ -41,7 +41,7 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
   static get defaultOptions() {
     const options = super.defaultOptions;
 
-    mergeObject(options, {
+    foundry.utils.mergeObject(options, {
       classes: ["D35E sheet actor npc npc-sheet loot-sheet-npc"],
       width: 850,
       height: 750

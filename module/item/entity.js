@@ -505,7 +505,7 @@ export class Item35E extends ItemBase35E {
     }
     game.D35E.logger.log("Is true/false", updated, getProperty(this.system, "active"));
     let expandedData = expandObject(updated);
-    const srcData = mergeObject(this.toObject(), expandedData);
+    const srcData = foundry.utils.mergeObject(this.toObject(), expandedData);
 
     let needsUpdate = false; // if we do not have changes we often do not need to update actor
     if (
@@ -1109,7 +1109,7 @@ export class Item35E extends ItemBase35E {
       let roll = new Roll35e(parts.join("+"), data).roll();
 
       // Create roll template data
-      const rollData = mergeObject(
+      const rollData = foundry.utils.mergeObject(
         {
           user: game.user.id,
           formula: roll.formula,
@@ -1156,7 +1156,7 @@ export class Item35E extends ItemBase35E {
   getRollData(customData = null) {
     let _base = this.toObject(false).system;
     let result = {};
-    if (customData) result = mergeObject(_base, customData.system);
+    if (customData) result = foundry.utils.mergeObject(_base, customData.system);
     else result = _base;
 
     if (this.type === "buff" || this.type === "aura") result.level = result.level;
@@ -1324,7 +1324,7 @@ export class Item35E extends ItemBase35E {
   static async toPolymorphBuff(origData, type) {
     let data = duplicate(game.system.template.Item.buff);
     for (let t of data.templates) {
-      mergeObject(data, duplicate(game.system.template.Item.templates[t]));
+      foundry.utils.mergeObject(data, duplicate(game.system.template.Item.templates[t]));
     }
     delete data.templates;
     data = await this.polymorphBuffFromActor(data, origData, type);
@@ -1571,7 +1571,7 @@ export class Item35E extends ItemBase35E {
   static async toAttack(origData, type) {
     let data = duplicate(game.system.template.Item.attack);
     for (let t of data.templates) {
-      mergeObject(data, duplicate(game.system.template.Item.templates[t]));
+      foundry.utils.mergeObject(data, duplicate(game.system.template.Item.templates[t]));
     }
     delete data.templates;
     data = {
@@ -1635,7 +1635,7 @@ export class Item35E extends ItemBase35E {
   static async toTrait(origData, type) {
     let data = duplicate(game.system.template.Item.feat);
     for (let t of data.templates) {
-      mergeObject(data, duplicate(game.system.template.Item.templates[t]));
+      foundry.utils.mergeObject(data, duplicate(game.system.template.Item.templates[t]));
     }
     delete data.templates;
     data = {

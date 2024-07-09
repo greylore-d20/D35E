@@ -5,21 +5,6 @@ import { ActorPF } from "./actor/entity.js";
 const FormApplication_close = FormApplication.prototype.close;
 
 export async function PatchCore() {
-  // Patch getTemplate to prevent unwanted indentation in things like <textarea> elements.
-  async function D35E_getTemplate(path, id) {
-    if (!_templateCache.hasOwnProperty(path)) {
-      await new Promise((resolve) => {
-        game.socket.emit("template", path, (resp) => {
-          const compiled = Handlebars.compile(resp.html, { preventIndent: true });
-          Handlebars.registerPartial(id ?? path, compiled);
-          _templateCache[path] = compiled;
-          //game.D35E.logger.log(`Foundry VTT | Retrieved and compiled template ${path}`);
-          resolve(compiled);
-        });
-      });
-    }
-    return _templateCache[path];
-  }
 
   // Patch FormApplication
   FormApplication.prototype.saveMCEContent = async function (updateData = null) {};
@@ -61,8 +46,6 @@ export async function PatchCore() {
     },
   });
 
-  // Patch, patch, patch
-  window.getTemplate = D35E_getTemplate;
 
   const StringTerm_eval = StringTerm.prototype.evaluate;
   StringTerm.prototype.evaluate = async function (...args) {

@@ -6,13 +6,13 @@ export class HealthConfig extends FormApplication {
   /** Collect data for the template. @override */
   async getData() {
     let settings = await game.settings.get("D35E", "healthConfig")
-    settings = mergeObject(HealthConfig.defaultSettings, settings)
+    settings = foundry.utils.mergeObject(HealthConfig.defaultSettings, settings)
     return settings
   }
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       title:  game.i18n.localize("SETTINGS.D35EHealthConfigName"),
       id: 'health-config',
       template: "systems/D35E/templates/settings/health.html",

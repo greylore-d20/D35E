@@ -3,8 +3,8 @@ import { createTabs } from "./lib.js";
 export default function renderWelcomeScreen() {
     const system = game.system;
     const moduleId = system.id;
-    const title = system.data.title;
-    const moduleVersion = system.data.version;
+    const title = system.title;
+    const moduleVersion = system.version;
     game.settings.register(title, 'version', {
         name: `${title} Version`,
         default: "0.0.0",
@@ -42,7 +42,7 @@ export default function renderWelcomeScreen() {
         }
 
         createTabs(html) {
-            const __tabs = new TabsV2({navSelector: ".welcome-tabs", contentSelector: ".welcome-content", initial: "welcome", active: "welcome"});
+            const __tabs = new Tabs({navSelector: ".welcome-tabs", contentSelector: ".welcome-content", initial: "welcome", active: "welcome"});
             __tabs.bind(html);
         }
     }

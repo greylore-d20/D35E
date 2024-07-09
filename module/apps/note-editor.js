@@ -6,7 +6,7 @@ export class NoteEditor extends FormApplication {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "note-editor",
             classes: ["D35E", "entry"],
             title: "Notes Selector",

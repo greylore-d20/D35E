@@ -65,7 +65,7 @@ export const createCustomChatMessage = async function (
 ) {
   let rollMode = game.settings.get("core", "rollMode");
   chatTemplateData = cleanChatTemplateData(chatTemplateData);
-  chatData = mergeObject(
+  chatData = foundry.utils.mergeObject(
     {
       rollMode: rollMode,
       user: game.user.id,

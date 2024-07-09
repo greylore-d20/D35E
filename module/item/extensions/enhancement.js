@@ -165,7 +165,7 @@ export class ItemEnhancements extends ItemExtension {
         return createTag(obj.name) === enhancementId;
       })
       .forEach((i) => {
-        i.system = mergeObject(ItemEnhancementHelper.getEnhancementData(i), enhancementUpdateData);
+        i.system = foundry.utils.mergeObject(ItemEnhancementHelper.getEnhancementData(i), enhancementUpdateData);
         this.#setEnhancementPrice(i);
         // Clean up old data, as we use system now
         delete i.data;

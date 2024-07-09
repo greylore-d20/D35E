@@ -14,7 +14,7 @@ export class PointBuyCalculator extends FormApplication {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "pointbuy-calculator",
             classes: ["D35E", "pointbuy-calculator"],
             title: "Point Buy Calculator",

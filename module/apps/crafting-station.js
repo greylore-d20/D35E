@@ -23,7 +23,7 @@ export class CompendiumBrowser extends Application {
 
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/D35E/templates/apps/crafting-station.html",
       width: 720,
       height: window.innerHeight - 60,

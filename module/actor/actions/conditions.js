@@ -46,7 +46,7 @@ export class ActorConditions {
             // Create and delete condition ActiveEffects
             for (let k of Object.keys(CONFIG.D35E.conditions)) {
                 const idx = fx.findIndex((e) => e.getFlag("core", "statusId") === k);
-                const hasCondition = actor.data.data.attributes.conditions[k] === true;
+                const hasCondition = actor.system.attributes.conditions[k] === true;
                 const hasEffectIcon = idx >= 0;
                 const obj = t.object ?? t;
 

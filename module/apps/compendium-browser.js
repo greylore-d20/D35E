@@ -64,7 +64,7 @@ export class CompendiumBrowser extends Application {
   }
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/D35E/templates/apps/compendium-browser.html",
       id: "d35e-compendium-browser",
       width: 1080,

@@ -13,7 +13,7 @@ export class ActorSheetObject extends ActorSheetPF {
    * @return {Object}
    */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["D35E", "sheet", "actor", "npc", "object"],
       width: 725,
       height: 400,
@@ -96,7 +96,7 @@ export class ActorSheetObject extends ActorSheetPF {
    */
   _onRollHealthFormula(event) {
     event.preventDefault();
-    const formula = this.actor.data.data.attributes.hp.formula;
+    const formula = this.actor.system.attributes.hp.formula;
     if (!formula) return;
     const hp = new Roll35e(formula).roll().total;
     AudioHelper.play({ src: CONFIG.sounds.dice });

@@ -1,7 +1,7 @@
 export class ActorRestDialog extends DocumentSheet {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    return mergeObject(options, {
+    return foundry.utils.mergeObject(options, {
       id: "actor-flags",
       classes: ["D35E", "actor-rest"],
       template: "systems/D35E/templates/apps/actor-rest.html",

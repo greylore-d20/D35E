@@ -7,7 +7,7 @@ export class ActorSheetPFNPCCombat extends ActorSheetPFNPC {
    * @return {Object}
    */
 	static get defaultOptions() {
-	  return mergeObject(super.defaultOptions, {
+	  return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["D35E", "sheet", "actor", "npc", "monster", "sidebar"],
         height: 0,
         popOut: false,

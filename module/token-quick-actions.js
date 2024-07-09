@@ -31,9 +31,9 @@ export class TokenQuickActions {
     ammo.forEach(function(item) {
       const icon = item.img;
       let title = "";
-      title = `${item.name} (${item.data.data.quantity})`;
+      title = `${item.name} (${item.system.quantity})`;
       const type = item.type;
-      ammoCounter += `<div id="${type}-${item._id}" class="control-icon"  title="${title}"><img style="position: absolute" src="${icon}" width="36" height="36"><span style="position: relative" >${item.data.data.quantity}</span></div>`;
+      ammoCounter += `<div id="${type}-${item._id}" class="control-icon"  title="${title}"><img style="position: absolute" src="${icon}" width="36" height="36"><span style="position: relative" >${item.system.quantity}</span></div>`;
     });
 
     html.find('.col.middle').after(quickActions + '</div></div>');

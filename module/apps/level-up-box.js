@@ -6,7 +6,7 @@ export class LevelUpDialog extends FormApplication {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "level-up-box",
             classes: ["D35E", "entry"],
             title: "Level Up Wizard",

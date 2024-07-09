@@ -47,7 +47,7 @@ export class TopPortraitBar {
             return;
         // if (actor.data.type !== "character")
         //   return;
-        if (!actor.data.data.isPartyMember)
+        if (!actor.system.isPartyMember)
             return;
         if (!actor.testUserPermission(game.user, "LIMITED")) // Player cannot see
             return;
@@ -73,22 +73,22 @@ export class TopPortraitBar {
         });
         let damage = portraitDiv.find('.damage');
         let life = portraitDiv.find('.life');
-        let pixelDamage = (actor.data.data.attributes.hp.value / actor.data.data.attributes.hp.max) * 100
+        let pixelDamage = (actor.system.attributes.hp.value / actor.system.attributes.hp.max) * 100
 
-        if (actor.data.data.attributes.hp.value <= -10) {
+        if (actor.system.attributes.hp.value <= -10) {
             pixelDamage = 0;
             portraitDiv.addClass('dead');
             life.text(`Dead`)
         }
         //Dead is at -10 Hit Points or Lower
-        else if (actor.data.data.attributes.hp.value < 0) {
+        else if (actor.system.attributes.hp.value < 0) {
             pixelDamage = 0;
             portraitDiv.addClass('dead');
             life.text(`Dying`)
         } else {
             portraitDiv.removeClass('dead');
             if (actor.testUserPermission(game.user, "OBSERVER")) {
-                life.text(`${actor.data.data.attributes.hp.value} / ${actor.data.data.attributes.hp.max}`)
+                life.text(`${actor.system.attributes.hp.value} / ${actor.system.attributes.hp.max}`)
             } else {
                 life.text(``)
             }

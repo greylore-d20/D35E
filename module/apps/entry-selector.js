@@ -5,7 +5,7 @@ export class EntrySelector extends FormApplication {
   }
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "entry-selector",
       classes: ["D35E", "entry"],
       template: "systems/D35E/templates/apps/entry-selector.html",

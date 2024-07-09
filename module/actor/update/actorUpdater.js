@@ -27,7 +27,7 @@ export class ActorUpdater {
       const updateObj = await this.updateChanges({ updated: updated }, options);
 
       if (updateObj?.diff?.items) delete updateObj.diff.items;
-      diff = mergeObject(diff, updateObj?.diff || {});
+      diff = foundry.utils.mergeObject(diff, updateObj?.diff || {});
     }
 
     delete diff.effects;
@@ -60,7 +60,7 @@ export class ActorUpdater {
           }
 
           if (s !== tag) {
-            expandedData.system.skills[tag] = mergeObject(curSkl, skl);
+            expandedData.system.skills[tag] = foundry.utils.mergeObject(curSkl, skl);
             expandedData.system.skills[s] = null;
           }
         }
@@ -412,7 +412,7 @@ export class ActorUpdater {
 
   async updateChanges({ updated = null } = {}, options = {}) {
     let updateData = {};
-    let source = mergeObject(this.actor.toObject(false), expandObject(updated || {}));
+    let source = foundry.utils.mergeObject(this.actor.toObject(false), expandObject(updated || {}));
     source.items = this.actor.items;
 
     let sizeOverride = "";
@@ -671,9 +671,9 @@ export class ActorUpdater {
     // Parse changes
     let temp = [];
     //LogHelper.log('Master Changes');
-    const origData = mergeObject(this.actor.toObject(false), updated != null ? expandObject(updated) : {});
+    const origData = foundry.utils.mergeObject(this.actor.toObject(false), updated != null ? expandObject(updated) : {});
     updateData = flattenObject({
-      system: mergeObject(origData.system, expandObject(updateData).system, { inplace: false }),
+      system: foundry.utils.mergeObject(origData.system, expandObject(updateData).system, { inplace: false }),
     });
     this.#addDynamicData(updateData, {}, flags, Object.keys(getProperty(this.actor.system, "abilities")), source, true);
 
@@ -1188,7 +1188,7 @@ export class ActorUpdater {
     this.#updateAbilityRelatedFields(source, updateData, sourceInfo);
 
     this.actor.sourceDetails = ActorPrepareSourceHelper.setSourceDetails(
-      mergeObject(this.actor.toObject(false), source),
+      foundry.utils.mergeObject(this.actor.toObject(false), source),
       sourceInfo,
       flags
     );
@@ -1197,7 +1197,7 @@ export class ActorUpdater {
 
     if (this.actor.collection != null && Object.keys(diffData).length > 0) {
       let newData = {};
-      if (updated != null) newData = flattenObject(mergeObject(updated, flattenObject(diffData), { inplace: false }));
+      if (updated != null) newData = flattenObject(foundry.utils.mergeObject(updated, flattenObject(diffData), { inplace: false }));
       return { data: newData, diff: diffData };
     }
     return { data: {}, diff: {} };

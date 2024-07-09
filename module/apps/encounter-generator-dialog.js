@@ -6,7 +6,7 @@ export class EncounterGeneratorDialog extends FormApplication {
 
     //Window option stuff
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "encounter-generator",
             title: "Encounter Generator",
             template: "systems/D35E/templates/apps/encounter-generator-dialog.html",

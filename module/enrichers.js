@@ -184,7 +184,7 @@ export class EnrichersHelper {
     } else {
       tooltip[0].outerHTML
     }
-    const templateData = mergeObject(
+    const templateData = foundry.utils.mergeObject(
         chatTemplateData,
         {
           flavor: `<img src="systems/D35E/icons/damage-type/${damageIcon}.svg" title="${

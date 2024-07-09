@@ -4,7 +4,7 @@ export class ItemEnhancementConverter {
     static async toEnhancement(origData, type, cl) {
         let newItemData = duplicate(game.system.template.Item.enhancement);
         for (let t of newItemData.templates) {
-            mergeObject(newItemData, duplicate(game.system.template.Item.templates[t]));
+            foundry.utils.mergeObject(newItemData, duplicate(game.system.template.Item.templates[t]));
         }
         delete newItemData.templates;
         newItemData = {
@@ -87,7 +87,7 @@ export class ItemEnhancementConverter {
     static async toEnhancementBuff(origData) {
         let newItemData = duplicate(game.system.template.Item.enhancement);
         for (let t of newItemData.templates) {
-            mergeObject(newItemData, duplicate(game.system.template.Item.templates[t]));
+            foundry.utils.mergeObject(newItemData, duplicate(game.system.template.Item.templates[t]));
         }
         delete newItemData.templates;
         newItemData = {

@@ -29,7 +29,7 @@ export class VisionPermissionSheet extends FormApplication {
     }
   
     static get defaultOptions() {
-      return mergeObject(super.defaultOptions, {
+      return foundry.utils.mergeObject(super.defaultOptions, {
         classes: ["sheet", "vision-permission"],
         template: "systems/D35E/templates/apps/vision-permission.html",
         width: 300,
@@ -56,7 +56,7 @@ export class VisionPermissionSheet extends FormApplication {
   
     async getData() {
       let data = super.getData();
-      data = mergeObject(data, this.object.getFlag("D35E", "visionPermission"));
+      data = foundry.utils.mergeObject(data, this.object.getFlag("D35E", "visionPermission"));
       data.users = data.users || {};
   
       data.defaultLevels = [

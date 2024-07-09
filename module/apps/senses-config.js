@@ -6,7 +6,7 @@ export default class ActorSensesConfig extends DocumentSheet {
 
     /** @override */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["D35E"],
             template: "systems/D35E/templates/apps/senses-config.html",
             width: 300,
@@ -25,7 +25,7 @@ export default class ActorSensesConfig extends DocumentSheet {
 
     /** @override */
     getData(options) {
-        const senses = this.object.data.data.attributes?.senses ?? {};
+        const senses = this.object.system.attributes?.senses ?? {};
         const data = {
             senses: {},
             special: senses.special ?? "",

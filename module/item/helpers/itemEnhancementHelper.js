@@ -3,7 +3,7 @@ import { Roll35e } from "../../roll.js";
 
 export class ItemEnhancementHelper {
   static getEnhancementData(enhancement) {
-    let data = mergeObject(enhancement.data || {}, enhancement.system || {});
+    let data = foundry.utils.mergeObject(enhancement.data || {}, enhancement.system || {});
     if (!enhancement.system) enhancement.system = duplicate(enhancement.data || {});
     delete enhancement.data;
     return enhancement.system;

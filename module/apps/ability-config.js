@@ -11,7 +11,7 @@ export default class AbilityConfig extends DocumentSheet {
 
     /** @override */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["D35E"],
             template: "systems/D35E/templates/apps/ability-config.html",
             width: 300,
@@ -30,7 +30,7 @@ export default class AbilityConfig extends DocumentSheet {
 
     /** @override */
     getData(options) {
-        const ability = this.object.data.data.abilities[this.ability] ?? {};
+        const ability = this.object.system.abilities[this.ability] ?? {};
         const data = {
             ability: ability,
             name: this.ability

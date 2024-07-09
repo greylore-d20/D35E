@@ -249,7 +249,7 @@ export default class TreasureGenerator {
 					await it.updateSource({'system.quantity':item.amount})
 					if (item.itemOverride) {
 						execFunctions(item.itemOverride)						
-						await it.updateSource({...item.itemOverride.data, 'name':item.itemOverride.data.data.identifiedName})
+						await it.updateSource({...item.itemOverride.data, 'name':item.itemOverride.system.identifiedName})
 					}
 					return it.toObject()
 				}
@@ -453,13 +453,13 @@ export default class TreasureGenerator {
 					}
 
 					if (result.itemOverride) {
-						mergeObject(result.itemOverride, extraOverride)
+						foundry.utils.mergeObject(result.itemOverride, extraOverride)
 					} else {
 						result.itemOverride = extraOverride
 					}
 
 					if (options.overrideNames) {
-						mergeObject(result.itemOverride, {
+						foundry.utils.mergeObject(result.itemOverride, {
 							data: {
 								data: {
 									identifiedName: result.type,
@@ -469,7 +469,7 @@ export default class TreasureGenerator {
 					}
 
 					if (magicItemData.itemOverride) {
-						mergeObject(
+						foundry.utils.mergeObject(
 							result.itemOverride,
 							magicItemData.itemOverride
 						)
@@ -969,7 +969,7 @@ export default class TreasureGenerator {
 //#region example
 
 function getActorCrAndMultiplier(actor) {
-	let cr = actor.data.data.details.cr
+	let cr = actor.system.details.cr
 	//#region Options Validation
 	// moneyMultiplier = Math.floor(Math.max(moneyMultiplier, 1))
 	// goodsMultiplier = Math.floor(Math.max(goodsMultiplier, 1))

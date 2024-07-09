@@ -14,7 +14,7 @@ export class ActorSheetPFNPC extends ActorSheetPF {
    * @return {Object}
    */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["D35E", "sheet", "actor", "npc"],
       width: 920,
       height: 800

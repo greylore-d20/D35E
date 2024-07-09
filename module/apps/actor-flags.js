@@ -1,7 +1,7 @@
 export class ActorSheetFlags extends DocumentSheet {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    return mergeObject(options, {
+    return foundry.utils.mergeObject(options, {
       id: "actor-flags",
       classes: ["D35E"],
       template: "systems/D35E/templates/apps/actor-flags.html",

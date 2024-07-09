@@ -6,13 +6,13 @@ export class RollConfig extends FormApplication {
   /** Collect data for the template. @override */
   async getData() {
     let settings = await game.settings.get("D35E", "rollConfig")
-    settings = mergeObject(RollConfig.defaultSettings, settings)
+    settings = foundry.utils.mergeObject(RollConfig.defaultSettings, settings)
     return {settings: settings, rollModes: CONFIG.Dice.rollModes}
   }
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       title:  game.i18n.localize("SETTINGS.D35ERollConfigName"),
       id: 'roll-config',
       template: "systems/D35E/templates/settings/roll-config.html",
