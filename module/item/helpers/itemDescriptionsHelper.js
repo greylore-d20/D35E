@@ -14,14 +14,14 @@ export class ItemDescriptionsHelper {
     rollData.item = item.getRollData();
 
     if (item.hasAttack) {
-      let bab = getProperty(item.actor.system, "attributes.bab.nonepic") || 0;
+      let bab = foundry.utils.getProperty(item.actor.system, "attributes.bab.nonepic") || 0;
       let totalBonus = this.attackBonus(item, rollData);
       let autoScaleWithBab =
         (game.settings.get("D35E", "autoScaleAttacksBab") &&
           item.actor.type !== "npc" &&
-          getProperty(item.system, "attackType") === "weapon" &&
-          getProperty(item.system, "autoScaleOption") !== "never") ||
-        getProperty(item.system, "autoScaleOption") === "always";
+          foundry.utils.getProperty(item.system, "attackType") === "weapon" &&
+          foundry.utils.getProperty(item.system, "autoScaleOption") !== "never") ||
+        foundry.utils.getProperty(item.system, "autoScaleOption") === "always";
       let attacks = [];
       if (autoScaleWithBab) {
         while (bab >= 0) {
@@ -31,7 +31,7 @@ export class ItemDescriptionsHelper {
         }
       } else {
         attacks.push(`${totalBonus >= 0 ? "+" + totalBonus : totalBonus}`);
-        for (let part of getProperty(item.system, "attackParts")) {
+        for (let part of foundry.utils.getProperty(item.system, "attackParts")) {
           let partBonus = totalBonus + parseInt(part[0]);
           attacks.push(`${partBonus >= 0 ? "+" + partBonus : partBonus}`);
         }
@@ -109,7 +109,7 @@ export class ItemDescriptionsHelper {
         }
       });
     }
-    if (getProperty(item.system, "ability.damage"))
+    if (foundry.utils.getProperty(item.system, "ability.damage"))
       abilityBonus = Math.floor(
         parseInt(item.actor.system.abilities[item.system.ability.damage].mod) *
           ItemCombatCalculationsHelper.calculateAbilityModifier(
@@ -121,21 +121,21 @@ export class ItemDescriptionsHelper {
       );
     if (abilityBonus < 0) abilityBonus = item.actor.system.abilities[item.system.ability.damage].mod;
     if (abilityBonus) results.push(abilityBonus);
-    if (getProperty(item.system, "enh")) results.push(getProperty(item.system, "enh"));
+    if (foundry.utils.getProperty(item.system, "enh")) results.push(foundry.utils.getProperty(item.system, "enh"));
     return results.join(" + ").replaceAll(" + -", " - ");
   }
 
   static rangeDescription(item) {
-    let rng = getProperty(item.system, "range") || {};
+    let rng = foundry.utils.getProperty(item.system, "range") || {};
     if (!["ft", "mi", "spec"].includes(rng.units)) {
       rng.value = null;
       rng.long = null;
     }
     if (rng.units === "ft")
-      if (getProperty(item.system, "thrown")) {
+      if (foundry.utils.getProperty(item.system, "thrown")) {
         rng.long = rng.value * 5;
       } else {
-        if (getProperty(item.system, "actionType") === "rwak") rng.long = rng.value * 10;
+        if (foundry.utils.getProperty(item.system, "actionType") === "rwak") rng.long = rng.value * 10;
       }
     let range = [rng.value, rng.long ? `/ ${rng.long}` : null, CONFIG.D35E.distanceUnitsShort[rng.units]].filterJoin(
       " "

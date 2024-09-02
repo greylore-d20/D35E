@@ -180,7 +180,7 @@ export class CombatD35E extends Combat {
         },
         messageOptions
       );
-      setProperty(chatData, "flags.D35E.subject.core", "init");
+      foundry.utils.setProperty(chatData, "flags.D35E.subject.core", "init");
 
       // Handle different roll modes
       ChatMessage.applyRollMode(chatData, chatData.rollMode);

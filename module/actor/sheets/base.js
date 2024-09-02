@@ -72,7 +72,7 @@ export class ActorSheetPF extends ActorSheet {
   get currentSpellbookKey() {
     const elems = this.element.find("nav.spellbooks .item.active");
     if (elems.length !== 1)
-      return Object.keys(getProperty(this.system, "attributes.spells.spellbook") || { primary: null })[0];
+      return Object.keys(foundry.utils.getProperty(this.system, "attributes.spells.spellbook") || { primary: null })[0];
     return elems.attr("data-tab");
   }
 
@@ -118,19 +118,19 @@ export class ActorSheetPF extends ActorSheet {
       i.hasAttack = item.hasAttack;
       i.possibleUpdate = item.system.possibleUpdate;
       i.hasMultipleAttacks = item.hasMultipleAttacks;
-      i.containerId = getProperty(item.system, "containerId");
+      i.containerId = foundry.utils.getProperty(item.system, "containerId");
       i.hasDamage = item.hasDamage;
       i.hasEffect = item.hasEffect;
       i.charges = item.charges;
       i.maxCharges = item.maxCharges;
       i.isRecharging = item.isRecharging;
       i.hasTimedRecharge = item.hasTimedRecharge;
-      i.container = getProperty(i.system, "container");
+      i.container = foundry.utils.getProperty(i.system, "container");
       i.hasAction = item.hasAction || item.isCharged;
       i.attackDescription = item.type === "attack" ? ItemDescriptionsHelper.attackDescription(item, actorRollData) : "";
       i.damageDescription = item.type === "attack" ? ItemDescriptionsHelper.damageDescription(item, actorRollData) : "";
       i.range = item.type === "attack" ? ItemDescriptionsHelper.rangeDescription(item) : "";
-      i.isCurseKnown = getProperty(item.system, "curseActive") || getProperty(item.system, "identifiedCurse");
+      i.isCurseKnown = foundry.utils.getProperty(item.system, "curseActive") || foundry.utils.getProperty(item.system, "identifiedCurse");
       i.timelineLeftText = item.getTimelineTimeLeftDescriptive();
       i.showUnidentifiedData = item.showUnidentifiedData;
       i.unmetRequirements =
@@ -238,7 +238,7 @@ export class ActorSheetPF extends ActorSheet {
           if (skl2.ability)
             skl2.sourceDetails.push({
               name: game.i18n.localize("D35E.Ability"),
-              value: getProperty(sheetData.actor, `data.abilities.${skl2.ability}.mod`),
+              value: foundry.utils.getProperty(sheetData.actor, `data.abilities.${skl2.ability}.mod`),
             });
           if (!skl2.cls && skl2.points)
             skl.sourceDetails.push({
@@ -1412,8 +1412,8 @@ export class ActorSheetPF extends ActorSheet {
         let props = $(`<div class="item-properties"></div>`);
         chatData.properties.forEach((p) => props.append(`<span class="tag">${p}</span>`));
         if (!item.showUnidentifiedData) {
-          //game.D35E.logger.log('Enchancement item data', getProperty(item.system, `enhancements.items`) || []);
-          (getProperty(item.system, `enhancements.items`) || []).forEach((__enh) => {
+          //game.D35E.logger.log('Enchancement item data', foundry.utils.getProperty(item.system, `enhancements.items`) || []);
+          (foundry.utils.getProperty(item.system, `enhancements.items`) || []).forEach((__enh) => {
             const _enh = duplicate(__enh);
             delete _enh._id;
             let enh = new Item35E(_enh, { owner: this.isOwner });
@@ -1604,7 +1604,7 @@ export class ActorSheetPF extends ActorSheet {
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
 
     const currentCl =
-      getProperty(this.actor.system, `attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`) || 0;
+      foundry.utils.getProperty(this.actor.system, `attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`) || 0;
     const newCl = Math.max(0, currentCl + add);
     const k = `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`;
     let updateData = {};
@@ -1616,7 +1616,7 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
     const spellbookKey = $(event.currentTarget).closest(".deck-group").data("tab");
 
-    const currentCl = getProperty(this.actor.system, `attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`) || 0;
+    const currentCl = foundry.utils.getProperty(this.actor.system, `attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`) || 0;
     const newCl = Math.max(0, currentCl + add);
     const k = `system.attributes.cards.decks.${spellbookKey}.bonusPrestigeCl`;
     let updateData = {};
@@ -1628,7 +1628,7 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
 
-    const currentPF = getProperty(this.actor.system, `attributes.psionicFocus`) || false;
+    const currentPF = foundry.utils.getProperty(this.actor.system, `attributes.psionicFocus`) || false;
     const newPF = !currentPF;
     const k = `system.attributes.psionicFocus`;
     let updateData = {};
@@ -1656,7 +1656,7 @@ export class ActorSheetPF extends ActorSheet {
     event.preventDefault();
     let itemUpdates = [];
     this.actor.items
-      .filter((i) => getProperty(i.system, "subType") === "container")
+      .filter((i) => foundry.utils.getProperty(i.system, "subType") === "container")
       .forEach((item) => {
         itemUpdates.push({ _id: item._id, "system.containerId": "none" });
       });
@@ -1686,7 +1686,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    const curQuantity = getProperty(item.system, "quantity") || 0;
+    const curQuantity = foundry.utils.getProperty(item.system, "quantity") || 0;
     const newQuantity = Math.max(0, curQuantity + add);
     item.update({ "system.quantity": newQuantity });
   }
@@ -1696,7 +1696,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    if (hasProperty(item.system, "equipped")) {
+    if (foundry.utils.hasProperty(item.system, "equipped")) {
       item.update({ "system.equipped": !item.system.equipped });
     }
   }
@@ -1706,7 +1706,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    if (hasProperty(item.system, "carried")) {
+    if (foundry.utils.hasProperty(item.system, "carried")) {
       item.update({ "system.carried": !item.system.carried });
     }
   }
@@ -1720,7 +1720,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    if (hasProperty(item.system, "identified")) {
+    if (foundry.utils.hasProperty(item.system, "identified")) {
       item.update({ "system.identified": !item.system.identified });
     }
   }
@@ -1832,7 +1832,7 @@ export class ActorSheetPF extends ActorSheet {
             itemUpdate["system.enhancements.uses.value"] = itemData.enhancements.uses.max;
           }
         } else if (item.type === "spell") {
-          const spellbook = getProperty(actorData, `attributes.spells.spellbooks.${itemData.spellbook}`),
+          const spellbook = foundry.utils.getProperty(actorData, `attributes.spells.spellbooks.${itemData.spellbook}`),
             isSpontaneous = spellbook.spontaneous,
             usePowerPoints = spellbook.usePowerPoints;
           if (
@@ -1865,7 +1865,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    const curQuantity = getProperty(item.system, "preparation.maxAmount") || 0;
+    const curQuantity = foundry.utils.getProperty(item.system, "preparation.maxAmount") || 0;
     const newQuantity = Math.max(0, curQuantity + add);
     item.update({ "system.preparation.maxAmount": newQuantity });
   }
@@ -1876,7 +1876,7 @@ export class ActorSheetPF extends ActorSheet {
     const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
     const item = this.actor.getOwnedItem(itemId);
 
-    const curQuantity = getProperty(item.system, "preparation.maxAmount") || 0;
+    const curQuantity = foundry.utils.getProperty(item.system, "preparation.maxAmount") || 0;
     const newQuantity = Math.max(0, curQuantity + add);
     item.update({ "system.preparation.maxAmount": newQuantity });
   }
@@ -1887,7 +1887,7 @@ export class ActorSheetPF extends ActorSheet {
     const spellbookKey = $(event.currentTarget).closest(".spellbook-group").data("tab");
     const level = $(event.currentTarget).parents(".spellbook-list").attr("data-level");
     const k = `data.attributes.spells.spellbooks.${spellbookKey}.specialSlots.level${level}`;
-    let previousItemId = getProperty(
+    let previousItemId = foundry.utils.getProperty(
       this.actor.system,
       `attributes.spells.spellbooks.${spellbookKey}.specialSlots.level${level}`
     );
@@ -2104,7 +2104,7 @@ export class ActorSheetPF extends ActorSheet {
    */
   _prepareItems(sheetData) {
     // Set item tags
-    for (let [key, res] of Object.entries(getProperty(this.actor.system, "resources"))) {
+    for (let [key, res] of Object.entries(foundry.utils.getProperty(this.actor.system, "resources"))) {
       if (!res) continue;
       const id = res._id;
       if (!id) continue;
@@ -2234,7 +2234,7 @@ export class ActorSheetPF extends ActorSheet {
         item.img = item.img || DEFAULT_TOKEN;
         item.isStack = item.system.quantity ? item.system.quantity > 1 : false;
         item.hasUses = item.system.uses && item.system.uses.max > 0;
-        item.isCharged = ["day", "week", "charges", "encounter"].includes(getProperty(item, "system.uses.per"));
+        item.isCharged = ["day", "week", "charges", "encounter"].includes(foundry.utils.getProperty(item, "system.uses.per"));
         item.isFullAttack = item.type === "full-attack";
 
         item.canRecharge = !!(
@@ -2244,8 +2244,8 @@ export class ActorSheetPF extends ActorSheet {
             (o) => ItemEnhancementHelper.getEnhancementData(o).uses.max
           )
         );
-        const itemQuantity = getProperty(item, "system.quantity") != null ? getProperty(item, "system.quantity") : 1;
-        const itemCharges = getProperty(item, "system.uses.value") != null ? getProperty(item, "system.uses.value") : 1;
+        const itemQuantity = foundry.utils.getProperty(item, "system.quantity") != null ? foundry.utils.getProperty(item, "system.quantity") : 1;
+        const itemCharges = foundry.utils.getProperty(item, "system.uses.value") != null ? foundry.utils.getProperty(item, "system.uses.value") : 1;
         item.empty = itemQuantity <= 0 || (item.isCharged && itemCharges <= 0);
         item.broken = item.system?.hp?.value === 0 && item.system?.hp?.max > 0;
         item.emptyOrBroken = item.empty || item.broken;
@@ -3087,7 +3087,7 @@ export class ActorSheetPF extends ActorSheet {
   }
 
   enrichDropData(origData) {
-    if (getProperty(origData, "type") === "spell") {
+    if (foundry.utils.getProperty(origData, "type") === "spell") {
       if (origData?.document)
         origData?.document.data.update({
           "system.spellbook": this.currentPrimaryTab === "spellbook" ? this.currentSpellbookKey : null,

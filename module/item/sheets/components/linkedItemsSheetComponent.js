@@ -2,9 +2,9 @@ import { ItemSheetComponent } from "./itemSheetComponent.js";
 
 export class LinkedItemsSheetComponent extends ItemSheetComponent {
   prepareSheetData(sheetData) {
-    if ((getProperty(this.sheet.item.system, `linkedItems`) || []) !== []) {
+    if ((foundry.utils.getProperty(this.sheet.item.system, `linkedItems`) || []) !== []) {
       sheetData.linkedItems = [];
-      let _likedItems = getProperty(this.sheet.item.system, `linkedItems`) || [];
+      let _likedItems = foundry.utils.getProperty(this.sheet.item.system, `linkedItems`) || [];
       _likedItems.forEach((e) => {
         //e.incorrect ===
         sheetData.linkedItems.push(e);
@@ -39,7 +39,7 @@ export class LinkedItemsSheetComponent extends ItemSheetComponent {
     const li = event.currentTarget.closest(".item");
     if (game.keyboard.isModifierActive("Shift")) {
       const updateData = {};
-      let _linkedItems = duplicate(getProperty(this.sheet.item.system, `linkedItems`) || []);
+      let _linkedItems = duplicate(foundry.utils.getProperty(this.sheet.item.system, `linkedItems`) || []);
       _linkedItems = _linkedItems.filter(function (obj) {
         return obj.itemId !== li.dataset.itemId || obj.packId !== li.dataset.packId;
       });
@@ -54,7 +54,7 @@ export class LinkedItemsSheetComponent extends ItemSheetComponent {
         content: msg,
         yes: () => {
           const updateData = {};
-          let _linkedItems = duplicate(getProperty(this.sheet.item.system, `linkedItems`) || []);
+          let _linkedItems = duplicate(foundry.utils.getProperty(this.sheet.item.system, `linkedItems`) || []);
           _linkedItems = _linkedItems.filter(function (obj) {
             return obj.itemId !== li.dataset.itemId || obj.packId !== li.dataset.packId;
           });

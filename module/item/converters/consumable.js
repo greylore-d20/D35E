@@ -80,12 +80,12 @@ export class ItemConsumableConverter {
 
         // Set measure template
         if (type !== "potion" && type !== "tattoo") {
-            system.measureTemplate = getProperty(origData, "data.measureTemplate");
+            system.measureTemplate = foundry.utils.getProperty(origData, "data.measureTemplate");
         }
 
         // Set damage formula
         system.actionType = origData.system.actionType;
-        for (let d of getProperty(origData, "data.damage.parts")) {
+        for (let d of foundry.utils.getProperty(origData, "data.damage.parts")) {
             d[0] = d[0].replace(/@sl/g, slcl[0]);
             system.damage.parts.push(d);
         }

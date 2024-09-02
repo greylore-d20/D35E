@@ -38,11 +38,11 @@ export class ItemChatData {
     let sl = 0;
     if (this.item.type === "spell") {
       spellbookIndex = itemChatData.spellbook;
-      spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
+      spellbook = foundry.utils.getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
       spellAbility = spellbook.ability;
-      if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
+      if (spellAbility !== "") ablMod = foundry.utils.getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
 
-      cl += getProperty(spellbook, "cl.total") || 0;
+      cl += foundry.utils.getProperty(spellbook, "cl.total") || 0;
       cl += itemChatData.clOffset || 0;
       cl += rollData.featClBonus || 0;
       cl -= this.item.actor.system.attributes.energyDrain || 0;
@@ -55,11 +55,11 @@ export class ItemChatData {
       rollData.ablMod = ablMod;
     } else if (this.item.type === "card") {
       let deckIndex = itemChatData.deck;
-      let deck = getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
+      let deck = foundry.utils.getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
       spellAbility = deck.ability;
-      if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
+      if (spellAbility !== "") ablMod = foundry.utils.getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
 
-      cl += getProperty(deck, "cl.total") || 0;
+      cl += foundry.utils.getProperty(deck, "cl.total") || 0;
       cl += itemChatData.clOffset || 0;
       cl += rollData.featClBonus || 0;
       cl -= this.item.actor.system.attributes.energyDrain || 0;
@@ -182,18 +182,18 @@ export class ItemChatData {
       }
 
       rollData.powerAbl = 0;
-      if (itemChatData.school === "bol") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.str.mod`);
-      if (itemChatData.school === "kin") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.con.mod`);
-      if (itemChatData.school === "por") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.dex.mod`);
-      if (itemChatData.school === "met") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.int.mod`);
-      if (itemChatData.school === "cla") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.wis.mod`);
-      if (itemChatData.school === "tel") rollData.powerAbl = getProperty(this.item.actor.system, `abilities.cha.mod`);
+      if (itemChatData.school === "bol") rollData.powerAbl = foundry.utils.getProperty(this.item.actor.system, `abilities.str.mod`);
+      if (itemChatData.school === "kin") rollData.powerAbl = foundry.utils.getProperty(this.item.actor.system, `abilities.con.mod`);
+      if (itemChatData.school === "por") rollData.powerAbl = foundry.utils.getProperty(this.item.actor.system, `abilities.dex.mod`);
+      if (itemChatData.school === "met") rollData.powerAbl = foundry.utils.getProperty(this.item.actor.system, `abilities.int.mod`);
+      if (itemChatData.school === "cla") rollData.powerAbl = foundry.utils.getProperty(this.item.actor.system, `abilities.wis.mod`);
+      if (itemChatData.school === "tel") rollData.powerAbl = foundry.utils.getProperty(this.item.actor.system, `abilities.cha.mod`);
 
       // Add save DC
       if (
         itemChatData.hasOwnProperty("actionType") &&
-        (getProperty(itemChatData, "save.description") || getProperty(itemChatData, "save.type")) &&
-        getProperty(itemChatData, "save.description") !== "None"
+        (foundry.utils.getProperty(itemChatData, "save.description") || foundry.utils.getProperty(itemChatData, "save.type")) &&
+        foundry.utils.getProperty(itemChatData, "save.description") !== "None"
       ) {
         let saveDC = new Roll35e(itemChatData.save.dc.length > 0 ? itemChatData.save.dc : "0", rollData).roll().total;
         let saveType = itemChatData.save.type

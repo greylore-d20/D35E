@@ -386,7 +386,7 @@ newFun = newFun.replace(
 					alpha: 0.8
 				});
 				// move into draw or so
-				const source = getProperty(this.texture, "baseTexture.resource.source")
+				const source = foundry.utils.getProperty(this.texture, "baseTexture.resource.source")
 				if ( source && (source.tagName === "VIDEO") && game.D35E.createdMeasureTemplates.has(this.id) ) {
 					source.loop = false;
 					source.muted = true;

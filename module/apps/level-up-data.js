@@ -70,7 +70,7 @@ export class LevelUpDataDialog extends FormApplication {
       });
     });
     let classes = this.actor.items
-      .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
+      .filter((o) => o.type === "class" && foundry.utils.getProperty(o.system, "classType") !== "racial")
       .sort((a, b) => {
         return a.sort - b.sort;
       });
@@ -143,7 +143,7 @@ export class LevelUpDataDialog extends FormApplication {
       updateData[`system.details.levelUpData`] = levelUpData;
 
       const classes = this.actor.items
-        .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
+        .filter((o) => o.type === "class" && foundry.utils.getProperty(o.system, "classType") !== "racial")
         .sort((a, b) => {
           return a.sort - b.sort;
         });

@@ -8,10 +8,10 @@ export class ItemActiveHelper {
       item.type === "feat" ||
       item.type === "race" ||
       item.type === "class" ||
-      ((item.type === "aura" || item.type === "buff") && getProperty(item.system, "active")) ||
+      ((item.type === "aura" || item.type === "buff") && foundry.utils.getProperty(item.system, "active")) ||
       (item.type === "equipment" &&
-        getProperty(item.system, "equipped") === true &&
-        !getProperty(item.system, "melded"))
+        foundry.utils.getProperty(item.system, "equipped") === true &&
+        !foundry.utils.getProperty(item.system, "melded"))
     );
   }
 }

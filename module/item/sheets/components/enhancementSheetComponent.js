@@ -14,7 +14,7 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
       sheetData.enhancementsBase = [];
       sheetData.enhancementsFromSpell = [];
       sheetData.enhancementsFromBuff = [];
-      let _enhancements = getProperty(this.sheet.item.system, `enhancements.items`) || [];
+      let _enhancements = foundry.utils.getProperty(this.sheet.item.system, `enhancements.items`) || [];
       _enhancements.forEach((e) => {
         let item = ItemEnhancementHelper.getEnhancementItemFromData(e, this.sheet.item.actor, this.sheet.item.isOwner);
         this.sheet.ehnancementItemMap.set(item.tag, item);
@@ -30,7 +30,7 @@ export class EnhancementSheetComponent extends ItemSheetComponent {
           e.data.enhIncrease !== undefined && e.data.enhIncrease !== null && e.data.enhIncrease > 0
             ? `+${e.data.enhIncrease}`
             : `${e.data.price}`;
-        e.isCharged = ["day", "week", "charges", "encounter"].includes(getProperty(e, "data.uses.per"));
+        e.isCharged = ["day", "week", "charges", "encounter"].includes(foundry.utils.getProperty(e, "data.uses.per"));
         e.tag = item.tag;
         sheetData.enhancements.push(e);
         if (e.data.isFromSpell) sheetData.enhancementsFromSpell.push(e);

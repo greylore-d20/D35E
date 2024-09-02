@@ -20,7 +20,7 @@ export class EquipmentSheet35E extends ItemSheetPF {
             if (typeof v === "object") sheetData.equipmentCategories.types[k] = v._label;
         }
         const type = this.item.system.equipmentType;
-        if (hasProperty(CONFIG.D35E.equipmentTypes, type)) {
+        if (foundry.utils.hasProperty(CONFIG.D35E.equipmentTypes, type)) {
             for (let [k, v] of Object.entries(CONFIG.D35E.equipmentTypes[type])) {
                 // Add static targets
                 if (!k.startsWith("_")) sheetData.equipmentCategories.subTypes[k] = v;

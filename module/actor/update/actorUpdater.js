@@ -53,7 +53,7 @@ export class ActorUpdater {
         if (curSkl != null && curSkl.custom && skl.name != null) {
           let tag = createTag(skl.name || "skill");
           let count = 1;
-          const skillData = getProperty(this.actor.system, `skills.${tag}`) || {};
+          const skillData = foundry.utils.getProperty(this.actor.system, `skills.${tag}`) || {};
           while (this.actor.system.skills[tag] != null && this.actor.system.skills[tag] != curSkl) {
             count++;
             tag = createTag(skillData.name || "skill") + count.toString();
@@ -68,7 +68,7 @@ export class ActorUpdater {
       updated = flattenObject(expandedData);
     } else if (expandedData.system !== null) updated = flattenObject(expandedData);
     updated.img = img;
-    for (let abl of Object.keys(getProperty(this.actor.system, "abilities"))) {
+    for (let abl of Object.keys(foundry.utils.getProperty(this.actor.system, "abilities"))) {
       if (
         updated[`system.abilities.${abl}.tempvalue`] === undefined ||
         updated[`system.abilities.${abl}.tempvalue`] === null
@@ -93,7 +93,7 @@ export class ActorUpdater {
     }
 
     // Make certain variables absolute
-    const _absoluteKeys = Object.keys(getProperty(this.actor.system, "abilities"))
+    const _absoluteKeys = Object.keys(foundry.utils.getProperty(this.actor.system, "abilities"))
       .reduce((arr, abl) => {
         arr.push(
           `system.abilities.${abl}.userPenalty`,
@@ -118,12 +118,12 @@ export class ActorUpdater {
         if (typeof updated[`system.attributes.hp.value`] === "string") {
           if (updated[`system.attributes.hp.value`].startsWith("+")) {
             updated[`system.attributes.hp.value`] =
-              getProperty(this.actor.system, "attributes.hp.value") + parseInt(updated[`system.attributes.hp.value`]);
+              foundry.utils.getProperty(this.actor.system, "attributes.hp.value") + parseInt(updated[`system.attributes.hp.value`]);
           } else if (updated[`system.attributes.hp.value`].startsWith("-")) {
-            if (getProperty(this.actor.system, "attributes.hp.value") > 0)
+            if (foundry.utils.getProperty(this.actor.system, "attributes.hp.value") > 0)
               // When we are below 0, we cannot do that
               updated[`system.attributes.hp.value`] =
-                getProperty(this.actor.system, "attributes.hp.value") + parseInt(updated[`system.attributes.hp.value`]);
+                foundry.utils.getProperty(this.actor.system, "attributes.hp.value") + parseInt(updated[`system.attributes.hp.value`]);
             else updated[`system.attributes.hp.value`] = parseInt(updated[`system.attributes.hp.value`]);
           } else {
             updated[`system.attributes.hp.value`] =
@@ -302,7 +302,7 @@ export class ActorUpdater {
     updateClasses = true;
 
     // Clean up old item resources
-    for (let [tag, res] of Object.entries(getProperty(this.actor.system, "resources") || {})) {
+    for (let [tag, res] of Object.entries(foundry.utils.getProperty(this.actor.system, "resources") || {})) {
       if (!res) continue;
       if (!res._id) continue;
       const itemId = res._id;
@@ -364,7 +364,7 @@ export class ActorUpdater {
       return cur + o.system.levels;
     }, 0);
     let racialHD = classes
-      .filter((o) => o.type === "class" && getProperty(o.system, "classType") === "racial")
+      .filter((o) => o.type === "class" && foundry.utils.getProperty(o.system, "classType") === "racial")
       .reduce((cur, o) => {
         return cur + o.system.levels;
       }, 0);
@@ -374,9 +374,9 @@ export class ActorUpdater {
 
     // The following is not for NPCs
     if (this.actor.type !== "character") return;
-    if (updated["system.details.levelUpProgression"] || getProperty(this.actor.system, "details.levelUpProgression")) {
+    if (updated["system.details.levelUpProgression"] || foundry.utils.getProperty(this.actor.system, "details.levelUpProgression")) {
       dataLevel =
-        (updated["system.details.level.available"] || getProperty(this.actor.system, "details.level.available")) +
+        (updated["system.details.level.available"] || foundry.utils.getProperty(this.actor.system, "details.level.available")) +
         raceLA +
         racialHD;
       //LogHelper.log('ActorPF | _updateExp | Update exp data from class level count', dataLevel)
@@ -387,22 +387,22 @@ export class ActorUpdater {
       resetExp = false;
     if (typeof newExp === "string") {
       if (newExp.match(/^\+([0-9]+)$/)) {
-        newExp = getProperty(this.actor.system, "details.xp.value") + parseInt(RegExp.$1);
+        newExp = foundry.utils.getProperty(this.actor.system, "details.xp.value") + parseInt(RegExp.$1);
       } else if (newExp.match(/^-([0-9]+)$/)) {
-        newExp = getProperty(this.actor.system, "details.xp.value") - parseInt(RegExp.$1);
+        newExp = foundry.utils.getProperty(this.actor.system, "details.xp.value") - parseInt(RegExp.$1);
       } else if (newExp === "") {
         resetExp = true;
       } else {
         newExp = parseInt(newExp);
-        if (Number.isNaN(newExp)) newExp = getProperty(this.actor.system, "details.xp.value");
+        if (Number.isNaN(newExp)) newExp = foundry.utils.getProperty(this.actor.system, "details.xp.value");
       }
 
-      if (typeof newExp === "number" && newExp !== getProperty(this.actor.system, "details.xp.value")) {
+      if (typeof newExp === "number" && newExp !== foundry.utils.getProperty(this.actor.system, "details.xp.value")) {
         updated["system.details.xp.value"] = newExp;
       }
     }
     const maxExp = this.actor.getLevelExp(dataLevel);
-    if (maxExp !== getProperty(this.actor.system, "details.xp.max")) {
+    if (maxExp !== foundry.utils.getProperty(this.actor.system, "details.xp.max")) {
       updated["system.details.xp.max"] = maxExp;
     }
 
@@ -435,9 +435,9 @@ export class ActorUpdater {
 
     // Track previous values
     const prevValues = {
-      mhp: getProperty(this.actor.system, "attributes.hp.max"),
-      wounds: getProperty(this.actor.system, "attributes.wounds.max") || 0,
-      vigor: getProperty(this.actor.system, "attributes.vigor.max") || 0,
+      mhp: foundry.utils.getProperty(this.actor.system, "attributes.hp.max"),
+      wounds: foundry.utils.getProperty(this.actor.system, "attributes.wounds.max") || 0,
+      vigor: foundry.utils.getProperty(this.actor.system, "attributes.vigor.max") || 0,
     };
 
     // Gather change types
@@ -456,7 +456,7 @@ export class ActorUpdater {
       if (typeof buffTarget === "object") {
         // Add specific skills as targets
         if (key === "skill") {
-          for (let [s, skl] of Object.entries(getProperty(this.actor.system, "skills"))) {
+          for (let [s, skl] of Object.entries(foundry.utils.getProperty(this.actor.system, "skills"))) {
             if (skl == null) continue;
             if (!skl.subSkills) {
               changeData[`skill.${s}`] = {};
@@ -675,7 +675,7 @@ export class ActorUpdater {
     updateData = flattenObject({
       system: foundry.utils.mergeObject(origData.system, expandObject(updateData).system, { inplace: false }),
     });
-    this.#addDynamicData(updateData, {}, flags, Object.keys(getProperty(this.actor.system, "abilities")), source, true);
+    this.#addDynamicData(updateData, {}, flags, Object.keys(foundry.utils.getProperty(this.actor.system, "abilities")), source, true);
 
     if (!this.actor.system?.master?.id) {
       let _changesLength = allChanges.length;
@@ -738,7 +738,7 @@ export class ActorUpdater {
           updateData,
           newData,
           flags,
-          Object.keys(getProperty(this.actor.system, "abilities")),
+          Object.keys(foundry.utils.getProperty(this.actor.system, "abilities")),
           source,
           false,
           changeTarget
@@ -816,26 +816,26 @@ export class ActorUpdater {
     }
 
     // Reset spell slots
-    for (let spellbookKey of Object.keys(getProperty(source, "system.attributes.spells.spellbooks"))) {
-      const spellbookAbilityKey = getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.ability`);
+    for (let spellbookKey of Object.keys(foundry.utils.getProperty(source, "system.attributes.spells.spellbooks"))) {
+      const spellbookAbilityKey = foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.ability`);
       const spellslotAbilityKey =
-        getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spellslotAbility`) ||
+        foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spellslotAbility`) ||
         spellbookAbilityKey;
-      let spellbookAbilityMod = getProperty(source, `system.abilities.${spellbookAbilityKey}.mod`);
-      let spellslotAbilityMod = getProperty(source, `system.abilities.${spellslotAbilityKey}.mod`);
-      const spellbookClass = getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.class`);
-      const autoSetup = getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.autoSetup`);
+      let spellbookAbilityMod = foundry.utils.getProperty(source, `system.abilities.${spellbookAbilityKey}.mod`);
+      let spellslotAbilityMod = foundry.utils.getProperty(source, `system.abilities.${spellslotAbilityKey}.mod`);
+      const spellbookClass = foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.class`);
+      const autoSetup = foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.autoSetup`);
       let classLevel =
-        getProperty(source, `system.classes.${spellbookClass}.level`) +
-        parseInt(getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`));
-      if (classLevel > getProperty(source, `system.classes.${spellbookClass}.maxLevel`))
-        classLevel = getProperty(source, `system.classes.${spellbookClass}.maxLevel`);
-      const classProgression = getProperty(source, `system.classes.${spellbookClass}.spellPerLevel${classLevel}`);
-      let autoSpellLevels = getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.autoSpellLevels`);
+        foundry.utils.getProperty(source, `system.classes.${spellbookClass}.level`) +
+        parseInt(foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`));
+      if (classLevel > foundry.utils.getProperty(source, `system.classes.${spellbookClass}.maxLevel`))
+        classLevel = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.maxLevel`);
+      const classProgression = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.spellPerLevel${classLevel}`);
+      let autoSpellLevels = foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.autoSpellLevels`);
       if (autoSetup) {
-        const autoSpellcastingAbilityKey = getProperty(source, `system.classes.${spellbookClass}.spellcastingAbility`);
+        const autoSpellcastingAbilityKey = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.spellcastingAbility`);
         const autoSpellslotAbilityKey =
-          getProperty(source, `system.classes.${spellbookClass}.spellslotAbility`) || autoSpellcastingAbilityKey;
+          foundry.utils.getProperty(source, `system.classes.${spellbookClass}.spellslotAbility`) || autoSpellcastingAbilityKey;
         for (let property of [
           ["spellcastingType", "spellcastingType"],
           ["ability", "spellcastingAbility"],
@@ -846,40 +846,40 @@ export class ActorUpdater {
             source,
             updateData,
             `system.attributes.spells.spellbooks.${spellbookKey}.${property[0]}`,
-            getProperty(source, `system.classes.${spellbookClass}.${property[1]}`)
+            foundry.utils.getProperty(source, `system.classes.${spellbookClass}.${property[1]}`)
           );
         linkData(source, updateData, `system.attributes.spells.spellbooks.${spellbookKey}.autoSpellLevels`, true);
         linkData(
           source,
           updateData,
           `system.attributes.spells.spellbooks.${spellbookKey}.usePowerPoints`,
-          getProperty(source, `system.classes.${spellbookClass}.isPsionSpellcaster`)
+          foundry.utils.getProperty(source, `system.classes.${spellbookClass}.isPsionSpellcaster`)
         );
         linkData(
           source,
           updateData,
           `system.attributes.spells.spellbooks.${spellbookKey}.arcaneSpellFailure`,
-          getProperty(source, `system.classes.${spellbookClass}.isArcane`)
+          foundry.utils.getProperty(source, `system.classes.${spellbookClass}.isArcane`)
         );
         linkData(
           source,
           updateData,
           `system.attributes.spells.spellbooks.${spellbookKey}.hasSpecialSlot`,
-          getProperty(source, `system.classes.${spellbookClass}.hasSpecialSlot`)
+          foundry.utils.getProperty(source, `system.classes.${spellbookClass}.hasSpecialSlot`)
         );
 
         autoSpellLevels = true;
         spellbookAbilityMod =
-          getProperty(source, `system.abilities.${autoSpellcastingAbilityKey}.mod`) +
-          getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spellcastingAbilityBonus`);
+          foundry.utils.getProperty(source, `system.abilities.${autoSpellcastingAbilityKey}.mod`) +
+          foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spellcastingAbilityBonus`);
         spellslotAbilityMod =
-          getProperty(source, `system.abilities.${autoSpellslotAbilityKey}.mod`) +
-          getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spellcastingAbilityBonus`);
+          foundry.utils.getProperty(source, `system.abilities.${autoSpellslotAbilityKey}.mod`) +
+          foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spellcastingAbilityBonus`);
       }
 
       let powerPointsFormula =
         updateData[`system.attributes.spells.spellbooks.${spellbookKey}.dailyPowerPointsFormula`] ||
-        getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.dailyPowerPointsFormula`) ||
+        foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.dailyPowerPointsFormula`) ||
         "0";
       linkData(
         source,
@@ -891,10 +891,10 @@ export class ActorUpdater {
       for (let a = 0; a < 10; a++) {
         const classBase = classProgression !== undefined ? parseInt(classProgression[a + 1]) : -1;
         let base = parseInt(
-          getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spells.spell${a}.base`)
+          foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spells.spell${a}.base`)
         );
         let bonus = parseInt(
-          getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spells.spell${a}.bonus`) || 0
+          foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.spells.spell${a}.bonus`) || 0
         );
         if (!autoSpellLevels) {
           if (Number.isNaN(base)) {
@@ -946,32 +946,32 @@ export class ActorUpdater {
 
     // Reset spell slots
     let classes = this.actor.items
-      .filter((o) => o.type === "class" && getProperty(o, "classType") !== "racial")
+      .filter((o) => o.type === "class" && foundry.utils.getProperty(o, "classType") !== "racial")
       .sort((a, b) => {
         return a.sort - b.sort;
       });
 
-    for (let deckKey of Object.keys(getProperty(source, "system.attributes.cards.decks"))) {
-      const spellbookAbilityKey = getProperty(source, `system.attributes.cards.decks.${deckKey}.ability`);
+    for (let deckKey of Object.keys(foundry.utils.getProperty(source, "system.attributes.cards.decks"))) {
+      const spellbookAbilityKey = foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.ability`);
       const spellslotAbilityKey =
-        getProperty(source, `system.attributes.cards.decks.${deckKey}.spellslotAbility`) || spellbookAbilityKey;
-      let spellbookAbilityMod = getProperty(source, `system.abilities.${spellbookAbilityKey}.mod`);
-      let spellslotAbilityMod = getProperty(source, `system.abilities.${spellslotAbilityKey}.mod`);
-      const spellbookClass = getProperty(source, `system.attributes.cards.decks.${deckKey}.class`);
-      const autoSetup = getProperty(source, `system.attributes.cards.decks.${deckKey}.autoSetup`);
-      const deckAddHalfOtherLevels = getProperty(source, `system.attributes.cards.decks.${deckKey}.addHalfOtherLevels`);
-      let baseClassLevel = getProperty(source, `system.classes.${spellbookClass}.level`);
+        foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.spellslotAbility`) || spellbookAbilityKey;
+      let spellbookAbilityMod = foundry.utils.getProperty(source, `system.abilities.${spellbookAbilityKey}.mod`);
+      let spellslotAbilityMod = foundry.utils.getProperty(source, `system.abilities.${spellslotAbilityKey}.mod`);
+      const spellbookClass = foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.class`);
+      const autoSetup = foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.autoSetup`);
+      const deckAddHalfOtherLevels = foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.addHalfOtherLevels`);
+      let baseClassLevel = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.level`);
       let classLevel =
-        getProperty(source, `system.classes.${spellbookClass}.level`) +
-        parseInt(getProperty(source, `system.attributes.cards.decks.${deckKey}.bonusPrestigeCl`) || 0);
-      if (classLevel > getProperty(source, `system.classes.${spellbookClass}.maxLevel`))
-        classLevel = getProperty(source, `system.classes.${spellbookClass}.maxLevel`);
+        foundry.utils.getProperty(source, `system.classes.${spellbookClass}.level`) +
+        parseInt(foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.bonusPrestigeCl`) || 0);
+      if (classLevel > foundry.utils.getProperty(source, `system.classes.${spellbookClass}.maxLevel`))
+        classLevel = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.maxLevel`);
 
       linkData(source, updateData, `system.attributes.cards.decks.${deckKey}.cl.base`, classLevel);
 
-      let deckHandSizeForumla = getProperty(source, `system.classes.${spellbookClass}.deckHandSizeFormula`) || "0";
+      let deckHandSizeForumla = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.deckHandSizeFormula`) || "0";
       let baseDeckHandSize = new Roll35e(deckHandSizeForumla || "", { level: classLevel || 0 }).roll().total;
-      let knownCardsSizeFormula = getProperty(source, `system.classes.${spellbookClass}.knownCardsSizeFormula`) || "0";
+      let knownCardsSizeFormula = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.knownCardsSizeFormula`) || "0";
       let baseKnownCardsSize = new Roll35e(knownCardsSizeFormula || "", { level: classLevel || 0 }).roll().total;
 
       let otherClassesLevels = classes.reduce((cur, o) => {
@@ -996,7 +996,7 @@ export class ActorUpdater {
 
       let deckSizeFormula =
         updateData[`system.attributes.cards.decks.${deckKey}.handSize.formula`] ||
-        getProperty(source, `system.attributes.cards.decks.${deckKey}.handSize.formula`) ||
+        foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.handSize.formula`) ||
         "0";
       linkData(
         source,
@@ -1007,7 +1007,7 @@ export class ActorUpdater {
 
       let casterLevelBonusFormula =
         updateData[`system.attributes.cards.decks.${deckKey}.cl.formula`] ||
-        getProperty(source, `system.attributes.cards.decks.${deckKey}.cl.formula`) ||
+        foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.cl.formula`) ||
         "0";
       linkData(
         source,
@@ -1018,7 +1018,7 @@ export class ActorUpdater {
 
       let knownCardsBonusFormula =
         updateData[`system.attributes.cards.decks.${deckKey}.deckSize.formula`] ||
-        getProperty(source, `system.attributes.cards.decks.${deckKey}.deckSize.formula`) ||
+        foundry.utils.getProperty(source, `system.attributes.cards.decks.${deckKey}.deckSize.formula`) ||
         "0";
       linkData(
         source,
@@ -1034,7 +1034,7 @@ export class ActorUpdater {
         updateData["system.attributes.maxDexBonus"] !== null &&
         updateData["system.attributes.maxDexBonus"] !== undefined
           ? updateData["system.attributes.maxDexBonus"]
-          : getProperty(this.actor.system, "attributes.maxDexBonus") || null;
+          : foundry.utils.getProperty(this.actor.system, "attributes.maxDexBonus") || null;
       const dexBonus =
         maxDexBonus != null
           ? Math.min(maxDexBonus, updateData["system.abilities.dex.mod"])
@@ -1124,8 +1124,8 @@ export class ActorUpdater {
     }
     if (source !== null) {
       if (
-        source.img !== getProperty(this.actor.system, "tokenImg") &&
-        getProperty(this.actor.system, "tokenImg") === "icons/svg/mystery-man.svg"
+        source.img !== foundry.utils.getProperty(this.actor.system, "tokenImg") &&
+        foundry.utils.getProperty(this.actor.system, "tokenImg") === "icons/svg/mystery-man.svg"
       ) {
         source.tokenImg = source.img;
         linkData(source, updateData, "system.tokenImg", source.img);
@@ -1139,7 +1139,7 @@ export class ActorUpdater {
       tokenImg = updated.token.img;
       linkData(source, updateData, "system.tokenImg", tokenImg);
     }
-    if (!options.skipToken && !getProperty(this.actor.system, "noTokenOverride")) {
+    if (!options.skipToken && !foundry.utils.getProperty(this.actor.system, "noTokenOverride")) {
       if (shapechangeImg !== "icons/svg/mystery-man.svg") {
         if (this.actor.isToken) {
           let tokens = [];
@@ -1206,9 +1206,9 @@ export class ActorUpdater {
   #updateAbilityRelatedFields(source, updateData, sourceInfo) {
     {
       const k = "system.attributes.turnUndeadUsesTotal";
-      let chaMod = getProperty(source, `system.abilities.cha.mod`);
+      let chaMod = foundry.utils.getProperty(source, `system.abilities.cha.mod`);
       //LogHelper.log(updateData)
-      if (getProperty(source, `system.attributes.turnUndeadHdTotal`) > 0) {
+      if (foundry.utils.getProperty(source, `system.attributes.turnUndeadHdTotal`) > 0) {
         linkData(source, updateData, k, new Roll35e("3+@chaMod", { chaMod: chaMod }).roll().total + updateData[k]);
 
         sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
@@ -1219,7 +1219,7 @@ export class ActorUpdater {
 
     {
       const classes = source.items
-        .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
+        .filter((o) => o.type === "class" && foundry.utils.getProperty(o.system, "classType") !== "racial")
         .sort((a, b) => {
           return a.sort - b.sort;
         });
@@ -1242,7 +1242,7 @@ export class ActorUpdater {
                 obj.system.powerPointBonusBaseAbility !== null &&
                 obj.system.powerPointBonusBaseAbility !== ""
               )
-                ablMod = getProperty(source, `system.abilities.${obj.system.powerPointBonusBaseAbility}.mod`) || 0;
+                ablMod = foundry.utils.getProperty(source, `system.abilities.${obj.system.powerPointBonusBaseAbility}.mod`) || 0;
               const v =
                 new Roll35e("ceil(0.5*@level*@ablMod)", {
                   level: obj.system.levels,
@@ -1251,7 +1251,7 @@ export class ActorUpdater {
 
               if (v !== 0) {
                 sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
-                sourceInfo[k].positive.push({ name: getProperty(obj, "name"), value: v });
+                sourceInfo[k].positive.push({ name: foundry.utils.getProperty(obj, "name"), value: v });
               }
 
               return cur + v;
@@ -1352,8 +1352,8 @@ export class ActorUpdater {
       return obj.type === "class";
     });
 
-    const racialHD = classes.filter((o) => getProperty(o.system, "classType") === "racial");
-    const templateHD = classes.filter((o) => getProperty(o.system, "classType") === "template");
+    const racialHD = classes.filter((o) => foundry.utils.getProperty(o.system, "classType") === "racial");
+    const templateHD = classes.filter((o) => foundry.utils.getProperty(o.system, "classType") === "template");
     const useFractionalBaseBonuses = game.settings.get("D35E", "useFractionalBaseBonuses") === true;
 
     // Reset HD, taking into account race LA
@@ -1367,7 +1367,7 @@ export class ActorUpdater {
             source,
             updateData,
             "system.attributes.creatureType",
-            getProperty(raceObject.system, "creatureType") || "humanoid"
+            foundry.utils.getProperty(raceObject.system, "creatureType") || "humanoid"
           );
         }
         this.actor.items
@@ -1384,7 +1384,7 @@ export class ActorUpdater {
         source,
         updateData,
         "system.attributes.creatureType",
-        getProperty(racialHD[0].system, "creatureType") || source.system.attributes.creatureType
+        foundry.utils.getProperty(racialHD[0].system, "creatureType") || source.system.attributes.creatureType
       );
     }
     // Set creature type
@@ -1393,7 +1393,7 @@ export class ActorUpdater {
         source,
         updateData,
         "system.attributes.creatureType",
-        getProperty(templateHD[0].system, "creatureType") || source.system.attributes.creatureType
+        foundry.utils.getProperty(templateHD[0].system, "creatureType") || source.system.attributes.creatureType
       );
     }
 
@@ -1436,18 +1436,18 @@ export class ActorUpdater {
     }
 
     // Reset maximum hit points
-    linkData(source, updateData, "system.attributes.hp.max", getProperty(source, "system.attributes.hp.base") || 0);
+    linkData(source, updateData, "system.attributes.hp.max", foundry.utils.getProperty(source, "system.attributes.hp.base") || 0);
     linkData(
       source,
       updateData,
       "system.attributes.wounds.max",
-      getProperty(source, "system.attributes.wounds.base") || 0
+      foundry.utils.getProperty(source, "system.attributes.wounds.base") || 0
     );
     linkData(
       source,
       updateData,
       "system.attributes.vigor.max",
-      getProperty(source, "system.attributes.vigor.base") || 0
+      foundry.utils.getProperty(source, "system.attributes.vigor.base") || 0
     );
 
     // Reset AC
@@ -1526,7 +1526,7 @@ export class ActorUpdater {
       });
     } else {
       for (let type of ["psionic", "arcane", "divine", "cards"]) {
-        // parseInt(getProperty(srcData1, `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`))
+        // parseInt(foundry.utils.getProperty(srcData1, `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`))
         if (data1.attributes.prestigeCl[type] === undefined) {
           linkData(source, updateData, `system.attributes.prestigeCl.${type}`, {
             max: 0,
@@ -1553,7 +1553,7 @@ export class ActorUpdater {
             k,
             Math.floor(
               classes.reduce((cur, obj, idx) => {
-                const saveScale = getProperty(obj, `system.savingThrows.${a}.value`) || "";
+                const saveScale = foundry.utils.getProperty(obj, `system.savingThrows.${a}.value`) || "";
                 if (saveScale === "high") {
                   const acc = highStart || idx ? 0 : 2;
                   highStart = true;
@@ -1574,13 +1574,13 @@ export class ActorUpdater {
           let epicST = 0;
           let baseST =
             classes.reduce((cur, obj) => {
-              const classType = getProperty(obj.system, "classType") || "base";
+              const classType = foundry.utils.getProperty(obj.system, "classType") || "base";
               let formula = CONFIG.D35E.classSavingThrowFormulas[classType][obj.system.savingThrows[a].value];
               if (formula == null) formula = "0";
               let classLevel = obj.system.levels;
 
               // Epic level/total level should only be calculated when taking into account non-racial hd
-              if (getProperty(obj.system, "classType") === "base" || (obj.system, "classType") === "prestige") {
+              if (foundry.utils.getProperty(obj.system, "classType") === "base" || (obj.system, "classType") === "prestige") {
                 if (totalLevel + classLevel > 20) {
                   classLevel = 20 - totalLevel;
                   totalLevel = 20;
@@ -1593,7 +1593,7 @@ export class ActorUpdater {
 
               if (v !== 0) {
                 sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
-                sourceInfo[k].positive.push({ name: getProperty(obj, "name"), value: v });
+                sourceInfo[k].positive.push({ name: foundry.utils.getProperty(obj, "name"), value: v });
               }
 
               return cur + v;
@@ -1627,8 +1627,8 @@ export class ActorUpdater {
         let itemAcp = Math.abs(obj.system.armor.acp);
         if (obj.system.masterwork) itemAcp = Math.max(0, itemAcp - 1);
         linkData(source, updateData, "system.attributes.acp.gear", updateData["system.attributes.acp.gear"] + itemAcp);
-        let test = getProperty(obj.system, "armor.dex");
-        if (getProperty(obj.system, "armor.dex") !== null && getProperty(obj.system, "armor.dex") !== "") {
+        let test = foundry.utils.getProperty(obj.system, "armor.dex");
+        if (foundry.utils.getProperty(obj.system, "armor.dex") !== null && foundry.utils.getProperty(obj.system, "armor.dex") !== "") {
           if (updateData["system.attributes.maxDexBonus"] == null) {
             linkData(source, updateData, "system.attributes.maxDexBonus", Math.abs(obj.system.armor.dex));
             linkData(source, updateData, "system.attributes.maxDex.gear", Math.abs(obj.system.armor.dex));
@@ -1656,12 +1656,12 @@ export class ActorUpdater {
 
     // Reset specific skill bonuses
     for (let sklKey of ActorChangesHelper.getChangeFlat("skills", "", this.actor.system)) {
-      if (hasProperty(source, sklKey)) linkData(source, updateData, sklKey, 0);
+      if (foundry.utils.hasProperty(source, sklKey)) linkData(source, updateData, sklKey, 0);
     }
 
     // Reset movement speed
-    for (let speedKey of Object.keys(getProperty(this.actor.system, "attributes.speed"))) {
-      let base = getProperty(source, `system.attributes.speed.${speedKey}.base`);
+    for (let speedKey of Object.keys(foundry.utils.getProperty(this.actor.system, "attributes.speed"))) {
+      let base = foundry.utils.getProperty(source, `system.attributes.speed.${speedKey}.base`);
       linkData(source, updateData, `system.attributes.speed.${speedKey}.total`, base || 0);
     }
 
@@ -1680,7 +1680,7 @@ export class ActorUpdater {
           totalBab,
           Math.floor(
             classes.reduce((cur, obj) => {
-              const babScale = getProperty(obj.system, "bab") || "";
+              const babScale = foundry.utils.getProperty(obj.system, "bab") || "";
               if (babScale === "high") return cur + obj.system.levels;
               if (babScale === "med") return cur + obj.system.levels * 0.75;
               if (babScale === "low") return cur + obj.system.levels * 0.5;
@@ -1702,7 +1702,7 @@ export class ActorUpdater {
           let classLevel = obj.system.levels;
 
           // Epic level/total level should only be calculated when taking into account non-racial hd
-          if (getProperty(obj.system, "classType") === "base" || (obj.system, "classType") === "prestige") {
+          if (foundry.utils.getProperty(obj.system, "classType") === "base" || (obj.system, "classType") === "prestige") {
             if (totalLevel + classLevel > 20) {
               classLevel = 20 - totalLevel;
               totalLevel = 20;
@@ -1715,7 +1715,7 @@ export class ActorUpdater {
 
           if (v !== 0) {
             sourceInfo[totalBab] = sourceInfo[totalBab] || { positive: [], negative: [] };
-            sourceInfo[totalBab].positive.push({ name: getProperty(obj, "name"), value: v });
+            sourceInfo[totalBab].positive.push({ name: foundry.utils.getProperty(obj, "name"), value: v });
           }
 
           return cur + v;
@@ -1744,7 +1744,7 @@ export class ActorUpdater {
 
             if (v !== 0) {
               sourceInfo[k] = sourceInfo[k] || { positive: [], negative: [] };
-              sourceInfo[k].positive.push({ name: getProperty(obj, "name"), value: v });
+              sourceInfo[k].positive.push({ name: foundry.utils.getProperty(obj, "name"), value: v });
             }
 
             return cur + v;
@@ -1758,8 +1758,8 @@ export class ActorUpdater {
     {
       const k = "system.attributes.sr.total";
       // Set spell resistance
-      if (getProperty(source, `system.attributes.sr.formula`).length > 0) {
-        let roll = new Roll35e(getProperty(source, `system.attributes.sr.formula`), source.system).roll();
+      if (foundry.utils.getProperty(source, `system.attributes.sr.formula`).length > 0) {
+        let roll = new Roll35e(foundry.utils.getProperty(source, `system.attributes.sr.formula`), source.system).roll();
         linkData(source, updateData, k, roll.total);
       } else {
         linkData(source, updateData, k, 0);
@@ -1768,8 +1768,8 @@ export class ActorUpdater {
     {
       const k = "system.attributes.hardness.total";
       // Set spell resistance
-      if (getProperty(source, `system.attributes.hardness.formula`).length > 0) {
-        let roll = new Roll35e(getProperty(source, `system.attributes.hardness.formula`), source.system).roll();
+      if (foundry.utils.getProperty(source, `system.attributes.hardness.formula`).length > 0) {
+        let roll = new Roll35e(foundry.utils.getProperty(source, `system.attributes.hardness.formula`), source.system).roll();
         linkData(source, updateData, k, roll.total);
       } else {
         linkData(source, updateData, k, 0);
@@ -1777,15 +1777,15 @@ export class ActorUpdater {
     }
     {
       const k = "system.details.breakDC.total";
-      linkData(source, updateData, k, parseInt(getProperty(source, `system.details.breakDC.base`) || "0"));
+      linkData(source, updateData, k, parseInt(foundry.utils.getProperty(source, `system.details.breakDC.base`) || "0"));
     }
 
     {
       const k = "system.attributes.pr.total";
       // Set spell resistance
       if (game.settings.get("D35E", "psionicsAreDifferent")) {
-        if (getProperty(source, `system.attributes.pr.formula`)?.length > 0) {
-          let roll = new Roll35e(getProperty(source, `system.attributes.pr.formula`), source.system).roll();
+        if (foundry.utils.getProperty(source, `system.attributes.pr.formula`)?.length > 0) {
+          let roll = new Roll35e(foundry.utils.getProperty(source, `system.attributes.pr.formula`), source.system).roll();
           linkData(source, updateData, k, roll.total);
         } else {
           linkData(source, updateData, k, 0);
@@ -1859,14 +1859,14 @@ export class ActorUpdater {
     }
 
     // Reset spell slots
-    for (let spellbookKey of Object.keys(getProperty(source, "system.attributes.spells.spellbooks"))) {
-      const spellbookClass = getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.class`);
+    for (let spellbookKey of Object.keys(foundry.utils.getProperty(source, "system.attributes.spells.spellbooks"))) {
+      const spellbookClass = foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.class`);
       let classLevel =
-        getProperty(source, `system.classes.${spellbookClass}.level`) +
-        parseInt(getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`));
-      if (classLevel > getProperty(source, `system.classes.${spellbookClass}.maxLevel`))
-        classLevel = getProperty(source, `system.classes.${spellbookClass}.maxLevel`);
-      const classProgression = getProperty(source, `system.classes.${spellbookClass}.spellPerLevel${classLevel}`);
+        foundry.utils.getProperty(source, `system.classes.${spellbookClass}.level`) +
+        parseInt(foundry.utils.getProperty(source, `system.attributes.spells.spellbooks.${spellbookKey}.bonusPrestigeCl`));
+      if (classLevel > foundry.utils.getProperty(source, `system.classes.${spellbookClass}.maxLevel`))
+        classLevel = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.maxLevel`);
+      const classProgression = foundry.utils.getProperty(source, `system.classes.${spellbookClass}.spellPerLevel${classLevel}`);
       linkData(source, updateData, `system.attributes.spells.spellbooks.${spellbookKey}.spellcastingAbilityBonus`, 0);
       for (let a = 0; a < 10; a++) {
         linkData(source, updateData, `system.attributes.spells.spellbooks.${spellbookKey}.spells.spell${a}.bonus`, 0);
@@ -1919,14 +1919,14 @@ export class ActorUpdater {
     }
 
     // Reset class skills
-    for (let [k, s] of Object.entries(getProperty(source, "system.skills"))) {
+    for (let [k, s] of Object.entries(foundry.utils.getProperty(source, "system.skills"))) {
       if (!s) continue;
       const isClassSkill = classes.reduce((cur, o) => {
-        if ((getProperty(o.system, "classSkills") || {})[k] === true) return true;
+        if ((foundry.utils.getProperty(o.system, "classSkills") || {})[k] === true) return true;
         return cur;
       }, false);
       linkData(source, updateData, `system.skills.${k}.cs`, isClassSkill);
-      for (let k2 of Object.keys(getProperty(s, "subSkills") || {})) {
+      for (let k2 of Object.keys(foundry.utils.getProperty(s, "subSkills") || {})) {
         if (k2.indexOf("-=") !== -1) continue;
         linkData(source, updateData, `system.skills.${k}.subSkills.${k2}.cs`, isClassSkill);
       }
@@ -1943,7 +1943,7 @@ export class ActorUpdater {
       linkData(source, updateData, "system.attributes.hd.racialClass", level);
 
       let templateClassesToUpdate = [];
-      for (const templateClass of classes.filter((o) => getProperty(o.system, "classType") === "template")) {
+      for (const templateClass of classes.filter((o) => foundry.utils.getProperty(o.system, "classType") === "template")) {
         if (!!templateClass) {
           if (templateClass.system.levels === level) continue;
           let updateObject = {};
@@ -1971,12 +1971,12 @@ export class ActorUpdater {
         itemsWithUid.set(i.system.uniqueId, i.id);
       }
 
-      //LogHelper.log('Adding Features', level, data, getProperty(this.actor.system,"classLevels"), updateData)
+      //LogHelper.log('Adding Features', level, data, foundry.utils.getProperty(this.actor.system,"classLevels"), updateData)
 
       if (true) {
         linkData(source, updateData, "system.details.level.value", level);
         let classes = this.actor.items
-          .filter((o) => o.type === "class" && getProperty(o, "classType") !== "racial" && o.system.automaticFeatures)
+          .filter((o) => o.type === "class" && foundry.utils.getProperty(o, "classType") !== "racial" && o.system.automaticFeatures)
           .sort((a, b) => {
             return a.sort - b.sort;
           });
@@ -2339,7 +2339,7 @@ export class ActorUpdater {
     );
 
     // Force speed to creature speed
-    for (let speedKey of Object.keys(getProperty(this.actor.system, "attributes.speed"))) {
+    for (let speedKey of Object.keys(foundry.utils.getProperty(this.actor.system, "attributes.speed"))) {
       if (changes[`system.attributes.speed.${speedKey}.replace`])
         linkData(
           source,
@@ -2355,7 +2355,7 @@ export class ActorUpdater {
 
     // Add ability mods to CMB and CMD
     const cmbMod =
-      Object.keys(CONFIG.D35E.actorSizes).indexOf(getProperty(source, "system.traits.size") || "") <=
+      Object.keys(CONFIG.D35E.actorSizes).indexOf(foundry.utils.getProperty(source, "system.traits.size") || "") <=
       Object.keys(CONFIG.D35E.actorSizes).indexOf("tiny")
         ? modDiffs["str"]
         : modDiffs["str"];
@@ -2410,7 +2410,7 @@ export class ActorUpdater {
     }
 
     // Force speed to creature speed
-    for (let speedKey of Object.keys(getProperty(this.actor.system, "attributes.speed"))) {
+    for (let speedKey of Object.keys(foundry.utils.getProperty(this.actor.system, "attributes.speed"))) {
       if (changes[`system.attributes.speed.${speedKey}.replace`])
         linkData(
           source,
@@ -2523,7 +2523,7 @@ export class ActorUpdater {
           delete systemData.skills[sklKey].subSkills[subSklKey];
           continue;
         }
-        if (getProperty(systemData, `skills.${sklKey}.subSkills.${subSklKey}`) == null) continue;
+        if (foundry.utils.getProperty(systemData, `skills.${sklKey}.subSkills.${subSklKey}`) == null) continue;
 
         let scs = subSkl.cs;
         if (systemData.details.levelUpData && systemData.details.levelUpProgression) scs = true;
@@ -2631,12 +2631,12 @@ export class ActorUpdater {
   async #addDefaultChanges(source, changes, flags, sourceInfo, fullConditions, sizeOverride, sizeChange, options = {}, updateData) {
     // Class hit points
     const classes = source.items
-      .filter((o) => o.type === "class" && getProperty(o.system, "classType") !== "racial")
+      .filter((o) => o.type === "class" && foundry.utils.getProperty(o.system, "classType") !== "racial")
       .sort((a, b) => {
         return a.sort - b.sort;
       });
     const racialHD = source.items
-      .filter((o) => o.type === "class" && getProperty(o.system, "classType") === "racial")
+      .filter((o) => o.type === "class" && foundry.utils.getProperty(o.system, "classType") === "racial")
       .sort((a, b) => {
         return a.sort - b.sort;
       });
@@ -2712,7 +2712,7 @@ export class ActorUpdater {
 
     // Natural armor
     {
-      const natAC = getProperty(source, "system.attributes.naturalAC") || 0;
+      const natAC = foundry.utils.getProperty(source, "system.attributes.naturalAC") || 0;
       if (natAC > 0) {
         changes.push({
           raw: [natAC.toString(), "ac", "nac", "base", 0],
@@ -2752,7 +2752,7 @@ export class ActorUpdater {
       });
 
     // Add fly bonuses or penalties based on maneuverability
-    const flyKey = getProperty(source, "system.attributes.speed.fly.maneuverability");
+    const flyKey = foundry.utils.getProperty(source, "system.attributes.speed.fly.maneuverability");
     let flyValue = 0;
     if (flyKey != null) flyValue = CONFIG.D35E.flyManeuverabilityValues[flyKey];
     if (flyValue !== 0) {
@@ -2765,8 +2765,8 @@ export class ActorUpdater {
     }
     // Add swim and climb skill bonuses based on having speeds for them
     {
-      const climbSpeed = getProperty(source, "system.attributes.speed.climb.total") || 0;
-      const swimSpeed = getProperty(source, "system.attributes.speed.swim.total") || 0;
+      const climbSpeed = foundry.utils.getProperty(source, "system.attributes.speed.climb.total") || 0;
+      const swimSpeed = foundry.utils.getProperty(source, "system.attributes.speed.swim.total") || 0;
       if (climbSpeed > 0) {
         changes.push({
           raw: ["8", "skill", "skill.clm", "racial", 0],
@@ -2855,7 +2855,7 @@ export class ActorUpdater {
       !options.skipToken &&
       tokenSizeKey !== "none" &&
       this.actor.isCharacterType &&
-      !getProperty(this.actor.system, "noTokenOverride")
+      !foundry.utils.getProperty(this.actor.system, "noTokenOverride")
     ) {
       let size = CONFIG.D35E.tokenSizes[tokenSizeKey];
       //LogHelper.log(size)
@@ -2899,17 +2899,17 @@ export class ActorUpdater {
       let type = "";
 
       let lowLight =
-        getProperty(source, "system.attributes.senses.lowLight") !== undefined
-          ? getProperty(source, "system.attributes.senses.lowLight")
-          : getProperty(this.actor.system, "attributes.senses.lowLight") || false;
+        foundry.utils.getProperty(source, "system.attributes.senses.lowLight") !== undefined
+          ? foundry.utils.getProperty(source, "system.attributes.senses.lowLight")
+          : foundry.utils.getProperty(this.actor.system, "attributes.senses.lowLight") || false;
       let lowLightMultiplier =
-        getProperty(source, "system.attributes.senses.lowLightMultiplier") !== undefined
-          ? getProperty(source, "system.attributes.senses.lowLightMultiplier")
-          : getProperty(this.actor.system, "attributes.senses.lowLightMultiplier") || 2;
+        foundry.utils.getProperty(source, "system.attributes.senses.lowLightMultiplier") !== undefined
+          ? foundry.utils.getProperty(source, "system.attributes.senses.lowLightMultiplier")
+          : foundry.utils.getProperty(this.actor.system, "attributes.senses.lowLightMultiplier") || 2;
       let darkvision =
-        getProperty(source, "system.attributes.senses.darkvision") !== undefined
-          ? getProperty(source, "system.attributes.senses.darkvision")
-          : getProperty(this.actor.system, "attributes.senses.darkvision") || 0;
+        foundry.utils.getProperty(source, "system.attributes.senses.darkvision") !== undefined
+          ? foundry.utils.getProperty(source, "system.attributes.senses.darkvision")
+          : foundry.utils.getProperty(this.actor.system, "attributes.senses.darkvision") || 0;
 
       for (let i of this.actor.items.values()) {
         if (!i.system.hasOwnProperty("light") && !i.system.hasOwnProperty("senses")) continue;
@@ -2942,7 +2942,7 @@ export class ActorUpdater {
           }
         }
       }
-      if (!getProperty(this.actor.system, "noLightOverride") && !game.settings.get("D35E", "globalDisableTokenLight")) {
+      if (!foundry.utils.getProperty(this.actor.system, "noLightOverride") && !game.settings.get("D35E", "globalDisableTokenLight")) {
         if (this.actor.isToken) {
           let tokens = [];
           tokens.push(this.actor.token);
@@ -2978,7 +2978,7 @@ export class ActorUpdater {
         }
       }
       if (
-        !getProperty(this.actor.system, "noVisionOverride") &&
+        !foundry.utils.getProperty(this.actor.system, "noVisionOverride") &&
         !game.settings.get("D35E", "globalDisableTokenVision")
       ) {
       }
@@ -3648,7 +3648,7 @@ export class ActorUpdater {
   get #skillTargets() {
     let skills = [];
     let subSkills = [];
-    for (let [sklKey, skl] of Object.entries(getProperty(this.actor.system, "skills"))) {
+    for (let [sklKey, skl] of Object.entries(foundry.utils.getProperty(this.actor.system, "skills"))) {
       if (skl == null) continue;
       if (skl.subSkills != null) {
         for (let subSklKey of Object.keys(skl.subSkills)) {
@@ -3774,7 +3774,7 @@ export class ActorUpdater {
     } else if (
       (armorItems.filter(
         (o) =>
-          getProperty(o.system, "equipmentSubtype") === "heavyArmor" &&
+          foundry.utils.getProperty(o.system, "equipmentSubtype") === "heavyArmor" &&
           o.system.equipped &&
           !o.system.melded &&
           !o.broken
@@ -3787,7 +3787,7 @@ export class ActorUpdater {
     } else if (
       (armorItems.filter(
         (o) =>
-          getProperty(o.system, "equipmentSubtype") === "mediumArmor" &&
+          foundry.utils.getProperty(o.system, "equipmentSubtype") === "mediumArmor" &&
           o.system.equipped &&
           !o.system.melded &&
           !o.broken

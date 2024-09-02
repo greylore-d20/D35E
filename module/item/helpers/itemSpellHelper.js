@@ -37,8 +37,8 @@ export class ItemSpellHelper {
     const reSplit = CONFIG.D35E.re.traitSeparator;
 
     const label = {
-      school: (CONFIG.D35E.spellSchools[getProperty(sourceItem, "system.school")] || "").toLowerCase(),
-      subschool: getProperty(sourceItem, "system.subschool") || "",
+      school: (CONFIG.D35E.spellSchools[foundry.utils.getProperty(sourceItem, "system.school")] || "").toLowerCase(),
+      subschool: foundry.utils.getProperty(sourceItem, "system.subschool") || "",
       types: "",
     };
     const renderData = {
@@ -46,40 +46,40 @@ export class ItemSpellHelper {
       label: label,
     };
 
-    renderData.renderedShortDescription = await TextEditor.enrichHTML(getProperty(renderData.data, "shortDescription"), {async: true})
+    renderData.renderedShortDescription = await TextEditor.enrichHTML(foundry.utils.getProperty(renderData.data, "shortDescription"), {async: true})
     renderData.renderTextDescription = renderTextDescription;
     // Set subschool and types label
-    const types = getProperty(sourceItem, "system.types");
+    const types = foundry.utils.getProperty(sourceItem, "system.types");
     if (typeof types === "string" && types.length > 0) {
       label.types = types.split(reSplit).join(", ");
     }
     // Set information about when the spell is learned
     renderData.learnedAt = {};
-    renderData.learnedAt.class = (getProperty(sourceItem, "system.learnedAt.class") || [])
+    renderData.learnedAt.class = (foundry.utils.getProperty(sourceItem, "system.learnedAt.class") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    renderData.learnedAt.domain = (getProperty(sourceItem, "system.learnedAt.domain") || [])
+    renderData.learnedAt.domain = (foundry.utils.getProperty(sourceItem, "system.learnedAt.domain") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    renderData.learnedAt.subDomain = (getProperty(sourceItem, "system.learnedAt.subDomain") || [])
+    renderData.learnedAt.subDomain = (foundry.utils.getProperty(sourceItem, "system.learnedAt.subDomain") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    renderData.learnedAt.elementalSchool = (getProperty(sourceItem, "system.learnedAt.elementalSchool") || [])
+    renderData.learnedAt.elementalSchool = (foundry.utils.getProperty(sourceItem, "system.learnedAt.elementalSchool") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
       .sort()
       .join(", ");
-    renderData.learnedAt.bloodline = (getProperty(sourceItem, "system.learnedAt.bloodline") || [])
+    renderData.learnedAt.bloodline = (foundry.utils.getProperty(sourceItem, "system.learnedAt.bloodline") || [])
       .map((o) => {
         return `${o[0]} ${o[1]}`;
       })
@@ -87,9 +87,9 @@ export class ItemSpellHelper {
       .join(", ");
 
     // Set casting time label
-    if (getProperty(sourceItem, "system.activation")) {
-      const activationCost = getProperty(sourceItem, "system.activation.cost");
-      const activationType = getProperty(sourceItem, "system.activation.type");
+    if (foundry.utils.getProperty(sourceItem, "system.activation")) {
+      const activationCost = foundry.utils.getProperty(sourceItem, "system.activation.cost");
+      const activationType = foundry.utils.getProperty(sourceItem, "system.activation.type");
 
       if (activationType) {
         if (CONFIG.D35E.abilityActivationTypesPlurals[activationType] != null) {
@@ -102,19 +102,19 @@ export class ItemSpellHelper {
       if (label.castingTime) label.castingTime = label.castingTime.toLowerCase();
     }
 
-    renderData.psionicPower = getProperty(sourceItem, "system.isPower");
+    renderData.psionicPower = foundry.utils.getProperty(sourceItem, "system.isPower");
 
     // Set components label
     let components = [];
-    for (let [key, value] of Object.entries(getProperty(sourceItem, "system.components") || {})) {
+    for (let [key, value] of Object.entries(foundry.utils.getProperty(sourceItem, "system.components") || {})) {
       if (key === "value" && value.length > 0) components.push(...value.split(reSplit));
       else if (key === "verbal" && value) components.push("V");
       else if (key === "somatic" && value) components.push("S");
       else if (key === "material" && value) components.push("M");
       else if (key === "focus" && value) components.push("F");
     }
-    if (getProperty(sourceItem, "system.components.divineFocus") === 1) components.push("DF");
-    const df = getProperty(sourceItem, "system.components.divineFocus");
+    if (foundry.utils.getProperty(sourceItem, "system.components.divineFocus") === 1) components.push("DF");
+    const df = foundry.utils.getProperty(sourceItem, "system.components.divineFocus");
     // Sort components
     const componentsOrder = ["V", "S", "M", "F", "DF"];
     components.sort((a, b) => {
@@ -127,13 +127,13 @@ export class ItemSpellHelper {
     components = components.map((o) => {
       if (o === "M") {
         if (df === 2) o = "M/DF";
-        if (getProperty(sourceItem, "system.materials.value"))
-          o = `${o} (${getProperty(sourceItem, "system.materials.value")})`;
+        if (foundry.utils.getProperty(sourceItem, "system.materials.value"))
+          o = `${o} (${foundry.utils.getProperty(sourceItem, "system.materials.value")})`;
       }
       if (o === "F") {
         if (df === 3) o = "F/DF";
-        if (getProperty(sourceItem, "system.materials.focus"))
-          o = `${o} (${getProperty(sourceItem, "system.materials.focus")})`;
+        if (foundry.utils.getProperty(sourceItem, "system.materials.focus"))
+          o = `${o} (${foundry.utils.getProperty(sourceItem, "system.materials.focus")})`;
       }
       return o;
     });
@@ -141,8 +141,8 @@ export class ItemSpellHelper {
 
     // Set duration label
     {
-      const durationData = getProperty(sourceItem, "system.spellDurationData");
-      const duration = getProperty(sourceItem, "system.spellDuration");
+      const durationData = foundry.utils.getProperty(sourceItem, "system.spellDurationData");
+      const duration = foundry.utils.getProperty(sourceItem, "system.spellDuration");
       if (durationData) {
         label.duration = ItemSpellHelper.getSpellDuration(durationData);
       } else if (duration) {
@@ -151,18 +151,18 @@ export class ItemSpellHelper {
     }
     // Set effect label
     {
-      const effect = getProperty(sourceItem, "system.spellEffect");
+      const effect = foundry.utils.getProperty(sourceItem, "system.spellEffect");
       if (effect) label.effect = effect;
     }
     // Set targets label
     {
-      const targets = getProperty(sourceItem, "system.target.value");
+      const targets = foundry.utils.getProperty(sourceItem, "system.target.value");
       if (targets) label.targets = targets;
     }
     // Set range label
     {
-      const rangeUnit = getProperty(sourceItem, "system.range.units");
-      const rangeValue = getProperty(sourceItem, "system.range.value");
+      const rangeUnit = foundry.utils.getProperty(sourceItem, "system.range.units");
+      const rangeValue = foundry.utils.getProperty(sourceItem, "system.range.value");
 
       if (rangeUnit != null && rangeUnit !== "none") {
         label.range = (CONFIG.D35E.distanceUnits[rangeUnit] || "").toLowerCase();
@@ -177,30 +177,30 @@ export class ItemSpellHelper {
     }
     // Set area label
     {
-      const area = getProperty(sourceItem, "system.spellArea");
+      const area = foundry.utils.getProperty(sourceItem, "system.spellArea");
 
       if (area) label.area = area;
     }
 
     // Set DC and SR
     {
-      const savingThrowDescription = getProperty(sourceItem, "system.save.type")
-        ? CONFIG.D35E.savingThrowTypes[getProperty(sourceItem, "system.save.type")]
-        : getProperty(sourceItem, "system.save.description") || "";
+      const savingThrowDescription = foundry.utils.getProperty(sourceItem, "system.save.type")
+        ? CONFIG.D35E.savingThrowTypes[foundry.utils.getProperty(sourceItem, "system.save.type")]
+        : foundry.utils.getProperty(sourceItem, "system.save.description") || "";
       if (savingThrowDescription) label.savingThrow = savingThrowDescription;
       else label.savingThrow = "none";
 
-      const sr = getProperty(sourceItem, "system.sr");
+      const sr = foundry.utils.getProperty(sourceItem, "system.sr");
       label.sr = sr === true ? "yes" : "no";
-      const pr = getProperty(sourceItem, "system.pr");
+      const pr = foundry.utils.getProperty(sourceItem, "system.pr");
       label.pr = pr === true ? "yes" : "no";
 
-      if (getProperty(sourceItem, "system.range.units") !== "personal") renderData.useDCandSR = true;
+      if (foundry.utils.getProperty(sourceItem, "system.range.units") !== "personal") renderData.useDCandSR = true;
     }
 
-    if (getProperty(sourceItem, "system.powerPointsCost") > 0)
-      label.powerPointsCost = getProperty(sourceItem, "system.powerPointsCost");
-    label.display = getProperty(sourceItem, "system.display");
+    if (foundry.utils.getProperty(sourceItem, "system.powerPointsCost") > 0)
+      label.powerPointsCost = foundry.utils.getProperty(sourceItem, "system.powerPointsCost");
+    label.display = foundry.utils.getProperty(sourceItem, "system.display");
     return renderData;
   }
 
@@ -228,7 +228,7 @@ export class ItemSpellHelper {
   }
 
   static getMinimumCasterLevelBySpellData(itemData) {
-    const learnedAt = getProperty(itemData, "learnedAt.class").reduce((cur, o) => {
+    const learnedAt = foundry.utils.getProperty(itemData, "learnedAt.class").reduce((cur, o) => {
       const classes = o[0].split("/");
       for (let cls of classes) cur.push([cls, o[1]]);
       return cur;

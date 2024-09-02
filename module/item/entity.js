@@ -58,7 +58,7 @@ export class Item35E extends ItemBase35E {
    * @type {boolean}
    */
   get hasAttack() {
-    return ["mwak", "rwak", "msak", "rsak"].includes(getProperty(this.system, "actionType"));
+    return ["mwak", "rwak", "msak", "rsak"].includes(foundry.utils.getProperty(this.system, "actionType"));
   }
 
   get tag() {
@@ -76,14 +76,14 @@ export class Item35E extends ItemBase35E {
   get hasMultipleAttacks() {
     return (
       this.hasAttack &&
-      getProperty(this.system, "attackParts") != null &&
-      getProperty(this.system, "attackParts")?.length > 0
+      foundry.utils.getProperty(this.system, "attackParts") != null &&
+      foundry.utils.getProperty(this.system, "attackParts")?.length > 0
     );
   }
 
   get hasTemplate() {
-    const v = getProperty(this.system, "measureTemplate.type");
-    const s = getProperty(this.system, "measureTemplate.size");
+    const v = foundry.utils.getProperty(this.system, "measureTemplate.type");
+    const s = foundry.utils.getProperty(this.system, "measureTemplate.size");
     return (
       typeof v === "string" && v !== "" && ((typeof s === "string" && s.length > 0) || (typeof s === "number" && s > 0))
     );
@@ -96,33 +96,33 @@ export class Item35E extends ItemBase35E {
       this.hasEffect ||
       this.hasRolltableDraw ||
       this.hasTemplate ||
-      getProperty(this.system, "actionType") === "special" ||
-      getProperty(this.system, "actionType") === "summon"
+      foundry.utils.getProperty(this.system, "actionType") === "special" ||
+      foundry.utils.getProperty(this.system, "actionType") === "summon"
     );
   }
 
   get isSingleUse() {
-    return getProperty(this.system, "uses.per") === "single";
+    return foundry.utils.getProperty(this.system, "uses.per") === "single";
   }
 
   get isCharged() {
     if (this.type === "card") return true;
-    if (getProperty(this.system, "requiresPsionicFocus") && !this.actor?.system?.attributes?.psionicFocus) return false;
-    if (this.type === "consumable" && getProperty(this.system, "uses.per") === "single") return true;
-    return ["day", "week", "charges"].includes(getProperty(this.system, "uses.per"));
+    if (foundry.utils.getProperty(this.system, "requiresPsionicFocus") && !this.actor?.system?.attributes?.psionicFocus) return false;
+    if (this.type === "consumable" && foundry.utils.getProperty(this.system, "uses.per") === "single") return true;
+    return ["day", "week", "charges"].includes(foundry.utils.getProperty(this.system, "uses.per"));
   }
 
   get displayName() {
     let name = null;
     if (this.system.identified === undefined) return this.name;
     if (this.showUnidentifiedData)
-      name = getProperty(this.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
-    else name = getProperty(this.system, "identifiedName") || this.originalName;
+      name = foundry.utils.getProperty(this.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
+    else name = foundry.utils.getProperty(this.system, "identifiedName") || this.originalName;
     return name;
   }
 
   get combatChangeName() {
-    return getProperty(this.system, "combatChangeCustomDisplayName") || this.name;
+    return foundry.utils.getProperty(this.system, "combatChangeCustomDisplayName") || this.name;
   }
 
   async getChatDescription() {
@@ -130,13 +130,13 @@ export class Item35E extends ItemBase35E {
   }
 
   get getCombatChangesShortDescription() {
-    return getProperty(this.system, "description.value");
+    return foundry.utils.getProperty(this.system, "description.value");
   }
 
   get autoDeductCharges() {
     return this.type === "spell"
-      ? getProperty(this.system, "preparation.autoDeductCharges") === true
-      : this.isCharged && getProperty(this.system, "uses.autoDeductCharges") === true;
+      ? foundry.utils.getProperty(this.system, "preparation.autoDeductCharges") === true
+      : this.isCharged && foundry.utils.getProperty(this.system, "uses.autoDeductCharges") === true;
   }
 
   get originalName() {
@@ -152,11 +152,11 @@ export class Item35E extends ItemBase35E {
   isSpellLike() {
     return (
       this.type === "spell" ||
-      getProperty(this.system, "actionType") === "rsak" ||
-      getProperty(this.system, "actionType") === "msak" ||
-      getProperty(this.system, "actionType") === "spellsave" ||
-      getProperty(this.system, "actionType") === "heal" ||
-      getProperty(this.system, "isFromSpell")
+      foundry.utils.getProperty(this.system, "actionType") === "rsak" ||
+      foundry.utils.getProperty(this.system, "actionType") === "msak" ||
+      foundry.utils.getProperty(this.system, "actionType") === "spellsave" ||
+      foundry.utils.getProperty(this.system, "actionType") === "heal" ||
+      foundry.utils.getProperty(this.system, "isFromSpell")
     );
   }
 
@@ -259,7 +259,7 @@ export class Item35E extends ItemBase35E {
    * @type {boolean}
    */
   get hasDamage() {
-    return !!(getProperty(this.system, "damage") && getProperty(this.system, "damage.parts")?.length);
+    return !!(foundry.utils.getProperty(this.system, "damage") && foundry.utils.getProperty(this.system, "damage.parts")?.length);
   }
 
   /* -------------------------------------------- */
@@ -269,14 +269,14 @@ export class Item35E extends ItemBase35E {
    * @return {boolean}
    */
   get isHealing() {
-    return getProperty(this.system, "actionType") === "heal" && getProperty(this.system, "damage.parts")?.length;
+    return foundry.utils.getProperty(this.system, "actionType") === "heal" && foundry.utils.getProperty(this.system, "damage.parts")?.length;
   }
 
   get hasEffect() {
     return (
       this.hasDamage ||
-      (getProperty(this.system, "effectNotes") && getProperty(this.system, "effectNotes")?.length > 0) ||
-      (getProperty(this.system, "specialActions") && getProperty(this.system, "specialActions")?.length > 0)
+      (foundry.utils.getProperty(this.system, "effectNotes") && foundry.utils.getProperty(this.system, "effectNotes")?.length > 0) ||
+      (foundry.utils.getProperty(this.system, "specialActions") && foundry.utils.getProperty(this.system, "specialActions")?.length > 0)
     );
   }
 
@@ -287,7 +287,7 @@ export class Item35E extends ItemBase35E {
    * @type {boolean}
    */
   get hasSave() {
-    return !!(getProperty(this.system, "save") && getProperty(this.system, "save.ability"));
+    return !!(foundry.utils.getProperty(this.system, "save") && foundry.utils.getProperty(this.system, "save.ability"));
   }
 
   /**
@@ -295,7 +295,7 @@ export class Item35E extends ItemBase35E {
    * @type {boolean}
    */
   get showUnidentifiedData() {
-    return !game.user.isGM && getProperty(this.system, "identified") === false;
+    return !game.user.isGM && foundry.utils.getProperty(this.system, "identified") === false;
   }
 
   /* -------------------------------------------- */
@@ -315,11 +315,11 @@ export class Item35E extends ItemBase35E {
     const labels = {};
 
     // Physical items
-    if (hasProperty(data, "weight")) {
+    if (foundry.utils.hasProperty(data, "weight")) {
       // Sync name
-      if (!hasProperty(this.system, "identifiedName")) setProperty(this.system, "identifiedName", this.name);
+      if (!foundry.utils.hasProperty(this.system, "identifiedName")) foundry.utils.setProperty(this.system, "identifiedName", this.name);
       // Prepare unidentified cost
-      if (!hasProperty(this.system, "unidentified.price")) setProperty(this.system, "unidentified.price", 0);
+      if (!foundry.utils.hasProperty(this.system, "unidentified.price")) foundry.utils.setProperty(this.system, "unidentified.price", 0);
 
       // Set basic data
       itemData.system.hp = itemData.system.hp || { max: 10, value: 10 };
@@ -344,9 +344,9 @@ export class Item35E extends ItemBase35E {
       // Slot label
       if (itemData.system.slot) {
         // Add equipment slot
-        const equipmentType = getProperty(this.system, "equipmentType") || null;
+        const equipmentType = foundry.utils.getProperty(this.system, "equipmentType") || null;
         if (equipmentType != null) {
-          const equipmentSlot = getProperty(this.system, "slot") || null;
+          const equipmentSlot = foundry.utils.getProperty(this.system, "slot") || null;
           labels.slot = equipmentSlot == null ? null : CONFIG.D35E.equipmentSlots[equipmentType][equipmentSlot];
         } else labels.slot = null;
       }
@@ -375,7 +375,7 @@ export class Item35E extends ItemBase35E {
 
     // Feat Items
     else if (itemData.type === "attack") {
-      itemData.system.isNaturalAttack = getProperty(this.system, "attackType") === "natural" || getProperty(this.system, "isNaturalEquivalent") || false;
+      itemData.system.isNaturalAttack = foundry.utils.getProperty(this.system, "attackType") === "natural" || foundry.utils.getProperty(this.system, "isNaturalEquivalent") || false;
     }
 
     // Buff Items
@@ -386,11 +386,11 @@ export class Item35E extends ItemBase35E {
     // Weapon Items
     else if (itemData.type === "weapon") {
       // Type and subtype labels
-      let wType = getProperty(this.system, "weaponType");
+      let wType = foundry.utils.getProperty(this.system, "weaponType");
       let typeKeys = Object.keys(C.weaponTypes);
       if (!typeKeys.includes(wType)) wType = typeKeys[0];
 
-      let wSubtype = getProperty(this.system, "weaponSubtype");
+      let wSubtype = foundry.utils.getProperty(this.system, "weaponSubtype");
       let subtypeKeys = Object.keys(C.weaponTypes[wType]).filter((o) => !o.startsWith("_"));
       if (!subtypeKeys.includes(wSubtype)) wSubtype = subtypeKeys[0];
 
@@ -401,11 +401,11 @@ export class Item35E extends ItemBase35E {
     // Equipment Items
     else if (itemData.type === "equipment") {
       // Type and subtype labels
-      let eType = getProperty(this.system, "equipmentType");
+      let eType = foundry.utils.getProperty(this.system, "equipmentType");
       let typeKeys = Object.keys(C.equipmentTypes);
       if (!typeKeys.includes(eType)) eType = typeKeys[0];
 
-      let eSubtype = getProperty(this.system, "equipmentSubtype");
+      let eSubtype = foundry.utils.getProperty(this.system, "equipmentSubtype");
       let subtypeKeys = Object.keys(C.equipmentTypes[eType]).filter((o) => !o.startsWith("_"));
       if (!subtypeKeys.includes(eSubtype)) eSubtype = subtypeKeys[0];
 
@@ -503,7 +503,7 @@ export class Item35E extends ItemBase35E {
       await super.update(updated, options);
       return;
     }
-    game.D35E.logger.log("Is true/false", updated, getProperty(this.system, "active"));
+    game.D35E.logger.log("Is true/false", updated, foundry.utils.getProperty(this.system, "active"));
     let expandedData = expandObject(updated);
     const srcData = foundry.utils.mergeObject(this.toObject(), expandedData);
 
@@ -526,7 +526,7 @@ export class Item35E extends ItemBase35E {
     )
       needsUpdate = true;
 
-    game.D35E.logger.log("Should be true/false, is true true", updated, getProperty(this.system, "active"));
+    game.D35E.logger.log("Should be true/false, is true true", updated, foundry.utils.getProperty(this.system, "active"));
 
     for (var key in expandedData?.system?.customAttributes) {
       if (updated[`system.customAttributes.${key}`] === null) continue;
@@ -564,12 +564,12 @@ export class Item35E extends ItemBase35E {
       srcData.firstChangeTargetName = updated["firstChangeTarget"].split(":")[1];
       delete updated["firstChangeTarget"];
     }
-    if (updated["data.nameFromFormula"] || getProperty(this.system, "nameFromFormula")) {
+    if (updated["data.nameFromFormula"] || foundry.utils.getProperty(this.system, "nameFromFormula")) {
       const srcDataWithRolls = this.getRollData(srcData);
       srcDataWithRolls.firstChangeTargetName = srcData.firstChangeTargetName;
       updated["name"] =
         Item35E._fillTemplate(
-          updated["data.nameFormula"] || getProperty(this.system, "nameFormula"),
+          updated["data.nameFormula"] || foundry.utils.getProperty(this.system, "nameFormula"),
           srcDataWithRolls
         ) || updated["name"];
     }
@@ -577,19 +577,19 @@ export class Item35E extends ItemBase35E {
     if (updated["system.identifiedName"]) updated["name"] = updated["system.identifiedName"];
     else if (updated["name"]) updated["system.identifiedName"] = updated["name"];
 
-    let activateBuff = updated["system.active"] && updated["system.active"] !== getProperty(this.system, "active");
+    let activateBuff = updated["system.active"] && updated["system.active"] !== foundry.utils.getProperty(this.system, "active");
     let deactivateBuff =
-      getProperty(this.system, "active") && updated["system.active"] !== undefined && !updated["system.active"];
+      foundry.utils.getProperty(this.system, "active") && updated["system.active"] !== undefined && !updated["system.active"];
     deactivateBuff = deactivateBuff || options.forceDeactivate;
     // Update description
 
     // Set weapon subtype
     if (
       updated["system.weaponType"] != null &&
-      updated["system.weaponType"] !== getProperty(this.system, "weaponType")
+      updated["system.weaponType"] !== foundry.utils.getProperty(this.system, "weaponType")
     ) {
       const type = updated["system.weaponType"];
-      const subtype = updated["system.weaponSubtype"] || getProperty(this.system, "weaponSubtype") || "";
+      const subtype = updated["system.weaponSubtype"] || foundry.utils.getProperty(this.system, "weaponSubtype") || "";
       const keys = Object.keys(CONFIG.D35E.weaponTypes[type]).filter((o) => !o.startsWith("_"));
       if (!subtype || !keys.includes(subtype)) {
         updated["system.weaponSubtype"] = keys[0];
@@ -598,9 +598,9 @@ export class Item35E extends ItemBase35E {
 
     if (
       updated["system.hasSpellbook"] != null &&
-      updated["system.hasSpellbook"] !== getProperty(this.system, "hasSpellbook")
+      updated["system.hasSpellbook"] !== foundry.utils.getProperty(this.system, "hasSpellbook")
     ) {
-      const curValue = getProperty(this.system, "spellbook");
+      const curValue = foundry.utils.getProperty(this.system, "spellbook");
       if (curValue == null || curValue.length === 0) {
         let spellbook = [];
         for (let a = 0; a < 10; a++) {
@@ -611,17 +611,17 @@ export class Item35E extends ItemBase35E {
     }
 
     if (this.pack && this.pack.startsWith("D35E")) {
-      updated["system.originVersion"] = getProperty(this.system, "originVersion") + 1;
+      updated["system.originVersion"] = foundry.utils.getProperty(this.system, "originVersion") + 1;
     }
 
     if (
       updated["system.weaponData.size"] &&
-      updated["system.weaponData.size"] !== getProperty(this.system, "weaponData.size")
+      updated["system.weaponData.size"] !== foundry.utils.getProperty(this.system, "weaponData.size")
     ) {
       let newSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(updated["system.weaponData.size"] || "");
-      let oldSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(getProperty(this.system, "weaponData.size") || "");
+      let oldSize = Object.keys(CONFIG.D35E.actorSizes).indexOf(foundry.utils.getProperty(this.system, "weaponData.size") || "");
       let weightChange = Math.pow(2, newSize - oldSize);
-      updated["system.weight"] = getProperty(this.system, "weight") * weightChange;
+      updated["system.weight"] = foundry.utils.getProperty(this.system, "weight") * weightChange;
     }
 
     //game.D35E.logger.log("D35E Item Update", data)
@@ -661,18 +661,18 @@ export class Item35E extends ItemBase35E {
     // Set equipment subtype and slot
     if (
       updated["system.equipmentType"] != null &&
-      updated["system.equipmentType"] !== getProperty(this.system, "equipmentType")
+      updated["system.equipmentType"] !== foundry.utils.getProperty(this.system, "equipmentType")
     ) {
       // Set subtype
       const type = updated["system.equipmentType"];
-      const subtype = updated["system.equipmentSubtype"] || getProperty(this.system, "equipmentSubtype") || "";
+      const subtype = updated["system.equipmentSubtype"] || foundry.utils.getProperty(this.system, "equipmentSubtype") || "";
       let keys = Object.keys(CONFIG.D35E.equipmentTypes[type]).filter((o) => !o.startsWith("_"));
       if (!subtype || !keys.includes(subtype)) {
         updated["system.equipmentSubtype"] = keys[0];
       }
 
       // Set slot
-      const slot = updated["system.slot"] || getProperty(this.system, "slot") || "";
+      const slot = updated["system.slot"] || foundry.utils.getProperty(this.system, "slot") || "";
       keys = Object.keys(CONFIG.D35E.equipmentSlots[type]);
       if (!slot || !keys.includes(slot)) {
         updated["system.slot"] = keys[0];
@@ -689,17 +689,17 @@ export class Item35E extends ItemBase35E {
     if (activateBuff) {
       updated["system.timeline.elapsed"] = 0;
       updated["system.damagePool.current"] =
-        updated["system.damagePool.total"] || getProperty(this.system, "damagePool.total");
+        updated["system.damagePool.total"] || foundry.utils.getProperty(this.system, "damagePool.total");
     }
     updated["system.index.subType"] = this.updateGetSubtype(updated);
-    updated["system.index.uniqueId"] = updated["uniqueId"] || getProperty(this.system, "uniqueId");
+    updated["system.index.uniqueId"] = updated["uniqueId"] || foundry.utils.getProperty(this.system, "uniqueId");
 
     let updateData = await super.update(updated, options);
     if (this.actor !== null && !options.massUpdate) {
       if (activateBuff) {
         //Buff or item was activated
         updated["system.timeline.elapsed"] = 0;
-        let actionValue = (getProperty(this.system, "activateActions") || []).map((a) => a.action).join(";");
+        let actionValue = (foundry.utils.getProperty(this.system, "activateActions") || []).map((a) => a.action).join(";");
         if (!actionValue) await this.actor.refresh(options);
         else {
           if (this.actor && this.actor.token !== null) {
@@ -715,13 +715,13 @@ export class Item35E extends ItemBase35E {
             await this.actor.applyActionOnSelf(actionValue, this.actor, srcDataWithRolls, "self");
           }
         }
-        if (getProperty(this.system, "buffType") === "shapechange") {
+        if (foundry.utils.getProperty(this.system, "buffType") === "shapechange") {
           if (
-            getProperty(this.system, "shapechange.type") === "wildshape" ||
-            getProperty(this.system, "shapechange.type") === "polymorph"
+            foundry.utils.getProperty(this.system, "shapechange.type") === "wildshape" ||
+            foundry.utils.getProperty(this.system, "shapechange.type") === "polymorph"
           ) {
             let itemsToCreate = [];
-            for (const i of getProperty(this.system, "shapechange.source.items")) {
+            for (const i of foundry.utils.getProperty(this.system, "shapechange.source.items")) {
               if (
                 i.type === "attack" &&
                 (i.system.attackType === "natural" || i.system.attackType === "extraordinary")
@@ -750,10 +750,10 @@ export class Item35E extends ItemBase35E {
           game.combats.active.addBuffsToCombat([{ buff: this, actor: this.actor }]);
         }
       } else if (deactivateBuff) {
-        if (getProperty(this.system, "buffType") === "shapechange") {
+        if (foundry.utils.getProperty(this.system, "buffType") === "shapechange") {
           if (
-            getProperty(this.system, "shapechange.type") === "wildshape" ||
-            getProperty(this.system, "shapechange.type") === "polymorph"
+            foundry.utils.getProperty(this.system, "shapechange.type") === "wildshape" ||
+            foundry.utils.getProperty(this.system, "shapechange.type") === "polymorph"
           ) {
             let itemsToDelete = [];
             if (this.actor) {
@@ -772,7 +772,7 @@ export class Item35E extends ItemBase35E {
               }
           }
         }
-        let actionValue = (getProperty(this.system, "deactivateActions") || []).map((a) => a.action).join(";");
+        let actionValue = (foundry.utils.getProperty(this.system, "deactivateActions") || []).map((a) => a.action).join(";");
         if (!actionValue) await this.actor.refresh(options);
         else {
           if (this.actor && this.actor.token !== null) {
@@ -850,7 +850,7 @@ export class Item35E extends ItemBase35E {
   _updateCalculateMaxDamageDice(data, rollData) {
     if (
       data["system.maxDamageDiceFormula"] != null &&
-      data["system.maxDamageDiceFormula"] !== getProperty(this.system, "maxDamageDiceFormula")
+      data["system.maxDamageDiceFormula"] !== foundry.utils.getProperty(this.system, "maxDamageDiceFormula")
     ) {
       let roll = new Roll35e(data["system.maxDamageDiceFormula"], rollData).roll();
       data["system.maxDamageDice"] = roll.total;
@@ -858,16 +858,16 @@ export class Item35E extends ItemBase35E {
   }
 
   _updateCalculateDamagePoolData(data, rollData) {
-    let rollFormula = getProperty(this.system, "damagePool.formula");
+    let rollFormula = foundry.utils.getProperty(this.system, "damagePool.formula");
     if (
       data["system.damagePool.formula"] != null &&
-      data["system.damagePool.formula"] !== getProperty(this.system, "damagePool.formula")
+      data["system.damagePool.formula"] !== foundry.utils.getProperty(this.system, "damagePool.formula")
     )
       rollFormula = data["system.damagePool.formula"];
     if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
       rollData.item = {};
-      rollData.item.level = getProperty(this.system, "level");
-      if (data["system.level"] != null && data["system.level"] !== getProperty(this.system, "level"))
+      rollData.item.level = foundry.utils.getProperty(this.system, "level");
+      if (data["system.level"] != null && data["system.level"] !== foundry.utils.getProperty(this.system, "level"))
         rollData.item.level = data["system.level"];
       try {
         data["system.damagePool.total"] = new Roll35e(rollFormula, rollData).roll().total;
@@ -878,16 +878,16 @@ export class Item35E extends ItemBase35E {
   }
 
   _updateCalculateTimelineData(data, rollData) {
-    let rollFormula = getProperty(this.system, "timeline.formula");
+    let rollFormula = foundry.utils.getProperty(this.system, "timeline.formula");
     if (
       data["system.timeline.formula"] != null &&
-      data["system.timeline.formula"] !== getProperty(this.system, "timeline.formula")
+      data["system.timeline.formula"] !== foundry.utils.getProperty(this.system, "timeline.formula")
     )
       rollFormula = data["system.timeline.formula"];
     if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
       rollData.item = {};
-      rollData.item.level = getProperty(this.system, "level");
-      if (data["system.level"] != null && data["system.level"] !== getProperty(this.system, "level"))
+      rollData.item.level = foundry.utils.getProperty(this.system, "level");
+      if (data["system.level"] != null && data["system.level"] !== foundry.utils.getProperty(this.system, "level"))
         rollData.item.level = data["system.level"];
       try {
         data["system.timeline.total"] = new Roll35e(rollFormula.toString(), rollData).roll().total;
@@ -939,25 +939,25 @@ export class Item35E extends ItemBase35E {
       if (change.field.indexOf("$") !== -1) {
         changeId = change.field.substr(1);
         changeVal = Item35E._fillTemplate(change.formula, rollData);
-        setProperty(rollData, changeId, changeVal);
+        foundry.utils.setProperty(rollData, changeId, changeVal);
       } else if (change.field.indexOf("&") !== -1) {
         changeId = change.field.substr(1);
         changeVal = Item35E._fillTemplate(change.formula, rollData);
-        setProperty(
+        foundry.utils.setProperty(
           rollData,
           change.field.substr(1),
-          (getProperty(rollData, change.field.substr(1)) || "0") + " + " + changeVal
+          (foundry.utils.getProperty(rollData, change.field.substr(1)) || "0") + " + " + changeVal
         );
       } else {
         changeId = change.field;
         changeVal = parseInt(change.formula || 0);
-        setProperty(rollData, change.field, (getProperty(rollData, change.field) || 0) + changeVal);
+        foundry.utils.setProperty(rollData, change.field, (foundry.utils.getProperty(rollData, change.field) || 0) + changeVal);
       }
       var listId = changeId.indexOf(".") !== -1 ? `${changeId.replace(".", "List.")}` : `${changeId}List`;
-      setProperty(
+      foundry.utils.setProperty(
         rollData,
         listId,
-        (getProperty(rollData, listId) || []).concat([{ value: changeVal, sourceName: change["sourceName"] }])
+        (foundry.utils.getProperty(rollData, listId) || []).concat([{ value: changeVal, sourceName: change["sourceName"] }])
       );
     });
   }
@@ -1205,9 +1205,9 @@ export class Item35E extends ItemBase35E {
 
   resetPerEncounterUses() {
     if (
-      getProperty(this.system, "uses") != null &&
-      getProperty(this.system, "activation") != null &&
-      getProperty(this.system, "activation.type") !== ""
+      foundry.utils.getProperty(this.system, "uses") != null &&
+      foundry.utils.getProperty(this.system, "activation") != null &&
+      foundry.utils.getProperty(this.system, "activation.type") !== ""
     ) {
       let itemData = this.system;
       let updateData = {};
@@ -1219,11 +1219,11 @@ export class Item35E extends ItemBase35E {
   }
 
   async addElapsedTime(time) {
-    if (getProperty(this.system, "timeline") !== undefined && getProperty(this.system, "timeline") !== null) {
-      if (!getProperty(this.system, "timeline.enabled")) return;
-      if (!getProperty(this.system, "active")) return;
-      if (getProperty(this.system, "timeline.elapsed") + time >= getProperty(this.system, "timeline.total")) {
-        if (!getProperty(this.system, "timeline.deleteOnExpiry")) {
+    if (foundry.utils.getProperty(this.system, "timeline") !== undefined && foundry.utils.getProperty(this.system, "timeline") !== null) {
+      if (!foundry.utils.getProperty(this.system, "timeline.enabled")) return;
+      if (!foundry.utils.getProperty(this.system, "active")) return;
+      if (foundry.utils.getProperty(this.system, "timeline.elapsed") + time >= foundry.utils.getProperty(this.system, "timeline.total")) {
+        if (!foundry.utils.getProperty(this.system, "timeline.deleteOnExpiry")) {
           let updateData = {};
           updateData["system.active"] = false;
           await this.update(updateData);
@@ -1233,17 +1233,17 @@ export class Item35E extends ItemBase35E {
         }
       } else {
         let updateData = {};
-        updateData["system.timeline.elapsed"] = getProperty(this.system, "timeline.elapsed") + time;
+        updateData["system.timeline.elapsed"] = foundry.utils.getProperty(this.system, "timeline.elapsed") + time;
         await this.update(updateData);
       }
     }
   }
 
   getElapsedTimeUpdateData(time) {
-    if (getProperty(this.system, "timeline") !== undefined && getProperty(this.system, "timeline") !== null) {
-      if (getProperty(this.system, "timeline.enabled") && getProperty(this.system, "active")) {
-        if (getProperty(this.system, "timeline.elapsed") + time >= getProperty(this.system, "timeline.total")) {
-          if (!getProperty(this.system, "timeline.deleteOnExpiry")) {
+    if (foundry.utils.getProperty(this.system, "timeline") !== undefined && foundry.utils.getProperty(this.system, "timeline") !== null) {
+      if (foundry.utils.getProperty(this.system, "timeline.enabled") && foundry.utils.getProperty(this.system, "active")) {
+        if (foundry.utils.getProperty(this.system, "timeline.elapsed") + time >= foundry.utils.getProperty(this.system, "timeline.total")) {
+          if (!foundry.utils.getProperty(this.system, "timeline.deleteOnExpiry")) {
             let updateData = {};
             updateData["system.active"] = false;
             updateData["system.timeline.elapsed"] = 0;
@@ -1263,23 +1263,23 @@ export class Item35E extends ItemBase35E {
         } else {
           let updateData = {};
           updateData["system.active"] = true;
-          updateData["system.timeline.elapsed"] = getProperty(this.system, "timeline.elapsed") + time;
+          updateData["system.timeline.elapsed"] = foundry.utils.getProperty(this.system, "timeline.elapsed") + time;
           updateData["_id"] = this._id;
           return updateData;
         }
       }
     }
-    if (getProperty(this.system, "recharge") !== undefined && getProperty(this.system, "recharge") !== null) {
-      if (getProperty(this.system, "recharge.enabled")) {
-        if (getProperty(this.system, "recharge.current") - time < 1) {
+    if (foundry.utils.getProperty(this.system, "recharge") !== undefined && foundry.utils.getProperty(this.system, "recharge") !== null) {
+      if (foundry.utils.getProperty(this.system, "recharge.enabled")) {
+        if (foundry.utils.getProperty(this.system, "recharge.current") - time < 1) {
           let updateData = {};
           updateData["system.recharge.current"] = 0;
-          updateData["system.uses.value"] = getProperty(this.system, "uses.max");
+          updateData["system.uses.value"] = foundry.utils.getProperty(this.system, "uses.max");
           updateData["_id"] = this._id;
           return updateData;
         } else {
           let updateData = {};
-          updateData["system.recharge.current"] = getProperty(this.system, "recharge.current") - time;
+          updateData["system.recharge.current"] = foundry.utils.getProperty(this.system, "recharge.current") - time;
           updateData["_id"] = this._id;
           return updateData;
         }
@@ -1289,31 +1289,31 @@ export class Item35E extends ItemBase35E {
   }
 
   getTimelineTimeLeft() {
-    if (getProperty(this.system, "timeline") !== undefined && getProperty(this.system, "timeline") !== null) {
-      if (!getProperty(this.system, "timeline.enabled")) return -1;
-      if (!getProperty(this.system, "active")) return -1;
-      return getProperty(this.system, "timeline.total") - this.system.timeline.elapsed;
+    if (foundry.utils.getProperty(this.system, "timeline") !== undefined && foundry.utils.getProperty(this.system, "timeline") !== null) {
+      if (!foundry.utils.getProperty(this.system, "timeline.enabled")) return -1;
+      if (!foundry.utils.getProperty(this.system, "active")) return -1;
+      return foundry.utils.getProperty(this.system, "timeline.total") - this.system.timeline.elapsed;
     }
     return 0;
   }
 
   getTimelineTimeLeftDescriptive() {
-    if (getProperty(this.system, "timeline") !== undefined && getProperty(this.system, "timeline") !== null) {
-      if (!getProperty(this.system, "timeline.enabled")) return "Indefinite";
-      if (!getProperty(this.system, "active")) return "Not active";
-      if (getProperty(this.system, "timeline.total") - getProperty(this.system, "timeline.elapsed") >= 600) {
+    if (foundry.utils.getProperty(this.system, "timeline") !== undefined && foundry.utils.getProperty(this.system, "timeline") !== null) {
+      if (!foundry.utils.getProperty(this.system, "timeline.enabled")) return "Indefinite";
+      if (!foundry.utils.getProperty(this.system, "active")) return "Not active";
+      if (foundry.utils.getProperty(this.system, "timeline.total") - foundry.utils.getProperty(this.system, "timeline.elapsed") >= 600) {
         return (
           Math.floor(
-            (getProperty(this.system, "timeline.total") - getProperty(this.system, "timeline.elapsed")) / 600
+            (foundry.utils.getProperty(this.system, "timeline.total") - foundry.utils.getProperty(this.system, "timeline.elapsed")) / 600
           ) + "h"
         );
-      } else if (getProperty(this.system, "timeline.total") - getProperty(this.system, "timeline.elapsed") >= 10) {
+      } else if (foundry.utils.getProperty(this.system, "timeline.total") - foundry.utils.getProperty(this.system, "timeline.elapsed") >= 10) {
         return (
-          Math.floor((getProperty(this.system, "timeline.total") - getProperty(this.system, "timeline.elapsed")) / 10) +
+          Math.floor((foundry.utils.getProperty(this.system, "timeline.total") - foundry.utils.getProperty(this.system, "timeline.elapsed")) / 10) +
           "min"
         );
-      } else if (getProperty(this.system, "timeline.total") - getProperty(this.system, "timeline.elapsed") > 1)
-        return getProperty(this.system, "timeline.total") - getProperty(this.system, "timeline.elapsed") + " rounds";
+      } else if (foundry.utils.getProperty(this.system, "timeline.total") - foundry.utils.getProperty(this.system, "timeline.elapsed") > 1)
+        return foundry.utils.getProperty(this.system, "timeline.total") - foundry.utils.getProperty(this.system, "timeline.elapsed") + " rounds";
       return "Last round";
     }
     return "Indefinite";
@@ -1348,83 +1348,83 @@ export class Item35E extends ItemBase35E {
     if (type === "polymorph" || type === "wildshape") {
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.abilities.str.total")}`,
+          `${foundry.utils.getProperty(origData, "system.abilities.str.total")}`,
           "ability",
           "str",
           "replace",
-          getProperty(origData, "system.abilities.str.total"),
+          foundry.utils.getProperty(origData, "system.abilities.str.total"),
         ],
       ]); // Strength
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.abilities.dex.total")}`,
+          `${foundry.utils.getProperty(origData, "system.abilities.dex.total")}`,
           "ability",
           "dex",
           "replace",
-          getProperty(origData, "system.abilities.dex.total"),
+          foundry.utils.getProperty(origData, "system.abilities.dex.total"),
         ],
       ]); // Dexterity
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.abilities.con.total")}`,
+          `${foundry.utils.getProperty(origData, "system.abilities.con.total")}`,
           "ability",
           "con",
           "replace",
-          getProperty(origData, "system.abilities.con.total"),
+          foundry.utils.getProperty(origData, "system.abilities.con.total"),
         ],
       ]); // Constitution
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.attributes.speed.land.total")}`,
+          `${foundry.utils.getProperty(origData, "system.attributes.speed.land.total")}`,
           "speed",
           "landSpeed",
           "replace",
-          getProperty(origData, "system.attributes.speed.land.total"),
+          foundry.utils.getProperty(origData, "system.attributes.speed.land.total"),
         ],
       ]);
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.attributes.speed.climb.total")}`,
+          `${foundry.utils.getProperty(origData, "system.attributes.speed.climb.total")}`,
           "speed",
           "climbSpeed",
           "replace",
-          getProperty(origData, "system.attributes.speed.climb.total"),
+          foundry.utils.getProperty(origData, "system.attributes.speed.climb.total"),
         ],
       ]);
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.attributes.speed.swim.total")}`,
+          `${foundry.utils.getProperty(origData, "system.attributes.speed.swim.total")}`,
           "speed",
           "swimSpeed",
           "replace",
-          getProperty(origData, "system.attributes.speed.swim.total"),
+          foundry.utils.getProperty(origData, "system.attributes.speed.swim.total"),
         ],
       ]);
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.attributes.speed.burrow.total")}`,
+          `${foundry.utils.getProperty(origData, "system.attributes.speed.burrow.total")}`,
           "speed",
           "burrowSpeed",
           "replace",
-          getProperty(origData, "system.attributes.speed.burrow.total"),
+          foundry.utils.getProperty(origData, "system.attributes.speed.burrow.total"),
         ],
       ]);
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.attributes.speed.fly.total")}`,
+          `${foundry.utils.getProperty(origData, "system.attributes.speed.fly.total")}`,
           "speed",
           "flySpeed",
           "replace",
-          getProperty(origData, "system.attributes.speed.fly.total"),
+          foundry.utils.getProperty(origData, "system.attributes.speed.fly.total"),
         ],
       ]);
       shapechangeData.system.changes = shapechangeData.system.changes.concat([
         [
-          `${getProperty(origData, "system.attributes.naturalACTotal")}`,
+          `${foundry.utils.getProperty(origData, "system.attributes.naturalACTotal")}`,
           "ac",
           "nac",
           "base",
-          getProperty(origData, "system.attributes.naturalACTotal"),
+          foundry.utils.getProperty(origData, "system.attributes.naturalACTotal"),
         ],
       ]);
     }
@@ -1543,12 +1543,12 @@ export class Item35E extends ItemBase35E {
     // Speedlist
     let speedDesc = [];
     for (let speedKey of Object.keys(origData.system.attributes.speed)) {
-      if (getProperty(origData, `data.attributes.speed.${speedKey}.total`) > 0)
+      if (foundry.utils.getProperty(origData, `data.attributes.speed.${speedKey}.total`) > 0)
         speedDesc.push(
           speedKey.charAt(0).toUpperCase() +
             speedKey.slice(1) +
             " " +
-            getProperty(origData, `data.attributes.speed.${speedKey}.total`) +
+            foundry.utils.getProperty(origData, `data.attributes.speed.${speedKey}.total`) +
             " ft."
         );
     }
@@ -1590,12 +1590,12 @@ export class Item35E extends ItemBase35E {
 
     // Set measure template
     if (type !== "potion" && type !== "tattoo") {
-      system.measureTemplate = getProperty(origdata, "system.measureTemplate");
+      system.measureTemplate = foundry.utils.getProperty(origdata, "system.measureTemplate");
     }
 
     // Set damage formula
     system.actionType = origData.system.actionType;
-    for (let d of getProperty(origdata, "system.damage.parts")) {
+    for (let d of foundry.utils.getProperty(origdata, "system.damage.parts")) {
       d[0] = d[0].replace(/@sl/g, slcl[0]);
       d[0] = d[0].replace(/@cl/g, slcl[1]);
       system.damage.parts.push(d);
@@ -1627,7 +1627,7 @@ export class Item35E extends ItemBase35E {
     ItemSpellHelper.calculateSpellCasterLevelLabels(slcl);
 
     // Set description
-    system.description.value = getProperty(origdata, "system.description.value");
+    system.description.value = foundry.utils.getProperty(origdata, "system.description.value");
 
     return data;
   }
@@ -1653,11 +1653,11 @@ export class Item35E extends ItemBase35E {
 
     system.activation.type = "standard";
 
-    system.measureTemplate = getProperty(origdata, "system.measureTemplate");
+    system.measureTemplate = foundry.utils.getProperty(origdata, "system.measureTemplate");
 
     // Set damage formula
     system.actionType = origData.system.actionType;
-    for (let d of getProperty(origdata, "system.damage.parts")) {
+    for (let d of foundry.utils.getProperty(origdata, "system.damage.parts")) {
       d[0] = d[0].replace(/@sl/g, slcl[0]);
       d[0] = d[0].replace(/@cl/g, "@attributes.hd.total");
       system.damage.parts.push(d);
@@ -1676,7 +1676,7 @@ export class Item35E extends ItemBase35E {
     system.specialActions = origData.system.specialActions;
     system.attackCountFormula = origData.system.attackCountFormula.replace(/@cl/g, slcl[1]).replace(/@sl/g, slcl[0]);
 
-    system.description.value = getProperty(origdata, "system.description.value");
+    system.description.value = foundry.utils.getProperty(origdata, "system.description.value");
 
     return data;
   }
@@ -1710,7 +1710,7 @@ export class Item35E extends ItemBase35E {
   getConditionalSubTargets(target) {
     let result = {};
     // Add static targets
-    if (hasProperty(CONFIG.D35E.conditionalTargets, target)) {
+    if (foundry.utils.hasProperty(CONFIG.D35E.conditionalTargets, target)) {
       for (let [k, v] of Object.entries(CONFIG.D35E.conditionalTargets[target])) {
         if (!k.startsWith("_")) result[k] = v;
       }
@@ -1722,7 +1722,7 @@ export class Item35E extends ItemBase35E {
         result["attack.0"] = `${game.i18n.localize("D35E.Attack")} 1`;
       }
       if (this.hasMultipleAttacks) {
-        for (let [k, v] of Object.entries(getProperty(this.system, "attackParts"))) {
+        for (let [k, v] of Object.entries(foundry.utils.getProperty(this.system, "attackParts"))) {
           result[`attack.${Number(k) + 1}`] = v[1];
         }
       }
@@ -1798,9 +1798,9 @@ export class Item35E extends ItemBase35E {
 
   useSpellPoints() {
     if (!this.actor) return false;
-    if (getProperty(this.system, "atWill")) return false;
+    if (foundry.utils.getProperty(this.system, "atWill")) return false;
 
-    const spellbook = getProperty(this.actor.system, `attributes.spells.spellbooks.${this.system.spellbook}`);
+    const spellbook = foundry.utils.getProperty(this.actor.system, `attributes.spells.spellbooks.${this.system.spellbook}`);
     return spellbook.usePowerPoints;
   }
 
@@ -1810,7 +1810,7 @@ export class Item35E extends ItemBase35E {
 
   async getLinkDataFromData(itemData) {
     const updateData = {};
-    let _linkedItems = duplicate(getProperty(this.system, `linkedItems`) || []);
+    let _linkedItems = duplicate(foundry.utils.getProperty(this.system, `linkedItems`) || []);
     let linkedData = {};
     linkedData.name = itemData.name;
     linkedData.img = itemData.img;
@@ -1827,14 +1827,14 @@ export class Item35E extends ItemBase35E {
       name: this.name,
       icon: this.img,
       origin: this.uuid,
-      disabled: this.type === "aura" ? false : !getProperty(this.system, "active"),
+      disabled: this.type === "aura" ? false : !foundry.utils.getProperty(this.system, "active"),
     };
     if (this.type === "buff")
       createData["flags.D35E.show"] =
-        !getProperty(this.system, "hideFromToken") && !game.settings.get("D35E", "hideTokenConditions");
+        !foundry.utils.getProperty(this.system, "hideFromToken") && !game.settings.get("D35E", "hideTokenConditions");
     if (this.type === "aura")
       createData["flags.D35E.show"] =
-        !getProperty(this.system, "hideFromToken") && !game.settings.get("D35E", "hideTokenConditions");
+        !foundry.utils.getProperty(this.system, "hideFromToken") && !game.settings.get("D35E", "hideTokenConditions");
     return createData;
   }
 
@@ -1883,7 +1883,7 @@ export class Item35E extends ItemBase35E {
     }
     let unmetRequirements = [];
     rollData.item = this.getRollData();
-    for (const _requirement of getProperty(this.system, "requirements") || []) {
+    for (const _requirement of foundry.utils.getProperty(this.system, "requirements") || []) {
       if (!_requirement[1]) continue;
       if (_requirement[2] === "generic") {
         if (!new Roll35e(_requirement[1], rollData).roll().total) {

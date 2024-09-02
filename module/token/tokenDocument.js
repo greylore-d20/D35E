@@ -34,9 +34,9 @@ export class TokenDocumentPF extends TokenDocument {
     if (data != null) {
       // Add temp HP to current current health value for HP and Vigor
       if (data.attribute === "attributes.hp") {
-        data.value += parseInt(getProperty(this.actor, "system.attributes.hp.temp") || 0);
+        data.value += parseInt(foundry.utils.getProperty(this.actor, "system.attributes.hp.temp") || 0);
       } else if (data.attribute === "attributes.vigor") {
-        data.value += parseInt(getProperty(this.actor, "system.attributes.vigor.temp") || 0);
+        data.value += parseInt(foundry.utils.getProperty(this.actor, "system.attributes.vigor.temp") || 0);
       }
 
       // Make resources editable

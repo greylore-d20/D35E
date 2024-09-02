@@ -10,8 +10,8 @@ export class ItemCombatChanges {
   }
 
   hasCombatChange(itemType, rollData) {
-    let combatChanges = getProperty(this.item.system, "combatChanges") || [];
-    let attackType = getProperty(rollData, "item.actionType") || "";
+    let combatChanges = foundry.utils.getProperty(this.item.system, "combatChanges") || [];
+    let attackType = foundry.utils.getProperty(rollData, "item.actionType") || "";
     let combatChangesRollData = duplicate(rollData);
     combatChangesRollData.self = foundry.utils.mergeObject(this.item.system, this.item.getRollData(), { inplace: false });
     combatChangesRollData.source = combatChangesRollData.self;
@@ -38,8 +38,8 @@ export class ItemCombatChanges {
    */
   getPossibleCombatChanges(itemType, rollData, range = { base: 0, slider1: 0, slider2: 0, slider3: 0 }) {
     if (itemType.endsWith("Optional") && this.item.isCharged && !this.item.charges) return [];
-    let combatChanges = getProperty(this.item.system, "combatChanges") || [];
-    let attackType = getProperty(rollData, "item.actionType") || "";
+    let combatChanges = foundry.utils.getProperty(this.item.system, "combatChanges") || [];
+    let attackType = foundry.utils.getProperty(rollData, "item.actionType") || "";
     let combatChangesRollData = duplicate(rollData);
     combatChangesRollData.self = foundry.utils.mergeObject(this.item.system, this.item.getRollData(), { inplace: false });
     combatChangesRollData.source = combatChangesRollData.self;
@@ -67,7 +67,7 @@ export class ItemCombatChanges {
           c["formula"] = c["formula"].replace(/@range/g, combatChangesRollData.range);
           let regexpSource = /@source.([a-zA-Z\.0-9]+)/g;
           for (const match of c["formula"].matchAll(regexpSource)) {
-            c["formula"] = c["formula"].replace(`@source.${match[1]}`, getProperty(this.item.system, match[1]) || 0);
+            c["formula"] = c["formula"].replace(`@source.${match[1]}`, foundry.utils.getProperty(this.item.system, match[1]) || 0);
           }
           if (c["formula"] !== "" && c["formula"] !== undefined) hasAction = true;
         }
@@ -92,7 +92,7 @@ export class ItemCombatChanges {
             for (const match of c["specialAction"].matchAll(regexpSource)) {
               c["specialAction"] = c["specialAction"].replace(
                 `@source.${match[1]}`,
-                getProperty(this.item.system, match[1]) || 0
+                foundry.utils.getProperty(this.item.system, match[1]) || 0
               );
             }
             hasAction = true;
@@ -100,7 +100,7 @@ export class ItemCombatChanges {
           c["itemId"] = this.item.id;
           c["itemName"] = this.item.name;
           c["itemImg"] = this.item.img;
-          c["applyActionsOnlyOnce"] = getProperty(this.item.system, "applyActionsOnlyOnce") || false;
+          c["applyActionsOnlyOnce"] = foundry.utils.getProperty(this.item.system, "applyActionsOnlyOnce") || false;
         }
         if (!hasAction) {
           ui.notifications.warn(game.i18n.localize("D35E.EmptyCombatChange").format(this.item.name));

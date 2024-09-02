@@ -2,7 +2,7 @@ export class SpellbookEditor extends FormApplication {
     constructor(...args) {
         super(...args);
 
-        this.spellbook = duplicate(getProperty(this.object.data, this.attribute) || {});
+        this.spellbook = duplicate(foundry.utils.getProperty(this.object.data, this.attribute) || {});
         this.actor = this.object.data;
     }
 

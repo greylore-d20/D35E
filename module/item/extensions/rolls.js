@@ -49,7 +49,7 @@ export class ItemRolls {
 
     // Roll spell failure chance
     if (templateData.isSpell && this.item.actor != null && this.item.actor.spellFailure > 0) {
-      const spellbook = getProperty(
+      const spellbook = foundry.utils.getProperty(
         this.item.actor.system,
         `attributes.spells.spellbooks.${this.item.system.spellbook}`
       );
@@ -259,7 +259,7 @@ export class ItemRolls {
     // Add spell data
     if (this.item.isSpellLike()) {
       ItemSpellHelper.adjustSpellCL(this.item, itemData, rollData);
-      const sl = getProperty(this.item.system, "level") + (getProperty(this.item.system, "slOffset") || 0);
+      const sl = foundry.utils.getProperty(this.item.system, "level") + (foundry.utils.getProperty(this.item.system, "slOffset") || 0);
       rollData.sl = sl;
     }
 
@@ -346,7 +346,7 @@ export class ItemRolls {
     // Determine critical multiplier
     rollData.critMult = 1;
     rollData.ablMult = 1;
-    if (critical) rollData.critMult = getProperty(this.item.system, "ability.critMult");
+    if (critical) rollData.critMult = foundry.utils.getProperty(this.item.system, "ability.critMult");
     // Determine ability multiplier from the rollData override or from the item itself
     if (rollData.damageAbilityMultiplier !== undefined && rollData.damageAbilityMultiplier !== null) {
       rollData.ablMult = rollData.damageAbilityMultiplier;

@@ -117,8 +117,8 @@ export class ActorSheetPFNPCLoot extends ActorSheetPFNPC {
     Object.keys(sheetData.actor.itemGroups).forEach( f => sheetData.actor.itemGroups[f].items.forEach( _i => {
       // specify if empty
       let i = _i;
-      const itemQuantity = getProperty(i, "system.quantity") != null ? getProperty(i, "system.quantity") : 1;
-      const itemCharges = getProperty(i, "system.uses.value") != null ? getProperty(i, "system.uses.value") : 1;
+      const itemQuantity = foundry.utils.getProperty(i, "system.quantity") != null ? foundry.utils.getProperty(i, "system.quantity") : 1;
+      const itemCharges = foundry.utils.getProperty(i, "system.uses.value") != null ? foundry.utils.getProperty(i, "system.uses.value") : 1;
       i.empty = itemQuantity <= 0 || (i.isCharged && itemCharges <= 0);
 
       totalItems += itemQuantity

@@ -9,7 +9,7 @@ export default class AbilityTemplate extends MeasuredTemplatePF {
    * @return {AbilityTemplate|null}     The template object, or null if the item does not produce a template
    */
   static fromItem(item, multiplier = 1, rollData = {}, optionalData = {}) {
-    const target = getProperty(item.item.system, "measureTemplate") || {};
+    const target = foundry.utils.getProperty(item.item.system, "measureTemplate") || {};
     const templateShape = D35E.areaTargetTypes[target.type];
     if (!templateShape) return null;
     let baseSize = new Roll35e(`${target.size}`, rollData).roll().total;

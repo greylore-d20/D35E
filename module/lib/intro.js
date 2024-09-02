@@ -1680,7 +1680,7 @@
         if (element.currentStyle) { //IE
             propValue = element.currentStyle[propName];
         } else if (document.defaultView && document.defaultView.getComputedStyle) { //Others
-            propValue = document.defaultView.getComputedStyle(element, null).getPropertyValue(propName);
+            propValue = document.defaultView.getComputedStyle(element, null).foundry.utils.getPropertyValue(propName);
         }
 
         //Prevent exception in IE

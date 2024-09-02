@@ -9,13 +9,13 @@ export class ItemEnhancements extends ItemExtension {
   prepareUpdateData(updateData, srcData, rollData) {
     this.#updateCalculateEnhancementData(rollData, updateData);
     this.#updateCalculatePriceData(updateData, rollData);
-    let _enhancements = duplicate(getProperty(srcData, `system.enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(srcData, `system.enhancements.items`) || []);
     this.#updateBaseEnhancement(updateData, _enhancements, this.item.type, srcData);
     this.#updateAlignmentEnhancement(updateData, _enhancements, this.item.type, srcData);
   }
 
   async getEnhancementItem(tag) {
-    const enhancements = getProperty(this.item.system, `enhancements.items`) || [];
+    const enhancements = foundry.utils.getProperty(this.item.system, `enhancements.items`) || [];
     let itemData = enhancements.find((i) => createTag(i.name) === tag);
     if (itemData != null) {
       return ItemEnhancementHelper.getEnhancementItemFromData(itemData, this.item.actor, this.item.isOwner);
@@ -25,8 +25,8 @@ export class ItemEnhancements extends ItemExtension {
   async useEnhancementItem(item) {
     let chargeCost = item.system?.uses?.chargesPerUse !== undefined ? item.system.uses.chargesPerUse : item.chargeCost;
     let chargesLeft = item.system?.uses?.value || 0;
-    if (getProperty(this.item.system, "enhancements.uses.commonPool")) {
-      if (getProperty(this.item.system, "enhancements.uses.value") < chargeCost) {
+    if (foundry.utils.getProperty(this.item.system, "enhancements.uses.commonPool")) {
+      if (foundry.utils.getProperty(this.item.system, "enhancements.uses.value") < chargeCost) {
         return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoCharges").format(this.item.name));
       }
     } else {
@@ -34,16 +34,16 @@ export class ItemEnhancements extends ItemExtension {
         return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoCharges").format(this.item.name));
       }
     }
-    if (getProperty(this.item.system, "enhancements.clFormula")) {
+    if (foundry.utils.getProperty(this.item.system, "enhancements.clFormula")) {
       item.system.baseCl = new Roll35e(
-        getProperty(this.item.system, "enhancements.clFormula"),
+        foundry.utils.getProperty(this.item.system, "enhancements.clFormula"),
         this.item.actor.getRollData()
       ).roll().total;
     }
     if (item.system.save) {
       let ablMod = 0;
-      if (getProperty(this.item.system, "enhancements.spellcastingAbility") !== "")
-        ablMod = getProperty(
+      if (foundry.utils.getProperty(this.item.system, "enhancements.spellcastingAbility") !== "")
+        ablMod = foundry.utils.getProperty(
           this.item.actor.system,
           `abilities.${this.item.system.enhancements.spellcastingAbility}.mod`
         );
@@ -52,12 +52,12 @@ export class ItemEnhancements extends ItemExtension {
 
     let roll = await item.use({ ev: event, skipDialog: event.shiftKey, temporaryItem: true }, this.item.actor, true);
     if (roll.wasRolled) {
-      if (getProperty(this.item.system, "enhancements.uses.commonPool")) {
+      if (foundry.utils.getProperty(this.item.system, "enhancements.uses.commonPool")) {
         let updateData = {};
         updateData[`system.enhancements.uses.value`] =
-          getProperty(this.item.system, "enhancements.uses.value") - chargeCost;
-        updateData[`system.uses.value`] = getProperty(this.item.system, "enhancements.uses.value") - chargeCost;
-        updateData[`system.uses.max`] = getProperty(this.item.system, "enhancements.uses.max");
+          foundry.utils.getProperty(this.item.system, "enhancements.uses.value") - chargeCost;
+        updateData[`system.uses.value`] = foundry.utils.getProperty(this.item.system, "enhancements.uses.value") - chargeCost;
+        updateData[`system.uses.max`] = foundry.utils.getProperty(this.item.system, "enhancements.uses.max");
         await this.item.update(updateData);
       } else {
         await this.item.enhancements.addEnhancementCharges(item, -1 * chargeCost);
@@ -67,7 +67,7 @@ export class ItemEnhancements extends ItemExtension {
 
   async addEnhancementCharges(item, charges) {
     let updateData = {};
-    let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(this.item.system, `enhancements.items`) || []);
     _enhancements
       .filter(function (obj) {
         return createTag(obj.name) === createTag(item.name);
@@ -84,7 +84,7 @@ export class ItemEnhancements extends ItemExtension {
     if (this.hasEnhancement(itemData.name)) return;
 
     const updateData = {};
-    let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(this.item.system, `enhancements.items`) || []);
     let enhancement = await ItemEnhancementConverter.toEnhancement(itemData, type);
     if (enhancement.id) enhancement._id = this.item._id + "-" + enhancement.id;
     _enhancements.push(enhancement);
@@ -98,7 +98,7 @@ export class ItemEnhancements extends ItemExtension {
     if (this.hasEnhancement(itemData.name)) return;
 
     const updateData = {};
-    let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(this.item.system, `enhancements.items`) || []);
     let enhancement = await ItemEnhancementConverter.toEnhancementBuff(itemData);
     if (enhancement.id) enhancement._id = this.item._id + "-" + enhancement.id;
     _enhancements.push(enhancement);
@@ -110,7 +110,7 @@ export class ItemEnhancements extends ItemExtension {
 
   async getEnhancementFromData(itemData) {
     const updateData = {};
-    let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(this.item.system, `enhancements.items`) || []);
     const enhancement = duplicate(itemData);
     if (enhancement._id) enhancement.id = this.item._id + "-" + itemData._id;
     _enhancements.push(enhancement);
@@ -127,13 +127,13 @@ export class ItemEnhancements extends ItemExtension {
 
   hasEnhancement(name) {
     const tag = createTag(name);
-    return (getProperty(this.item.system, `enhancements.items`) || []).some((i) => createTag(i.name) === tag);
+    return (foundry.utils.getProperty(this.item.system, `enhancements.items`) || []).some((i) => createTag(i.name) === tag);
   }
 
   async updateBaseItemName(stopUpdates = false) {
     const updateData = {};
     //game.D35E.logger.log("updating name")
-    let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(this.item.system, `enhancements.items`) || []);
     this.#preUpdateMagicItemName(updateData, _enhancements, true);
     this.#preUpdateMagicItemProperties(updateData, _enhancements, true);
     await this.item.update(updateData, { stopUpdates: stopUpdates });
@@ -141,7 +141,7 @@ export class ItemEnhancements extends ItemExtension {
 
   async deleteEnhancement(enhancementId) {
     const updateData = {};
-    let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(this.item.system, `enhancements.items`) || []);
     _enhancements = _enhancements.filter(function (obj) {
       return createTag(obj.name) !== enhancementId;
     });
@@ -159,7 +159,7 @@ export class ItemEnhancements extends ItemExtension {
    */
   async updateEnhancement(enhancementId, enhancementUpdateData) {
     const updateData = {};
-    let _enhancements = duplicate(getProperty(this.item.system, `enhancements.items`) || []);
+    let _enhancements = duplicate(foundry.utils.getProperty(this.item.system, `enhancements.items`) || []);
     _enhancements
       .filter(function (obj) {
         return createTag(obj.name) === enhancementId;
@@ -223,16 +223,16 @@ export class ItemEnhancements extends ItemExtension {
 
   #preUpdateMagicItemName(updateData, _enhancements, force = false, useIdentifiedName = false) {
     if (
-      (getProperty(this.item.system, "enhancements") !== undefined &&
-        getProperty(this.item.system, "enhancements.automation") !== undefined &&
-        getProperty(this.item.system, "enhancements.automation") !== null) ||
+      (foundry.utils.getProperty(this.item.system, "enhancements") !== undefined &&
+        foundry.utils.getProperty(this.item.system, "enhancements.automation") !== undefined &&
+        foundry.utils.getProperty(this.item.system, "enhancements.automation") !== null) ||
       force
     ) {
-      if (getProperty(this.item.system, "enhancements.automation.updateName") || force) {
+      if (foundry.utils.getProperty(this.item.system, "enhancements.automation.updateName") || force) {
         let baseName =
-          (useIdentifiedName && getProperty(this.item.system, "identifiedName")) ||
-          getProperty(this.item.system, "unidentified.name");
-        if (getProperty(this.item.system, "unidentified.name") === "") {
+          (useIdentifiedName && foundry.utils.getProperty(this.item.system, "identifiedName")) ||
+          foundry.utils.getProperty(this.item.system, "unidentified.name");
+        if (foundry.utils.getProperty(this.item.system, "unidentified.name") === "") {
           updateData[`system.unidentified.name`] = this.item.name;
           baseName = this.item.name;
         }
@@ -243,15 +243,15 @@ export class ItemEnhancements extends ItemExtension {
 
   #preUpdateMagicItemProperties(updateData, _enhancements, force = false) {
     if (
-      (getProperty(this.item.system, "enhancements") !== undefined &&
-        getProperty(this.item.system, "enhancements.automation") !== undefined &&
-        getProperty(this.item.system, "enhancements.automation") !== null) ||
+      (foundry.utils.getProperty(this.item.system, "enhancements") !== undefined &&
+        foundry.utils.getProperty(this.item.system, "enhancements.automation") !== undefined &&
+        foundry.utils.getProperty(this.item.system, "enhancements.automation") !== null) ||
       force
     ) {
-      if (getProperty(this.item.system, "enhancements.automation.updateName") || force) {
+      if (foundry.utils.getProperty(this.item.system, "enhancements.automation.updateName") || force) {
         let basePrice = this.item.system.unidentified.price;
-        if (!getProperty(this.item.system, "unidentified.price")) {
-          updateData[`system.unidentified.price`] = getProperty(this.item.system, "price");
+        if (!foundry.utils.getProperty(this.item.system, "unidentified.price")) {
+          updateData[`system.unidentified.price`] = foundry.utils.getProperty(this.item.system, "price");
           basePrice = this.item.system.price;
         }
         updateData[`system.price`] = this.#buildPrice(basePrice, _enhancements);
@@ -329,28 +329,28 @@ export class ItemEnhancements extends ItemExtension {
   }
 
   #updateCalculateEnhancementData(rollData, data) {
-    rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.item.system, "enh");
-    let rollFormula = getProperty(this.item.system, "enhIncreaseFormula");
+    rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : foundry.utils.getProperty(this.item.system, "enh");
+    let rollFormula = foundry.utils.getProperty(this.item.system, "enhIncreaseFormula");
     if (
       data["system.enhIncreaseFormula"] != null &&
-      data["system.enhIncreaseFormula"] !== getProperty(this.item.system, "enhIncreaseFormula")
+      data["system.enhIncreaseFormula"] !== foundry.utils.getProperty(this.item.system, "enhIncreaseFormula")
     )
       rollFormula = data["system.enhIncreaseFormula"];
     if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {
       data["system.enhIncrease"] = new Roll35e(rollFormula, rollData).roll().total;
     }
-    rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : getProperty(this.item.system, "enh");
+    rollData.enhancement = data["system.enh"] !== undefined ? data["system.enh"] : foundry.utils.getProperty(this.item.system, "enh");
     rollData.enhIncrease =
       data["system.enhIncrease"] !== undefined
         ? data["system.enhIncrease"]
-        : getProperty(this.item.system, "enhIncrease");
+        : foundry.utils.getProperty(this.item.system, "enhIncrease");
   }
 
   #updateCalculatePriceData(data, rollData) {
-    let rollFormula = getProperty(this.item.system, "priceFormula");
+    let rollFormula = foundry.utils.getProperty(this.item.system, "priceFormula");
     if (
       data["system.priceFormula"] != null &&
-      data["system.priceFormula"] !== getProperty(this.item.system, "priceFormula")
+      data["system.priceFormula"] !== foundry.utils.getProperty(this.item.system, "priceFormula")
     )
       rollFormula = data["system.priceFormula"];
     if (rollFormula !== undefined && rollFormula !== null && rollFormula !== "") {

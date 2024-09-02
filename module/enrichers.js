@@ -23,7 +23,7 @@ export class EnrichersHelper {
           console.log("D35E | Enriching Linked Description");
           let item = await fromUuid(match[1]);
           const a = document.createElement("div");
-          a.innerHTML = await TextEditor.enrichHTML(getProperty(item, match[2]), { async: true, rollData: item.getActorItemRollData() });
+          a.innerHTML = await TextEditor.enrichHTML(foundry.utils.getProperty(item, match[2]), { async: true, rollData: item.getActorItemRollData() });
           return a;
         },
       },

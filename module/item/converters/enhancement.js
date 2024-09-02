@@ -45,12 +45,12 @@ export class ItemEnhancementConverter {
         // Set activation method
         system.activation.type = "standard";
 
-        system.measureTemplate = getProperty(origData, "system.measureTemplate");
+        system.measureTemplate = foundry.utils.getProperty(origData, "system.measureTemplate");
 
 
         // Set damage formula
         system.actionType = origData.system.actionType;
-        for (let d of getProperty(origData, "system.damage.parts")) {
+        for (let d of foundry.utils.getProperty(origData, "system.damage.parts")) {
             d[0] = d[0].replace(/@sl/g, slcl[0]);
             system.damage.parts.push(d);
         }
@@ -79,7 +79,7 @@ export class ItemEnhancementConverter {
         ItemSpellHelper.calculateSpellCasterLevelLabels(slcl);
 
         // Set description
-        system.description.value = getProperty(origData, "data.description.value");
+        system.description.value = foundry.utils.getProperty(origData, "data.description.value");
 
         return newItemData;
     }
@@ -122,7 +122,7 @@ export class ItemEnhancementConverter {
         }
 
 
-        system.description.value = getProperty(origData, "system.description.value");
+        system.description.value = foundry.utils.getProperty(origData, "system.description.value");
 
         return newItemData;
     }

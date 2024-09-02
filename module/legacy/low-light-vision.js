@@ -7,7 +7,7 @@ Object.defineProperties(Token.prototype, {
   actorVision: {
     get() {
       return {
-        lowLight: getProperty(this.data, "flags.pf1.lowLightVision"),
+        lowLight: foundry.utils.getProperty(this.data, "flags.pf1.lowLightVision"),
       };
     }
   }
@@ -17,7 +17,7 @@ SightLayer.prototype.hasLowLight = function() {
   const relevantTokens = canvas.tokens.placeables.filter(o => {
     return o.actor && o.actor.testUserPermission(game.user, "OBSERVER");
   });
-  const lowLightTokens = relevantTokens.filter(o => getProperty(o, "actorVision.lowLight"));
+  const lowLightTokens = relevantTokens.filter(o => foundry.utils.getProperty(o, "actorVision.lowLight"));
   if (game.user.isGM) {
     return lowLightTokens.filter(o => o._controlled).length > 0;
   }

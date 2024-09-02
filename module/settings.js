@@ -577,7 +577,7 @@ export const registerSystemSettings = function() {
     onChange: () => {
       let promises = [];
       const actors = [
-        ...Array.from(game.actors.contents.filter((o) => getProperty(o.data, "token.actorLink"))),
+        ...Array.from(game.actors.contents.filter((o) => foundry.utils.getProperty(o.data, "token.actorLink"))),
         ...Object.values(game.actors.tokens),
       ];
       for (let actor of actors) {

@@ -18,7 +18,7 @@ export class WeaponSheet35E extends ItemSheetPF {
             if (typeof v === "object") sheetData.weaponCategories.types[k] = v._label;
         }
         const type = this.item.system.weaponType;
-        if (hasProperty(CONFIG.D35E.weaponTypes, type)) {
+        if (foundry.utils.hasProperty(CONFIG.D35E.weaponTypes, type)) {
             for (let [k, v] of Object.entries(CONFIG.D35E.weaponTypes[type])) {
                 if (!k.startsWith("_")) sheetData.weaponCategories.subTypes[k] = v;
             }

@@ -14,7 +14,7 @@ export class TokenQuickActions {
     
     let quickActions = '<div class="col actions"><div class="below">'
     let ammoCounter = '<div class="col actions"><div class="below" style="bottom: -60px">'
-    let items = actor.data.items.filter(o => (o.type === "attack" || o.type === "spell" || o.type === "full-attack" || o.type === "feat") && getProperty(o.data, "data.showInQuickbar") === true).sort((a, b) => {      return a.data.sort - b.data.sort;
+    let items = actor.data.items.filter(o => (o.type === "attack" || o.type === "spell" || o.type === "full-attack" || o.type === "feat") && foundry.utils.getProperty(o.data, "data.showInQuickbar") === true).sort((a, b) => {      return a.data.sort - b.data.sort;
     });
     items.forEach(function(item) {
       const icon = item.img;
@@ -25,7 +25,7 @@ export class TokenQuickActions {
       const type = item.type;
       quickActions += `<div id="${type}-${item._id}" class="control-icon token-quick-action"><img src="${icon}" width="36" height="36" title="${title}"></div>`;
     });
-    let ammo = actor.data.items.filter(o => (o.type === "loot") && getProperty(o.data, "data.showInQuickbar") === true).sort((a, b) => {      return a.data.sort - b.data.sort;
+    let ammo = actor.data.items.filter(o => (o.type === "loot") && foundry.utils.getProperty(o.data, "data.showInQuickbar") === true).sort((a, b) => {      return a.data.sort - b.data.sort;
     });
 
     ammo.forEach(function(item) {
@@ -63,7 +63,7 @@ export class TokenQuickActions {
       return;
 
     let quickActions = '<div class="col actions"><div class="above">'
-    let items = actor.data.items.filter(o => (o.type === "buff") && getProperty(o, "data.active") === true).sort((a, b) => {      return a.data.sort - b.data.sort;
+    let items = actor.data.items.filter(o => (o.type === "buff") && foundry.utils.getProperty(o, "data.active") === true).sort((a, b) => {      return a.data.sort - b.data.sort;
     });
     items.forEach(function(item) {
       const icon = item.img;

@@ -70,15 +70,15 @@ export class ActorPF extends Actor {
   }
 
   isInvisible() {
-    return getProperty(this.system, `attributes.conditions.invisible`) || false;
+    return foundry.utils.getProperty(this.system, `attributes.conditions.invisible`) || false;
   }
 
   isBanished() {
-    return getProperty(this.system, `attributes.conditions.banished`) || false;
+    return foundry.utils.getProperty(this.system, `attributes.conditions.banished`) || false;
   }
 
   get spellFailure() {
-    if (this.items == null) return getProperty(this.system,
+    if (this.items == null) return foundry.utils.getProperty(this.system,
         'attributes.arcaneSpellFailure') || 0;
     return this.items.filter((o) => {
       return o.type === 'equipment' && o.system.equipped === true &&
@@ -87,7 +87,7 @@ export class ActorPF extends Actor {
       if (typeof o.system.spellFailure === 'number') return cur +
           o.system.spellFailure;
       return cur;
-    }, getProperty(this.system, 'attributes.arcaneSpellFailure') || 0);
+    }, foundry.utils.getProperty(this.system, 'attributes.arcaneSpellFailure') || 0);
   }
 
   get auras() {
@@ -105,10 +105,10 @@ export class ActorPF extends Actor {
     if (this.items == null) return null;
     return this.items.filter(
         (o) =>
-            (o.type === 'buff' && getProperty(o.system, 'active') &&
-                getProperty(o.system, 'timeline.enabled')) ||
-            (o.type === 'aura' && getProperty(o.system, 'active') &&
-                !getProperty(o.system, 'sourceTokenId')),
+            (o.type === 'buff' && foundry.utils.getProperty(o.system, 'active') &&
+                foundry.utils.getProperty(o.system, 'timeline.enabled')) ||
+            (o.type === 'aura' && foundry.utils.getProperty(o.system, 'active') &&
+                !foundry.utils.getProperty(o.system, 'sourceTokenId')),
     );
   }
 
@@ -126,7 +126,7 @@ export class ActorPF extends Actor {
     if (this.items == null) return null;
     return this.items.find(
         (o) => o.type === 'class' &&
-            (getProperty(o.system, 'classType') === 'racial' ||
+            (foundry.utils.getProperty(o.system, 'classType') === 'racial' ||
                 o.name.endsWith('*')),
     );
   }
@@ -449,7 +449,7 @@ export class ActorPF extends Actor {
     }
 
     preparedData.senses = duplicate(
-        getProperty(this.system, 'attributes.senses')) || {};
+        foundry.utils.getProperty(this.system, 'attributes.senses')) || {};
     if (!preparedData.senses.modified) preparedData.senses.modified = {};
     for (let i of this.items.values()) {
       if (!i.system.hasOwnProperty('senses')) continue;
@@ -630,7 +630,7 @@ export class ActorPF extends Actor {
    * data
    */
   _prepareCharacterData(actorData) {
-    if (!hasProperty(actorData.system, 'details.level.value')) return;
+    if (!foundry.utils.hasProperty(actorData.system, 'details.level.value')) return;
 
     const data = actorData.system;
 
@@ -647,7 +647,7 @@ export class ActorPF extends Actor {
    * Prepare NPC type specific data
    */
   _prepareNPCData(npcData) {
-    if (!hasProperty(npcData.system, 'details.cr')) return;
+    if (!foundry.utils.hasProperty(npcData.system, 'details.cr')) return;
 
     // Kill Experience
     npcData.system.details.xp.value = this.getCRExp(
@@ -716,8 +716,8 @@ export class ActorPF extends Actor {
 
   _onUpdate(updated, options, userId, context) {
     if (
-        hasProperty(updated, 'system.attributes.senses.lowLight') ||
-        hasProperty(updated, 'system.attributes.senses.darkvision')
+        foundry.utils.hasProperty(updated, 'system.attributes.senses.lowLight') ||
+        foundry.utils.hasProperty(updated, 'system.attributes.senses.darkvision')
     ) {
       try {
         canvas.sight.initializeTokens();
@@ -753,7 +753,7 @@ export class ActorPF extends Actor {
       data, globalUpdateData, data1, levelUpData) {
     //LogHelper.log('ActorPF | updateClassProgressionLevel | Starting update')
     const classes = this.items.filter(
-        (o) => o.type === 'class' && getProperty(o.system, 'classType') !==
+        (o) => o.type === 'class' && foundry.utils.getProperty(o.system, 'classType') !==
             'racial').sort((a, b) => {
       return a.sort - b.sort;
     });
@@ -813,10 +813,10 @@ export class ActorPF extends Actor {
         //LogHelper.log(`ActorPF | updateClassProgressionLevel | Updated class item ${_class.name}`)
       }
 
-      for (let [k, s] of Object.entries(getProperty(data, 'system.skills'))) {
+      for (let [k, s] of Object.entries(foundry.utils.getProperty(data, 'system.skills'))) {
         linkData(data, globalUpdateData, `system.skills.${k}.points`,
             updateData[`system.skills.${k}.points`] || 0);
-        for (let k2 of Object.keys(getProperty(s, 'subSkills') || {})) {
+        for (let k2 of Object.keys(foundry.utils.getProperty(s, 'subSkills') || {})) {
           linkData(
               data,
               globalUpdateData,
@@ -850,7 +850,7 @@ export class ActorPF extends Actor {
       const itemCustomTag = createTag(item.system.customTag);
       let curUses = item.system.uses;
 
-      if (getProperty(this.system, 'resources') == null) setProperty(
+      if (foundry.utils.getProperty(this.system, 'resources') == null) foundry.utils.setProperty(
           this.system, 'resources', {});
       if (this.system.resources[itemTag] == null)
         this.system.resources[itemTag] = {
@@ -905,7 +905,7 @@ export class ActorPF extends Actor {
       const itemTag = createTag(item.data.name);
       let curUses = item.system.uses;
 
-      if (getProperty(this.system, 'resources') == null) setProperty(
+      if (foundry.utils.getProperty(this.system, 'resources') == null) foundry.utils.setProperty(
           this.system, 'resources', {});
       if (this.system.resources[itemTag] == null)
         this.system.resources[itemTag] = {
@@ -1089,8 +1089,8 @@ export class ActorPF extends Actor {
     let isSpeed = false;
     let isDistance = false;
     let _enhancements = duplicate(
-        getProperty(item.system, `enhancements.items`) || []);
-    let identified = getProperty(item.system, `identified`);
+        foundry.utils.getProperty(item.system, `enhancements.items`) || []);
+    let identified = foundry.utils.getProperty(item.system, `identified`);
     // Get attack template
     let attackData = {data: {}};
     for (const template of game.system.template.Item.attack.templates) {
@@ -1191,7 +1191,7 @@ export class ActorPF extends Actor {
     // Add additional attacks
     let extraAttacks = [];
     for (let a = 5; a <
-    (getProperty(this.system, "attributes.bab.nonepic") || 0); a += 5) {
+    (foundry.utils.getProperty(this.system, "attributes.bab.nonepic") || 0); a += 5) {
       extraAttacks = extraAttacks.concat([
         [
           `-${a}`,
@@ -1206,7 +1206,7 @@ export class ActorPF extends Actor {
         0) attackData['system.attackParts'] = extraAttacks;
 
     // Add ability modifiers
-    const isMelee = getProperty(item.system, 'weaponSubtype') !== 'ranged';
+    const isMelee = foundry.utils.getProperty(item.system, 'weaponSubtype') !== 'ranged';
     if (isMelee) attackData['system.ability.attack'] = 'str';
     else attackData['system.ability.attack'] = 'dex';
     if (isMelee || item.system.properties['thr'] === true) {
@@ -1229,7 +1229,7 @@ export class ActorPF extends Actor {
         dieSides = parseInt(RegExp.$2);
         part = `sizeRoll(${dieCount}, ${dieSides}, @sizeDifference, @critMult)`;
       }
-      const bonusFormula = getProperty(item.system, 'weaponData.damageFormula');
+      const bonusFormula = foundry.utils.getProperty(item.system, 'weaponData.damageFormula');
       if (bonusFormula != null &&
           bonusFormula.length) part = `${part} + ${bonusFormula}`;
       attackData['system.damage.parts'] = [
@@ -1242,7 +1242,7 @@ export class ActorPF extends Actor {
 
     // Add attack bonus formula
     {
-      const bonusFormula = getProperty(item.system, 'weaponData.attackFormula');
+      const bonusFormula = foundry.utils.getProperty(item.system, 'weaponData.attackFormula');
       if (bonusFormula !== undefined && bonusFormula !== null &&
           bonusFormula.length)
         attackData['system.attackBonus'] = bonusFormula;
@@ -1322,14 +1322,14 @@ export class ActorPF extends Actor {
     }
 
     // Add range
-    if (!isMelee && getProperty(item.system, 'weaponData.range') != null) {
+    if (!isMelee && foundry.utils.getProperty(item.system, 'weaponData.range') != null) {
       attackData['system.range.units'] = 'ft';
-      let range = getProperty(item.system, 'weaponData.range');
+      let range = foundry.utils.getProperty(item.system, 'weaponData.range');
       if (isDistance) range = range * 2;
       attackData['system.range.value'] = range.toString();
     }
 
-    if (hasProperty(attackData,
+    if (foundry.utils.hasProperty(attackData,
         'system.templates')) delete attackData['system.templates'];
 
     let attacks = [];
@@ -1380,7 +1380,7 @@ export class ActorPF extends Actor {
       parts: [],
       dynamicBonuses: dynamicBonuses,
       data: {
-        base: getProperty(this.system, 'attributes.bab.base'),
+        base: foundry.utils.getProperty(this.system, 'attributes.bab.base'),
       },
       title: game.i18n.localize('D35E.BAB'),
       speaker: ChatMessage.getSpeaker({actor: this}),
@@ -1907,14 +1907,14 @@ export class ActorPF extends Actor {
 
     const _roll = async function(
         saveType, ability, baseAbility, target, form, props, rollMode) {
-      let savingThrowBonus = getProperty(this.system,
+      let savingThrowBonus = foundry.utils.getProperty(this.system,
               `attributes.savingThrows.${saveType}.total`) || 0,
           optionalFeatIds = [],
           optionalFeatRanges = new Map(),
           saveFieldName = `system.attributes.savingThrows.${saveType}.total`;
-      savingThrowBonus -= getProperty(this.system,
+      savingThrowBonus -= foundry.utils.getProperty(this.system,
           `abilities.${baseAbility}.mod`) || 0;
-      let savingThrowAbilityBonus = getProperty(this.system,
+      let savingThrowAbilityBonus = foundry.utils.getProperty(this.system,
           `abilities.${ability}.mod`) || 0;
       let savingThrowManualBonus = 0;
       // Get data from roll form
@@ -2577,8 +2577,8 @@ export class ActorPF extends Actor {
 
     const _roll = async function(target, form, props) {
       let grappleModTotal =
-              getProperty(this.system, 'attributes.cmb.total') -
-              (getProperty(this.system, 'attributes.energyDrain') || 0),
+              foundry.utils.getProperty(this.system, 'attributes.cmb.total') -
+              (foundry.utils.getProperty(this.system, 'attributes.energyDrain') || 0),
           optionalFeatIds = [],
           optionalFeatRanges = new Map(),
           rollMode = null;
@@ -2785,28 +2785,28 @@ export class ActorPF extends Actor {
       if (change.field.indexOf('$') !== -1) {
         changeId = change.field.substr(1);
         changeVal = Item35E._fillTemplate(change.formula, rollData);
-        setProperty(rollData, changeId, changeVal);
+        foundry.utils.setProperty(rollData, changeId, changeVal);
       } else if (change.field.indexOf('&') !== -1) {
         changeId = change.field.substr(1);
         changeVal = Item35E._fillTemplate(change.formula, rollData);
-        setProperty(
+        foundry.utils.setProperty(
             rollData,
             change.field.substr(1),
-            (getProperty(rollData, change.field.substr(1)) || '0') + ' + ' +
+            (foundry.utils.getProperty(rollData, change.field.substr(1)) || '0') + ' + ' +
             changeVal,
         );
       } else {
         changeId = change.field;
         changeVal = parseInt(change.formula || 0);
-        setProperty(rollData, change.field,
-            (getProperty(rollData, change.field) || 0) + changeVal);
+        foundry.utils.setProperty(rollData, change.field,
+            (foundry.utils.getProperty(rollData, change.field) || 0) + changeVal);
       }
       var listId = changeId.indexOf('.') !== -1 ? `${changeId.replace('.',
           'List.')}` : `${changeId}List`;
-      setProperty(
+      foundry.utils.setProperty(
           rollData,
           listId,
-          (getProperty(rollData, listId) || []).concat(
+          (foundry.utils.getProperty(rollData, listId) || []).concat(
               [{value: changeVal, sourceName: change['sourceName']}]),
       );
     });
@@ -2845,7 +2845,7 @@ export class ActorPF extends Actor {
       data: {
         mod: abl.mod,
         checkMod: abl.checkMod,
-        drain: getProperty(this.system, 'attributes.energyDrain') || 0,
+        drain: foundry.utils.getProperty(this.system, 'attributes.energyDrain') || 0,
       },
       title: game.i18n.localize('D35E.AbilityTest').format(label),
       speaker: ChatMessage.getSpeaker({actor: this}),
@@ -2869,7 +2869,7 @@ export class ActorPF extends Actor {
     //     return ui.notifications.warn(game.i18n.localize("D35E.CannotTurnUndead").format(this.name));
     // }
     let rolls = [];
-    let knowledgeMod = getProperty(this.system, 'skills.kre.rank') > 5 ? 2 : 0;
+    let knowledgeMod = foundry.utils.getProperty(this.system, 'skills.kre.rank') > 5 ? 2 : 0;
     let chaMod = this.system.abilities.cha.mod;
     let maxHdResult = new Roll35e('1d20 + @chaMod + @kMod',
         {kMod: knowledgeMod, chaMod: chaMod}).roll();
@@ -2946,7 +2946,7 @@ export class ActorPF extends Actor {
     createCustomChatMessage('systems/D35E/templates/chat/turn-undead.html',
         data, chatData, {rolls: rolls});
     let updateData = {};
-    updateData[`system.attributes.turnUndeadUses`] = getProperty(this.system,
+    updateData[`system.attributes.turnUndeadUses`] = foundry.utils.getProperty(this.system,
         'attributes.turnUndeadUses') - 1;
     this.update(updateData);
   }
@@ -2962,7 +2962,7 @@ export class ActorPF extends Actor {
 
     // Add contextual AC notes
     let acNotes = [];
-    if (getProperty(this.system, 'attributes.acNotes')?.length > 0)
+    if (foundry.utils.getProperty(this.system, 'attributes.acNotes')?.length > 0)
       acNotes = this.system.attributes.acNotes.split(/[\n\r]+/);
     const acNoteObjects = this.getContextNotes('misc.ac');
     for (let noteObj of acNoteObjects) {
@@ -2974,7 +2974,7 @@ export class ActorPF extends Actor {
 
     // Add contextual CMD notes
     let cmdNotes = [];
-    if (getProperty(this.system, 'attributes.cmdNotes')?.length > 0)
+    if (foundry.utils.getProperty(this.system, 'attributes.cmdNotes')?.length > 0)
       cmdNotes = this.system.attributes.cmdNotes.split(/[\n\r]+/);
     const cmdNoteObjects = this.getContextNotes('misc.cmd');
     for (let noteObj of cmdNoteObjects) {
@@ -2986,7 +2986,7 @@ export class ActorPF extends Actor {
 
     // Add contextual SR notes
     let srNotes = [];
-    if (getProperty(this.system, 'attributes.srNotes')?.length > 0)
+    if (foundry.utils.getProperty(this.system, 'attributes.srNotes')?.length > 0)
       srNotes = this.system.attributes.srNotes.split(/[\n\r]+/);
     const srNoteObjects = this.getContextNotes('misc.sr');
     for (let noteObj of srNoteObjects) {
@@ -2999,22 +2999,22 @@ export class ActorPF extends Actor {
     const reSplit = CONFIG.D35E.re.traitSeparator;
     // Damage Reduction
     let drNotes = [];
-    if (getProperty(this.system, 'traits.dr')?.length) {
+    if (foundry.utils.getProperty(this.system, 'traits.dr')?.length) {
       drNotes = this.system.traits.dr.split(reSplit);
     }
     // Energy Resistance
     let energyResistance = [];
-    if (getProperty(this.system, 'traits.eres')?.length) {
+    if (foundry.utils.getProperty(this.system, 'traits.eres')?.length) {
       energyResistance.push(...this.system.traits.eres.split(reSplit));
     }
     // Damage Immunity
-    if (getProperty(this.system, 'traits.di.value')?.length ||
-        getProperty(this.system, 'traits.di.custom')?.length) {
+    if (foundry.utils.getProperty(this.system, 'traits.di.value')?.length ||
+        foundry.utils.getProperty(this.system, 'traits.di.custom')?.length) {
       const values = [
         ...this.system.traits.di.value.map((obj) => {
           return CONFIG.D35E.damageTypes[obj];
         }),
-        ...(getProperty(this.system, 'traits.di.custom')?.length > 0
+        ...(foundry.utils.getProperty(this.system, 'traits.di.custom')?.length > 0
             ? this.system.traits.di.custom.split(reSplit)
             : []),
       ];
@@ -3022,13 +3022,13 @@ export class ActorPF extends Actor {
           ...values.map((o) => game.i18n.localize('D35E.ImmuneTo').format(o)));
     }
     // Damage Vulnerability
-    if (getProperty(this.system, 'traits.dv.value')?.length ||
-        getProperty(this.system, 'traits.dv.custom')?.length) {
+    if (foundry.utils.getProperty(this.system, 'traits.dv.value')?.length ||
+        foundry.utils.getProperty(this.system, 'traits.dv.custom')?.length) {
       const values = [
         ...this.system.traits.dv.value.map((obj) => {
           return CONFIG.D35E.damageTypes[obj];
         }),
-        ...(getProperty(this.system, 'traits.dv.custom')?.length > 0
+        ...(foundry.utils.getProperty(this.system, 'traits.dv.custom')?.length > 0
             ? this.system.traits.dv.custom.split(reSplit)
             : []),
       ];
@@ -3062,8 +3062,8 @@ export class ActorPF extends Actor {
     };
     // Add regeneration and fast healing
     if (
-        (getProperty(d, 'traits.fastHealingTotal') || '')?.length ||
-        (getProperty(d, 'traits.regenTotal') || '')?.length
+        (foundry.utils.getProperty(d, 'traits.fastHealingTotal') || '')?.length ||
+        (foundry.utils.getProperty(d, 'traits.regenTotal') || '')?.length
     ) {
       data.regen = {
         regen: d.traits.regenTotal,
@@ -3091,7 +3091,7 @@ export class ActorPF extends Actor {
   } = {}) {
     const _roll = async function(acType, form) {
       let rollModifiers = [];
-      let ac = getProperty(this.system, `attributes.ac.${acType}.total`) || 0,
+      let ac = foundry.utils.getProperty(this.system, `attributes.ac.${acType}.total`) || 0,
           optionalFeatIds = [],
           optionalFeatRanges = new Map(),
           applyHalf = false,
@@ -3275,11 +3275,11 @@ export class ActorPF extends Actor {
       rollModes: CONFIG.Dice.rollModes,
       applyHalf: ev.applyHalf,
       touch: touch,
-      baseConcealment: getProperty(this.system, 'attributes.concealment.total'),
-      isAlreadyProne: getProperty(this.system, 'attributes.conditions.prone'),
-      baseConcealmentAtLeast20: getProperty(this.system,
+      baseConcealment: foundry.utils.getProperty(this.system, 'attributes.concealment.total'),
+      isAlreadyProne: foundry.utils.getProperty(this.system, 'attributes.conditions.prone'),
+      baseConcealmentAtLeast20: foundry.utils.getProperty(this.system,
           'attributes.concealment.total') > 20,
-      baseConcealmentAtLeast50: getProperty(this.system,
+      baseConcealmentAtLeast50: foundry.utils.getProperty(this.system,
           'attributes.concealment.total') > 50,
       defenseFeats: this.combatChangeItems.filter((o) =>
           ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, 'defense'),
@@ -3288,7 +3288,7 @@ export class ActorPF extends Actor {
           ItemCombatChangesHelper.canHaveCombatChanges(o, rollData,
               'defenseOptional'),
       ),
-      conditionals: getProperty(this.system, 'conditionals'),
+      conditionals: foundry.utils.getProperty(this.system, 'conditionals'),
     };
     dialogData.hasFeats = dialogData.defenseFeats.length ||
         dialogData.defenseFeatsOptional.length;
@@ -3581,7 +3581,7 @@ export class ActorPF extends Actor {
   }
 
   getSkill(key) {
-    for (let [k, s] of Object.entries(getProperty(this.system, 'skills'))) {
+    for (let [k, s] of Object.entries(foundry.utils.getProperty(this.system, 'skills'))) {
       if (k === key) return s;
       if (s.subSkills != null) {
         for (let [k2, s2] of Object.entries(s.subSkills)) {
@@ -3671,8 +3671,8 @@ export class ActorPF extends Actor {
       }
 
       if (
-          getProperty(this.system, 'attributes.saveNotes') != null &&
-          getProperty(this.system, 'attributes.saveNotes') !== ''
+          foundry.utils.getProperty(this.system, 'attributes.saveNotes') != null &&
+          foundry.utils.getProperty(this.system, 'attributes.saveNotes') !== ''
       ) {
         result.push({notes: [this.system.attributes.saveNotes], item: null});
       }
@@ -3708,8 +3708,8 @@ export class ActorPF extends Actor {
 
       if (
           miscKey === 'cmb' &&
-          getProperty(this.system, 'attributes.cmbNotes') != null &&
-          getProperty(this.system, 'attributes.cmbNotes') !== ''
+          foundry.utils.getProperty(this.system, 'attributes.cmbNotes') != null &&
+          foundry.utils.getProperty(this.system, 'attributes.cmbNotes') !== ''
       ) {
         result.push({notes: [this.system.attributes.cmbNotes], item: null});
       }
@@ -3787,7 +3787,7 @@ export class ActorPF extends Actor {
           !options.keepWeight
       ) {
         let newSize = Object.keys(CONFIG.D35E.sizeChart).
-            indexOf(getProperty(this.system, 'traits.actualSize'));
+            indexOf(foundry.utils.getProperty(this.system, 'traits.actualSize'));
         let newSizeKey = Object.keys(CONFIG.D35E.sizeChart)[newSize];
         let newSizeName = CONFIG.D35E.actorSizes[newSizeKey];
         let oldSize = Object.keys(CONFIG.D35E.sizeChart).indexOf('med');
@@ -3828,7 +3828,7 @@ export class ActorPF extends Actor {
           let spellbook = undefined;
           // We try to set spellbook to correct one
           for (let _spellbookKey of Object.keys(
-              getProperty(this.system, 'attributes.spells.spellbooks'))) {
+              foundry.utils.getProperty(this.system, 'attributes.spells.spellbooks'))) {
             let _spellbook = this.system.attributes.spells.spellbooks[_spellbookKey];
             if (_spellbook.hasSpecialSlot && _spellbook.spellcastingType ===
                 'divine') {
@@ -3848,7 +3848,7 @@ export class ActorPF extends Actor {
           if (!obj.system.spellbook) {
             // We try to set spellbook to correct one
             for (let _spellbookKey of Object.keys(
-                getProperty(this.system, 'attributes.spells.spellbooks'))) {
+                foundry.utils.getProperty(this.system, 'attributes.spells.spellbooks'))) {
               let _spellbook = this.system.attributes.spells.spellbooks[_spellbookKey];
 
               let _spellbookClass = this.system.classes[_spellbook.class] || {};
@@ -3985,12 +3985,12 @@ export class ActorPF extends Actor {
             }
             if (creationChangeValue !== null) {
               if (creationChange[0] === "name") {
-                setProperty(obj, "name", creationChangeValue)
-                setProperty(obj.system, "identifiedName", creationChangeValue)
+                foundry.utils.setProperty(obj, "name", creationChangeValue)
+                foundry.utils.setProperty(obj.system, "identifiedName", creationChangeValue)
               } else {
-                setProperty(obj.system, creationChange[0], creationChangeValue);
+                foundry.utils.setProperty(obj.system, creationChange[0], creationChangeValue);
                 if (creationChange[0] === "identifiedName") {
-                  setProperty(obj, "name", creationChangeValue)
+                  foundry.utils.setProperty(obj, "name", creationChangeValue)
                 }
               }
             } else {
@@ -3999,7 +3999,7 @@ export class ActorPF extends Actor {
             }
           }
         }
-        setProperty(obj.system, 'creationChanges', []);
+        foundry.utils.setProperty(obj.system, 'creationChanges', []);
       }
     }
     return this.createEmbeddedDocuments(embeddedName, createData, options);
@@ -4009,9 +4009,9 @@ export class ActorPF extends Actor {
    * @returns {number} The total amount of currency this actor has, in gold pieces
    */
   mergeCurrency() {
-    const carried = getProperty(this.system, 'currency');
-    const alt = getProperty(this.system, 'altCurrency');
-    const customCurrency = getProperty(this.system, 'customCurrency');
+    const carried = foundry.utils.getProperty(this.system, 'currency');
+    const alt = foundry.utils.getProperty(this.system, 'altCurrency');
+    const customCurrency = foundry.utils.getProperty(this.system, 'customCurrency');
     let baseTotal =
         (carried ? carried.pp * 10 + carried.gp + carried.sp / 10 + carried.cp /
             100 : 0) +
@@ -4090,7 +4090,7 @@ export class ActorPF extends Actor {
           data,
           {
             size: Object.keys(CONFIG.D35E.sizeChart).
-                indexOf(getProperty(data, 'traits.actualSize')) - 4,
+                indexOf(foundry.utils.getProperty(data, 'traits.actualSize')) - 4,
             uuid: this.uuid,
           },
           {inplace: false},
@@ -4103,7 +4103,7 @@ export class ActorPF extends Actor {
             data,
             {
               size: Object.keys(CONFIG.D35E.sizeChart).
-                  indexOf(getProperty(data, 'traits.actualSize')) - 4,
+                  indexOf(foundry.utils.getProperty(data, 'traits.actualSize')) - 4,
               uuid: this.uuid,
             },
             {inplace: false},
@@ -4400,7 +4400,7 @@ export class ActorPF extends Actor {
         else if (action.parameters.length === 2 && action.parameters[0] ===
             'toggle') {
           let name = cleanParam(action.parameters[1]);
-          actorUpdates[`system.attributes.conditions.${name}`] = !getProperty(
+          actorUpdates[`system.attributes.conditions.${name}`] = !foundry.utils.getProperty(
               this.system,
               `attributes.conditions.${name}`,
           );
@@ -4461,12 +4461,12 @@ export class ActorPF extends Actor {
 
           if (isActionRollable(value)) {
             actorUpdates[`${field}`] =
-                parseInt(getProperty(actionRollData,
+                parseInt(foundry.utils.getProperty(actionRollData,
                     field.replace('data', 'self')) || 0) +
                 new Roll35e(cleanParam(value), actionRollData).roll().total;
           } else {
             actorUpdates[`${field}`] =
-                parseInt(getProperty(actionRollData,
+                parseInt(foundry.utils.getProperty(actionRollData,
                     field.replace('data', 'self')) || 0) + parseInt(value);
           }
         } else if (
@@ -4479,11 +4479,11 @@ export class ActorPF extends Actor {
 
           if (isActionRollable(value)) {
             actorUpdates[`${field}`] =
-                (getProperty(actionRollData, field.replace('data', 'self')) ||
+                (foundry.utils.getProperty(actionRollData, field.replace('data', 'self')) ||
                     0) -
                 new Roll35e(cleanParam(value), actionRollData).roll().total;
           } else {
-            actorUpdates[`${field}`] = (getProperty(actionRollData,
+            actorUpdates[`${field}`] = (foundry.utils.getProperty(actionRollData,
                 field.replace('data', 'self')) || 0) - value;
           }
         } else
@@ -5143,7 +5143,7 @@ export class ActorPF extends Actor {
   async quickChangeItemQuantity(itemId, add = 1) {
     const item = this.getOwnedItem(itemId);
 
-    const curQuantity = getProperty(item.system, 'quantity') || 0;
+    const curQuantity = foundry.utils.getProperty(item.system, 'quantity') || 0;
     const newQuantity = Math.max(0, curQuantity + add);
     await item.update({'system.quantity': newQuantity});
   }
@@ -5371,7 +5371,7 @@ export class ActorPF extends Actor {
         });
 
         const minionClass = classes.find(
-            (o) => getProperty(o.system, 'classType') === 'minion');
+            (o) => foundry.utils.getProperty(o.system, 'classType') === 'minion');
         if (!!minionClass) {
           let updateObject = {};
           updateObject['_id'] = minionClass.id || minionClass._id;
@@ -5522,11 +5522,11 @@ export class ActorPF extends Actor {
             rollData.item.uses.value = itemUpdate['system.uses.value'];
           }
         }
-        if (hasProperty(item, 'system.combatChangesRange.maxFormula')) {
-          if (getProperty(item, 'system.combatChangesRange.maxFormula') !==
+        if (foundry.utils.hasProperty(item, 'system.combatChangesRange.maxFormula')) {
+          if (foundry.utils.getProperty(item, 'system.combatChangesRange.maxFormula') !==
               '') {
             let roll = new Roll35e(
-                getProperty(item, 'system.combatChangesRange.maxFormula'),
+                foundry.utils.getProperty(item, 'system.combatChangesRange.maxFormula'),
                 rollData).roll();
             hasItemUpdates = true;
             itemUpdate['system.combatChangesRange.max'] = roll.total;
@@ -5534,14 +5534,14 @@ export class ActorPF extends Actor {
           }
         }
         for (let i = 1; i <= 3; i++)
-          if (hasProperty(item,
+          if (foundry.utils.hasProperty(item,
               `system.combatChangesAdditionalRanges.slider${i}.maxFormula`)) {
-            if (getProperty(item,
+            if (foundry.utils.getProperty(item,
                     `system.combatChangesAdditionalRanges.slider${i}.maxFormula`) !==
                 '') {
               hasItemUpdates = true;
               let roll = new Roll35e(
-                  getProperty(item,
+                  foundry.utils.getProperty(item,
                       `system.combatChangesAdditionalRanges.slider${i}.maxFormula`),
                   rollData,
               ).roll();
@@ -5568,7 +5568,7 @@ export class ActorPF extends Actor {
             itemUpdate['system.enhancements.uses.value'] = itemData.enhancements.uses.max;
           }
         } else if (item.type === 'spell') {
-          const spellbook = getProperty(actorData,
+          const spellbook = foundry.utils.getProperty(actorData,
                   `attributes.spells.spellbooks.${itemData.spellbook}`),
               isSpontaneous = spellbook.spontaneous,
               usePowerPoints = spellbook.usePowerPoints;
@@ -5610,7 +5610,7 @@ export class ActorPF extends Actor {
           actorData.attributes.spells.spellbooks)) {
         if (spellbook.spontaneous) {
           for (let sl of Object.keys(CONFIG.D35E.spellLevels)) {
-            updateData[`system.attributes.spells.spellbooks.${key}.spells.spell${sl}.value`] = getProperty(
+            updateData[`system.attributes.spells.spellbooks.${key}.spells.spell${sl}.value`] = foundry.utils.getProperty(
                 actorData,
                 `attributes.spells.spellbooks.${key}.spells.spell${sl}.max`,
             );
@@ -5623,7 +5623,7 @@ export class ActorPF extends Actor {
           else rollData = actorData;
           try {
             updateData[`system.attributes.spells.spellbooks.${key}.powerPoints`] = new Roll35e(
-                getProperty(actorData,
+                foundry.utils.getProperty(actorData,
                     `attributes.spells.spellbooks.${key}.dailyPowerPointsFormula`),
                 rollData,
             ).roll().total;
@@ -5633,7 +5633,7 @@ export class ActorPF extends Actor {
         }
       }
 
-      updateData[`system.attributes.turnUndeadUses`] = getProperty(actorData,
+      updateData[`system.attributes.turnUndeadUses`] = foundry.utils.getProperty(actorData,
           `attributes.turnUndeadUsesTotal`);
     }
 
@@ -5708,9 +5708,9 @@ export class ActorPF extends Actor {
   }
 
   async syncToCompendium(manual = false) {
-    if (!getProperty(this.system, 'companionUuid')) return;
+    if (!foundry.utils.getProperty(this.system, 'companionUuid')) return;
     let apiKey = game.settings.get('D35E', 'apiKeyWorld');
-    if (getProperty(this.system,
+    if (foundry.utils.getProperty(this.system,
         'companionUsePersonalKey')) apiKey = game.settings.get('D35E',
         'apiKeyPersonal');
     if (!apiKey) return;
@@ -5742,7 +5742,7 @@ export class ActorPF extends Actor {
   }
 
   get canAskForRequest() {
-    if (!getProperty(this.system, 'companionUuid')) return false;
+    if (!foundry.utils.getProperty(this.system, 'companionUuid')) return false;
 
     let userWithCharacterIsActive = game.users.players.some(
         (u) => u.active && u.data.character === this.id);
@@ -5754,11 +5754,11 @@ export class ActorPF extends Actor {
   }
 
   get isCompanionSetUp() {
-    if (!getProperty(this.system, 'companionUuid')) return false;
+    if (!foundry.utils.getProperty(this.system, 'companionUuid')) return false;
     let apiKey = game.settings.get('D35E', 'apiKeyWorld');
     if (!apiKey) return false;
 
-    if (getProperty(this.system,
+    if (foundry.utils.getProperty(this.system,
         'companionUsePersonalKey')) apiKey = game.settings.get('D35E',
         'apiKeyPersonal');
     return apiKey || false;
@@ -5772,7 +5772,7 @@ export class ActorPF extends Actor {
       game.D35E.logger.log('Received foundry message', data);
       this.socket.emit('processed', {
         actionId: data['actionId'],
-        room: getProperty(this.system, 'companionUuid'),
+        room: foundry.utils.getProperty(this.system, 'companionUuid'),
       });
       this.executeRemoteAction(data);
     });
@@ -5783,7 +5783,7 @@ export class ActorPF extends Actor {
     if (this.socketRoomConnected) return;
     this.socket.emit('join', {
       username: 'foundry' + game.user.name,
-      room: getProperty(this.system, 'companionUuid'),
+      room: foundry.utils.getProperty(this.system, 'companionUuid'),
     });
     this.socketRoomConnected = true;
   }
@@ -5792,7 +5792,7 @@ export class ActorPF extends Actor {
     if (!this.socketRoomConnected) return;
     this.socket.emit('leave', {
       username: 'foundry' + game.user.name,
-      room: getProperty(this.system, 'companionUuid'),
+      room: foundry.utils.getProperty(this.system, 'companionUuid'),
     });
     this.socketRoomConnected = false;
   }
@@ -5804,7 +5804,7 @@ export class ActorPF extends Actor {
     let apiKey = game.settings.get('D35E', 'apiKeyWorld');
     if (!apiKey) return;
 
-    if (getProperty(this.system,
+    if (foundry.utils.getProperty(this.system,
         'companionUsePersonalKey')) apiKey = game.settings.get('D35E',
         'apiKeyPersonal');
     $.ajax({
@@ -6154,21 +6154,21 @@ export class ActorPF extends Actor {
     if (!this.system?.advancement?.originalHD) {
       updateData['system.advancement.originalHD'] = currentLevel;
     }
-    updateData['system.abilities.str.value'] = getProperty(this.system,
+    updateData['system.abilities.str.value'] = foundry.utils.getProperty(this.system,
         'abilities.str.value');
-    updateData['system.abilities.dex.value'] = getProperty(this.system,
+    updateData['system.abilities.dex.value'] = foundry.utils.getProperty(this.system,
         'abilities.dex.value');
-    updateData['system.abilities.con.value'] = getProperty(this.system,
+    updateData['system.abilities.con.value'] = foundry.utils.getProperty(this.system,
         'abilities.con.value');
-    updateData['system.abilities.con.value'] = getProperty(this.system,
+    updateData['system.abilities.con.value'] = foundry.utils.getProperty(this.system,
         'abilities.con.value');
     updateData['system.attributes.naturalAC'] = this.system.attributes.naturalAC;
     updateData['system.details.cr'] = parseInt(
-        getProperty(this.system, 'details.cr'));
-    const size = getProperty(this.system, 'traits.size');
-    let newSize = getProperty(this.system, 'traits.size');
+        foundry.utils.getProperty(this.system, 'details.cr'));
+    const size = foundry.utils.getProperty(this.system, 'traits.size');
+    let newSize = foundry.utils.getProperty(this.system, 'traits.size');
 
-    let advancement = getProperty(this.system, 'details.advancement.hd');
+    let advancement = foundry.utils.getProperty(this.system, 'details.advancement.hd');
     advancement.forEach((hd) => {
       if (newHd >= hd.lower) newSize = hd.size;
     });
@@ -6176,7 +6176,7 @@ export class ActorPF extends Actor {
     if (newSize === 'no-change' || newSize === '') newSize = size;
 
     const sizeIndex = Object.keys(CONFIG.D35E.actorSizes).
-        indexOf(getProperty(this.system, 'traits.size') || '');
+        indexOf(foundry.utils.getProperty(this.system, 'traits.size') || '');
     const newSizeIndex = Object.keys(CONFIG.D35E.actorSizes).
         indexOf(newSize || '');
     let currentSize = sizeIndex;

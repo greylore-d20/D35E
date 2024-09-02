@@ -22,14 +22,14 @@ export class TokenPF extends Token {
 
   get actorVision() {
     return {
-      lowLight: getProperty(this.actor, "system.senses.lowLight"),
-      lowLightMultiplier: getProperty(this.actor, "system.senses.lowLightMultiplier"),
-      lowLightMultiplierBright: getProperty(this.actor, "system.senses.lowLightMultiplier"),
+      lowLight: foundry.utils.getProperty(this.actor, "system.senses.lowLight"),
+      lowLightMultiplier: foundry.utils.getProperty(this.actor, "system.senses.lowLightMultiplier"),
+      lowLightMultiplierBright: foundry.utils.getProperty(this.actor, "system.senses.lowLightMultiplier"),
     };
   }
 
   get disableLowLight() {
-    return getProperty(this.data, "flags.D35E.disableLowLight") === true;
+    return foundry.utils.getProperty(this.data, "flags.D35E.disableLowLight") === true;
   }
 
   // Token#observer patch to make use of vision permission settings
@@ -40,7 +40,7 @@ export class TokenPF extends Token {
   _onUpdate(data, options, user) {
     if (options.render === false) return;
 
-    if (hasProperty(data, "flags.D35E.customVisionRules")) {
+    if (foundry.utils.hasProperty(data, "flags.D35E.customVisionRules")) {
       // Make sure this token's perception changes
       data.sight ||= {};
     }

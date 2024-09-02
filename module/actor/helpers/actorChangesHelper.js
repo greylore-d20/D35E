@@ -231,7 +231,7 @@ export class ActorChangesHelper {
                 return "system.abilities.cha.checkMod";
             case "allSpeeds":
                 for (let speedKey of Object.keys(curData.attributes.speed)) {
-                    if (getProperty(curData, `attributes.speed.${speedKey}.base`)) result.push(`system.attributes.speed.${speedKey}.total`);
+                    if (foundry.utils.getProperty(curData, `attributes.speed.${speedKey}.base`)) result.push(`system.attributes.speed.${speedKey}.total`);
                 }
                 return result;
             case "landSpeed":

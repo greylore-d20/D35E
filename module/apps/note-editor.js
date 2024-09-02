@@ -2,7 +2,7 @@ export class NoteEditor extends FormApplication {
     constructor(...args) {
         super(...args);
 
-        this.noteData = duplicate(getProperty(this.object.data, this.attribute) || "");
+        this.noteData = duplicate(foundry.utils.getProperty(this.object.data, this.attribute) || "");
     }
 
     static get defaultOptions() {

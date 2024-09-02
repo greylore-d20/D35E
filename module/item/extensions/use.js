@@ -46,7 +46,7 @@ export class ItemUse {
     skipChargeCheck = hookValues.skipChargeCheck;
 
 
-    if (getProperty(this.item.system, "requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus)
+    if (foundry.utils.getProperty(this.item.system, "requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus)
       return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
     if (this.item.type === "spell") {
       if (replacementId) {
@@ -65,7 +65,7 @@ export class ItemUse {
       }
     } else if (this.item.type === "full-attack") {
       if (game.settings.get("D35E", "showFullAttackChatCard")) await this.item.roll();
-      for (let attack of Object.values(getProperty(this.item.system, "attacks"))) {
+      for (let attack of Object.values(foundry.utils.getProperty(this.item.system, "attacks"))) {
         if (!attack.id) continue;
         let attackItem = actor.items.find((i) => i._id === attack.id);
         for (let i = 0; i < attack.count; i++) {
@@ -92,7 +92,7 @@ export class ItemUse {
           skipDialog: skipDialog,
           rollModeOverride: rollModeOverride,
           temporaryItem: temporaryItem,
-          attackType: getProperty(this.item.system, "weaponSubtype") === "2h" ? "two-handed" : "primary",
+          attackType: foundry.utils.getProperty(this.item.system, "weaponSubtype") === "2h" ? "two-handed" : "primary",
         },
         actor,
         skipChargeCheck
@@ -246,12 +246,12 @@ export class ItemUse {
     let autoScaleAttacks =
       (game.settings.get("D35E", "autoScaleAttacksBab") &&
         actor.type !== "npc" &&
-        getProperty(this.item.system, "attackType") === "weapon" &&
-        getProperty(this.item.system, "autoScaleOption") !== "never") ||
-      getProperty(this.item.system, "autoScaleOption") === "always";
+        foundry.utils.getProperty(this.item.system, "attackType") === "weapon" &&
+        foundry.utils.getProperty(this.item.system, "autoScaleOption") !== "never") ||
+      foundry.utils.getProperty(this.item.system, "autoScaleOption") === "always";
     if (autoScaleAttacks && fullAttack) {
       allAttacks.push({ bonus: 0, label: `${game.i18n.localize("D35E.Attack")}` });
-      for (let a = 5; a < (getProperty(actor.system, "attributes.bab.nonepic") || 0); a += 5) {
+      for (let a = 5; a < (foundry.utils.getProperty(actor.system, "attributes.bab.nonepic") || 0); a += 5) {
         allAttacks.push({
           bonus: `-${a}`,
           label: `${game.i18n.localize("D35E.Attack")} ${Math.floor((a + 5) / 5)}`,
@@ -329,8 +329,8 @@ export class ItemUse {
     if (
       (fullAttack || actor.system.attributes.bab.total < 6) &&
       isHasted &&
-      (getProperty(this.item.system, "attackType") === "weapon" ||
-        getProperty(this.item.system, "attackType") === "natural")
+      (foundry.utils.getProperty(this.item.system, "attackType") === "weapon" ||
+        foundry.utils.getProperty(this.item.system, "attackType") === "natural")
     ) {
       allAttacks.unshift({
         bonus: 0,
@@ -402,11 +402,11 @@ export class ItemUse {
 
     this.item._addCombatChangesToRollData(allCombatChanges, rollData);
 
-    if (rollData.isKeen && !getProperty(this.item.system, "threatRangeExtended")) {
-      let baseCrit = getProperty(this.item.system, "ability.critRange") || 20;
+    if (rollData.isKeen && !foundry.utils.getProperty(this.item.system, "threatRangeExtended")) {
+      let baseCrit = foundry.utils.getProperty(this.item.system, "ability.critRange") || 20;
       baseCrit = 21 - 2 * (21 - baseCrit);
       rollData.item.ability.critRange = baseCrit;
-      //getProperty(this.item.system,"ability.critRange") = baseCrit;
+      //foundry.utils.getProperty(this.item.system,"ability.critRange") = baseCrit;
     }
 
     if (rollData.featDamageBonusList) {
@@ -466,12 +466,12 @@ export class ItemUse {
     this.#_determineSpellInfo(rollData)
 
     // Lock useAmount for powers to max value and add aliases
-    if (this.item.type === "spell" && getProperty(this.item.system, "isPower")) {
+    if (this.item.type === "spell" && foundry.utils.getProperty(this.item.system, "isPower")) {
       rollData.useAmount = Math.max(
         0,
-        Math.min(rollData.useAmount, rollData.cl - (getProperty(this.item.system, "powerPointsCost") || 0))
+        Math.min(rollData.useAmount, rollData.cl - (foundry.utils.getProperty(this.item.system, "powerPointsCost") || 0))
       );
-      rollData.powerPointsUsed = rollData.useAmount + parseInt(getProperty(this.item.system, "powerPointsCost"));
+      rollData.powerPointsUsed = rollData.useAmount + parseInt(foundry.utils.getProperty(this.item.system, "powerPointsCost"));
       rollData.additionalPowerPointsUsed = rollData.useAmount;
       rollData.augmentation = rollData.useAmount;
     }
@@ -523,7 +523,7 @@ export class ItemUse {
           primaryAttack: primaryAttack,
           actor: actor,
           critConfirmBonus:
-            new Roll35e(`${getProperty(this.item.system, "critConfirmBonus")}` || "0", rollData).roll().total +
+            new Roll35e(`${foundry.utils.getProperty(this.item.system, "critConfirmBonus")}` || "0", rollData).roll().total +
             (rollData.featCritConfirmBonus || 0),
         });
         if (this.item.hasDamage) {
@@ -638,7 +638,7 @@ export class ItemUse {
       );
       // Add to list
       attacks.push(attack);
-    } else if (getProperty(this.item.system, "actionType") === "special") {
+    } else if (foundry.utils.getProperty(this.item.system, "actionType") === "special") {
       let attack = new ChatAttack(this.item, "", actor, rollData, ammoMaterial, ammoEnh);
       if (this.item.isSpellLike()) {
         ItemSpellHelper.adjustSpellCL(this.item, this.itemData, rollData);
@@ -708,13 +708,13 @@ export class ItemUse {
       if (rollData.useAmount === undefined) await this.item.addCharges(-1 * this.item.chargeCost, this.itemUpdateData);
       else await this.item.addCharges(-1 * parseFloat(rollData.useAmount) * this.item.chargeCost, this.itemUpdateData);
     } else {
-      if (getProperty(this.item.system, "requiresPsionicFocus")) {
+      if (foundry.utils.getProperty(this.item.system, "requiresPsionicFocus")) {
         if (this.item.actor) {
           await this.item.actor.update({ "data.attributes.psionicFocus": false });
         }
       }
     }
-    if (useAmmoId !== "none" && actor !== null && !getProperty(this.item.system, "returning")) {
+    if (useAmmoId !== "none" && actor !== null && !foundry.utils.getProperty(this.item.system, "returning")) {
       await actor.quickChangeItemQuantity(useAmmoId, -1 * attacks.length * (1 + Math.max(0, manyshotCount - 1)));
     }
     // Update item, only if it has an id (is real item, not item from enhancement)
@@ -729,7 +729,7 @@ export class ItemUse {
     };
 
     // Post message
-    if (this.item.data.type === "spell" || getProperty(this.item.system, "isFromSpell")) {
+    if (this.item.data.type === "spell" || foundry.utils.getProperty(this.item.system, "isFromSpell")) {
       if (!game.settings.get("D35E", "hideSpellDescriptionsIfHasAction"))
         await this.item.roll({ rollMode: rollMode }, actor);
     }
@@ -738,8 +738,8 @@ export class ItemUse {
       this.item.hasAttack ||
       this.item.hasDamage ||
       this.item.hasEffect ||
-      getProperty(this.item.system, "actionType") === "special" ||
-      getProperty(this.item.system, "actionType") === "summon"
+      foundry.utils.getProperty(this.item.system, "actionType") === "special" ||
+      foundry.utils.getProperty(this.item.system, "actionType") === "summon"
     ) {
       // //game.D35E.logger.log(`Generating chat message.`)
       // Get extra text and properties
@@ -822,14 +822,14 @@ export class ItemUse {
           dc: dc,
           nonLethal: nonLethal,
           useAmmoId: useAmmoId,
-          incorporeal: getProperty(this.item.system, "incorporeal") || this.item.actor?.system?.traits?.incorporeal,
+          incorporeal: foundry.utils.getProperty(this.item.system, "incorporeal") || this.item.actor?.system?.traits?.incorporeal,
           targets: selectedTargets,
           hiddenTargets: hiddenTargets,
           targetIds: selectedTargetIds,
           hasTargets: selectedTargets.length || hiddenTargets.length,
           isSpell: this.item.type === "spell",
-          hasPr: getProperty(this.item.system, "pr"),
-          hasSr: getProperty(this.item.system, "sr"),
+          hasPr: foundry.utils.getProperty(this.item.system, "pr"),
+          hasSr: foundry.utils.getProperty(this.item.system, "sr"),
           cl: rollData.cl,
           summonPack: summonPack,
           summonId: summonId,
@@ -852,10 +852,10 @@ export class ItemUse {
     }
     if (this.item.hasRolltableDraw) {
       let rollTable = await game.packs
-        .get(getProperty(this.item.system, "rollTableDraw.pack"))
-        .getDocument(getProperty(this.item.system, "rollTableDraw.id"));
-      if (getProperty(this.item.system, "rollTableDraw.formula")) {
-        var roll = new Roll35e(getProperty(this.item.system, "rollTableDraw.formula"), rollData);
+        .get(foundry.utils.getProperty(this.item.system, "rollTableDraw.pack"))
+        .getDocument(foundry.utils.getProperty(this.item.system, "rollTableDraw.id"));
+      if (foundry.utils.getProperty(this.item.system, "rollTableDraw.formula")) {
+        var roll = new Roll35e(foundry.utils.getProperty(this.item.system, "rollTableDraw.formula"), rollData);
         await rollTable.draw({ roll: roll, rollMode: rollMode });
       } else {
         await rollTable.draw({ rollMode: rollMode });
@@ -911,13 +911,13 @@ export class ItemUse {
     }
     if (actor && !actor.isOwner) return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
 
-    const itemQuantity = getProperty(this.item.system, "quantity");
+    const itemQuantity = foundry.utils.getProperty(this.item.system, "quantity");
     if (itemQuantity != null && itemQuantity <= 0 && !skipChargeCheck) {
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoQuantity"));
     }
 
     if (
-      getProperty(this.item.system, "requiresPsionicFocus") &&
+      foundry.utils.getProperty(this.item.system, "requiresPsionicFocus") &&
       !this.item.actor?.system?.attributes?.psionicFocus &&
       !skipChargeCheck
     )
@@ -940,7 +940,7 @@ export class ItemUse {
     if (
       skipDialog ||
       (ev instanceof MouseEvent && (ev.shiftKey || ev.button === 2)) ||
-      getProperty(this.item.system, "actionType") === "special"
+      foundry.utils.getProperty(this.item.system, "actionType") === "special"
     )
       return {
         wasRolled: true,
@@ -949,17 +949,17 @@ export class ItemUse {
 
     // Render modal dialog
     let template = "systems/D35E/templates/apps/attack-roll-dialog.html";
-    let weaponName = getProperty(this.item.system, "baseWeaponType") || "";
+    let weaponName = foundry.utils.getProperty(this.item.system, "baseWeaponType") || "";
     let featWeaponName = `(${weaponName})`;
     let bonusMaxPowerPoints = 0;
-    if (this.item.type === "spell" && getProperty(this.item.system, "isPower")) {
-      let spellbookIndex = getProperty(this.item.system, "spellbook");
-      let spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
-      let availablePowerPoints = (spellbook.powerPoints || 0) - (getProperty(this.item.system, "powerPointsCost") || 0);
+    if (this.item.type === "spell" && foundry.utils.getProperty(this.item.system, "isPower")) {
+      let spellbookIndex = foundry.utils.getProperty(this.item.system, "spellbook");
+      let spellbook = foundry.utils.getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
+      let availablePowerPoints = (spellbook.powerPoints || 0) - (foundry.utils.getProperty(this.item.system, "powerPointsCost") || 0);
       bonusMaxPowerPoints = Math.max(
         spellbook.maximumPowerPointLimit
           ? Math.min(
-              (spellbook?.cl?.total || 0) - (getProperty(this.item.system, "powerPointsCost") || 0),
+              (spellbook?.cl?.total || 0) - (foundry.utils.getProperty(this.item.system, "powerPointsCost") || 0),
               availablePowerPoints
             )
           : availablePowerPoints,
@@ -969,12 +969,12 @@ export class ItemUse {
     let autoScaleAttacks =
       (game.settings.get("D35E", "autoScaleAttacksBab") &&
         actor.type !== "npc" &&
-        getProperty(this.item.system, "attackType") === "weapon" &&
-        getProperty(this.item.system, "autoScaleOption") !== "never") ||
-      getProperty(this.item.system, "autoScaleOption") === "always";
+        foundry.utils.getProperty(this.item.system, "attackType") === "weapon" &&
+        foundry.utils.getProperty(this.item.system, "autoScaleOption") !== "never") ||
+      foundry.utils.getProperty(this.item.system, "autoScaleOption") === "always";
     let extraAttacksCount = autoScaleAttacks
-      ? Math.ceil((getProperty(actor.system, "attributes.bab.nonepic") || 0) / 5.0)
-      : (getProperty(this.item.system, "attackParts") || []).length + 1;
+      ? Math.ceil((foundry.utils.getProperty(actor.system, "attributes.bab.nonepic") || 0) / 5.0)
+      : (foundry.utils.getProperty(this.item.system, "attackParts") || []).length + 1;
     let rc = game.settings.get("D35E", `rollConfig`).rollConfig;
     let summonableMonsters = [];
     if (this.item.system.summon instanceof Array && this.item.system.summon) {
@@ -989,8 +989,8 @@ export class ItemUse {
     var anyFlanking = false;
     var flankingName = "";
     var flankingImg = "";
-    var isRanged =  getProperty(this.item.system, "attackType") === "weapon" &&
-        getProperty(this.item.system, "actionType") === "rwak";
+    var isRanged =  foundry.utils.getProperty(this.item.system, "attackType") === "weapon" &&
+        foundry.utils.getProperty(this.item.system, "actionType") === "rwak";
     var isThreatening = isRanged;
     var isPatreonActive =  PatreonIntegrationFactory.getInstance().isPatreonActive();
     if (game.user.targets && game.user.targets.size === 1) {
@@ -1051,36 +1051,36 @@ export class ItemUse {
       hasAttack: this.item.hasAttack,
       hasDamage: this.item.hasDamage,
       allowNoAmmo: game.settings.get("D35E", "allowNoAmmo") || actor.type === "npc",
-      nonLethal: getProperty(this.item.system, "nonLethal") || false,
+      nonLethal: foundry.utils.getProperty(this.item.system, "nonLethal") || false,
       allowMultipleUses: this.item.system?.uses?.allowMultipleUses,
       multipleUsesMax: this.item.system?.uses?.maxPerUse
         ? Math.min(
             Math.floor(this.item.charges / this.item.chargeCost),
-            getProperty(this.item.system, "uses.maxPerUse")
+            foundry.utils.getProperty(this.item.system, "uses.maxPerUse")
           )
         : Math.floor(this.item.charges / this.item.chargeCost),
       bonusPowerPointsMax: bonusMaxPowerPoints,
-      isSpell: this.item.type === "spell" && !getProperty(this.item.system, "isPower"),
-      isPower: this.item.type === "spell" && getProperty(this.item.system, "isPower"),
-      hasDamageAbility: getProperty(this.item.system, "ability.damage") !== "",
-      isNaturalAttack: getProperty(this.item.system, "attackType") === "natural",
-      isPrimaryAttack: getProperty(this.item.system, "primaryAttack") || false,
-      isWeaponAttack: getProperty(this.item.system, "attackType") === "weapon",
+      isSpell: this.item.type === "spell" && !foundry.utils.getProperty(this.item.system, "isPower"),
+      isPower: this.item.type === "spell" && foundry.utils.getProperty(this.item.system, "isPower"),
+      hasDamageAbility: foundry.utils.getProperty(this.item.system, "ability.damage") !== "",
+      isNaturalAttack: foundry.utils.getProperty(this.item.system, "attackType") === "natural",
+      isPrimaryAttack: foundry.utils.getProperty(this.item.system, "primaryAttack") || false,
+      isWeaponAttack: foundry.utils.getProperty(this.item.system, "attackType") === "weapon",
       isFlanking: anyFlanking,
       flankingName: flankingName,
       flankingImg: flankingImg,
       isThreatening: isThreatening,
       isRangedWeapon: isRanged,
-      ammunition: getProperty(this.item.system, "thrown")
-        ? actor.items.filter((o) => o._id === getProperty(this.item.system, "originalWeaponId"))
+      ammunition: foundry.utils.getProperty(this.item.system, "thrown")
+        ? actor.items.filter((o) => o._id === foundry.utils.getProperty(this.item.system, "originalWeaponId"))
         : actor.items.filter((o) => o.type === "loot" && o.system.subType === "ammo" && o.system.quantity > 0),
       extraAttacksCount: extraAttacksCount,
       hasTemplate: this.item.hasTemplate,
       isAlreadyProne: this?.actor?.system?.attributes?.conditions?.prone || false,
       canPowerAttack: actor.items.filter((o) => o.type === "feat" && o.originalName === "Power Attack")?.length > 0,
-      maxPowerAttackValue: getProperty(actor.system, "attributes.bab.total"),
+      maxPowerAttackValue: foundry.utils.getProperty(actor.system, "attributes.bab.total"),
       canManyshot: actor.items.filter((o) => o.type === "feat" && o.originalName === "Manyshot")?.length > 0,
-      maxManyshotValue: 2 + Math.floor((getProperty(actor.system, "attributes.bab.total") - 6) / 5),
+      maxManyshotValue: 2 + Math.floor((foundry.utils.getProperty(actor.system, "attributes.bab.total") - 6) / 5),
       canGreaterManyshot:
         actor.items.filter((o) => o.type === "feat" && o.originalName === "Greater Manyshot")?.length > 0,
       canRapidShot: actor.items.filter((o) => o.type === "feat" && o.originalName === "Rapid Shot")?.length > 0,
@@ -1088,14 +1088,14 @@ export class ItemUse {
         actor.items.filter(
           (o) => o.type === "feat" && (o.originalName === "Flurry of Blows" || o.system.customTag === "flurryOfBlows")
         ).length > 0,
-      maxGreaterManyshotValue: getProperty(actor.system, "abilities.wis.mod"),
+      maxGreaterManyshotValue: foundry.utils.getProperty(actor.system, "abilities.wis.mod"),
       weaponFeats: actor.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, `${this.item.type}`)
       ),
       weaponFeatsOptional: actor.combatChangeItems.filter((o) =>
         ItemCombatChangesHelper.canHaveCombatChanges(o, rollData, `${this.item.type}Optional`)
       ),
-      conditionals: getProperty(this.item.system, "conditionals"),
+      conditionals: foundry.utils.getProperty(this.item.system, "conditionals"),
       summonableMonsters: summonableMonsters,
     };
 
@@ -1315,7 +1315,7 @@ export class ItemUse {
     if (form.find('[name="nonLethal"]').prop("checked")) {
       nonLethal = true;
     }
-    const itemNonLethal = getProperty(this.item.system, "nonLethal") || getProperty(this.item.system, "nonLethalNoPenalty") || false;
+    const itemNonLethal = foundry.utils.getProperty(this.item.system, "nonLethal") || foundry.utils.getProperty(this.item.system, "nonLethalNoPenalty") || false;
     if (nonLethal && nonLethal !== itemNonLethal) {
       rollData.nonLethalPenalty = -4;
       attackExtraParts.push({
@@ -1556,9 +1556,9 @@ export class ItemUse {
     if (!actor.testUserPermission(game.user, "OWNER"))
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoActorPermission"));
     if (this.item.data.type !== "spell") throw new Error("Wrong Item type");
-    if (getProperty(this.item.system, "requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus)
+    if (foundry.utils.getProperty(this.item.system, "requiresPsionicFocus") && !this.item.actor?.system?.attributes?.psionicFocus)
       return ui.notifications.warn(game.i18n.localize("D35E.RequiresPsionicFocus"));
-    if (getProperty(this.item.system, "preparation.mode") !== "atwill" && new ItemCharges(this.item).getCharges() <= 0)
+    if (foundry.utils.getProperty(this.item.system, "preparation.mode") !== "atwill" && new ItemCharges(this.item).getCharges() <= 0)
       return ui.notifications.warn(game.i18n.localize("D35E.ErrorNoSpellsLeft"));
 
     // Invoke the Item roll
@@ -1603,18 +1603,18 @@ export class ItemUse {
     let ablMod = 0;
     if (this.item.type === "spell") {
       const spellbookIndex = data.spellbook;
-      spellSource = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
+      spellSource = foundry.utils.getProperty(this.item.actor.system, `attributes.spells.spellbooks.${spellbookIndex}`) || {};
     } else if (this.item.type === "card") {
       const deckIndex = data.deck;
-      spellSource = getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
+      spellSource = foundry.utils.getProperty(this.item.actor.system, `attributes.cards.decks.${deckIndex}`) || {};
     } else {
       return; // The values are left undefined for other kinds of items.
     }
 
     const spellAbility = spellSource.ability;
-    if (spellAbility !== "") ablMod = getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
+    if (spellAbility !== "") ablMod = foundry.utils.getProperty(this.item.actor.system, `abilities.${spellAbility}.mod`);
 
-    cl += getProperty(spellSource, "cl.total") || 0;
+    cl += foundry.utils.getProperty(spellSource, "cl.total") || 0;
     cl += data.clOffset || 0;
     cl += rollData.featClBonus || 0;
     cl -= this.item.actor.system.attributes.energyDrain || 0;
@@ -1651,14 +1651,14 @@ export class ItemUse {
 
     if (
       data.hasOwnProperty("actionType") &&
-      (getProperty(data, "save.description") || getProperty(data, "save.type")) &&
-      getProperty(data, "save.description") !== "None"
+      (foundry.utils.getProperty(data, "save.description") || foundry.utils.getProperty(data, "save.type")) &&
+      foundry.utils.getProperty(data, "save.description") !== "None"
     ) {
       let saveDC = new Roll35e(data.save.dc.length > 0 ? data.save.dc : data.save.dc.toString() || "0", rollData).roll()
         .total;
       let saveDesc = data.save.description;
       if (this.item.type === "spell") {
-        const spellbook = getProperty(this.item.actor.system, `attributes.spells.spellbooks.${data.spellbook}`) || {};
+        const spellbook = foundry.utils.getProperty(this.item.actor.system, `attributes.spells.spellbooks.${data.spellbook}`) || {};
         saveDC += new Roll35e(spellbook.baseDCFormula || "", rollData).roll().total;
       }
 

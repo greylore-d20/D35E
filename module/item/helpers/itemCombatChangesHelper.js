@@ -9,7 +9,7 @@ export class ItemCombatChangesHelper {
     let combatChangeItemType =
       (item.type === "feat" || item.type === "aura" || item.type === "buff" || item.type === "equipment") &&
       ItemActiveHelper.isActive(item);
-    return combatChangeItemType && (getProperty(item.system, "combatChanges") || []).length;
+    return combatChangeItemType && (foundry.utils.getProperty(item.system, "combatChanges") || []).length;
   }
 
   static getAllSelectedCombatChangesForRoll(

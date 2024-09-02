@@ -68,7 +68,7 @@ export class TopPortraitBar {
         let buffBar = portraitDiv.find('.buffbox');
         buffBar.empty()
         // let quickActions = '<div class="col actions"><div class="above">'
-        let items = actor.data.items.filter(o => (o.type === "buff") && getProperty(o.data, "data.active") === true).sort((a, b) => {
+        let items = actor.data.items.filter(o => (o.type === "buff") && foundry.utils.getProperty(o.data, "data.active") === true).sort((a, b) => {
             return a.data.sort - b.data.sort;
         });
         let damage = portraitDiv.find('.damage');

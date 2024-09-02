@@ -33,7 +33,7 @@ export class ActorTraitSelector extends FormApplication {
   getData() {
 
     // Get current values
-    let attr = getProperty(this.object.data, this.attribute);
+    let attr = foundry.utils.getProperty(this.object.data, this.attribute);
 
 	  // Populate choices
     const choices = duplicate(this.options.choices);

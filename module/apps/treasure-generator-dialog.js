@@ -238,7 +238,7 @@ export class TreasureGeneratorDialog extends FormApplication {
     for (let item of createdItems) {
       if (item.data.type === "weapon" || item.data.type === "equipment") {
         const updateData = {};
-        let _enhancements = duplicate(getProperty(item.data, `system.enhancements.items`) || []);
+        let _enhancements = duplicate(foundry.utils.getProperty(item.data, `system.enhancements.items`) || []);
 
         item.updateMagicItemName(updateData, _enhancements, true, true);
         item.updateMagicItemProperties(updateData, _enhancements, true);

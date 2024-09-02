@@ -548,7 +548,7 @@ Hooks.once("ready", async function () {
       "./module/onboarding.js"
     )
   ).default();
-  if (!isNewerVersion(moduleVersion, oldVersion)) return;
+  if (!foundry.utils.isNewerVersion(moduleVersion, oldVersion)) return;
   (
     await import(
       /* webpackChunkName: "welcome-screen" */
@@ -692,7 +692,7 @@ Hooks.on("renderChatLog", (_, html) => ActorChatListener.chatListeners(html));
 Hooks.on("renderChatPopout", (_, html) => ItemChatListener.chatListeners(html));
 Hooks.on("renderChatPopout", (_, html) => ActorChatListener.chatListeners(html));
 
-const debouncedCollate = debounce((a, b, c, d) => CollateAuras(a, b, c, d), 500);
+const debouncedCollate = foundry.utils.debounce((a, b, c, d) => CollateAuras(a, b, c, d), 500);
 Hooks.on("updateItem", (item, changedData, options, user) => {
   console.log("D35E | Updated Item", item, changedData, options, user, game.userId);
   let actor = item.parent;
@@ -710,7 +710,7 @@ Hooks.on("updateItem", (item, changedData, options, user) => {
 
 Hooks.on("renderTokenConfig", async (app, html) => {
   // Disable vision elements if custom vision is disabled
-  const noVisionOverride = getProperty(app.object.actor, "system.noVisionOverride") === true;
+  const noVisionOverride = foundry.utils.getProperty(app.object.actor, "system.noVisionOverride") === true;
   if (!noVisionOverride) {
     html
       .find(`.tab[data-tab="vision"]`)
@@ -781,7 +781,7 @@ Hooks.on("createToken", async (token, options, userId) => {
     await token.actor.updateEmbeddedEntity("Item", itemUpdates, { stopUpdates: false, ignoreSpellbookAndLevel: true });
   }
 
-  debouncedCollate(canvas.scene.id, true, true, "updateToken");
+  foundry.utils.debounce(canvas.scene.id, true, true, "updateToken");
 });
 
 Hooks.on("canvasReady", async (canvas, options, userId) => {
@@ -790,7 +790,7 @@ Hooks.on("canvasReady", async (canvas, options, userId) => {
     TopPortraitBar.render(game.actors.get(key));
   }
   if (options?.stopAuraUpdate) return;
-  debouncedCollate(canvas.scene.id, true, true, "canvasReady");
+  foundry.utils.debounce(canvas.scene.id, true, true, "canvasReady");
 });
 
 Hooks.on("updateToken", async (token, data, options, userId) => {
@@ -803,7 +803,7 @@ Hooks.on("updateToken", async (token, data, options, userId) => {
   if (userId !== game.user.id) return false;
   if (options?.stopAuraUpdate) return;
   if (options.tokenOnly) return;
-  debouncedCollate(canvas.scene.id, true, true, "updateToken");
+  foundry.utils.debounce(canvas.scene.id, true, true, "updateToken");
 });
 
 Hooks.on("preUpdateToken", (token, data, options, userId) => {
@@ -847,7 +847,7 @@ Hooks.on("deleteToken", async (token, options, userId) => {
   DistanceHelper.clearThreatenedTokensGraphics();
   if (options?.stopAuraUpdate) return;
   if (options.tokenOnly) return;
-  debouncedCollate(canvas.scene.id, true, true, "updateToken");
+  foundry.utils.debounce(canvas.scene.id, true, true, "updateToken");
 });
 
 Hooks.on("createCombatant", (combat, combatant, info, data) => {
@@ -869,7 +869,7 @@ Hooks.on("updateCombat", async (combat, combatant, info, data) => {
     combat.current.round < combat.previous.round
   )
     return; // We moved back in time
-  debouncedCollate(canvas.scene.id, true, true, "updateToken");
+  foundry.utils.debounce(canvas.scene.id, true, true, "updateToken");
   // const actor = combat.combatant.actor;
   // const buffId = combat.combatant.data?.flags?.D35E?.buffId;
   // if (actor != null) {
@@ -883,7 +883,7 @@ Hooks.on("updateCombat", async (combat, combatant, info, data) => {
   //     }
   //
   //     await actor.progressBuff(buffId,1);
-  //     debouncedCollate(canvas.scene.id, true, true, "updateToken")
+  //     foundry.utils.debounce(canvas.scene.id, true, true, "updateToken")
   // }
 });
 
@@ -941,7 +941,7 @@ Hooks.on("updateActor", (actor, data, options, user) => {
     return;
   } else {
     if (canvas.scene) {
-      debouncedCollate(canvas.scene.id, true, true, "updateToken");
+      foundry.utils.debounce(canvas.scene.id, true, true, "updateToken");
     }
     if (actor.system.companionAutosync) {
       actor.syncToCompendium();
@@ -1000,7 +1000,7 @@ Hooks.on("updateWorldTime", async (date, delta, other) => {
     }
   }
   Promise.all(updatePromises).then(() => {
-    debouncedCollate(canvas.scene.id, true, true, "updateToken");
+    foundry.utils.debounce(canvas.scene.id, true, true, "updateToken");
   });
 });
 

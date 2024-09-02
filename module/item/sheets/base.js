@@ -138,9 +138,9 @@ export class ItemSheetPF extends ItemSheet {
     // Unidentified data
     if (this.item.showUnidentifiedData) {
       sheetData.itemName =
-        getProperty(this.item.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
+        foundry.utils.getProperty(this.item.system, "unidentified.name") || game.i18n.localize("D35E.Unidentified");
     } else {
-      sheetData.itemName = getProperty(this.item.system, "identifiedName") || this.item.name;
+      sheetData.itemName = foundry.utils.getProperty(this.item.system, "identifiedName") || this.item.name;
     }
 
     // Action Details
@@ -224,9 +224,9 @@ export class ItemSheetPF extends ItemSheet {
         sheetData.autoScaleWithBab =
           (game.settings.get("D35E", "autoScaleAttacksBab") &&
             this.item.actor.data.type !== "npc" &&
-            getProperty(this.item.system, "attackType") === "weapon" &&
-            getProperty(this.item.system, "autoScaleOption") !== "never") ||
-          getProperty(this.item.system, "autoScaleOption") === "always";
+            foundry.utils.getProperty(this.item.system, "attackType") === "weapon" &&
+            foundry.utils.getProperty(this.item.system, "autoScaleOption") !== "never") ||
+          foundry.utils.getProperty(this.item.system, "autoScaleOption") === "always";
         if (sheetData.autoScaleWithBab) {
           let attacks = [];
           let baseExtraAttack = 0;
@@ -250,7 +250,7 @@ export class ItemSheetPF extends ItemSheet {
       for (let [k, v] of Object.entries(CONFIG.D35E.weaponTypes)) {
         if (typeof v === "object") sheetData.weaponCategories.types[k] = v._label;
       }
-      if (hasProperty(CONFIG.D35E.weaponTypes, "martial")) {
+      if (foundry.utils.hasProperty(CONFIG.D35E.weaponTypes, "martial")) {
         for (let [k, v] of Object.entries(CONFIG.D35E.weaponTypes["martial"])) {
           // Add static targets
           if (!k.startsWith("_")) sheetData.weaponCategories.subTypes[k] = v;
@@ -272,7 +272,7 @@ export class ItemSheetPF extends ItemSheet {
     if (this.item.type === "spell") {
       let spellbook = null;
       if (this.actor != null) {
-        spellbook = getProperty(this.actor.system, `attributes.spells.spellbooks.${this.item.system.spellbook}`);
+        spellbook = foundry.utils.getProperty(this.actor.system, `attributes.spells.spellbooks.${this.item.system.spellbook}`);
       }
 
       sheetData.isPreparedSpell = spellbook != null ? !spellbook.spontaneous : false;
@@ -287,7 +287,7 @@ export class ItemSheetPF extends ItemSheet {
     if (this.item.type === "card") {
       let spellbook = null;
       if (this.actor != null) {
-        spellbook = getProperty(this.actor.system, `attributes.cards.decks.${this.item.system.deck}`);
+        spellbook = foundry.utils.getProperty(this.actor.system, `attributes.cards.decks.${this.item.system.deck}`);
       }
 
       sheetData.isPreparedSpell = spellbook != null ? !spellbook.spontaneous : false;
@@ -497,7 +497,7 @@ export class ItemSheetPF extends ItemSheet {
         spellProgressionData.level = level;
         knownSpellProgressionData.level = level;
         for (let a of ["fort", "ref", "will"]) {
-          const classType = getProperty(this.item.system, "classType") || "base";
+          const classType = foundry.utils.getProperty(this.item.system, "classType") || "base";
 
           let formula =
             CONFIG.D35E.classSavingThrowFormulas[classType][this.item.system.savingThrows[a].value] != null
@@ -525,18 +525,18 @@ export class ItemSheetPF extends ItemSheet {
         if (sheetData.isSpellcaster) {
           for (let spellLevel = 0; spellLevel <= 9; spellLevel++) {
             if (
-              getProperty(this.item.system, "spellsPerLevel") !== undefined &&
-              getProperty(this.item.system, "spellsPerLevel")[level - 1]
+              foundry.utils.getProperty(this.item.system, "spellsPerLevel") !== undefined &&
+              foundry.utils.getProperty(this.item.system, "spellsPerLevel")[level - 1]
             ) {
-              let spellPerLevel = getProperty(this.item.system, "spellsPerLevel")[level - 1][spellLevel + 1];
+              let spellPerLevel = foundry.utils.getProperty(this.item.system, "spellsPerLevel")[level - 1][spellLevel + 1];
               spellProgressionData[`spells${spellLevel}`] =
                 spellPerLevel !== undefined && parseInt(spellPerLevel) !== -1 ? spellPerLevel : "-";
             }
             if (
-              getProperty(this.item.system, "spellsKnownPerLevel") !== undefined &&
-              getProperty(this.item.system, "spellsKnownPerLevel")[level - 1]
+              foundry.utils.getProperty(this.item.system, "spellsKnownPerLevel") !== undefined &&
+              foundry.utils.getProperty(this.item.system, "spellsKnownPerLevel")[level - 1]
             ) {
-              let spellPerLevel = getProperty(this.item.system, "spellsKnownPerLevel")[level - 1][spellLevel + 1];
+              let spellPerLevel = foundry.utils.getProperty(this.item.system, "spellsKnownPerLevel")[level - 1][spellLevel + 1];
               knownSpellProgressionData[`spells${spellLevel}`] =
                 spellPerLevel !== undefined && parseInt(spellPerLevel) !== -1 ? spellPerLevel : "-";
               sheetData.hasKnownSpells = true;
@@ -578,7 +578,7 @@ export class ItemSheetPF extends ItemSheet {
         sheetData.skills = Object.entries(CONFIG.D35E.skills).reduce((cur, o) => {
           cur[o[0]] = {
             name: o[1],
-            classSkill: getProperty(this.item.system, `classSkills.${o[0]}`) === true,
+            classSkill: foundry.utils.getProperty(this.item.system, `classSkills.${o[0]}`) === true,
           };
           return cur;
         }, {});
@@ -588,7 +588,7 @@ export class ItemSheetPF extends ItemSheet {
           const name = CONFIG.D35E.skills[key] != null ? CONFIG.D35E.skills[key] : o[1].name;
           cur[o[0]] = {
             name: name,
-            classSkill: getProperty(this.item.system, `classSkills.${o[0]}`) === true,
+            classSkill: foundry.utils.getProperty(this.item.system, `classSkills.${o[0]}`) === true,
           };
           return cur;
         }, {});
@@ -681,9 +681,9 @@ export class ItemSheetPF extends ItemSheet {
     }
 
     // Tags
-    if (getProperty(item.system, "tags") != null) {
+    if (foundry.utils.getProperty(item.system, "tags") != null) {
       props.push(
-        ...getProperty(item.system, "tags").map((o) => {
+        ...foundry.utils.getProperty(item.system, "tags").map((o) => {
           return o[0];
         })
       );
@@ -1332,7 +1332,7 @@ export class ItemSheetPF extends ItemSheet {
 
     let updateData = {};
     const value = Number(event.currentTarget.value);
-    let _addedAbilities = duplicate(getProperty(this.item.system, `addedAbilities`) || []);
+    let _addedAbilities = duplicate(foundry.utils.getProperty(this.item.system, `addedAbilities`) || []);
     let canChange = true;
     let foundAtSameLevel = 0;
     _addedAbilities
@@ -1366,7 +1366,7 @@ export class ItemSheetPF extends ItemSheet {
       pack = li.attr("data-pack");
 
     let updateData = {};
-    let _addedAbilities = duplicate(getProperty(this.item.system, `addedAbilities`) || []);
+    let _addedAbilities = duplicate(foundry.utils.getProperty(this.item.system, `addedAbilities`) || []);
     let newAbility = { uid: uid, level: 1 };
     _addedAbilities.forEach(ability => {
       if (ability.uid === uid) {
@@ -1386,7 +1386,7 @@ export class ItemSheetPF extends ItemSheet {
       pack = li.attr("data-pack");
 
     let updateData = {};
-    let _addedAbilities = duplicate(getProperty(this.item.system, `addedAbilities`) || []);
+    let _addedAbilities = duplicate(foundry.utils.getProperty(this.item.system, `addedAbilities`) || []);
     _addedAbilities = _addedAbilities.filter(function (obj) {
       return !(obj.uid === uid && (level === "" || parseInt(obj.level) === parseInt(level)));
     });
@@ -1401,7 +1401,7 @@ export class ItemSheetPF extends ItemSheet {
       pack = li.attr("data-pack");
 
     let updateData = {};
-    let _disabledAbilities = duplicate(getProperty(this.item.system, `disabledAbilities`) || []);
+    let _disabledAbilities = duplicate(foundry.utils.getProperty(this.item.system, `disabledAbilities`) || []);
     _disabledAbilities = _disabledAbilities.filter(function (obj) {
       return !(obj.uid === uid && (level === "" || parseInt(obj.level) === parseInt(level)));
     });
@@ -1416,7 +1416,7 @@ export class ItemSheetPF extends ItemSheet {
       level = li.attr("data-item-level"),
       pack = li.attr("data-pack");
     let updateData = {};
-    let _disabledAbilities = duplicate(getProperty(this.item.system, `disabledAbilities`) || []);
+    let _disabledAbilities = duplicate(foundry.utils.getProperty(this.item.system, `disabledAbilities`) || []);
     _disabledAbilities.push({ uid: uid, level: level });
     updateData[`system.disabledAbilities`] = _disabledAbilities;
     await this.item.update(updateData);

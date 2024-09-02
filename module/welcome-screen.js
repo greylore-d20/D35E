@@ -13,7 +13,7 @@ export default function renderWelcomeScreen() {
     });
     const oldVersion = game.settings.get(title, "version");
 
-    if (!isNewerVersion(moduleVersion, oldVersion))
+    if (!foundry.utils.isNewerVersion(moduleVersion, oldVersion))
         return;
 
     class WelcomeScreen extends Application {

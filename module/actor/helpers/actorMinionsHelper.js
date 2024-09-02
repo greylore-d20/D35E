@@ -78,7 +78,7 @@ export class ActorMinionsHelper {
                     return obj.type === "class";
                 });
 
-                const minionClass = classes.find(o => getProperty(o.system, "classType") === "minion");
+                const minionClass = classes.find(o => foundry.utils.getProperty(o.system, "classType") === "minion");
                 if (!!minionClass) {
                     let updateObject = {}
                     updateObject["_id"] = minionClass.id || minionClass._id;

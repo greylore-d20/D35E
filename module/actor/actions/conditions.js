@@ -19,7 +19,7 @@ export class ActorConditions {
 
         for (let t of tokens) {
             LogHelper.log("toggleConditionStatusIcons")
-            // const isLinkedToken = getProperty(this.actor.data, "token.actorLink");
+            // const isLinkedToken = foundry.utils.getProperty(this.actor.data, "token.actorLink");
             const actor = t.actor ? t.actor : this;
             if (!actor.testUserPermission(game.user, "OWNER")) continue;
             const fx = [...actor.effects];

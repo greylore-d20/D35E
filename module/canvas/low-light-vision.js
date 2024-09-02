@@ -10,7 +10,7 @@ export const addLowLightVisionToLightConfig = function (app, html) {
   // Create checkbox HTML element
   let checkboxStr = `<div class="form-group"><label>${game.i18n.localize("D35E.DisableLightLowLightVision")}</label>`;
   checkboxStr += '<input type="checkbox" name="flags.D35E.disableLowLight" data-dtype="Boolean"';
-  if (getProperty(obj, "flags.D35E.disableLowLight")) checkboxStr += " checked";
+  if (foundry.utils.getProperty(obj, "flags.D35E.disableLowLight")) checkboxStr += " checked";
   checkboxStr += "/></div>";
   const checkbox = $(checkboxStr);
 
@@ -30,7 +30,7 @@ export const addLowLightVisionToTokenConfig = function (app, html) {
   // Create checkbox HTML element
   let checkboxStr = `<div class="form-group"><label>${game.i18n.localize("D35E.DisableLightLowLightVision")}</label>`;
   checkboxStr += '<input type="checkbox" name="flags.D35E.disableLowLight" data-dtype="Boolean"';
-  if (getProperty(obj, "flags.D35E.disableLowLight")) checkboxStr += " checked";
+  if (foundry.utils.getProperty(obj, "flags.D35E.disableLowLight")) checkboxStr += " checked";
   checkboxStr += "/></div>";
   const checkbox = $(checkboxStr);
 

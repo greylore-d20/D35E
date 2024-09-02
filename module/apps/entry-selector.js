@@ -1,7 +1,7 @@
 export class EntrySelector extends FormApplication {
   constructor(...args) {
     super(...args);
-    this.entries = duplicate(getProperty(this.object, this.attribute) || []);
+    this.entries = duplicate(foundry.utils.getProperty(this.object, this.attribute) || []);
   }
 
   static get defaultOptions() {
